@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-
 @Injectable(
     {
         providedIn: 'root'
@@ -19,12 +18,10 @@ export class LoadStatusService {
     ) {
     }
 
-
     getTasks() {
         const url = `${environment.baseUrl}/table_load_control`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));
-
     }
 }

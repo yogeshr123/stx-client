@@ -23,9 +23,21 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/primeng/resources/themes/nova-light/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/css/main.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/js/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/feather.min.js",
+              "src/assets/js/plugins/pace.min.js",
+              "src/assets/js/plugins/sweetalert.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {

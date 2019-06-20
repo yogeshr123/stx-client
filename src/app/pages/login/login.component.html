@@ -1,0 +1,63 @@
+<section class="material-half-bg">
+  <div class="cover"></div>
+</section>
+<section class="login-content">
+  <div class="logo">
+    <!-- <h1>Cylance</h1> -->
+    <a class="app-header__logo" href="index.html"></a>
+  </div>
+  <div class="login-box">
+    <form id="signinForm" class="login-form">
+      <div *ngIf="errorMessage!=null" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      <h3 class="login-head">
+        <i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+      <div class="form-group">
+        <label class="control-label">USERNAME</label>
+        <!-- <input class="form-control" id="emailInputSignin" type="text" placeholder="Email" autofocus> -->
+        <input id="signupEmail" required type="email" maxlength="100" class="form-control"
+          [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label class="control-label">PASSWORD</label>
+        <!-- <input class="form-control" id="passwordInputSignin" type="password" placeholder="Password"> -->
+        <input id="signupPassword" required type="password" maxlength="25" class="form-control"
+          length="40" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+      </div>
+      <!-- <div class="form-group">
+              <div class="utility">
+                <div class="animated-checkbox">
+                  <label>
+                    <input type="checkbox"><span class="label-text">Stay Signed in</span>
+                  </label>
+                </div>
+                <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+              </div>
+            </div> -->
+      <div class="form-group btn-container">
+        <!-- <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button> -->
+        <button class="btn btn-primary btn-block" (click)="onLogin()" id="signupSubmit" type="submit">
+          <i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+      </div>
+    </form>
+    <form class="forget-form" action="index.html">
+      <h3 class="login-head">
+        <i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
+      <div class="form-group">
+        <label class="control-label">EMAIL</label>
+        <input class="form-control" type="text" placeholder="Email">
+      </div>
+      <div class="form-group btn-container">
+        <button class="btn btn-primary btn-block">
+          <i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+      </div>
+      <div class="form-group mt-3">
+        <p class="semibold-text mb-0">
+          <a href="#" data-toggle="flip">
+            <i class="fa fa-angle-left fa-fw"></i> Back to Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</section>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadControlService } from '../../services/load-control.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { RecordService } from '../../services/record.service';
+import { MessageService } from 'primeng/api';
 
 export interface Car {
   TABLE_NAME?;
@@ -29,8 +30,13 @@ export class LoadControlComponent implements OnInit {
   constructor(
     private loadControlService: LoadControlService,
     private recordService: RecordService,
+    private messageService: MessageService,
     private router: Router
   ) {
+  }
+
+  addSingle() {
+    this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService', sticky: true });
   }
 
   ngOnInit() {
@@ -65,6 +71,14 @@ export class LoadControlComponent implements OnInit {
   onRowEdit(row: any) {
     this.recordService.changeActiveRecord(row);
     this.router.navigate(['/loadcontrol/edit']);
+  }
+
+  triggerETL() {
+    this.addSingle();
+  }
+
+  killETL() {
+
   }
 }
 

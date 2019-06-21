@@ -12,11 +12,19 @@
                 <form class="form-horizontal">
                     <div *ngFor="let col of loadControl">
                         <div class="form-group row">
-                            <label class="control-label col-md-3">{{col.columnName}}</label>
+                            <label class="control-label col-md-3">{{col.displayName}}</label>
                             <div class="col-md-8">
-                                <input class="form-control" *ngIf="!col.valueSet" type="text" pInputText value="{{col.value}}"
+                                <input [disabled]="!col.edit" class="form-control" *ngIf="!col.valueSet && col.dataType !== 'TIMESTAMP'"
+                                    [type]="col.dataType == 'VARCHAR' ? 'text': 'number'"
+                                    name="{{col.columnName}}" [(ngModel)]="record[col.columnName]"
                                 />
-                                <p-dropdown *ngIf="col.valueSet" [options]="col.valueSetNew"></p-dropdown>
+                                <p-calendar [disabled]="!col.edit" *ngIf="!col.valueSet && col.dataType == 'TIMESTAMP'"
+                                    showTime="true" hourFormat="24" name="{{col.columnName}}"
+                                    [(ngModel)]="record[col.columnName]"></p-calendar>
+                                <select [disabled]="!col.edit" *ngIf="col.valueSet" class="form-control" name="{{col.columnName}}"
+                                    [(ngModel)]="record[col.columnName]">
+                                    <option *ngFor="let value of col.valueSetNew;" [ngValue]="value">{{value}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -25,7 +33,7 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button class="btn btn-primary" type="button" routerLinkActive="active" routerLink="/loadcontrol">
+                        <button class="btn btn-primary" type="button" (click)="saveReport()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>

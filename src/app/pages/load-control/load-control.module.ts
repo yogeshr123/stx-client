@@ -8,8 +8,11 @@ import { LoadControlComponent } from './load-control.component';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 import { LoadControlEditComponent } from './load-control-edit.component';
 import { RecordService } from '../../services/record.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     imports: [
@@ -27,11 +30,14 @@ import { RecordService } from '../../services/record.service';
         TableModule,
         DropdownModule,
         MultiSelectModule,
+        CalendarModule,
+        ToastModule,
         FormsModule,
         ReactiveFormsModule,
     ],
     providers: [
-        RecordService
+        RecordService,
+        MessageService
     ],
     declarations: [
         LoadControlComponent,

@@ -45,6 +45,7 @@ body .ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight {
     background: rgb(243, 243, 243);
 }
 
+
 /* .gantt_default_event {
     border-radius: 50px;
 } */
@@ -56,6 +57,10 @@ div[aria-label=""] {
 
 .gantt_default_event_inner {
     text-align: center;
+}
+
+body .ui-progressbar {
+    height: 6px;
 }
 
 

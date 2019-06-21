@@ -7,7 +7,30 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <daypilot-gantt [config]="config"></daypilot-gantt>
+    <div class="col-12">
+        <div class="tile">
+            <form>
+                <div class="row">
+                    <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Filter">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Filter">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Filter">
+                    </div>
+                    <div class="col-3">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </div>
+            </form>
+            <div class="col-12">
+                <p-progressBar mode="indeterminate"></p-progressBar>
+            </div>
+            <div class="mt-4">
+                <daypilot-gantt [config]="config"></daypilot-gantt>
+            </div>
+        </div>
     </div>
 </div>

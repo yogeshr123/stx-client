@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DayPilotModule } from 'daypilot-pro-angular';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';
@@ -14,7 +15,8 @@ import { LoadStatusRouting } from './load-status.routing';
     FormsModule,
     ReactiveFormsModule,
     LoadStatusRouting,
-    DayPilotModule
+    DayPilotModule,
+    ProgressBarModule
   ]
 })
 export class LoadStatusModule { }

@@ -16,7 +16,7 @@ export class LoadControlService {
 
 
     getRecords(): Promise<any> {
-        return this.httpClient.get(environment.baseUrl)
+        return this.httpClient.get(environment.baseUrl + '/table_load_control')
             .toPromise()
             .then((response) => {
                 return response;

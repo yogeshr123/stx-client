@@ -16,7 +16,10 @@ export class LoadStatusComponent implements OnInit {
     TaskResizing: 'Disabled',
     days: 2,
     onTaskMoved: args => {
-      console.log('Task moved', args.e.data);
+      // console.log('Task onTaskMoved', args.e.data);
+    },
+    onTaskMove: args => {
+      // console.log('Task onTaskMove', args.e.data);
     }
   };
 

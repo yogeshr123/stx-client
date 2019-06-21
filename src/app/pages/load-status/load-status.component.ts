@@ -22,40 +22,18 @@ export class LoadStatusComponent implements OnInit {
       // console.log('Task onTaskMove', args.e.data);
     }
   };
+  isLoading = false;
 
   constructor(
     private loadStatusService: LoadStatusService
   ) { }
 
   ngOnInit() {
-    // this.config.tasks = [
-    //   { start: '2019-06-20T02:00:00', end: '2019-06-20', id: 0, text: '', complete: 0 },
-    //   {
-    //     start: '2019-06-19 02:00:00', end: '2019-06-19 12:00:00', id: 1, text: 'Task 1', complete: 100, box: {
-    //       resizeDisabled: true,
-    //       html: '<b>Task 1</b>'
-    //     }
-    //   },
-    //   {
-    //     start: '2019-06-19 02:00:00', end: '2019-06-19 12:00:00', id: 2, text: 'Task 2', complete: 100, box: {
-    //       resizeDisabled: true,
-    //       html: '<b>Task 2</b>'
-    //     }
-    //   },
-    //   {
-    //     start: '2019-06-19 12:00:00', end: '2019-06-19 18:00:00', id: 3, text: 'Task 3', complete: 100, box: {
-    //       resizeDisabled: true,
-    //       html: '<b>Task 3</b>'
-    //     }
-    //   },
-    //   {
-    //     start: '2019-06-19 18:00:00', end: '2019-06-20 02:00:00', id: 4, text: 'Task 4', complete: 100, box: {
-    //       resizeDisabled: true,
-    //       html: '<b>Task 4</b>'
-    //     }
-    //   },
-    // ];
+    this.getTasks();
+  }
 
+  getTasks() {
+    this.isLoading = true;
     this.loadStatusService.getTasks().subscribe((data: any) => {
       const taskData = data.data;
       if (taskData && taskData.length) {
@@ -73,9 +51,12 @@ export class LoadStatusComponent implements OnInit {
         });
         taskData.unshift({ start: '2019-06-20T02:00:00', end: '2019-06-20', id: 0, text: '', complete: 0 });
         this.config.tasks = taskData;
+        this.isLoading = false;
       }
+    }, error => {
+      console.log('error ', error);
+      this.isLoading = false;
     });
-
   }
 
 }

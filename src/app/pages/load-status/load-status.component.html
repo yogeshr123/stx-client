@@ -25,10 +25,10 @@
                     </div>
                 </div>
             </form>
-            <div class="col-12">
+            <div class="mt-4 col-12" *ngIf="isLoading">
                 <p-progressBar mode="indeterminate"></p-progressBar>
             </div>
-            <div class="mt-4">
+            <div class="mt-4" *ngIf="!isLoading">
                 <daypilot-gantt [config]="config"></daypilot-gantt>
             </div>
         </div>

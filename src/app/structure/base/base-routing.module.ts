@@ -26,6 +26,10 @@ const routes: Routes = [
                 path: 'user-management',
                 loadChildren: '../../pages/user-management/user-management.module#UserManagementModule'
             },
+            {
+                path: 'load-status',
+                loadChildren: '../../pages/load-status/load-status.module#LoadStatusModule'
+            },
 
             // {
             // 	path: 'error/403',

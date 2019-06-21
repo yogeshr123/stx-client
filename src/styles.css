@@ -1,24 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
+
 .app-header__logo {
-  background: url('assets/images/seagate-logo.png') no-repeat center center;
-  background-size: 60%;
-  background-color: #000;
+    background: url('assets/images/seagate-logo.png') no-repeat center center;
+    background-size: 60%;
+    background-color: #000;
 }
+
+
 /* .app-sidebar {
   padding-top: 50px;
 } */
+
 .pace .pace-progress {
-  background: #249c42;
-}
-.treeview-item {
-  padding: 12px 15px 12px 35px;
+    background: #249c42;
 }
 
-body .ui-table .ui-table-tbody > tr.ui-state-highlight,
-body .ui-table .ui-table-tbody > tr:nth-child(even).ui-state-highlight {
-  background-color: #ffffff;
-  color: #333333;
+.treeview-item {
+    padding: 12px 15px 12px 35px;
 }
-.btn .icon, .btn .fa{
-  margin-right: 0;
+
+body .ui-table .ui-table-tbody>tr.ui-state-highlight,
+body .ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight {
+    background-color: #ffffff;
+    color: #333333;
 }
+
+.btn .icon,
+.btn .fa {
+    margin-right: 0;
+}
+
+
+/* FOR GANTT START */
+
+.gantt_default_main {
+    background: rgb(243, 243, 243);
+}
+
+.gantt_default_corner {
+    visibility: hidden;
+}
+
+.gantt_default_rowheader_scroll {
+    background: rgb(243, 243, 243);
+}
+
+
+/* .gantt_default_event {
+    border-radius: 50px;
+} */
+
+div[aria-label=""] {
+    visibility: hidden;
+    background: rgb(243, 243, 243);
+}
+
+.gantt_default_event_inner {
+    text-align: center;
+}
+
+body .ui-progressbar {
+    height: 6px;
+}
+
+
+/* FOR GANTT END */

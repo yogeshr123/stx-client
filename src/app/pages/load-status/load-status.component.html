@@ -25,11 +25,20 @@
                     </div>
                 </div>
             </form>
+            <div class="col-12">
+                <hr>
+            </div>
             <div class="mt-4 col-12" *ngIf="isLoading">
                 <p-progressBar mode="indeterminate"></p-progressBar>
             </div>
-            <div class="mt-4" *ngIf="!isLoading">
-                <daypilot-gantt [config]="config"></daypilot-gantt>
+            <div class="mt-4 col-12" *ngIf="!isLoading">
+                <div class="clearfix">
+                    <button class="float-right btn btn-success ml-2">Save Changes</button>
+                    <button class="float-right btn btn-secondary">Discard Changes</button>
+                </div>
+                <div class="mt-3">
+                    <daypilot-gantt [config]="config"></daypilot-gantt>
+                </div>
             </div>
         </div>
     </div>

@@ -19,7 +19,7 @@ export class LoadStatusService {
     }
 
     getTasks() {
-        const url = `${environment.baseUrl}/table_load_status`;
+        const url = `${environment.baseUrl}table_load_status`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));

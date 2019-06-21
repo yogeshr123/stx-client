@@ -32,6 +32,18 @@
         <span class="app-menu__label">Load Control</span>
       </a>
     </li>
+    <li>
+      <a class="app-menu__item" routerLinkActive="active" routerLink="/dashboard">
+        <i class="app-menu__icon fa fa-table"></i>
+        <span class="app-menu__label">Column Metadata Version</span>
+      </a>
+    </li>
+    <li>
+      <a class="app-menu__item" routerLinkActive="active" routerLink="/load-status">
+        <i class="app-menu__icon fa fa-table"></i>
+        <span class="app-menu__label">Load Status</span>
+      </a>
+    </li>
     <li class="treeview is-expanded">
       <a class="app-menu__item" routerLinkActive="active" routerLink="/user-management"
         data-toggle="treeview">
@@ -41,7 +53,7 @@
       </a>
       <ul class="treeview-menu">
         <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/user-management/users">
+          <a class="treeview-item" routerLink="/user-management/users">
             <i class="icon fa fa-circle-o"></i> Users</a>
         </li>
         <li>
@@ -49,12 +61,6 @@
             <i class="icon fa fa-circle-o"></i> Roles</a>
         </li>
       </ul>
-    </li>
-    <li>
-      <a class="app-menu__item" routerLink="/load-status">
-        <i class="app-menu__icon fa fa-table"></i>
-        <span class="app-menu__label">Load Status</span>
-      </a>
     </li>
   </ul>
 </aside>

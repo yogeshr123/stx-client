@@ -34,11 +34,9 @@ export class LoadControlComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.cols = [];
-    this.loadControlService.getRecords().then(response => {
-      console.log(response);
-      if (response.data && response.data.length > 0) {
-        this.recordsArray = response.data;
+    this.loadControlService.getRecords().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.recordsArray = data.data;
         // for (var key in this.recordsArray[0]) {
         //   this.cols.push({ field: key, header: key });
         // }
@@ -61,12 +59,10 @@ export class LoadControlComponent implements OnInit {
       // { field: 'TABLE_SOURCE' },
       // { field: 'LOAD_STRATEGY' },
     ];
-
     this.selectedColumns = this.cols;
   }
 
   onRowEdit(row: any) {
-    console.log(row);
     this.recordService.changeActiveRecord(row);
     this.router.navigate(['/loadcontrol/edit']);
   }

@@ -19,4 +19,11 @@ export class LoadControlService {
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    updateRecord(record: any) {
+        const url = `${environment.baseUrl}table_load_control`;
+        return this.http
+            .post(url, record)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

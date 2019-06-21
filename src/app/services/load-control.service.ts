@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class LoadControlService {
     // private headers: Headers;
-    private baseURL = environment.baseUrl;
+    private baseURL = environment.baseUrl + 'table_load_control';
 
     constructor(
         private httpClient: HttpClient,
@@ -16,7 +16,7 @@ export class LoadControlService {
 
 
     getRecords(): Promise<any> {
-        return this.httpClient.get(environment.baseUrl)
+        return this.httpClient.get(this.baseURL)
             .toPromise()
             .then((response) => {
                 return response;

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3000/api/v1/table_load_control'
+  baseUrl: 'http://localhost:3000/api/v1/'
 };
 
 /*

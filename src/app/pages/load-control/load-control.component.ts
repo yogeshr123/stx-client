@@ -56,8 +56,8 @@ export class LoadControlComponent implements OnInit {
       { field: 'TABLE_NAME' },
       { field: 'ENV_NAME' },
       { field: 'TARGET_SCHEMA_NAME' },
-      { field: 'TARGET_TABLE_NAME' },
-      { field: 'EMAIL_ALERTS' },
+      // { field: 'TARGET_TABLE_NAME' },
+      // { field: 'EMAIL_ALERTS' },
       // { field: 'TABLE_SOURCE' },
       // { field: 'LOAD_STRATEGY' },
     ];

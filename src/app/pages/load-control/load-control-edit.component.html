@@ -1,13 +1,37 @@
 <div class="app-title">
     <div>
         <h1>
-            <i class="fa fa-table"></i> Load Control
+            <i class="fa fa-table"></i> Edit Load Control
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
+            <div class="tile-body">
+                <form class="form-horizontal">
+                    <div *ngFor="let col of loadControl">
+                        <div class="form-group row">
+                            <label class="control-label col-md-3">{{col.columnName}}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" *ngIf="!col.valueSet" type="text" pInputText value="{{col.value}}"
+                                />
+                                <p-dropdown *ngIf="col.valueSet" [options]="col.valueSetNew"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tile-footer">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-3">
+                        <button class="btn btn-primary" type="button" routerLinkActive="active" routerLink="/loadcontrol">
+                            <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+                            <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

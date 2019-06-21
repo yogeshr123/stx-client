@@ -9,36 +9,44 @@
 <div class="row">
     <div class="col-12">
         <div class="tile">
-            <form>
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Filter">
+                        <input type="text" formControlName="SCHEMA_NAME" class="form-control" placeholder="Schema Name">
                     </div>
                     <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Filter">
+                        <input type="text" formControlName="TABLE_NAME" class="form-control" placeholder="Table Name">
                     </div>
                     <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Filter">
+                        <input type="text" formControlName="ENV_NAME" class="form-control" placeholder="Status">
                     </div>
                     <div class="col-3">
                         <input type="submit" class="btn btn-primary" value="Submit">
+                        <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>
                 </div>
             </form>
             <div class="col-12">
                 <hr>
             </div>
-            <div class="mt-4 col-12" *ngIf="isLoading">
+            <div class="mt-2 col-12" *ngIf="loader.tasks">
                 <p-progressBar mode="indeterminate"></p-progressBar>
             </div>
-            <div class="mt-4 col-12" *ngIf="!isLoading">
+            <div class="mt-2 col-12" *ngIf="!loader.tasks">
                 <div class="clearfix">
-                    <button class="float-right btn btn-success ml-2">Save Changes</button>
-                    <button class="float-right btn btn-secondary">Discard Changes</button>
+                    <img *ngIf="loader.saveTasks" class="float-right" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-success ml-2" (click)="save()">Save Changes</button>
+                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-danger" (click)="
+                    discard()">Discard Changes</button>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3" *ngIf="taskData?.length > 1; else elseTemplate">
                     <daypilot-gantt [config]="config"></daypilot-gantt>
                 </div>
+                <ng-template #elseTemplate>
+                    <div class="text-center">
+                        Data Not Available!
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

@@ -31,6 +31,21 @@ body .ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight {
 }
 
 
+/* MASTER STYLING START */
+
+button.disabled,
+input[type="submit"].disabled {
+    cursor: not-allowed !important;
+}
+
+body .ui-progressbar {
+    height: 6px;
+}
+
+
+/* MASTER STYLING END */
+
+
 /* FOR GANTT START */
 
 .gantt_default_main {
@@ -45,22 +60,94 @@ body .ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight {
     background: rgb(243, 243, 243);
 }
 
+.gantt_default_event.movedItem b {
+    color: #fff;
+}
 
-/* .gantt_default_event {
-    border-radius: 50px;
-} */
-
-div[aria-label=""] {
+daypilot-gantt div[aria-label=""] {
     visibility: hidden;
     background: rgb(243, 243, 243);
 }
 
-.gantt_default_event_inner {
+daypilot-gantt .gantt_default_event_inner {
     text-align: center;
+    font-size: 10px;
 }
 
-body .ui-progressbar {
-    height: 6px;
+daypilot-gantt .statusCircle {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+daypilot-gantt .statusCircle.COMPLETED {
+    background-color: green;
+}
+
+daypilot-gantt .statusCircle.RUNNING {
+    background-color: orange;
+}
+
+daypilot-gantt .statusCircle.FAILED {
+    background-color: red;
+}
+
+daypilot-gantt .gantt_default_event_hover:before {
+    content: '';
+    display: inline-block;
+    border: 1px solid rgb(204, 204, 204);
+    width: 13px;
+    height: 12px;
+    background: transparent;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+    z-index: 1;
+}
+
+daypilot-gantt .gantt_default_event_hover:after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 6px solid #000;
+    z-index: 30;
+    position: absolute;
+    right: 7px;
+    top: 10px;
+}
+
+
+/* context menu icons */
+
+.icon:before {
+    position: absolute;
+    margin-left: 8px;
+    margin-top: 3px;
+    width: 14px;
+    height: 14px;
+    content: '';
+}
+
+.icon-blue:before {
+    background-color: #1155cc;
+}
+
+.icon-green:before {
+    background-color: #6aa84f;
+}
+
+.icon-yellow:before {
+    background-color: #f1c232;
+}
+
+.icon-red:before {
+    background-color: #cc0000;
 }
 
 

@@ -1,25 +1,22 @@
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 // Angular
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { CommonService } from './common.service';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable()
 export class LoadControlService {
-    // private headers: Headers;
-    private baseURL = environment.baseUrl + 'table_load_control';
-
     constructor(
-        private httpClient: HttpClient,
+        private commonService: CommonService,
+        private http: HttpClient
     ) {
     }
 
-
-    getRecords(): Promise<any> {
-        return this.httpClient.get(this.baseURL)
-            .toPromise()
-            .then((response) => {
-                return response;
-            });
+    getRecords() {
+        const url = `${environment.baseUrl}table_load_control`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
     }
 }

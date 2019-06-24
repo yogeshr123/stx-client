@@ -11,16 +11,19 @@
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-2">
                         <input type="text" formControlName="SCHEMA_NAME" class="form-control" placeholder="Schema Name">
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <input type="text" formControlName="TABLE_NAME" class="form-control" placeholder="Table Name">
                     </div>
-                    <div class="col-3">
-                        <input type="text" formControlName="ENV_NAME" class="form-control" placeholder="Status">
+                    <div class="col-2">
+                        <input type="text" formControlName="STATUS" class="form-control" placeholder="Status">
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
+                        <input type="text" formControlName="AVG_TIME" class="form-control" placeholder="Min Avg. Time">
+                    </div>
+                    <div class="col-2">
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>

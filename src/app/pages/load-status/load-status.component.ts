@@ -46,14 +46,17 @@ export class LoadStatusComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       SCHEMA_NAME: '',
       TABLE_NAME: '',
-      ENV_NAME: ''
+      STATUS: '',
+      AVG_TIME: ''
     });
   }
 
   getSearchResult(formValues) {
     return this.taskDataBackUp.filter(item => {
       const notMatchingField = Object.keys(formValues)
-        .find(key => item[key] !== formValues[key]);
+        .find(key => {
+          return item[key] !== formValues[key];
+        });
       return !notMatchingField;
     });
   }
@@ -63,54 +66,17 @@ export class LoadStatusComponent implements OnInit {
     for (const propName in formValues) {
       if (!formValues[propName]) {
         delete formValues[propName];
+      } else {
+        formValues[propName] = formValues[propName].toUpperCase();
       }
     }
     if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
       this.taskData = this.getSearchResult(formValues);
-      this.setGanttValues(this.taskData);
+      this.setGanttValues();
     }
-
-    //
-    // const keys = Object.keys(formValues);
-    // const filterUser = (user) => keys.every(key => user[key] === formValues[key]);
-
-    // const someVar = this.taskData.filter(filterUser);
-    // console.log("someVar ", someVar);
-    //
-
-    // if (formValues.SCHEMA_NAME || formValues.TABLE_NAME || formValues.ENV_NAME) {
-    //   if (formValues.SCHEMA_NAME && !formValues.TABLE_NAME && !formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.SCHEMA_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.SCHEMA_NAME);
-    //     });
-    //   } else if (!formValues.SCHEMA_NAME && formValues.TABLE_NAME && !formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.TABLE_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.TABLE_NAME);
-    //     });
-    //   } else if (!formValues.SCHEMA_NAME && !formValues.TABLE_NAME && formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.ENV_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.ENV_NAME);
-    //     });
-    //   }
-
-    // }
-    // this.setGanttValues(this.taskData);
-    // console.log("this.taskData ", this.taskData);
   }
 
-  setGanttValues(data) {
+  setGanttValues() {
     this.taskData.map(item => {
       let barColor = '#bbb';
       switch (item.STATUS) {
@@ -138,33 +104,51 @@ export class LoadStatusComponent implements OnInit {
         contextMenu: new DayPilot.Menu({
           items: [
             {
-              text: `T1: ${item.T1_status}`,
+              text: item.ETL_status === 'HOLD' ? `ETL: RESUME` : 'ETL: HOLD',
               icon: 'icon',
               onClick: args => {
-                // console.log("args ", args);
-                args.item.text = args.item.text === 'Hold' ? 'Resume' : 'Hold';
+                args.item.text = args.item.text === 'ETL: HOLD' ? 'ETL: RESUME' : 'ETL: HOLD';
+                this.tasksMoved = true;
+                if (args.item.icon.indexOf('icon-green') > -1) {
+                  args.item.icon = 'icon';
+                } else {
+                  args.item.icon = 'icon icon-green';
+                }
+                args.source.data.ETL_status = args.item.text === 'ETL: HOLD' ? 'RESUME' : 'HOLD';
+                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
+              }
+            },
+            {
+              text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
+              icon: 'icon',
+              onClick: args => {
+                args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-blue') > -1) {
                   args.item.icon = 'icon';
                 } else {
                   args.item.icon = 'icon icon-blue';
                 }
+                args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
                 args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
               }
             },
             {
-              text: `T2: ${item.T2_status}`,
+              text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
               icon: 'icon',
               onClick: args => {
-                // console.log("args ", args);
-                args.item.text = args.item.text === 'Hold' ? 'Resume' : 'Hold';
+                args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-yellow') > -1) {
                   args.item.icon = 'icon';
                 } else {
                   args.item.icon = 'icon icon-yellow';
                 }
+                args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
                 args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
               }
             }
           ]
@@ -182,11 +166,11 @@ export class LoadStatusComponent implements OnInit {
       this.taskData = data.data;
       this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
-        this.setGanttValues(this.taskData);
+        this.setGanttValues();
         this.loader.tasks = false;
       }
     }, error => {
-      console.log('error ', error);
+      // console.log('error ', error);
       this.loader.tasks = false;
     });
   }
@@ -198,11 +182,18 @@ export class LoadStatusComponent implements OnInit {
 
   save() {
     this.loader.saveTasks = true;
-    setTimeout(() => {
+    const updatedTasks = this.taskData.filter(item => {
+      return item.updated === true;
+    });
+    this.loadStatusService.updateTasks(updatedTasks).subscribe(data => {
+      console.log('data ', data);
+      this.tasksMoved = false;
       this.loader.saveTasks = false;
       this.getTasks();
-      this.tasksMoved = false;
-    }, 2000);
+    }, error => {
+      // console.log('error ', error);
+      this.loader.saveTasks = false;
+    });
   }
 
   checkMovedTaskValidation(event) {
@@ -222,6 +213,7 @@ export class LoadStatusComponent implements OnInit {
     //   event.preventDefault();
     // } else {
     this.tasksMoved = true;
+    args.task.updated = true;
     args.task.box.backColor = 'rgba(230, 109, 245, 1)';
     args.task.box.cssClass = 'movedItem';
     // this.updateHappended();

@@ -20,7 +20,7 @@
             </li>
             <li><a class="app-menu__item" href="/bot"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li> -->
         <li>
-            <a class="app-menu__item" routerLink="/dashboard">
+            <a class="app-menu__item" routerLink="/dashboard" routerLinkActive="active">
                 <i class="app-menu__icon fa fa-dashboard"></i>
                 <span class="app-menu__label">Dashboard</span>
             </a>
@@ -43,7 +43,7 @@
                 <span class="app-menu__label">Load Status</span>
             </a>
         </li>
-        <li class="treeview">
+        <li class="treeview is-expanded">
             <a class="app-menu__item" routerLink="/user-management" data-toggle="treeview">
                 <i class="app-menu__icon fa fa-user"></i>
                 <span class="app-menu__label">User Management</span>
@@ -54,12 +54,10 @@
                     <a class="treeview-item" routerLink="/user-management/users">
                         <i class="icon fa fa-circle-o"></i> Users</a>
                 </li>
-                <!-- <li>
-                    <a class="app-menu__item"  routerLink="/loadcontrol">
-                        <i class="app-menu__icon fa fa-table"></i>
-                        <span class="app-menu__label">Load Control</span>
-                    </a>
-                </li> -->
+                <li>
+                    <a class="treeview-item" routerLink="/user-management/roles">
+                        <i class="icon fa fa-circle-o"></i> Roles</a>
+                </li>
             </ul>
         </li>
     </ul>

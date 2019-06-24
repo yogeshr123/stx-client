@@ -30,6 +30,7 @@ export class LoadStatusComponent implements OnInit {
   };
   tasksMoved = false;
   taskData: any;
+  taskDataBackUp: any;
 
   constructor(
     private loadStatusService: LoadStatusService,
@@ -50,7 +51,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   getSearchResult(formValues) {
-    return this.taskData.filter(item => {
+    return this.taskDataBackUp.filter(item => {
       const notMatchingField = Object.keys(formValues)
         .find(key => item[key] !== formValues[key]);
       return !notMatchingField;
@@ -130,17 +131,18 @@ export class LoadStatusComponent implements OnInit {
       item.id = item.DAG_RUN_ID;
       item.box = {
         resizeDisabled: true,
-        html: `<b title="Status: ${item.STATUS}">${item.SCHEMA_NAME}.${item.TABLE_NAME}.${item.ENV_NAME}</b>`,
-        htmlRight: `<span class="statusCircle ${item.STATUS}" title="Status: ${item.STATUS}"></span> <span>Avg. Time: 30 min</span>`,
+        html: `<b title="Status: ${item.STATUS}">${item.DAG_NAME}</b>`,
+        htmlRight: `<span class="statusCircle ${item.STATUS}" title="Status: ${item.STATUS}"></span> <span>Avg. Time: 3 hr 30 min</span>`,
         toolTip: `Status: ${item.STATUS}`,
         barColor,
         contextMenu: new DayPilot.Menu({
           items: [
             {
-              text: 'Activate',
+              text: `T1: ${item.T1_status}`,
               icon: 'icon',
               onClick: args => {
-                console.log("args ", args);
+                // console.log("args ", args);
+                args.item.text = args.item.text === 'Hold' ? 'Resume' : 'Hold';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-blue') > -1) {
                   args.item.icon = 'icon';
@@ -150,6 +152,21 @@ export class LoadStatusComponent implements OnInit {
                 args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
               }
             },
+            {
+              text: `T2: ${item.T2_status}`,
+              icon: 'icon',
+              onClick: args => {
+                // console.log("args ", args);
+                args.item.text = args.item.text === 'Hold' ? 'Resume' : 'Hold';
+                this.tasksMoved = true;
+                if (args.item.icon.indexOf('icon-yellow') > -1) {
+                  args.item.icon = 'icon';
+                } else {
+                  args.item.icon = 'icon icon-yellow';
+                }
+                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+              }
+            }
           ]
         })
       };
@@ -163,6 +180,7 @@ export class LoadStatusComponent implements OnInit {
     this.loader.tasks = true;
     this.loadStatusService.getTasks().subscribe((data: any) => {
       this.taskData = data.data;
+      this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
         this.setGanttValues(this.taskData);
         this.loader.tasks = false;

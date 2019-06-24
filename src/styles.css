@@ -42,6 +42,10 @@ body .ui-progressbar {
     height: 6px;
 }
 
+.ui-toast.ui-toast-top-right {
+    z-index: 2000 !important;
+}
+
 
 /* MASTER STYLING END */
 

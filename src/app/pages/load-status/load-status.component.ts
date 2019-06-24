@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
 import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -20,6 +21,9 @@ export class LoadStatusComponent implements OnInit {
     TaskResizing: 'Disabled',
     days: 2,
     onTaskMove: args => {
+      console.log(args.newStart, new Date(args.newStart));
+      console.log(args.newStart, new Date(args.newStart).toUTCString());
+      // console.log(item.DAG_NAME, new Date(item.LOAD_START_DATE));
       // args.preventDefault();
       this.checkMovedTaskValidation(args);
     }
@@ -33,6 +37,7 @@ export class LoadStatusComponent implements OnInit {
   taskDataBackUp: any;
 
   constructor(
+    private messageService: MessageService,
     private loadStatusService: LoadStatusService,
     private formBuilder: FormBuilder
   ) { }
@@ -77,7 +82,10 @@ export class LoadStatusComponent implements OnInit {
   }
 
   setGanttValues() {
+    console.log(this.taskData[1].DAG_NAME, new Date(this.taskData[1].LOAD_START_DATE));
+    console.log(this.taskData[1].DAG_NAME, new Date(this.taskData[1].LOAD_START_DATE).toUTCString());
     this.taskData.map(item => {
+      // console.log('item LOAD_END_DATE', item.LOAD_END_DATE);
       let barColor = '#bbb';
       switch (item.STATUS) {
         case 'COMPLETED':
@@ -189,9 +197,10 @@ export class LoadStatusComponent implements OnInit {
       console.log('data ', data);
       this.tasksMoved = false;
       this.loader.saveTasks = false;
+      this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
       this.getTasks();
     }, error => {
-      // console.log('error ', error);
+      this.messageService.add({ severity: 'error', summary: 'Could not save details.', life: 3000 });
       this.loader.saveTasks = false;
     });
   }

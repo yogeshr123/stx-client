@@ -138,9 +138,15 @@ export class LoadStatusComponent implements OnInit {
           items: [
             {
               text: 'Activate',
-              icon: 'icon icon-blue',
+              icon: 'icon',
               onClick: args => {
+                console.log("args ", args);
                 this.tasksMoved = true;
+                if (args.item.icon.indexOf('icon-blue') > -1) {
+                  args.item.icon = 'icon';
+                } else {
+                  args.item.icon = 'icon icon-blue';
+                }
                 args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
               }
             },

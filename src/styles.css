@@ -125,28 +125,30 @@ daypilot-gantt .gantt_default_event_hover:after {
 
 /* context menu icons */
 
-.icon:before {
+.menu_default_main .icon:before {
     position: absolute;
-    margin-left: 8px;
+    margin-left: 0;
     margin-top: 3px;
     width: 14px;
     height: 14px;
     content: '';
+    background-color: transparent;
+    border: 1px solid;
 }
 
-.icon-blue:before {
+.menu_default_main .icon-blue:before {
     background-color: #1155cc;
 }
 
-.icon-green:before {
+.menu_default_main .icon-green:before {
     background-color: #6aa84f;
 }
 
-.icon-yellow:before {
+.menu_default_main .icon-yellow:before {
     background-color: #f1c232;
 }
 
-.icon-red:before {
+.menu_default_main .icon-red:before {
     background-color: #cc0000;
 }
 

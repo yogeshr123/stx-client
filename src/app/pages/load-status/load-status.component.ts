@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
-import { DayPilot } from "daypilot-pro-angular";
+import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 

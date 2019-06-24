@@ -21,9 +21,6 @@ export class LoadStatusComponent implements OnInit {
     TaskResizing: 'Disabled',
     days: 2,
     onTaskMove: args => {
-      console.log(args.newStart, new Date(args.newStart));
-      console.log(args.newStart, new Date(args.newStart).toUTCString());
-      // console.log(item.DAG_NAME, new Date(item.LOAD_START_DATE));
       // args.preventDefault();
       this.checkMovedTaskValidation(args);
     }
@@ -82,10 +79,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   setGanttValues() {
-    console.log(this.taskData[1].DAG_NAME, new Date(this.taskData[1].LOAD_START_DATE));
-    console.log(this.taskData[1].DAG_NAME, new Date(this.taskData[1].LOAD_START_DATE).toUTCString());
     this.taskData.map(item => {
-      // console.log('item LOAD_END_DATE', item.LOAD_END_DATE);
       let barColor = '#bbb';
       switch (item.STATUS) {
         case 'COMPLETED':
@@ -164,7 +158,7 @@ export class LoadStatusComponent implements OnInit {
       };
     });
     // settings first row blank to ui look good
-    this.taskData.unshift({ start: '2019-06-20T02:00:00', end: '2019-06-20', id: 0, text: '', complete: 0 });
+    this.taskData.unshift({ start: '2019-06-20', end: '2019-06-20', id: 0, text: '', complete: 0 });
     this.config.tasks = this.taskData;
   }
 
@@ -193,6 +187,7 @@ export class LoadStatusComponent implements OnInit {
     const updatedTasks = this.taskData.filter(item => {
       return item.updated === true;
     });
+    // this.loader.saveTasks = false;
     this.loadStatusService.updateTasks(updatedTasks).subscribe(data => {
       console.log('data ', data);
       this.tasksMoved = false;
@@ -207,26 +202,16 @@ export class LoadStatusComponent implements OnInit {
 
   checkMovedTaskValidation(event) {
     const args = event.e.data;
-    // console.log("args ", args.start.value || args.start);
-    // let newStartDate = args.start.value || args.start;
-    // if (newStartDate.indexOf('000Z') === -1) {
-    //   newStartDate = newStartDate + '.000Z';
-    // }
-    // console.log("newStartDate ", newStartDate);
-    // newStartDate = new Date(newStartDate);
-    // const currentStartDate = new Date(this.config.startDate);
-    // console.log("currentStartDate ", currentStartDate);
-    // console.log("newStartDate.getDate() ", newStartDate.getDate());
-    // console.log("currentStartDate.getDate() ", currentStartDate.getDate());
-    // if (currentStartDate.getDate() < newStartDate.getDate()) {
-    //   event.preventDefault();
-    // } else {
-    this.tasksMoved = true;
-    args.task.updated = true;
-    args.task.box.backColor = 'rgba(230, 109, 245, 1)';
-    args.task.box.cssClass = 'movedItem';
-    // this.updateHappended();
-    // }
+    const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
+    const currentStartDate = new Date(this.config.startDate).getUTCDate();
+    if (newStartDate < currentStartDate) {
+      event.preventDefault();
+    } else {
+      this.tasksMoved = true;
+      args.task.updated = true;
+      args.task.box.backColor = 'rgba(230, 109, 245, 1)';
+      args.task.box.cssClass = 'movedItem';
+    }
   }
 
 }

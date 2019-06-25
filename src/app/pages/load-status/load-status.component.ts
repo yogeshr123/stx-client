@@ -27,7 +27,7 @@ export class LoadStatusComponent implements OnInit {
   };
   loader = {
     tasks: false,
-    saveTasks: false
+    saveTasks: false,
   };
   tasksMoved = false;
   taskData: any;

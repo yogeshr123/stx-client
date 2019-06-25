@@ -39,7 +39,7 @@
             </div>
             <div class="mt-2 col-12" *ngIf="!loader.tasks">
                 <div class="clearfix">
-                    <div class="div" class="float-left">
+                    <div class="div" class="float-left mt-2">
                         <label>Show</label>
                         <select #limit name="limit" class="ml-1" (change)="changeLimit(limit.value)">
                             <option value="10">10</option>
@@ -50,8 +50,8 @@
                         <label class="ml-1">Records</label>
                     </div>
                     <img *ngIf="loader.saveTasks" class="float-right" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-success ml-2" (click)="save()">Save Changes</button>
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-danger" (click)="
+                    <button class="float-right btn btn-success ml-2" (click)="save()">Save Changes</button>
+                    <button class="float-right btn btn-danger" (click)="
                     discard()">Discard Changes</button>
                 </div>
                 <div class="mt-3" *ngIf="taskData?.length > 1; else elseTemplate">

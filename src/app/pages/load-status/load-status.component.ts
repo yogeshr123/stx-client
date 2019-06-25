@@ -21,7 +21,6 @@ export class LoadStatusComponent implements OnInit {
     TaskResizing: 'Disabled',
     days: 2,
     onTaskMove: args => {
-      // args.preventDefault();
       this.checkMovedTaskValidation(args);
     }
   };
@@ -32,6 +31,9 @@ export class LoadStatusComponent implements OnInit {
   tasksMoved = false;
   taskData: any;
   taskDataBackUp: any;
+  errors = {
+    updateEror: false
+  };
 
   constructor(
     private messageService: MessageService,
@@ -79,6 +81,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   setGanttValues() {
+    // console.log('item.LOAD_START_DATE ', this.taskData[1].LOAD_START_DATE, new Date(this.taskData[1].LOAD_START_DATE));
     this.taskData.map(item => {
       let barColor = '#bbb';
       switch (item.STATUS) {
@@ -172,7 +175,6 @@ export class LoadStatusComponent implements OnInit {
         this.loader.tasks = false;
       }
     }, error => {
-      // console.log('error ', error);
       this.loader.tasks = false;
     });
   }
@@ -199,16 +201,27 @@ export class LoadStatusComponent implements OnInit {
   }
 
   save() {
+    this.errors.updateEror = false;
     this.loader.saveTasks = true;
-    const updatedTasks = this.taskData.filter(item => {
-      return item.updated === true;
-    });
-    this.loadStatusService.updateTasks(updatedTasks).subscribe(data => {
-      console.log('data ', data);
-      this.tasksMoved = false;
-      this.loader.saveTasks = false;
-      this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
+    const updatedTasks = this.taskData.filter(item => item.updated === true);
+    // updatedTasks.map(i => {
+    //   console.log("i.start ", i.start);
+    //   i.start = `${i.start}.000Z`;
+    // });
+    // console.log('updatedTasks ', updatedTasks);
+    this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
+      // console.log('resp ', resp.data);
+      if (!resp.data.error || !resp.data.error.length) {
+        this.tasksMoved = false;
+        this.loader.saveTasks = false;
+        this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
+      } else {
+        this.errors.updateEror = true;
+        this.messageService.add({ severity: 'error', summary: 'Could not update all records.', life: 3000 });
+      }
       this.getTasks();
+      this.loader.saveTasks = false;
+      this.tasksMoved = false;
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Could not save details.', life: 3000 });
       this.loader.saveTasks = false;

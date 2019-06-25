@@ -177,6 +177,22 @@ export class LoadStatusComponent implements OnInit {
     });
   }
 
+  changeLimit(limit) {
+    const selectedLimit = parseInt(limit, 10) + 1;
+    this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
+    if (limit !== 'all') {
+      if (selectedLimit > this.taskDataBackUp.length) {
+        this.taskData.length = this.taskDataBackUp.length;
+      } else {
+        this.taskData.length = selectedLimit;
+      }
+    } else {
+      this.taskData.length = this.taskDataBackUp.length;
+    }
+    this.taskData.shift();
+    this.setGanttValues();
+  }
+
   discard() {
     this.getTasks();
     this.tasksMoved = false;
@@ -187,7 +203,6 @@ export class LoadStatusComponent implements OnInit {
     const updatedTasks = this.taskData.filter(item => {
       return item.updated === true;
     });
-    // this.loader.saveTasks = false;
     this.loadStatusService.updateTasks(updatedTasks).subscribe(data => {
       console.log('data ', data);
       this.tasksMoved = false;

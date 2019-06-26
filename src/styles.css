@@ -160,6 +160,10 @@ daypilot-gantt .gantt_default_corner {
     background-color: #cc0000;
 }
 
+app-load-status .ui-autocomplete input {
+    width: 100%;
+}
+
 
 /* FOR GANTT END */
 

@@ -21,6 +21,9 @@ export class LoadStatusComponent implements OnInit {
     days: 2,
     onTaskMove: args => {
       this.checkMovedTaskValidation(args);
+    },
+    onTaskClick: args => {
+      args.e.data.contextMenu.show();
     }
   };
   loader = {
@@ -118,6 +121,7 @@ export class LoadStatusComponent implements OnInit {
               text: item.ETL_status === 'HOLD' ? `ETL: RESUME` : 'ETL: HOLD',
               icon: 'icon',
               onClick: args => {
+                console.log('args ', args);
                 args.item.text = args.item.text === 'ETL: HOLD' ? 'ETL: RESUME' : 'ETL: HOLD';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-green') > -1) {
@@ -134,6 +138,7 @@ export class LoadStatusComponent implements OnInit {
               text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
               icon: 'icon',
               onClick: args => {
+                console.log('args ', args);
                 args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-blue') > -1) {

@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-6 row">
                     <h5 class="col-12">Time Period</h5>
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="btn-group btn-group-toggle">
                             <label [ngClass]="{'active': toogleButton === 7}" class="btn btn-info" (click)="toogleButton = 7">
                                 <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7"> 7 days
@@ -39,7 +39,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-5">
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>

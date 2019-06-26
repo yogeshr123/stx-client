@@ -11,19 +11,35 @@
 <div class="row">
     <div class="col-12">
         <div class="tile">
-            <h5>Filter by</h5>
-            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-2">
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
+                <div class="col-6 row">
+                    <h5 class="col-12">Filter by</h5>
+                    <div class="col-4">
                         <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name" [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4">
                         <p-autoComplete formControlName="TABLE_NAME" placeholder="Table Name" [suggestions]="autocomplete.TABLE_NAME" (completeMethod)="search($event, 'TABLE_NAME')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4">
                         <p-autoComplete formControlName="STATUS" placeholder="Status" [suggestions]="autocomplete.STATUS" (completeMethod)="search($event, 'STATUS')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
+                </div>
+                <div class="col-6 row">
+                    <h5 class="col-12">Time Period</h5>
+                    <div class="col-6">
+                        <div class="btn-group btn-group-toggle">
+                            <label [ngClass]="{'active': toogleButton === 7}" class="btn btn-info" (click)="toogleButton = 7">
+                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7"> 7 days
+                            </label>
+                            <label [ngClass]="{'active': toogleButton === 1}" class="btn btn-info" (click)="toogleButton = 1">
+                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="1"> 1 Month
+                            </label>
+                            <label [ngClass]="{'active': toogleButton === 6}" class="btn btn-info" (click)="toogleButton = 6">
+                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="6"> 6 Months
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>

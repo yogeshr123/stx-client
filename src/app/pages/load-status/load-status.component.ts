@@ -38,6 +38,7 @@ export class LoadStatusComponent implements OnInit {
     TABLE_NAME: [],
     STATUS: []
   };
+  toogleButton = 7;
 
   constructor(
     private messageService: MessageService,
@@ -55,7 +56,7 @@ export class LoadStatusComponent implements OnInit {
       SCHEMA_NAME: '',
       TABLE_NAME: '',
       STATUS: '',
-      AVG_TIME: ''
+      AVG_TIME: 7
     });
   }
 
@@ -71,6 +72,7 @@ export class LoadStatusComponent implements OnInit {
 
   onSubmit() {
     const formValues = this.searchForm.value;
+    delete formValues.AVG_TIME;
     for (const propName in formValues) {
       if (!formValues[propName]) {
         delete formValues[propName];
@@ -200,6 +202,7 @@ export class LoadStatusComponent implements OnInit {
   discard() {
     this.getTasks();
     this.tasksMoved = false;
+    this.toogleButton = 7;
   }
 
   save() {

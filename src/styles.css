@@ -154,3 +154,18 @@ daypilot-gantt .gantt_default_event_hover:after {
 
 
 /* FOR GANTT END */
+
+.globalSearch input[type="text"] {
+    -webkit-box-flex: 1; 
+    -ms-flex: 1; 
+    flex: 1; 
+    border: 1px solid #009688; 
+    outline: none; 
+    padding: 5px 10px;
+} 
+.globalSearch{
+    display: flex;
+}
+.globalSearch button{
+    border-radius: 0;
+}

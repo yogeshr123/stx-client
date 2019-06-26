@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoadControlService } from '../../services/load-control.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { RecordService } from '../../services/record.service';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/components/table/table';
 
 export interface Car {
   TABLE_NAME?;
@@ -23,9 +24,12 @@ export class LoadControlComponent implements OnInit {
   recordsArray: any[];
   ENV_NAME: any[];
   cols: any[];
+  initialBinding = true;
 
   selectedRecords: any[];
   selectedColumns: any[];
+  globalQuery: string;
+  @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
     private loadControlService: LoadControlService,
@@ -40,21 +44,13 @@ export class LoadControlComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadControlService.getRecords().subscribe((data: any) => {
-      if (data.data && data.data.length > 0) {
-        this.recordsArray = data.data;
-        // for (var key in this.recordsArray[0]) {
-        //   this.cols.push({ field: key, header: key });
-        // }
-      }
-    });
 
+    this.loadAllRecords();
     this.ENV_NAME = [
       { label: 'PRD', value: 'PRD' },
       { label: 'DEV', value: 'DEV' },
       { label: 'QA', value: 'QA' }
     ];
-
     this.cols = [
       { field: 'SCHEMA_NAME' },
       { field: 'TABLE_NAME' },
@@ -65,7 +61,52 @@ export class LoadControlComponent implements OnInit {
       // { field: 'TABLE_SOURCE' },
       // { field: 'LOAD_STRATEGY' },
     ];
-    this.selectedColumns = this.cols;
+    // this.selectedColumns = this.cols;
+    if (!localStorage.getItem('selectedColumns')) {
+      this.selectedColumns = this.cols;
+    } else {
+      // get selected columns from local storage
+      this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
+    }
+  }
+
+  loadAllRecords() {
+    // this.loadControlService.getRecords().subscribe((data: any) => {
+    //   if (data.data && data.data.length > 0) {
+    //     this.recordsArray = data.data;
+    //     // for (var key in this.recordsArray[0]) {
+    //     //   this.cols.push({ field: key, header: key });
+    //     // }
+    //   }
+    // });
+    const body = {
+      query: "SELECT * FROM table_load_control"
+    };
+    this.fetchData(body);
+  }
+
+  fetchData(body: any) {
+    this.loadControlService.getQueryResult(body).subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.recordsArray = data.data;
+        // for (var key in this.recordsArray[0]) {
+        //   this.cols.push({ field: key, header: key });
+        // }
+      }
+    });
+  }
+
+  saveColumnState() {
+    localStorage.setItem('selectedColumns', JSON.stringify(this.selectedColumns));
+    this.resetTable();
+  }
+
+  resetTable() {
+    const statefilter = JSON.parse(localStorage.getItem('statedemo-local'));
+    if (statefilter) {
+      localStorage.removeItem('statedemo-local');
+    }
+    this.tableComponent.reset();
   }
 
   onRowEdit(row: any) {
@@ -73,12 +114,43 @@ export class LoadControlComponent implements OnInit {
     this.router.navigate(['/loadcontrol/edit']);
   }
 
-  triggerETL() {
-    this.addSingle();
+  onStateSave(event: any) {
+    console.log(event);
   }
 
-  killETL() {
+  changeETLStatus(status: string) {
+    // this.addSingle();
+    if (this.selectedRecords.length > 0) {
+      let records = [];
+      for (var _i = 0; _i < this.selectedRecords.length; _i++) {
+        records.push({
+          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+        })
+      }
+      const body = {
+        ETL_STATUS: status,
+        records: records
+      };
 
+      this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
+        console.log(data);
+      });
+    }
+  }
+
+
+  search() {
+    if (undefined != this.globalQuery && null != this.globalQuery && this.globalQuery != "") {
+      const body = {
+        query: this.globalQuery
+      };
+      this.fetchData(body);
+    }
+    else {
+      this.loadAllRecords();
+    }
   }
 }
 

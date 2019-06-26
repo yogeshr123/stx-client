@@ -9,30 +9,53 @@
     <div class="col-md-12">
         <div class="tile">
             <!-- <p-toast [style]="{z-index: 1200}"></p-toast> -->
-            <div class="btn-group" style="margin-bottom: 15px;">
+            <div class="btn-group mr-2 mb-3">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Actions
                 </button>
                 <div class="dropdown-menu">
                     <!-- <button class="dropdown-item">Import</button> -->
-                    <button class="dropdown-item" (click)="triggerETL()">Trigger</button>
-                    <button class="dropdown-item" (click)="killETL()">Kill</button>
+                    <button class="dropdown-item" (click)="changeETLStatus('TRIGGER')">Trigger</button>
+                    <button class="dropdown-item" (click)="changeETLStatus('KILL')">Kill</button>
                 </div>
             </div>
+
+            <div class="btn-group  mb-3">
+                <button class="btn btn-primary" title="Trigger ETL" type="button" (click)="changeETLStatus('TRIGGER')">
+                    <i class="fa fa-bolt"></i>
+                </button>
+                <button class="btn btn-primary" title="Kill ETL" type="button" (click)="changeETLStatus('KILL')">
+                    <i class="fa fa-ban"></i>
+                </button>
+            </div>
+
+            <div class="btn-group float-right">
+                <a class="btn btn-primary mr-2" routerLinkActive="active" routerLink="/loadcontrol/edit">Add new</a>
+                <button type="button" class="btn btn-primary" (click)="resetTable()">Reset table state</button>
+            </div>
+
+
+
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
                 dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"
-                stateStorage="local" stateKey="statedemo-session" [tableStyle]="{'table-layout':'auto'}">
+                stateStorage="local" stateKey="statedemo-local" [tableStyle]="{'table-layout':'auto'}">
                 <ng-template pTemplate="caption">
-                    <div style="float:left">
+                    <div style="text-align: right">
                         <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="field"
                             selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
-                            defaultLabel="Choose Columns"></p-multiSelect>
+                            defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                     </div>
-                    <div style="text-align: right">
+                    <!-- <div style="text-align: right">
                         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                            style="width:auto">
+                        <input type="text" pInputText size="50" placeholder="Global Filter" [(ngModel)]="globalQuery">
+                        <button class="dropdown-item" (click)="search()">Search</button>
+                    </div> -->
+                    <div class="globalSearch">
+                        <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
+                        <button class="btn btn-primary" type="button" (click)="search()">
+                            <i class="fa fa-lg fa-fw fa-search"></i>
+                        </button>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>

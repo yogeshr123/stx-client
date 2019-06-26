@@ -26,4 +26,18 @@ export class LoadControlService {
             .post(url, record)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    changeETLStatus(body: any) {
+        const url = `${environment.baseUrl}table_load_control/changeETLStatus`;
+        return this.http
+            .put(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getQueryResult(body: any) {
+        const url = `${environment.baseUrl}table_load_control/query`;
+        return this.http
+            .post(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

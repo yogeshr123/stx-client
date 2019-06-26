@@ -122,6 +122,14 @@ daypilot-gantt .gantt_default_event_hover:after {
     top: 10px;
 }
 
+daypilot-gantt .gantt_default_scrollable {
+    margin-top: 10px;
+}
+
+daypilot-gantt .gantt_default_corner {
+    margin-bottom: 10px;
+}
+
 
 /* context menu icons */
 
@@ -156,17 +164,19 @@ daypilot-gantt .gantt_default_event_hover:after {
 /* FOR GANTT END */
 
 .globalSearch input[type="text"] {
-    -webkit-box-flex: 1; 
-    -ms-flex: 1; 
-    flex: 1; 
-    border: 1px solid #009688; 
-    outline: none; 
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    border: 1px solid #009688;
+    outline: none;
     padding: 5px 10px;
-} 
-.globalSearch{
+}
+
+.globalSearch {
     display: flex;
 }
-.globalSearch button{
+
+.globalSearch button {
     border-radius: 0;
 }
 .separator {

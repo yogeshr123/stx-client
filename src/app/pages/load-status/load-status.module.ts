@@ -7,6 +7,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { NgxLoadingModule } from 'ngx-loading';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';
@@ -21,7 +22,8 @@ import { LoadStatusRouting } from './load-status.routing';
     DayPilotModule,
     ProgressBarModule,
     ToastModule,
-    NgxLoadingModule.forRoot({})
+    NgxLoadingModule.forRoot({}),
+    AutoCompleteModule
   ],
   providers: [MessageService]
 })

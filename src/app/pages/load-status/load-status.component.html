@@ -11,21 +11,35 @@
 <div class="row">
     <div class="col-12">
         <div class="tile">
-            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-2">
-                        <input type="text" formControlName="SCHEMA_NAME" class="form-control" placeholder="Schema Name">
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
+                <div class="col-6 row">
+                    <h5 class="col-12">Filter by</h5>
+                    <div class="col-4">
+                        <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name" [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
-                        <input type="text" formControlName="TABLE_NAME" class="form-control" placeholder="Table Name">
+                    <div class="col-4">
+                        <p-autoComplete formControlName="TABLE_NAME" placeholder="Table Name" [suggestions]="autocomplete.TABLE_NAME" (completeMethod)="search($event, 'TABLE_NAME')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
-                        <input type="text" formControlName="STATUS" class="form-control" placeholder="Status">
+                    <div class="col-4">
+                        <p-autoComplete formControlName="STATUS" placeholder="Status" [suggestions]="autocomplete.STATUS" (completeMethod)="search($event, 'STATUS')"></p-autoComplete>
                     </div>
-                    <div class="col-2">
-                        <input type="text" formControlName="AVG_TIME" class="form-control" placeholder="Min Avg. Time">
+                </div>
+                <div class="col-6 row">
+                    <h5 class="col-12">Time Period</h5>
+                    <div class="col-6">
+                        <div class="btn-group btn-group-toggle">
+                            <label [ngClass]="{'active': toogleButton === 7}" class="btn btn-info" (click)="toogleButton = 7">
+                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7"> 7 days
+                            </label>
+                            <label [ngClass]="{'active': toogleButton === 1}" class="btn btn-info" (click)="toogleButton = 1">
+                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="1"> 1 Month
+                            </label>
+                            <label [ngClass]="{'active': toogleButton === 6}" class="btn btn-info" (click)="toogleButton = 6">
+                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="6"> 6 Months
+                            </label>
+                        </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4">
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>
@@ -41,10 +55,10 @@
                     <div class="div" class="float-left mt-2">
                         <label>Show</label>
                         <select #limit name="limit" class="ml-1" (change)="changeLimit(limit.value)">
-                            <option value="10">10</option>
+                            <option value="10" selected>10</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
-                            <option value="all" selected>All</option>
+                            <option value="all">All</option>
                         </select>
                         <label class="ml-1">Records</label>
                     </div>
@@ -56,7 +70,7 @@
                 <div *ngIf="errors.updateEror" class="alert alert-danger mt-2" role="alert">
                     Could not update all records. Please try again.
                 </div>
-                <div class="mt-3" *ngIf="taskData?.length > 1; else elseTemplate">
+                <div class="mt-3" *ngIf="taskData.length; else elseTemplate">
                     <daypilot-gantt [config]="config"></daypilot-gantt>
                 </div>
                 <ng-template #elseTemplate>

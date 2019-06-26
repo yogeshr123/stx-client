@@ -4,7 +4,6 @@ import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
-
 @Component({
   selector: 'app-load-status',
   templateUrl: './load-status.component.html',
@@ -34,6 +33,12 @@ export class LoadStatusComponent implements OnInit {
   errors = {
     updateEror: false
   };
+  autocomplete = {
+    SCHEMA_NAME: [],
+    TABLE_NAME: [],
+    STATUS: []
+  };
+  toogleButton = 7;
 
   constructor(
     private messageService: MessageService,
@@ -51,7 +56,7 @@ export class LoadStatusComponent implements OnInit {
       SCHEMA_NAME: '',
       TABLE_NAME: '',
       STATUS: '',
-      AVG_TIME: ''
+      AVG_TIME: 7
     });
   }
 
@@ -67,6 +72,7 @@ export class LoadStatusComponent implements OnInit {
 
   onSubmit() {
     const formValues = this.searchForm.value;
+    delete formValues.AVG_TIME;
     for (const propName in formValues) {
       if (!formValues[propName]) {
         delete formValues[propName];
@@ -160,8 +166,6 @@ export class LoadStatusComponent implements OnInit {
         })
       };
     });
-    // settings first row blank to ui look good
-    this.taskData.unshift({ start: '2019-06-20', end: '2019-06-20', id: 0, text: '', complete: 0 });
     this.config.tasks = this.taskData;
   }
 
@@ -171,6 +175,7 @@ export class LoadStatusComponent implements OnInit {
       this.taskData = data.data;
       this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
+        this.taskData.length = this.taskData.length < 10 ? this.taskData.length : 10;
         this.setGanttValues();
         this.loader.tasks = false;
       }
@@ -180,7 +185,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   changeLimit(limit) {
-    const selectedLimit = parseInt(limit, 10) + 1;
+    const selectedLimit = parseInt(limit, 10);
     this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
     if (limit !== 'all') {
       if (selectedLimit > this.taskDataBackUp.length) {
@@ -191,13 +196,13 @@ export class LoadStatusComponent implements OnInit {
     } else {
       this.taskData.length = this.taskDataBackUp.length;
     }
-    this.taskData.shift();
     this.setGanttValues();
   }
 
   discard() {
     this.getTasks();
     this.tasksMoved = false;
+    this.toogleButton = 7;
   }
 
   save() {
@@ -240,6 +245,23 @@ export class LoadStatusComponent implements OnInit {
       args.task.box.backColor = 'rgba(230, 109, 245, 1)';
       args.task.box.cssClass = 'movedItem';
     }
+  }
+
+  filter(query, arrayToFilter) {
+    const result = [];
+    this.taskDataBackUp.filter(item => {
+      if (item[arrayToFilter].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        if (result.indexOf(item[arrayToFilter]) === -1) {
+          result.push(item[arrayToFilter]);
+        }
+      }
+    });
+    return result;
+  }
+
+
+  search(event, arrayToFilter) {
+    this.autocomplete[arrayToFilter] = this.filter(event.query, arrayToFilter);
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoadControlService } from '../../services/load-control.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { RecordService } from '../../services/record.service';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 
 export interface Car {
@@ -35,6 +35,7 @@ export class LoadControlComponent implements OnInit {
     private loadControlService: LoadControlService,
     private recordService: RecordService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     private router: Router
   ) {
   }
@@ -136,6 +137,7 @@ export class LoadControlComponent implements OnInit {
 
       this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
         console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
       });
     }
   }
@@ -150,6 +152,26 @@ export class LoadControlComponent implements OnInit {
     }
     else {
       this.loadAllRecords();
+    }
+  }
+
+  confirmAction(message: string, functionName: string, action: string) {
+    if (this.selectedRecords && this.selectedRecords.length > 0) {
+      this.confirmationService.confirm({
+        message: `Do you want to ${message}?`,
+        header: 'Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+          if (functionName == 'changeETLStatus') {
+            this.changeETLStatus(action);
+          }
+        },
+        reject: () => {
+        }
+      });
+    }
+    else {
+      this.messageService.add({ severity: 'info', summary: 'Please select records first', life: 3000 });
     }
   }
 }

@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="app-title">
     <div>
         <h1>
@@ -8,34 +9,34 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <!-- <p-toast [style]="{z-index: 1200}"></p-toast> -->
-            <div class="btn-group mr-2 mb-3">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    Actions
-                </button>
-                <div class="dropdown-menu">
-                    <!-- <button class="dropdown-item">Import</button> -->
-                    <button class="dropdown-item" (click)="changeETLStatus('TRIGGER')">Trigger</button>
-                    <button class="dropdown-item" (click)="changeETLStatus('KILL')">Kill</button>
-                </div>
-            </div>
-
-            <div class="btn-group  mb-3">
-                <button class="btn btn-primary" title="Trigger ETL" type="button" (click)="changeETLStatus('TRIGGER')">
+            <p-confirmDialog></p-confirmDialog>
+            <div class="mb-3">
+                <button class="btn btn-primary mr-2" pTooltip="Trigger ETL" tooltipPosition="bottom"
+                    type="button" (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')">
                     <i class="fa fa-bolt"></i>
                 </button>
-                <button class="btn btn-primary" title="Kill ETL" type="button" (click)="changeETLStatus('KILL')">
+                <button class="btn btn-primary" pTooltip="Kill ETL" tooltipPosition="bottom" type="button"
+                    (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')">
                     <i class="fa fa-ban"></i>
                 </button>
+                <div class="separator-vertical"></div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        More Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <button class="dropdown-item">Reset ETL Execution Status</button>
+                        <button class="dropdown-item">Reset T1 Execution Status</button>
+                        <button class="dropdown-item">Reset T2 Execution Status</button>
+                        <button class="dropdown-item">Reset All Execution Statuses</button>
+                        <button class="dropdown-item" (click)="resetTable()">Reset Table State</button>
+                    </div>
+                </div>
+                <div class="btn-group float-right">
+                    <a class="btn btn-primary mr-2" routerLinkActive="active" routerLink="/loadcontrol/add">Add new</a>
+                </div>
             </div>
-
-            <div class="btn-group float-right">
-                <a class="btn btn-primary mr-2" routerLinkActive="active" routerLink="/loadcontrol/edit">Add new</a>
-                <button type="button" class="btn btn-primary" (click)="resetTable()">Reset table state</button>
-            </div>
-
-
 
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
                 dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"

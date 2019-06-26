@@ -10,38 +10,38 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
-import { LoadControlEditComponent } from './load-control-edit.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 import { RecordService } from '../../services/record.service';
 import { MessageService } from 'primeng/api';
+import { AddLoadControlComponent } from './add-load-control/add-load-control.component';
+import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
+import { LoadControlRouting } from './load-control.routing';
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: LoadControlComponent
-            },
-            {
-                path: 'edit',
-                component: LoadControlEditComponent
-            }
-        ]),
+        LoadControlRouting,
         TableModule,
         DropdownModule,
         MultiSelectModule,
         CalendarModule,
         ToastModule,
+        TooltipModule,
+        ConfirmDialogModule,
         FormsModule,
         ReactiveFormsModule,
     ],
     providers: [
         RecordService,
-        MessageService
+        MessageService,
+        ConfirmationService
     ],
     declarations: [
         LoadControlComponent,
-        LoadControlEditComponent
+        AddLoadControlComponent,
+        EditLoadControlComponent
     ]
 })
 export class LoadControlModule {

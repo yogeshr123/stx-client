@@ -1,0 +1,56 @@
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-table"></i>
+      <span> Add Load Control</span>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <div class="tile-title text-right">
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+          </div>
+        </div>
+      </div>
+      <div class="separator"></div>
+      <div class="tile-body">
+        <form class="form-horizontal">
+          <!-- <div *ngIf="newRecord"> -->
+            <div *ngFor="let col of loadControl">
+              <div *ngIf="col.insert" class="form-group row">
+                <label class="control-label col-md-3">{{col.displayName}}</label>
+                <div class="col-md-8">
+                  <input class="form-control" *ngIf="!col.valueSet && col.dataType !== 'TIMESTAMP'"
+                    [type]="col.dataType == 'VARCHAR' ? 'text': 'number'" />
+                  <p-calendar *ngIf="!col.valueSet && col.dataType == 'TIMESTAMP'" showTime="true"
+                    hourFormat="24"></p-calendar>
+                  <select *ngIf="col.valueSet" class="form-control">
+                    <option *ngFor="let value of col.valueSetNew;" [ngValue]="value">{{value}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+
+        </form>
+      </div>
+      <div class="tile-footer">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-3">
+            <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

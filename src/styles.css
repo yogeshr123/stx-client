@@ -183,3 +183,16 @@ app-load-status .ui-autocomplete input {
 .globalSearch button {
     border-radius: 0;
 }
+.separator {
+    height: 1px;
+    width: 100%;
+    margin: 10px 0;
+    background-color: #ddd;
+}
+.separator-vertical{
+    width: 2px;
+    background-color: #ddd;
+    margin: -8px 15px;
+    height: 25px;
+    display: inline-block;
+}

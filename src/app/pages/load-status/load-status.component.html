@@ -1,7 +1,9 @@
+<p-toast></p-toast>
+
 <div class="app-title">
     <div>
         <h1>
-            <i class="fa fa-table"></i> Load Status
+            <i class="fa fa-tasks"></i> Load Status
         </h1>
     </div>
 </div>
@@ -11,16 +13,19 @@
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-2">
                         <input type="text" formControlName="SCHEMA_NAME" class="form-control" placeholder="Schema Name">
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <input type="text" formControlName="TABLE_NAME" class="form-control" placeholder="Table Name">
                     </div>
-                    <div class="col-3">
-                        <input type="text" formControlName="ENV_NAME" class="form-control" placeholder="Status">
+                    <div class="col-2">
+                        <input type="text" formControlName="STATUS" class="form-control" placeholder="Status">
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
+                        <input type="text" formControlName="AVG_TIME" class="form-control" placeholder="Min Avg. Time">
+                    </div>
+                    <div class="col-2">
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <input (click)="discard()" type="reset" class="btn btn-dark ml-2" value="Reset">
                     </div>
@@ -29,15 +34,27 @@
             <div class="col-12">
                 <hr>
             </div>
-            <div class="mt-2 col-12" *ngIf="loader.tasks">
-                <p-progressBar mode="indeterminate"></p-progressBar>
-            </div>
+            <ngx-loading [show]="loader.tasks" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+            </ngx-loading>
             <div class="mt-2 col-12" *ngIf="!loader.tasks">
                 <div class="clearfix">
+                    <div class="div" class="float-left mt-2">
+                        <label>Show</label>
+                        <select #limit name="limit" class="ml-1" (change)="changeLimit(limit.value)">
+                            <option value="10">10</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all" selected>All</option>
+                        </select>
+                        <label class="ml-1">Records</label>
+                    </div>
                     <img *ngIf="loader.saveTasks" class="float-right" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
                     <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-success ml-2" (click)="save()">Save Changes</button>
                     <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-danger" (click)="
                     discard()">Discard Changes</button>
+                </div>
+                <div *ngIf="errors.updateEror" class="alert alert-danger mt-2" role="alert">
+                    Could not update all records. Please try again.
                 </div>
                 <div class="mt-3" *ngIf="taskData?.length > 1; else elseTemplate">
                     <daypilot-gantt [config]="config"></daypilot-gantt>

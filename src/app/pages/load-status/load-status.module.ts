@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DayPilotModule } from 'daypilot-pro-angular';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { NgxLoadingModule } from 'ngx-loading';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';
@@ -16,7 +19,10 @@ import { LoadStatusRouting } from './load-status.routing';
     ReactiveFormsModule,
     LoadStatusRouting,
     DayPilotModule,
-    ProgressBarModule
-  ]
+    ProgressBarModule,
+    ToastModule,
+    NgxLoadingModule.forRoot({})
+  ],
+  providers: [MessageService]
 })
 export class LoadStatusModule { }

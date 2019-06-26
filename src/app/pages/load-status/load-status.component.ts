@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
-import { DayPilot } from "daypilot-pro-angular";
+import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -20,18 +21,22 @@ export class LoadStatusComponent implements OnInit {
     TaskResizing: 'Disabled',
     days: 2,
     onTaskMove: args => {
-      // args.preventDefault();
       this.checkMovedTaskValidation(args);
     }
   };
   loader = {
     tasks: false,
-    saveTasks: false
+    saveTasks: false,
   };
   tasksMoved = false;
   taskData: any;
+  taskDataBackUp: any;
+  errors = {
+    updateEror: false
+  };
 
   constructor(
+    private messageService: MessageService,
     private loadStatusService: LoadStatusService,
     private formBuilder: FormBuilder
   ) { }
@@ -45,14 +50,17 @@ export class LoadStatusComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       SCHEMA_NAME: '',
       TABLE_NAME: '',
-      ENV_NAME: ''
+      STATUS: '',
+      AVG_TIME: ''
     });
   }
 
   getSearchResult(formValues) {
-    return this.taskData.filter(item => {
+    return this.taskDataBackUp.filter(item => {
       const notMatchingField = Object.keys(formValues)
-        .find(key => item[key] !== formValues[key]);
+        .find(key => {
+          return item[key] !== formValues[key];
+        });
       return !notMatchingField;
     });
   }
@@ -62,54 +70,18 @@ export class LoadStatusComponent implements OnInit {
     for (const propName in formValues) {
       if (!formValues[propName]) {
         delete formValues[propName];
+      } else {
+        formValues[propName] = formValues[propName].toUpperCase();
       }
     }
     if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
       this.taskData = this.getSearchResult(formValues);
-      this.setGanttValues(this.taskData);
+      this.setGanttValues();
     }
-
-    //
-    // const keys = Object.keys(formValues);
-    // const filterUser = (user) => keys.every(key => user[key] === formValues[key]);
-
-    // const someVar = this.taskData.filter(filterUser);
-    // console.log("someVar ", someVar);
-    //
-
-    // if (formValues.SCHEMA_NAME || formValues.TABLE_NAME || formValues.ENV_NAME) {
-    //   if (formValues.SCHEMA_NAME && !formValues.TABLE_NAME && !formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.SCHEMA_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.SCHEMA_NAME);
-    //     });
-    //   } else if (!formValues.SCHEMA_NAME && formValues.TABLE_NAME && !formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.TABLE_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.TABLE_NAME);
-    //     });
-    //   } else if (!formValues.SCHEMA_NAME && !formValues.TABLE_NAME && formValues.ENV_NAME) {
-    //     this.taskData = this.taskData.filter((item) => {
-    //       const caseInsensitiveSearch = new RegExp(
-    //         `${formValues.ENV_NAME.trim()}`,
-    //         'i'
-    //       );
-    //       return caseInsensitiveSearch.test(item.ENV_NAME);
-    //     });
-    //   }
-
-    // }
-    // this.setGanttValues(this.taskData);
-    // console.log("this.taskData ", this.taskData);
   }
 
-  setGanttValues(data) {
+  setGanttValues() {
+    // console.log('item.LOAD_START_DATE ', this.taskData[1].LOAD_START_DATE, new Date(this.taskData[1].LOAD_START_DATE));
     this.taskData.map(item => {
       let barColor = '#bbb';
       switch (item.STATUS) {
@@ -130,32 +102,66 @@ export class LoadStatusComponent implements OnInit {
       item.id = item.DAG_RUN_ID;
       item.box = {
         resizeDisabled: true,
-        html: `<b title="Status: ${item.STATUS}">${item.SCHEMA_NAME}.${item.TABLE_NAME}.${item.ENV_NAME}</b>`,
-        htmlRight: `<span class="statusCircle ${item.STATUS}" title="Status: ${item.STATUS}"></span> <span>Avg. Time: 30 min</span>`,
+        html: `<b title="Status: ${item.STATUS}">${item.DAG_NAME}</b>`,
+        htmlRight: `<span class="statusCircle ${item.STATUS}" title="Status: ${item.STATUS}"></span> <span>Avg. Time: 3 hr 30 min</span>`,
         toolTip: `Status: ${item.STATUS}`,
         barColor,
         contextMenu: new DayPilot.Menu({
           items: [
             {
-              text: 'Activate',
+              text: item.ETL_status === 'HOLD' ? `ETL: RESUME` : 'ETL: HOLD',
               icon: 'icon',
               onClick: args => {
-                console.log("args ", args);
+                args.item.text = args.item.text === 'ETL: HOLD' ? 'ETL: RESUME' : 'ETL: HOLD';
+                this.tasksMoved = true;
+                if (args.item.icon.indexOf('icon-green') > -1) {
+                  args.item.icon = 'icon';
+                } else {
+                  args.item.icon = 'icon icon-green';
+                }
+                args.source.data.ETL_status = args.item.text === 'ETL: HOLD' ? 'RESUME' : 'HOLD';
+                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
+              }
+            },
+            {
+              text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
+              icon: 'icon',
+              onClick: args => {
+                args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
                 this.tasksMoved = true;
                 if (args.item.icon.indexOf('icon-blue') > -1) {
                   args.item.icon = 'icon';
                 } else {
                   args.item.icon = 'icon icon-blue';
                 }
+                args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
                 args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
               }
             },
+            {
+              text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
+              icon: 'icon',
+              onClick: args => {
+                args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
+                this.tasksMoved = true;
+                if (args.item.icon.indexOf('icon-yellow') > -1) {
+                  args.item.icon = 'icon';
+                } else {
+                  args.item.icon = 'icon icon-yellow';
+                }
+                args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
+                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+                args.source.data.updated = true;
+              }
+            }
           ]
         })
       };
     });
     // settings first row blank to ui look good
-    this.taskData.unshift({ start: '2019-06-20T02:00:00', end: '2019-06-20', id: 0, text: '', complete: 0 });
+    this.taskData.unshift({ start: '2019-06-20', end: '2019-06-20', id: 0, text: '', complete: 0 });
     this.config.tasks = this.taskData;
   }
 
@@ -163,14 +169,30 @@ export class LoadStatusComponent implements OnInit {
     this.loader.tasks = true;
     this.loadStatusService.getTasks().subscribe((data: any) => {
       this.taskData = data.data;
+      this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
-        this.setGanttValues(this.taskData);
+        this.setGanttValues();
         this.loader.tasks = false;
       }
     }, error => {
-      console.log('error ', error);
       this.loader.tasks = false;
     });
+  }
+
+  changeLimit(limit) {
+    const selectedLimit = parseInt(limit, 10) + 1;
+    this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
+    if (limit !== 'all') {
+      if (selectedLimit > this.taskDataBackUp.length) {
+        this.taskData.length = this.taskDataBackUp.length;
+      } else {
+        this.taskData.length = selectedLimit;
+      }
+    } else {
+      this.taskData.length = this.taskDataBackUp.length;
+    }
+    this.taskData.shift();
+    this.setGanttValues();
   }
 
   discard() {
@@ -179,35 +201,45 @@ export class LoadStatusComponent implements OnInit {
   }
 
   save() {
+    this.errors.updateEror = false;
     this.loader.saveTasks = true;
-    setTimeout(() => {
-      this.loader.saveTasks = false;
+    const updatedTasks = this.taskData.filter(item => item.updated === true);
+    // updatedTasks.map(i => {
+    //   console.log("i.start ", i.start);
+    //   i.start = `${i.start}.000Z`;
+    // });
+    // console.log('updatedTasks ', updatedTasks);
+    this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
+      // console.log('resp ', resp.data);
+      if (!resp.data.error || !resp.data.error.length) {
+        this.tasksMoved = false;
+        this.loader.saveTasks = false;
+        this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
+      } else {
+        this.errors.updateEror = true;
+        this.messageService.add({ severity: 'error', summary: 'Could not update all records.', life: 3000 });
+      }
       this.getTasks();
+      this.loader.saveTasks = false;
       this.tasksMoved = false;
-    }, 2000);
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Could not save details.', life: 3000 });
+      this.loader.saveTasks = false;
+    });
   }
 
   checkMovedTaskValidation(event) {
     const args = event.e.data;
-    // console.log("args ", args.start.value || args.start);
-    // let newStartDate = args.start.value || args.start;
-    // if (newStartDate.indexOf('000Z') === -1) {
-    //   newStartDate = newStartDate + '.000Z';
-    // }
-    // console.log("newStartDate ", newStartDate);
-    // newStartDate = new Date(newStartDate);
-    // const currentStartDate = new Date(this.config.startDate);
-    // console.log("currentStartDate ", currentStartDate);
-    // console.log("newStartDate.getDate() ", newStartDate.getDate());
-    // console.log("currentStartDate.getDate() ", currentStartDate.getDate());
-    // if (currentStartDate.getDate() < newStartDate.getDate()) {
-    //   event.preventDefault();
-    // } else {
-    this.tasksMoved = true;
-    args.task.box.backColor = 'rgba(230, 109, 245, 1)';
-    args.task.box.cssClass = 'movedItem';
-    // this.updateHappended();
-    // }
+    const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
+    const currentStartDate = new Date(this.config.startDate).getUTCDate();
+    if (newStartDate < currentStartDate) {
+      event.preventDefault();
+    } else {
+      this.tasksMoved = true;
+      args.task.updated = true;
+      args.task.box.backColor = 'rgba(230, 109, 245, 1)';
+      args.task.box.cssClass = 'movedItem';
+    }
   }
 
 }

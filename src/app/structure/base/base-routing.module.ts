@@ -30,6 +30,10 @@ const routes: Routes = [
                 path: 'load-status',
                 loadChildren: '../../pages/load-status/load-status.module#LoadStatusModule'
             },
+            {
+                path: 'CMU',
+                loadChildren: '../../pages/column-metadata/column-metadata.module#ColumnMetadataModule'
+            },
 
             // {
             // 	path: 'error/403',

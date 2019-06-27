@@ -14,25 +14,27 @@
                 <h6 class="d-inline-block"> P250_ERROR_RATE_BY_ZONE_FACT </h6>
             </div>
             <div class="mt-2">
+                <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+                </ngx-loading>
                 <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Sr. No.</th>
                             <th>Version</th>
                             <th>Status</th>
-                            <th>Date Time</th>
+                            <th>Start Date Time</th>
+                            <th>Updated Date Time</th>
                             <th>Action</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-version let-i="rowIndex">
                         <tr>
-                            <td>{{i + 1}}</td>
-                            <td>{{version.version}}</td>
-                            <td>{{version.status}}</td>
-                            <td>{{version.date | date: 'short' }}</td>
+                            <td>{{version.METADATA_VERSION}}</td>
+                            <td>{{version.STATUS}}</td>
+                            <td>{{version.START_DATE | date: 'short' }}</td>
+                            <td>{{version.UPDATE_DATE | date: 'short' }}</td>
                             <td>
-                                <button (click)="viewData(version.version)" class="btn btn-primary">View</button>
-                                <button (click)="show()" *ngIf="version.version > 1" class="btn btn-info ml-2">Show Mapping</button>
+                                <button (click)="viewData(version.METADATA_VERSION)" class="btn btn-primary">View</button>
+                                <button (click)="show()" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button>
                             </td>
                         </tr>
                     </ng-template>
@@ -50,7 +52,6 @@
                     <p-table [paginator]="versionData.length >= 5 ? true: false" [rows]="5" [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Sr. No.</th>
                                 <th>TARGET COLUMN ID</th>
                                 <th>SRC COLUMN NAME</th>
                                 <th>SRC COLUMN TYPE</th>
@@ -64,7 +65,6 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-version let-i="rowIndex">
                             <tr>
-                                <td>{{i + 1}}</td>
                                 <td>{{version.TARGET_COLUMN_ID}}</td>
                                 <td>{{version.SRC_COLUMN_NAME}}</td>
                                 <td>{{version.SRC_COLUMN_TYPE}}</td>

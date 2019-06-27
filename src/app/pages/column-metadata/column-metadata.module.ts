@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -20,7 +21,8 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
     ColumnMetadataRouting,
     TableModule,
     NgxLoadingModule.forRoot({}),
-    DynamicDialogModule
+    DynamicDialogModule,
+    ScrollPanelModule
   ],
   entryComponents: [MetadataMappingComponent]
 })

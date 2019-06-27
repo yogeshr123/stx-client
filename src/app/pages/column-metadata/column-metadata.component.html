@@ -34,7 +34,7 @@
                             <td>{{version.UPDATE_DATE | date: 'short' }}</td>
                             <td>
                                 <button (click)="viewData(version.METADATA_VERSION)" class="btn btn-primary">View</button>
-                                <button (click)="show()" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button>
+                                <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button>
                             </td>
                         </tr>
                     </ng-template>

@@ -28,6 +28,7 @@ export class ColumnMetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.showMapping(2);
     this.state = this.columnMetadataService.getState();
     if (this.state.version) {
       this.viewData(this.state.version);
@@ -63,10 +64,11 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  show() {
+  showMapping(metadataVersion) {
     const ref = this.dialogService.open(MetadataMappingComponent, {
       header: 'Column Version Mapping',
-      width: '45%'
+      width: '45%',
+      data: metadataVersion
     });
   }
 

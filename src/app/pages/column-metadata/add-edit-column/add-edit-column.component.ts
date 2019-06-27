@@ -31,7 +31,7 @@ export class AddEditColumnComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.routeInfo.id = params.columnId;
-      this.routeInfo.versionId = params.versionId;
+      this.routeInfo.versionId = '1'; // params.versionId;
     });
     this.route.url.subscribe(params => {
       this.routeInfo.path = params[0].path;
@@ -82,16 +82,22 @@ export class AddEditColumnComponent implements OnInit {
     this.loader.formData = true;
     const request = {
       table_name: 'P250_ERROR_RATE_BY_ZONE_FACT',
-      columnVersion: this.routeInfo.id,
-      targetColumnId: this.routeInfo.versionId
+      columnVersion: this.routeInfo.versionId,
+      targetColumnId: this.routeInfo.id
     };
     this.columnMetadataService.getSingleColumn(request).subscribe((resp: any) => {
       this.columnData = resp.data[0];
-      const formControls = this.addEditColumnForm.controls;
-      for (const key in formControls) {
-        if (formControls.hasOwnProperty(key)) {
-          const element = formControls[key];
-          element.patchValue(this.columnData[key]);
+      if (this.columnData) {
+        const formControls = this.addEditColumnForm.controls;
+        for (const key in formControls) {
+          if (formControls.hasOwnProperty(key)) {
+            const element = formControls[key];
+            if (this.columnData[key] && Object.keys(this.columnData[key]).length > 0 && this.columnData[key].constructor === Object) {
+              element.patchValue(this.columnData[key].data[0]);
+            } else {
+              element.patchValue(this.columnData[key]);
+            }
+          }
         }
       }
       this.loader.formData = false;

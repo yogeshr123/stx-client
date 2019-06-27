@@ -14,7 +14,7 @@
                 <h6 class="d-inline-block"> P250_ERROR_RATE_BY_ZONE_FACT </h6>
             </div>
             <div class="mt-2">
-                <p-table [value]="versions" [tableStyle]="{'table-layout':'auto'}">
+                <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Sr. No.</th>
@@ -47,7 +47,7 @@
                     <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 2">Add Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
-                    <p-table [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
+                    <p-table [paginator]="versionData.length >= 5 ? true: false" [rows]="5" [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Sr. No.</th>

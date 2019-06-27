@@ -89,7 +89,7 @@ export class ColumnMetadataComponent implements OnInit {
 
   show() {
     const ref = this.dialogService.open(MetadataMappingComponent, {
-      header: 'Metadata Mapping',
+      header: 'Column Version Mapping',
       width: '45%'
     });
   }

@@ -9,14 +9,24 @@ import { Location } from '@angular/common';
 })
 export class AddEditColumnComponent implements OnInit {
 
-  routeAction: any;
+  routeInfo = {
+    path: '',
+    id: '',
+    isViewOnly: false
+  };
 
   constructor(
     private route: ActivatedRoute,
     private location: Location
   ) {
     this.route.params.subscribe(params => {
-      this.routeAction = params.id;
+      this.routeInfo.id = params.id;
+    });
+    this.route.url.subscribe(params => {
+      this.routeInfo.path = params[0].path;
+      if (this.routeInfo.path.indexOf('view') > -1) {
+        this.routeInfo.isViewOnly = true;
+      }
     });
   }
 

@@ -3,7 +3,7 @@
         <h5>
             <i class="fa fa-columns"></i>
             <span> Column Metadata Version</span>
-            <span> - {{routeAction ? 'Edit': 'Add'}} Column</span>
+            <span *ngIf="routeInfo"> - {{routeInfo.id ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Column</span>
         </h5>
         <div class="mt-4">
             Table Name:
@@ -19,7 +19,7 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="saveRecord('insert')">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>
@@ -32,6 +32,7 @@
             <div class="separator"></div>
 
             <div class="tile-body">
+                <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
                 <form class="form-horizontal row">
                     <div class="form-group col-6 row">
                         <label class="control-label col-md-4">SCHEMA_NAME</label>
@@ -198,7 +199,7 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="saveRecord('insert')">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>

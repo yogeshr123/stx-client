@@ -1,0 +1,35 @@
+.tiles {
+    text-align: center;
+    position: relative;
+}
+
+.tiles .tiles {
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    background-color: #a29898;
+    color: #fff;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    width: 70%;
+}
+
+.tiles .tiles.deleted {
+    background-color: #e05858;
+}
+
+.tiles .tiles.rename {
+    background-color: #65b765;
+}
+
+.striped-border {
+    background: url(/assets/images/arrow-image.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 115px;
+    height: 20px;
+    background-size: contain;
+    position: absolute;
+    top: 24%;
+    right: -96px;
+}

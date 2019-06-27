@@ -1,3 +1,213 @@
-<p>
-  add-edit-column works!
-</p>
+<div class="app-title">
+    <div>
+        <h5>
+            <i class="fa fa-columns"></i>
+            <span> Column Metadata Version</span>
+            <span> - {{routeAction ? 'Edit': 'Add'}} Column</span>
+        </h5>
+        <div class="mt-4">
+            Table Name:
+            <h6 class="d-inline-block"> P250_ERROR_RATE_BY_ZONE_FACT </h6>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="tile">
+
+            <div class="tile-title text-right">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                          <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                          Save
+                        </button>
+                        <a class="btn btn-secondary ml-2" (click)="goBack()">
+                            <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="separator"></div>
+
+            <div class="tile-body">
+                <form class="form-horizontal row">
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SCHEMA_NAME</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TABLE_NAME</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">METADATA_VERSION</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <hr class="col-12">
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC_COLUMN_NAME</label>
+                        <div class="col-md-8">
+                            <select class="form-control">
+                              <option value="MAPPED">MAPPED</option>
+                              <option value="DERIVED">DERIVED</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC_COLUMN_TYPE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC_DATA_TYPE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC_PRECISION</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC_SCALE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">INTERNAL_COLUMN</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">DERIVED_COLUMN_FORMULA</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">LOOKUP_TABLE_ALIAS</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">PREDEFINED_VALUE</label>
+                        <div class="col-md-8">
+                            <select class="form-control">
+                              <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
+                              <option value="INPUT_FILENAME">INPUT_FILENAME</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="col-12">
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_COLUMN_NAME</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_DATA_TYPE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_LENGTH</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_PRECISION</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_SCALE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_COLUMN_ID</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="number" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">TARGET_DEFAULT_VALUE</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <hr class="col-12">
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_PKEY_COLUMN</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_PARTITION_COLUMN</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_UPDATE_DATE_COLUMN</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_DATATYPE_CHANGED</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_RENAMED</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">IS_NEW</label>
+                        <div class="col-md-8">
+                            <input class="form-control" type="checkbox" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tile-footer">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-3">
+                        <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                          <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                          Save
+                        </button>
+                        <a class="btn btn-secondary ml-2" (click)="goBack()">
+                            <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

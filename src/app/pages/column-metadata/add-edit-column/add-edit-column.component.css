@@ -1,0 +1,9 @@
+.btn i.fa {
+    vertical-align: baseline;
+}
+
+input[type="checkbox"].form-control {
+    width: 20px;
+    float: left;
+    margin-left: 25px;
+}

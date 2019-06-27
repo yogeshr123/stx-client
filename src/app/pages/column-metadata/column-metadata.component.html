@@ -44,7 +44,7 @@
                 </ngx-loading>
                 <h6>
                     Version - {{selectedVersion}}
-                    <button class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 2">Add Column</button>
+                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 2">Add Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
@@ -83,7 +83,7 @@
                                 </td>
                                 <td style='white-space: nowrap'>
                                     <div>
-                                        <button title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
+                                        <button [routerLink]="[ './edit-column', version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil"></i>
                                       </button>
                                         <button title="view" class="btn btn-info btn-sm ml-1">

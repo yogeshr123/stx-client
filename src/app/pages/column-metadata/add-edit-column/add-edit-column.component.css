@@ -2,6 +2,10 @@
     vertical-align: baseline;
 }
 
+label {
+    word-break: break-all;
+}
+
 input[type="checkbox"].form-control {
     width: 20px;
     float: left;

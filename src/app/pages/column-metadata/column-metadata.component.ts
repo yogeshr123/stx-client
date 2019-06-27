@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/api';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
+import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 
 @Component({
   selector: 'app-column-metadata',
@@ -60,16 +61,24 @@ export class ColumnMetadataComponent implements OnInit {
   loader = {
     columns: true
   };
+  state: any;
 
   constructor(
+    private columnMetadataService: ColumnMetadataService,
     public dialogService: DialogService
   ) { }
 
   ngOnInit() {
     // this.show();
+    this.state = this.columnMetadataService.getState();
+    // console.log("this.state ", this.state);
+    if (this.state.version) {
+      this.viewData(this.state.version);
+    }
   }
 
   viewData(version) {
+    this.state.version = version;
     this.showMetaData = true;
     this.loader.columns = true;
     this.selectedVersion = version;

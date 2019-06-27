@@ -16,7 +16,8 @@ export class AddEditColumnComponent implements OnInit {
     path: '',
     id: '',
     versionId: '',
-    isViewOnly: false
+    isViewOnly: false,
+    isEditMode: false
   };
   loader = {
     formData: false
@@ -37,6 +38,9 @@ export class AddEditColumnComponent implements OnInit {
       this.routeInfo.path = params[0].path;
       if (this.routeInfo.path.indexOf('view') > -1) {
         this.routeInfo.isViewOnly = true;
+      }
+      if (this.routeInfo.path.indexOf('edit') > -1) {
+        this.routeInfo.isEditMode = true;
       }
     });
   }
@@ -88,6 +92,7 @@ export class AddEditColumnComponent implements OnInit {
     this.columnMetadataService.getSingleColumn(request).subscribe((resp: any) => {
       this.columnData = resp.data[0];
       if (this.columnData) {
+        console.log('this.columnData ', this.columnData);
         const formControls = this.addEditColumnForm.controls;
         for (const key in formControls) {
           if (formControls.hasOwnProperty(key)) {

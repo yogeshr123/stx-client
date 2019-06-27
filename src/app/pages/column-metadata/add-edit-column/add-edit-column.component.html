@@ -21,13 +21,13 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="onSubmit('insert')">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>
-                        <a class="btn btn-secondary ml-2" (click)="goBack()">
+                        <button class="btn btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -37,77 +37,77 @@
                 <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
                 <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal row">
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SCHEMA_NAME</label>
+                        <label class="control-label col-md-4">SCHEMA NAME</label>
                         <div class="col-md-8">
-                            <input formControlName="SCHEMA_NAME" class="form-control" type="text" />
+                            <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="SCHEMA_NAME" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TABLE_NAME</label>
+                        <label class="control-label col-md-4">TABLE NAME</label>
                         <div class="col-md-8">
-                            <input formControlName="TABLE_NAME" class="form-control" type="text" />
+                            <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="TABLE_NAME" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">METADATA_VERSION</label>
+                        <label class="control-label col-md-4">METADATA VERSION</label>
                         <div class="col-md-8">
-                            <input formControlName="METADATA_VERSION" class="form-control" type="text" />
+                            <input disabled formControlName="METADATA_VERSION" class="form-control" type="text" />
                         </div>
                     </div>
                     <hr class="col-12">
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC_COLUMN_NAME</label>
+                        <label class="control-label col-md-4">SRC COLUMN NAME</label>
                         <div class="col-md-8">
-                            <select formControlName="SRC_COLUMN_NAME" class="form-control">
+                            <input formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group col-6 row">
+                        <label class="control-label col-md-4">SRC COLUMN TYPE</label>
+                        <div class="col-md-8">
+                            <select formControlName="SRC_COLUMN_TYPE" class="form-control">
                               <option value="MAPPED">MAPPED</option>
                               <option value="DERIVED">DERIVED</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC_COLUMN_TYPE</label>
-                        <div class="col-md-8">
-                            <input formControlName="SRC_COLUMN_TYPE" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC_DATA_TYPE</label>
+                        <label class="control-label col-md-4">SRC DATA TYPE</label>
                         <div class="col-md-8">
                             <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC_PRECISION</label>
+                        <label class="control-label col-md-4">SRC PRECISION</label>
                         <div class="col-md-8">
                             <input formControlName="SRC_PRECISION" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC_SCALE</label>
+                        <label class="control-label col-md-4">SRC SCALE</label>
                         <div class="col-md-8">
                             <input formControlName="SRC_SCALE" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">INTERNAL_COLUMN</label>
+                        <label class="control-label col-md-4">INTERNAL COLUMN</label>
                         <div class="col-md-8">
                             <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">DERIVED_COLUMN_FORMULA</label>
+                        <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
                         <div class="col-md-8">
                             <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">LOOKUP_TABLE_ALIAS</label>
+                        <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
                         <div class="col-md-8">
                             <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">PREDEFINED_VALUE</label>
+                        <label class="control-label col-md-4">PREDEFINED VALUE</label>
                         <div class="col-md-8">
                             <select formControlName="PREDEFINED_VALUE" class="form-control">
                               <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
@@ -117,80 +117,80 @@
                     </div>
                     <hr class="col-12">
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_COLUMN_NAME</label>
+                        <label class="control-label col-md-4">TARGET COLUMN NAME</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_DATA_TYPE</label>
+                        <label class="control-label col-md-4">TARGET DATA TYPE</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_DATA_TYPE" class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_LENGTH</label>
+                        <label class="control-label col-md-4">TARGET LENGTH</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_LENGTH" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_PRECISION</label>
+                        <label class="control-label col-md-4">TARGET PRECISION</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_PRECISION" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_SCALE</label>
+                        <label class="control-label col-md-4">TARGET SCALE</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_SCALE" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_COLUMN_ID</label>
+                        <label class="control-label col-md-4">TARGET COLUMN ID</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_COLUMN_ID" class="form-control" type="number" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET_DEFAULT_VALUE</label>
+                        <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
                         <div class="col-md-8">
                             <input formControlName="TARGET_DEFAULT_VALUE" class="form-control" type="text" />
                         </div>
                     </div>
                     <hr class="col-12">
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_PKEY_COLUMN</label>
+                        <label class="control-label col-md-4">IS PKEY COLUMN</label>
                         <div class="col-md-8">
                             <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_PARTITION_COLUMN</label>
+                        <label class="control-label col-md-4">PARTITION COLUMN</label>
                         <div class="col-md-8">
                             <input formControlName="IS_PARTITION_COLUMN" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_UPDATE_DATE_COLUMN</label>
+                        <label class="control-label col-md-4">UPDATE DATE COLUMN</label>
                         <div class="col-md-8">
                             <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_DATATYPE_CHANGED</label>
+                        <label class="control-label col-md-4">DATATYPE CHANGED</label>
                         <div class="col-md-8">
                             <input formControlName="IS_DATATYPE_CHANGED" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_RENAMED</label>
+                        <label class="control-label col-md-4">RENAMED</label>
                         <div class="col-md-8">
                             <input formControlName="IS_RENAMED" class="form-control" type="checkbox" />
                         </div>
                     </div>
                     <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS_NEW</label>
+                        <label class="control-label col-md-4">NEW</label>
                         <div class="col-md-8">
                             <input formControlName="IS_NEW" class="form-control" type="checkbox" />
                         </div>
@@ -201,12 +201,14 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="saveRecord('insert')">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="onSubmit()">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>
-                        <a class="btn btn-secondary ml-2" (click)="goBack()">
-                            <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                        <button class="btn btn-secondary ml-2" (click)="goBack()">
+                            <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>

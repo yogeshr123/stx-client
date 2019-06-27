@@ -83,10 +83,10 @@
                                 </td>
                                 <td style='white-space: nowrap'>
                                     <div>
-                                        <button [routerLink]="[ './edit-column', version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
+                                        <button [routerLink]="[ './edit-column', selectedVersion,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil"></i>
                                       </button>
-                                        <button [routerLink]="[ './view-column']" title="view" class="btn btn-info btn-sm ml-1">
+                                        <button [routerLink]="[ './view-column/', selectedVersion,version.TARGET_COLUMN_ID]" title="view" class="btn btn-info btn-sm ml-1">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                       </button>
                                     </div>

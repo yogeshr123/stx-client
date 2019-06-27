@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
 import { NgxLoadingModule } from 'ngx-loading';
@@ -13,6 +14,8 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
 @NgModule({
   declarations: [ColumnMetadataComponent, MetadataMappingComponent, AddEditColumnComponent],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     ColumnMetadataRouting,
     TableModule,

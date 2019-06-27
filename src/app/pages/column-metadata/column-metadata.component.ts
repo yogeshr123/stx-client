@@ -13,14 +13,12 @@ export class ColumnMetadataComponent implements OnInit {
 
   versions = [
     {
-      no: 1,
-      version: 1,
+      version: 2,
       date: '2019-05-14 21:33:06',
       status: 'NEW'
     },
     {
-      no: 2,
-      version: 2,
+      version: 1,
       date: '2019-05-17 12:33:06',
       status: 'VALIDATED'
     }
@@ -29,7 +27,6 @@ export class ColumnMetadataComponent implements OnInit {
   selectedVersion = 1;
   versionData = [
     {
-      no: 1,
       TARGET_COLUMN_ID: '2',
       SRC_COLUMN_NAME: 'avg_itrtn_per_cword',
       SRC_COLUMN_TYPE: 'MAPPED',
@@ -40,7 +37,6 @@ export class ColumnMetadataComponent implements OnInit {
       IS_UPDATE_DATE_COLUMN: 0
     },
     {
-      no: 2,
       TARGET_COLUMN_ID: '5',
       SRC_COLUMN_NAME: 'birth_date',
       SRC_COLUMN_TYPE: 'MAPPED',
@@ -51,7 +47,6 @@ export class ColumnMetadataComponent implements OnInit {
       IS_UPDATE_DATE_COLUMN: 0
     },
     {
-      no: 3,
       TARGET_COLUMN_ID: '17',
       SRC_COLUMN_NAME: 'bits_in_error_cnt',
       SRC_COLUMN_TYPE: 'MAPPED',

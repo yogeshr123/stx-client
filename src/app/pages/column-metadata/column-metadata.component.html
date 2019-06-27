@@ -26,13 +26,13 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-version let-i="rowIndex">
                         <tr>
-                            <td>{{version.no}}</td>
+                            <td>{{i + 1}}</td>
                             <td>{{version.version}}</td>
                             <td>{{version.status}}</td>
                             <td>{{version.date | date: 'short' }}</td>
                             <td>
-                                <button (click)="viewData(version.no)" class="btn btn-primary">View</button>
-                                <button (click)="show()" *ngIf="i > 0" class="btn btn-info ml-2">Show Mapping</button>
+                                <button (click)="viewData(version.version)" class="btn btn-primary">View</button>
+                                <button (click)="show()" *ngIf="version.version > 1" class="btn btn-info ml-2">Show Mapping</button>
                             </td>
                         </tr>
                     </ng-template>
@@ -44,7 +44,7 @@
                 </ngx-loading>
                 <h6>
                     Version - {{selectedVersion}}
-                    <button class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 1">Add Column</button>
+                    <button class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 2">Add Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
@@ -59,26 +59,34 @@
                                 <th>TARGET DATA TYPE</th>
                                 <th>PRIMARY KEY</th>
                                 <th>DATE UPDATED</th>
-                                <th class="action">Action</th>
+                                <th>Action</th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-version>
+                        <ng-template pTemplate="body" let-version let-i="rowIndex">
                             <tr>
-                                <td>{{version.no}}</td>
+                                <td>{{i + 1}}</td>
                                 <td>{{version.TARGET_COLUMN_ID}}</td>
                                 <td>{{version.SRC_COLUMN_NAME}}</td>
                                 <td>{{version.SRC_COLUMN_TYPE}}</td>
                                 <td>{{version.SRC_DATA_TYPE}}</td>
                                 <td>{{version.TARGET_COLUMN_NAME}}</td>
                                 <td>{{version.TARGET_DATA_TYPE}}</td>
-                                <td>{{version.IS_PKEY_COLUMN}}</td>
-                                <td>{{version.IS_UPDATE_DATE_COLUMN}}</td>
-                                <td class="action">
+                                <td>
+                                    <span>
+                                        {{version.IS_PKEY_COLUMN ? 'True': 'False'}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        {{version.IS_UPDATE_DATE_COLUMN ? 'True': 'False'}}
+                                    </span>
+                                </td>
+                                <td style='white-space: nowrap'>
                                     <div>
-                                        <button *ngIf="selectedVersion === 1" class="btn btn-primary btn-sm">
+                                        <button title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil"></i>
                                       </button>
-                                        <button class="btn btn-info btn-sm ml-1">
+                                        <button title="view" class="btn btn-info btn-sm ml-1">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                       </button>
                                     </div>

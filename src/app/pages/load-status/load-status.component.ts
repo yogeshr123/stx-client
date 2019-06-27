@@ -105,8 +105,9 @@ export class LoadStatusComponent implements OnInit {
           break;
       }
       item.start = item.LOAD_START_DATE;
-      item.complete = 100;
+      item.complete = 25;
       item.end = item.LOAD_END_DATE;
+      item.type = 'Task';
       item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}.${item.ENV_NAME}`;
       item.id = item.DAG_RUN_ID;
       item.box = {

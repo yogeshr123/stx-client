@@ -32,7 +32,7 @@
                             <td>{{version.date | date: 'short' }}</td>
                             <td>
                                 <button (click)="viewData(version.no)" class="btn btn-primary">View</button>
-                                <button *ngIf="i > 0" class="btn btn-info ml-2">Show Mapping</button>
+                                <button (click)="show()" *ngIf="i > 0" class="btn btn-info ml-2">Show Mapping</button>
                             </td>
                         </tr>
                     </ng-template>

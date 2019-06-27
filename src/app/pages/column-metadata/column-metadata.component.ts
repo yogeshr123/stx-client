@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService } from 'primeng/api';
+
+import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 
 @Component({
   selector: 'app-column-metadata',
   templateUrl: './column-metadata.component.html',
-  styleUrls: ['./column-metadata.component.css']
+  styleUrls: ['./column-metadata.component.css'],
+  providers: [DialogService]
 })
 export class ColumnMetadataComponent implements OnInit {
 
@@ -62,9 +66,12 @@ export class ColumnMetadataComponent implements OnInit {
     columns: true
   };
 
-  constructor() { }
+  constructor(
+    public dialogService: DialogService
+  ) { }
 
   ngOnInit() {
+    // this.show();
   }
 
   viewData(version) {
@@ -74,6 +81,13 @@ export class ColumnMetadataComponent implements OnInit {
     setTimeout(() => {
       this.loader.columns = false;
     }, 1000);
+  }
+
+  show() {
+    const ref = this.dialogService.open(MetadataMappingComponent, {
+      header: 'Metadata Mapping',
+      width: '45%'
+    });
   }
 
 }

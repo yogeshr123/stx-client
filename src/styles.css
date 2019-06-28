@@ -46,6 +46,25 @@ input[type="submit"].disabled {
 /* MASTER STYLING END */
 
 
+/* FOR CMV START */
+
+.ui-accordion .ui-accordion-header a {
+    background-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.ui-accordion .ui-accordion-header a .ui-accordion-toggle-icon {
+    color: #fff !important;
+}
+
+.ui-accordion .ui-accordion-header.ui-state-active a {
+    background-color: #009688 !important;
+}
+
+
+/* FOR CMV END #0d1214 #222d32 #6c757d*/
+
+
 /* FOR GANTT START */
 
 .gantt_default_main {
@@ -183,13 +202,15 @@ app-load-status .ui-autocomplete input {
 .globalSearch button {
     border-radius: 0;
 }
+
 .separator {
     height: 1px;
     width: 100%;
     margin: 10px 0;
     background-color: #ddd;
 }
-.separator-vertical{
+
+.separator-vertical {
     width: 2px;
     background-color: #ddd;
     margin: -8px 15px;

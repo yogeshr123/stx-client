@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { AccordionModule } from 'primeng/accordion';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -22,7 +23,8 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
     TableModule,
     NgxLoadingModule.forRoot({}),
     DynamicDialogModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    AccordionModule
   ],
   entryComponents: [MetadataMappingComponent]
 })

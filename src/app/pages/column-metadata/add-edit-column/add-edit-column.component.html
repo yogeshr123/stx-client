@@ -31,171 +31,190 @@
                     </div>
                 </div>
             </div>
-            <div class="separator"></div>
 
             <div class="tile-body">
                 <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
                 <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal row">
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SCHEMA NAME</label>
-                        <div class="col-md-8">
-                            <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="SCHEMA_NAME" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TABLE NAME</label>
-                        <div class="col-md-8">
-                            <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="TABLE_NAME" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">METADATA VERSION</label>
-                        <div class="col-md-8">
-                            <input disabled formControlName="METADATA_VERSION" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <hr class="col-12">
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC COLUMN NAME</label>
-                        <div class="col-md-8">
-                            <input formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC COLUMN TYPE</label>
-                        <div class="col-md-8">
-                            <select formControlName="SRC_COLUMN_TYPE" class="form-control">
-                              <option value="MAPPED">MAPPED</option>
-                              <option value="DERIVED">DERIVED</option>
-                              <option value="PREDEFINED">PREDEFINED</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
-                        <label class="control-label col-md-4">SRC DATA TYPE</label>
-                        <div class="col-md-8">
-                            <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC PRECISION</label>
-                        <div class="col-md-8">
-                            <input formControlName="SRC_PRECISION" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">SRC SCALE</label>
-                        <div class="col-md-8">
-                            <input formControlName="SRC_SCALE" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
-                        <label class="control-label col-md-4">INTERNAL COLUMN</label>
-                        <div class="col-md-8">
-                            <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
-                        <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
-                        <div class="col-md-8">
-                            <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
-                        <div class="col-md-8">
-                            <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
-                        <label class="control-label col-md-4">PREDEFINED VALUE</label>
-                        <div class="col-md-8">
-                            <select formControlName="PREDEFINED_VALUE" class="form-control">
-                              <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
-                              <option value="INPUT_FILENAME">INPUT_FILENAME</option>
-                            </select>
-                        </div>
-                    </div>
-                    <hr class="col-12">
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET COLUMN NAME</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET DATA TYPE</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_DATA_TYPE" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET LENGTH</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_LENGTH" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET PRECISION</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_PRECISION" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET SCALE</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_SCALE" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET COLUMN ID</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_COLUMN_ID" class="form-control" type="number" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
-                        <div class="col-md-8">
-                            <input formControlName="TARGET_DEFAULT_VALUE" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <hr class="col-12">
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">IS PKEY COLUMN</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">PARTITION COLUMN</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_PARTITION_COLUMN" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">UPDATE DATE COLUMN</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">DATATYPE CHANGED</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_DATATYPE_CHANGED" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">RENAMED</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_RENAMED" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
-                    <div class="form-group col-6 row">
-                        <label class="control-label col-md-4">NEW</label>
-                        <div class="col-md-8">
-                            <input formControlName="IS_NEW" class="form-control" type="checkbox" />
-                        </div>
-                    </div>
+                    <p-accordion [multiple]="true" class="col-12">
+                        <p-accordionTab header="Basic Info" class="col-12" [selected]="true">
+                            <div class="row mt-2">
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SCHEMA NAME</label>
+                                    <div class="col-md-8">
+                                        <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="SCHEMA_NAME" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TABLE NAME</label>
+                                    <div class="col-md-8">
+                                        <input [attr.disabled]="routeInfo.isEditMode ? '' : null" formControlName="TABLE_NAME" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">METADATA VERSION</label>
+                                    <div class="col-md-8">
+                                        <input disabled formControlName="METADATA_VERSION" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+
+                        <!-- Source Info -->
+                        <p-accordionTab header="Source Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                            <div class="row mt-2">
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SRC COLUMN NAME</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SRC COLUMN TYPE</label>
+                                    <div class="col-md-8">
+                                        <select formControlName="SRC_COLUMN_TYPE" class="form-control">
+                                      <option value="MAPPED">MAPPED</option>
+                                      <option value="DERIVED">DERIVED</option>
+                                      <option value="PREDEFINED">PREDEFINED</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
+                                    <label class="control-label col-md-4">SRC DATA TYPE</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SRC PRECISION</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="SRC_PRECISION" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SRC SCALE</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="SRC_SCALE" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                    <label class="control-label col-md-4">INTERNAL COLUMN</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
+                                    <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                    <label class="control-label col-md-4">PREDEFINED VALUE</label>
+                                    <div class="col-md-8">
+                                        <select formControlName="PREDEFINED_VALUE" class="form-control">
+                                      <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
+                                      <option value="INPUT_FILENAME">INPUT_FILENAME</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <!-- TARGET Info-->
+                        <p-accordionTab header="Target Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                            <div class="row mt-2">
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET COLUMN NAME</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET DATA TYPE</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_DATA_TYPE" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET LENGTH</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_LENGTH" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET PRECISION</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_PRECISION" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET SCALE</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_SCALE" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET COLUMN ID</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_COLUMN_ID" class="form-control" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="TARGET_DEFAULT_VALUE" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <!-- Other Info  -->
+                        <p-accordionTab header="Other Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                            <div class="row mt-2">
+
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">IS PKEY COLUMN</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">PARTITION COLUMN</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_PARTITION_COLUMN" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">UPDATE DATE COLUMN</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">DATATYPE CHANGED</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_DATATYPE_CHANGED" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">RENAMED</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_RENAMED" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">NEW</label>
+                                    <div class="col-md-8">
+                                        <input formControlName="IS_NEW" class="form-control" type="checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
                 </form>
             </div>
 

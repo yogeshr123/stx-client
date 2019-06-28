@@ -28,7 +28,7 @@ export class ColumnMetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.showMapping(2);
+    // this.showMapping(2);
     this.state = this.columnMetadataService.getState();
     if (this.state.version) {
       this.viewData(this.state.version);

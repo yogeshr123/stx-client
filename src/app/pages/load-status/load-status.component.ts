@@ -15,7 +15,7 @@ export class LoadStatusComponent implements OnInit {
   config: any = {
     timeHeaders: [{ groupBy: 'Day', format: 'dddd, d MMMM yyyy' }, { groupBy: 'Hour', format: 'H' }],
     scale: 'Hour',
-    startDate: '2019-06-19',
+    startDate: new Date(),
     cellWidth: 25,
     TaskResizing: 'Disabled',
     days: 2,
@@ -90,9 +90,13 @@ export class LoadStatusComponent implements OnInit {
   }
 
   setGanttValues() {
-    // console.log('item.LOAD_START_DATE ', this.taskData[1].LOAD_START_DATE, new Date(this.taskData[1].LOAD_START_DATE));
+    const today = new Date();
+    const year = today.getFullYear();
+    const date = today.getDate();
+    const month = today.getMonth() + 1;
+
     this.taskData.map(item => {
-      let barColor = '#bbb';
+      let barColor = '#009688';
       switch (item.STATUS) {
         case 'COMPLETED':
           barColor = 'green';
@@ -104,68 +108,63 @@ export class LoadStatusComponent implements OnInit {
           barColor = 'red';
           break;
       }
-      item.start = item.LOAD_START_DATE;
-      item.complete = 25;
-      item.end = item.LOAD_END_DATE;
+      console.log(this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME));
+      item.start = new Date(`${year}-${month}-${date} ${item.START_TIME}`);
+      item.complete = (item.T1_EXEC / item.EXEC_TIME) * 100;
+      item.end = new Date(`${year}-${month}-${date + 1} ${item.START_TIME}`);
       item.type = 'Task';
-      item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}.${item.ENV_NAME}`;
+      item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}`;
       item.id = item.DAG_RUN_ID;
       item.box = {
+        clickDisabled: false,
+        bubbleHtml: `<b>
+                        T1: ${
+          Math.round((item.T1_EXEC / item.EXEC_TIME) * 100)
+          }% and T2: ${Math.round((item.T2_EXEC / item.EXEC_TIME) * 100)}%
+                    </b>`,
         resizeDisabled: true,
-        html: `<b title="Status: ${item.STATUS}">${item.DAG_NAME}</b>`,
-        htmlRight: `<span class="statusCircle ${item.STATUS}" title="Status: ${item.STATUS}"></span> <span>Avg. Time: 3 hr 30 min</span>`,
-        toolTip: `Status: ${item.STATUS}`,
+        html: ` <b>${item.DAG_NAME}</b>`,
+        htmlRight: `
+                    <span
+                        class="statusCircle ${item.DAG_NAME}"
+                        title="T1: ${this.secondsToHMS(item.T1_EXEC)} and T2: ${this.secondsToHMS(item.T2_EXEC)}">
+                    </span>
+                          <span>Avg. Time: ${this.secondsToHMS(item.EXEC_TIME)}</span>`,
         barColor,
         contextMenu: new DayPilot.Menu({
           items: [
-            {
-              text: item.ETL_status === 'HOLD' ? `ETL: RESUME` : 'ETL: HOLD',
-              icon: 'icon',
-              onClick: args => {
-                args.item.text = args.item.text === 'ETL: HOLD' ? 'ETL: RESUME' : 'ETL: HOLD';
-                this.tasksMoved = true;
-                if (args.item.icon.indexOf('icon-green') > -1) {
-                  args.item.icon = 'icon';
-                } else {
-                  args.item.icon = 'icon icon-green';
-                }
-                args.source.data.ETL_status = args.item.text === 'ETL: HOLD' ? 'RESUME' : 'HOLD';
-                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-                args.source.data.updated = true;
-              }
-            },
-            {
-              text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
-              icon: 'icon',
-              onClick: args => {
-                args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
-                this.tasksMoved = true;
-                if (args.item.icon.indexOf('icon-blue') > -1) {
-                  args.item.icon = 'icon';
-                } else {
-                  args.item.icon = 'icon icon-blue';
-                }
-                args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
-                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-                args.source.data.updated = true;
-              }
-            },
-            {
-              text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
-              icon: 'icon',
-              onClick: args => {
-                args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
-                this.tasksMoved = true;
-                if (args.item.icon.indexOf('icon-yellow') > -1) {
-                  args.item.icon = 'icon';
-                } else {
-                  args.item.icon = 'icon icon-yellow';
-                }
-                args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
-                args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-                args.source.data.updated = true;
-              }
-            }
+            // {
+            //   text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
+            //   icon: 'icon',
+            //   onClick: args => {
+            //     args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
+            //     this.tasksMoved = true;
+            //     if (args.item.icon.indexOf('icon-blue') > -1) {
+            //       args.item.icon = 'icon';
+            //     } else {
+            //       args.item.icon = 'icon icon-blue';
+            //     }
+            //     args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
+            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+            //     args.source.data.updated = true;
+            //   }
+            // },
+            // {
+            //   text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
+            //   icon: 'icon',
+            //   onClick: args => {
+            //     args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
+            //     this.tasksMoved = true;
+            //     if (args.item.icon.indexOf('icon-yellow') > -1) {
+            //       args.item.icon = 'icon';
+            //     } else {
+            //       args.item.icon = 'icon icon-yellow';
+            //     }
+            //     args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
+            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
+            //     args.source.data.updated = true;
+            //   }
+            // }
           ]
         })
       };
@@ -263,6 +262,29 @@ export class LoadStatusComponent implements OnInit {
     return result;
   }
 
+  hmsToSeconds(str) {
+    const p = str.split(':');
+    let s = 0;
+    let m = 1;
+
+    while (p.length > 0) {
+      s += m * parseInt(p.pop(), 10);
+      m *= 60;
+    }
+    return s;
+  }
+
+  secondsToHMS(inputSeconds) {
+    const secondsNumber = parseInt(inputSeconds, 10);
+    let hours: any = Math.floor(secondsNumber / 3600);
+    let minutes: any = Math.floor((secondsNumber - (hours * 3600)) / 60);
+    let seconds: any = secondsNumber - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours = '0' + hours; }
+    if (minutes < 10) { minutes = '0' + minutes; }
+    if (seconds < 10) { seconds = '0' + seconds; }
+    return hours + ':' + minutes + ':' + seconds;
+  }
 
   search(event, arrayToFilter) {
     this.autocomplete[arrayToFilter] = this.filter(event.query, arrayToFilter);

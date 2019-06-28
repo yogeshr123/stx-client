@@ -127,6 +127,10 @@ daypilot-gantt .gantt_default_event_hover:before {
     z-index: 1;
 }
 
+daypilot-gantt .gantt_default_event_bar_inner {
+    height: 24px;
+}
+
 daypilot-gantt .gantt_default_event_hover:after {
     content: '';
     display: inline-block;
@@ -147,6 +151,10 @@ daypilot-gantt .gantt_default_scrollable {
 
 daypilot-gantt .gantt_default_corner {
     margin-bottom: 10px;
+}
+
+daypilot-gantt .gantt_default_rowmove_handle {
+    visibility: hidden !important;
 }
 
 

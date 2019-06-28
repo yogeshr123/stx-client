@@ -73,12 +73,12 @@
                                 <td>{{version.TARGET_DATA_TYPE}}</td>
                                 <td>
                                     <span>
-                                        {{version.IS_PKEY_COLUMN ? 'True': 'False'}}
+                                        {{version.IS_PKEY_COLUMN?.data[0] ? 'True': 'False'}}
                                     </span>
                                 </td>
                                 <td>
                                     <span>
-                                        {{version.IS_UPDATE_DATE_COLUMN ? 'True': 'False'}}
+                                        {{version.IS_UPDATE_DATE_COLUMN?.data[0] ? 'True': 'False'}}
                                     </span>
                                 </td>
                                 <td style='white-space: nowrap'>

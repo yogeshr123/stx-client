@@ -67,10 +67,11 @@
                             <select formControlName="SRC_COLUMN_TYPE" class="form-control">
                               <option value="MAPPED">MAPPED</option>
                               <option value="DERIVED">DERIVED</option>
+                              <option value="PREDEFINED">PREDEFINED</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-6 row">
+                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
                         <label class="control-label col-md-4">SRC DATA TYPE</label>
                         <div class="col-md-8">
                             <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
@@ -88,13 +89,13 @@
                             <input formControlName="SRC_SCALE" class="form-control" type="number" />
                         </div>
                     </div>
-                    <div class="form-group col-6 row">
+                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
                         <label class="control-label col-md-4">INTERNAL COLUMN</label>
                         <div class="col-md-8">
                             <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
                         </div>
                     </div>
-                    <div class="form-group col-6 row">
+                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
                         <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
                         <div class="col-md-8">
                             <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text" />
@@ -106,7 +107,7 @@
                             <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
                         </div>
                     </div>
-                    <div class="form-group col-6 row">
+                    <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
                         <label class="control-label col-md-4">PREDEFINED VALUE</label>
                         <div class="col-md-8">
                             <select formControlName="PREDEFINED_VALUE" class="form-control">

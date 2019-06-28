@@ -62,7 +62,7 @@ export class AddEditColumnComponent implements OnInit {
       SRC_DATA_TYPE: '',
       SRC_PRECISION: '',
       SRC_SCALE: '',
-      INTERNAL_COLUMN: '',
+      INTERNAL_COLUMN: 0,
       DERIVED_COLUMN_FORMULA: '',
       LOOKUP_TABLE_ALIAS: '',
       PREDEFINED_VALUE: '',
@@ -73,12 +73,12 @@ export class AddEditColumnComponent implements OnInit {
       TARGET_SCALE: '',
       TARGET_COLUMN_ID: '',
       TARGET_DEFAULT_VALUE: '',
-      IS_PKEY_COLUMN: '',
-      IS_PARTITION_COLUMN: '',
-      IS_UPDATE_DATE_COLUMN: '',
-      IS_DATATYPE_CHANGED: '',
-      IS_RENAMED: '',
-      IS_NEW: ''
+      IS_PKEY_COLUMN: 0,
+      IS_PARTITION_COLUMN: 0,
+      IS_UPDATE_DATE_COLUMN: 0,
+      IS_DATATYPE_CHANGED: 0,
+      IS_RENAMED: 0,
+      IS_NEW: 0
     });
   }
 

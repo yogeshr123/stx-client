@@ -60,7 +60,7 @@
                         </p-accordionTab>
 
                         <!-- Source Info -->
-                        <p-accordionTab header="Source Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                        <p-accordionTab header="Source Info" class="col-12" [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">SRC COLUMN NAME</label>
@@ -126,7 +126,7 @@
                             </div>
                         </p-accordionTab>
                         <!-- TARGET Info-->
-                        <p-accordionTab header="Target Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                        <p-accordionTab header="Target Info" class="col-12" [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET COLUMN NAME</label>
@@ -173,7 +173,7 @@
                             </div>
                         </p-accordionTab>
                         <!-- Other Info  -->
-                        <p-accordionTab header="Other Info" class="col-12" [selected]="routeInfo.id ? false : true">
+                        <p-accordionTab header="Other Info" class="col-12" [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
                             <div class="row mt-2">
 
                                 <div class="form-group col-6 row">

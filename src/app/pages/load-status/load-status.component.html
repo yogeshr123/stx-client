@@ -28,14 +28,14 @@
                     <h5 class="col-12">Time Period</h5>
                     <div class="col-7">
                         <div class="btn-group btn-group-toggle">
-                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info" (click)="updateTimePeriod(7)">
-                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7"> 7 days
+                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 days
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info" (click)="updateTimePeriod(30)">
-                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="30"> 1 Month
+                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 Month
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info" (click)="updateTimePeriod(180)">
-                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="180"> 6 Months
+                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 Months
                             </label>
                         </div>
                     </div>

@@ -85,7 +85,6 @@ export class LoadStatusComponent implements OnInit {
         }
       }
       // if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
-      console.log("formValues ", formValues);
       this.taskData = this.getSearchResult(formValues);
       this.setGanttValues();
       // }
@@ -111,7 +110,7 @@ export class LoadStatusComponent implements OnInit {
           barColor = 'red';
           break;
       }
-      console.log(this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME));
+      // console.log(this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME));
       item.start = new Date(`${year}-${month}-${date} ${item.START_TIME}`);
       item.complete = (item.T1_EXEC / item.EXEC_TIME) * 100;
       item.end = new Date(`${year}-${month}-${date + 1} ${item.START_TIME}`);
@@ -265,6 +264,10 @@ export class LoadStatusComponent implements OnInit {
     return result;
   }
 
+  search(event, arrayToFilter) {
+    this.autocomplete[arrayToFilter] = this.filter(event.query, arrayToFilter);
+  }
+
   hmsToSeconds(str) {
     const p = str.split(':');
     let s = 0;
@@ -287,10 +290,6 @@ export class LoadStatusComponent implements OnInit {
     if (minutes < 10) { minutes = '0' + minutes; }
     if (seconds < 10) { seconds = '0' + seconds; }
     return hours + ':' + minutes + ':' + seconds;
-  }
-
-  search(event, arrayToFilter) {
-    this.autocomplete[arrayToFilter] = this.filter(event.query, arrayToFilter);
   }
 
 }

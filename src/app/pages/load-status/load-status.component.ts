@@ -101,8 +101,6 @@ export class LoadStatusComponent implements OnInit {
     const year = today.getFullYear();
     const date = today.getDate();
     const month = today.getMonth() + 1;
-
-    console.log("this.taskData ", this.taskData);
     this.taskData.map(item => {
       let barColor = '#009688';
       switch (item.STATUS) {

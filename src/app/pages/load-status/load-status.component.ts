@@ -41,7 +41,7 @@ export class LoadStatusComponent implements OnInit {
     TABLE_NAME: [],
     STATUS: []
   };
-  toogleButton = 7;
+  toogleButtonPeriod = 7;
 
   constructor(
     private messageService: MessageService,
@@ -71,6 +71,11 @@ export class LoadStatusComponent implements OnInit {
         });
       return !notMatchingField;
     });
+  }
+
+  updateTimePeriod(days) {
+    this.toogleButtonPeriod = days;
+    this.getTasks();
   }
 
   onSubmit(event?, isAutoComplete?) {
@@ -176,7 +181,7 @@ export class LoadStatusComponent implements OnInit {
 
   getTasks() {
     this.loader.tasks = true;
-    this.loadStatusService.getTasks().subscribe((data: any) => {
+    this.loadStatusService.getTasks(this.toogleButtonPeriod).subscribe((data: any) => {
       this.taskData = data.data;
       this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
@@ -207,7 +212,7 @@ export class LoadStatusComponent implements OnInit {
   discard() {
     this.getTasks();
     this.tasksMoved = false;
-    this.toogleButton = 7;
+    this.toogleButtonPeriod = 7;
   }
 
   save() {

@@ -18,8 +18,8 @@ export class LoadStatusService {
     ) {
     }
 
-    getTasks() {
-        const url = `${environment.baseUrl}table_load_status`;
+    getTasks(dayLimit = 7) {
+        const url = `${environment.baseUrl}table_load_status?dayLimit=${dayLimit}`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));

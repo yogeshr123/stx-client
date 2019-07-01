@@ -115,10 +115,18 @@ export class LoadStatusComponent implements OnInit {
           barColor = 'red';
           break;
       }
-      // console.log(this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME));
+      let calculatedEndTime: any = `${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`;
+      let hours: any = calculatedEndTime.substr(0, 2);
+      const rest = calculatedEndTime.substr(2);
+      if (hours > 24) {
+        hours = hours - 24;
+        calculatedEndTime = new Date(`${year}-${month}-${date + 1} ${hours}${rest}`);
+      } else {
+        calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`);
+      }
       item.start = new Date(`${year}-${month}-${date} ${item.START_TIME}`);
       item.complete = (item.T1_EXEC / item.EXEC_TIME) * 100;
-      item.end = new Date(`${year}-${month}-${date + 1} ${item.START_TIME}`);
+      item.end = calculatedEndTime;
       item.type = 'Task';
       item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}`;
       item.id = item.DAG_RUN_ID;
@@ -127,7 +135,7 @@ export class LoadStatusComponent implements OnInit {
         bubbleHtml: `<b>
                         T1: ${
           Math.round((item.T1_EXEC / item.EXEC_TIME) * 100)
-          }% and T2: ${Math.round((item.T2_EXEC / item.EXEC_TIME) * 100)}%
+          }% and T2: ${Math.round((item.T2_EXEC / item.EXEC_TIME) * 100)}% | ${item.DAG_NAME}
                     </b>`,
         resizeDisabled: true,
         html: ` <b>${item.DAG_NAME}</b>`,

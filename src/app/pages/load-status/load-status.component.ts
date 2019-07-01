@@ -73,19 +73,22 @@ export class LoadStatusComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    const formValues = this.searchForm.value;
-    delete formValues.AVG_TIME;
-    for (const propName in formValues) {
-      if (!formValues[propName]) {
-        delete formValues[propName];
-      } else {
-        formValues[propName] = formValues[propName].toUpperCase();
+  onSubmit(event?, isAutoComplete?) {
+    if (event.keyCode === 8 && !event.target.value || isAutoComplete) {
+      const formValues = this.searchForm.value;
+      delete formValues.AVG_TIME;
+      for (const propName in formValues) {
+        if (!formValues[propName]) {
+          delete formValues[propName];
+        } else {
+          formValues[propName] = formValues[propName].toUpperCase();
+        }
       }
-    }
-    if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
+      // if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
+      console.log("formValues ", formValues);
       this.taskData = this.getSearchResult(formValues);
       this.setGanttValues();
+      // }
     }
   }
 
@@ -253,7 +256,7 @@ export class LoadStatusComponent implements OnInit {
   filter(query, arrayToFilter) {
     const result = [];
     this.taskDataBackUp.filter(item => {
-      if (item[arrayToFilter].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+      if (item[arrayToFilter] && item[arrayToFilter].toLowerCase().indexOf(query.toLowerCase()) === 0) {
         if (result.indexOf(item[arrayToFilter]) === -1) {
           result.push(item[arrayToFilter]);
         }

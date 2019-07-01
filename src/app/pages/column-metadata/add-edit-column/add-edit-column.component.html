@@ -34,7 +34,7 @@
 
             <div class="tile-body">
                 <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
-                <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal row">
+                <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit('')" class="form-horizontal row">
                     <p-accordion [multiple]="true" class="col-12">
                         <p-accordionTab header="Basic Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
@@ -221,7 +221,7 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="onSubmit()">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly}" class="btn btn-primary" type="button" (click)="onSubmit('')">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>

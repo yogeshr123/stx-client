@@ -255,7 +255,7 @@ export class LoadStatusComponent implements OnInit {
     const args = event.e.data;
     const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
     const currentStartDate = new Date(this.config.startDate).getUTCDate();
-    if (newStartDate < currentStartDate) {
+    if (newStartDate < currentStartDate || currentStartDate === 1 && [30, 31, 28].indexOf(newStartDate) > -1) {
       event.preventDefault();
     } else {
       this.tasksMoved = true;

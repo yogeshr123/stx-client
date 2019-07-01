@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HeaderComponent } from '../header/Header.component';
+import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { BaseComponent } from './base.component';
 import { BaseRoutingModule } from './base-routing.module';

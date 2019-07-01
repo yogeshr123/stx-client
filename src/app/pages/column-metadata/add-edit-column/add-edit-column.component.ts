@@ -111,6 +111,8 @@ export class AddEditColumnComponent implements OnInit {
     });
   }
 
+  onSubmit(event) { }
+
   goBack() {
     this.location.back();
   }

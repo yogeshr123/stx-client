@@ -14,7 +14,7 @@
                 <h6 class="d-inline-block"> P250_ERROR_RATE_BY_ZONE_FACT </h6>
             </div>
             <div class="mt-2">
-                <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+                <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
                 </ngx-loading>
                 <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
                     <ng-template pTemplate="header">

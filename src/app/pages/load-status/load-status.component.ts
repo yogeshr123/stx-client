@@ -75,7 +75,11 @@ export class LoadStatusComponent implements OnInit {
 
   updateTimePeriod(days) {
     this.toogleButtonPeriod = days;
-    this.getTasks();
+    // FIXME: Below Timeout fixes the state update issue for gantt when time period toggled
+    // Plz revisit and write better solution
+    setTimeout(() => {
+      this.getTasks();
+    }, 100);
   }
 
   onSubmit(event?, isAutoComplete?) {

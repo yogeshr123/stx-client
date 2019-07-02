@@ -12,17 +12,17 @@
     <div class="col-12">
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
-                <div class="col-4 row">
+                <div class="col-6 row">
                     <h5 class="col-12">Filter by</h5>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name" [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p-autoComplete formControlName="TABLE_NAME" placeholder="Table Name" [suggestions]="autocomplete.TABLE_NAME" (completeMethod)="search($event, 'TABLE_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
-                    <!-- <div class="col-4">
-                        <p-autoComplete formControlName="STATUS" placeholder="Status" [suggestions]="autocomplete.STATUS" (completeMethod)="search($event, 'STATUS')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
-                    </div> -->
+                    <div class="col-4">
+                        <p-autoComplete formControlName="DAG_NAME" placeholder="DAG NAME" [suggestions]="autocomplete.DAG_NAME" (completeMethod)="search($event, 'DAG_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
+                    </div>
                 </div>
                 <div class="col-6 row">
                     <h5 class="col-12">Time Period</h5>

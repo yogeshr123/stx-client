@@ -12,30 +12,30 @@
     <div class="col-12">
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
-                <div class="col-4 row">
+                <div class="col-6 row">
                     <h5 class="col-12">Filter by</h5>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name" [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p-autoComplete formControlName="TABLE_NAME" placeholder="Table Name" [suggestions]="autocomplete.TABLE_NAME" (completeMethod)="search($event, 'TABLE_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
-                    <!-- <div class="col-4">
-                        <p-autoComplete formControlName="STATUS" placeholder="Status" [suggestions]="autocomplete.STATUS" (completeMethod)="search($event, 'STATUS')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
-                    </div> -->
+                    <div class="col-4">
+                        <p-autoComplete formControlName="DAG_NAME" placeholder="DAG NAME" [suggestions]="autocomplete.DAG_NAME" (completeMethod)="search($event, 'DAG_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
+                    </div>
                 </div>
                 <div class="col-6 row">
                     <h5 class="col-12">Time Period</h5>
                     <div class="col-7">
                         <div class="btn-group btn-group-toggle">
-                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info" (click)="updateTimePeriod(7)">
-                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7"> 7 days
+                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="7days" type="radio" name="AVG_TIME" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 days
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info" (click)="updateTimePeriod(30)">
-                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="30"> 1 Month
+                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="1month" type="radio" name="AVG_TIME" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 Month
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info" (click)="updateTimePeriod(180)">
-                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="180"> 6 Months
+                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info">
+                                <input formControlName="AVG_TIME" id="6months" type="radio" name="AVG_TIME" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 Months
                             </label>
                         </div>
                     </div>

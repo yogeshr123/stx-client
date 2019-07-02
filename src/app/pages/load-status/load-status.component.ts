@@ -39,7 +39,7 @@ export class LoadStatusComponent implements OnInit {
   autocomplete = {
     SCHEMA_NAME: [],
     TABLE_NAME: [],
-    STATUS: []
+    DAG_NAME: []
   };
   toogleButtonPeriod = 7;
 
@@ -58,7 +58,7 @@ export class LoadStatusComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       SCHEMA_NAME: '',
       TABLE_NAME: '',
-      STATUS: '',
+      DAG_NAME: '',
       AVG_TIME: 7
     });
   }
@@ -75,11 +75,7 @@ export class LoadStatusComponent implements OnInit {
 
   updateTimePeriod(days) {
     this.toogleButtonPeriod = days;
-    // FIXME: Below Timeout fixes the state update issue for gantt when time period toggled
-    // Plz revisit and write better solution
-    setTimeout(() => {
-      this.getTasks();
-    }, 100);
+    this.getTasks();
   }
 
   onSubmit(event?, isAutoComplete?) {
@@ -90,7 +86,9 @@ export class LoadStatusComponent implements OnInit {
         if (!formValues[propName]) {
           delete formValues[propName];
         } else {
-          formValues[propName] = formValues[propName].toUpperCase();
+          if (propName !== 'DAG_NAME') {
+            formValues[propName] = formValues[propName].toUpperCase();
+          }
         }
       }
       // if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {

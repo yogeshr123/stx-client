@@ -9,48 +9,311 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
-      <div class="tile-title text-right">
-        <div class="row">
-          <div class="col-md-12">
-            <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+      <form [formGroup]="addLoadControlForm" (ngSubmit)="onSubmit()">
+        <div class="tile-title text-right">
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-primary">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+              <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="separator"></div>
-      <div class="tile-body">
-        <form class="form-horizontal">
-          <!-- <div *ngIf="newRecord"> -->
-            <div *ngFor="let col of loadControl">
-              <div *ngIf="col.insert" class="form-group row">
-                <label class="control-label col-md-3">{{col.displayName}}</label>
-                <div class="col-md-8">
-                  <input class="form-control" *ngIf="!col.valueSet && col.dataType !== 'TIMESTAMP'"
-                    [type]="col.dataType == 'VARCHAR' ? 'text': 'number'" />
-                  <p-calendar *ngIf="!col.valueSet && col.dataType == 'TIMESTAMP'" showTime="true"
-                    hourFormat="24"></p-calendar>
-                  <select *ngIf="col.valueSet" class="form-control">
-                    <option *ngFor="let value of col.valueSetNew;" [ngValue]="value">{{value}}</option>
-                  </select>
+        <div class="separator"></div>
+        <div class="tile-body">
+          <p-accordion>
+            <p-accordionTab header="General" [selected]="true">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">SCHEMA NAME</label>
+                    <input class="form-control" type="text" formControlName="SCHEMA_NAME" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.SCHEMA_NAME.errors }"
+                    />
+                    <div *ngIf="submitted && f.SCHEMA_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">TABLE NAME</label>
+                    <input class="form-control" type="text" formControlName="TABLE_NAME" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.TABLE_NAME.errors }"
+                    />
+                    <div *ngIf="submitted && f.TABLE_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ENV NAME</label>
+                    <select formControlName="ENV_NAME" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ENV_NAME.errors }">
+                      <option value="PRD">PRD</option>
+                      <option value="DEV">DEV</option>
+                      <option value="QA">QA</option>
+                    </select>
+                    <div *ngIf="submitted && f.ENV_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.ENV_NAME.errors.required">ENV NAME is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="separator"></div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">TARGET SCHEMA NAME</label>
+                    <input class="form-control" type="text" formControlName="TARGET_SCHEMA_NAME" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.TARGET_SCHEMA_NAME.errors }">
+                    <div *ngIf="submitted && f.TARGET_SCHEMA_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.TARGET_SCHEMA_NAME.errors.required">TARGET SCHEMA NAME is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">TARGET TABLE NAME</label>
+                    <input class="form-control" type="text" formControlName="TARGET_TABLE_NAME" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.TARGET_TABLE_NAME.errors }">
+                    <div *ngIf="submitted && f.TARGET_TABLE_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.TARGET_TABLE_NAME.errors.required">TARGET TABLE NAME is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">EMAIL ALERTS</label>
+                    <select formControlName="EMAIL_ALERTS" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ALERTS.errors }">
+                      <option value="Y">Yes</option>
+                      <option value="N">No</option>
+                    </select>
+                    <div *ngIf="submitted && f.EMAIL_ALERTS.errors" class="invalid-feedback">
+                      <div *ngIf="f.EMAIL_ALERTS.errors.required">EMAIL ALERT is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">TABLE SOURCE</label>
+                    <select formControlName="TABLE_SOURCE" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TABLE_SOURCE.errors }">
+                      <option value="RAW_FACTORY">RAW_FACTORY</option>
+                      <option value="ORACLE">ORACLE</option>
+                    </select>
+                    <div *ngIf="submitted && f.TABLE_SOURCE.errors" class="invalid-feedback">
+                      <div *ngIf="f.TABLE_SOURCE.errors.required">TABLE SOURCE is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">LOAD_STRATEGY</label>
+                    <select formControlName="LOAD_STRATEGY" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
+                      <option value="INSERT">INSERT</option>
+                      <option value="UPDATE">UPDATE</option>
+                      <option value="REFRESH">REFRESH</option>
+                      <option value="SAMPLED">SAMPLED</option>
+                    </select>
+                    <div *ngIf="submitted && f.LOAD_STRATEGY.errors" class="invalid-feedback">
+                      <div *ngIf="f.LOAD_STRATEGY.errors.required">LOAD STRATEGY is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">RAW FACTORY PATH</label>
+                    <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH" oninput="this.value = this.value.toLowerCase()">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">RAW FACTORY RETENTION STRATEGY</label>
+                    <select formControlName="RAW_FACTORY_RETENTION_STRATEGY" class="form-control">
+                      <option value="NONE">NONE</option>
+                      <option value="GLACIER">GLACIER</option>
+                      <option value="DELETE">DELETE</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">RAW_FACTORY_RETENTION_DAYS</label>
+                    <input class="form-control" type="number" formControlName="RAW_FACTORY_RETENTION_DAYS">
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="DB Details">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">DB_ID</label>
+                    <input class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">DB_SCHEMA</label>
+                    <input class="form-control" type="text" formControlName="DB_SCHEMA" oninput="this.value = this.value.toUpperCase()">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label">DB_TABLE</label>
+                    <input class="form-control" type="text" formControlName="DB_TABLE" oninput="this.value = this.value.toUpperCase()">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">DB_TABLE_PK_COLUMNS</label>
+                    <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS" oninput="this.value = this.value.toUpperCase()">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">DB_TABLE_UPDATE_DATE_COLUMN</label>
+                    <input class="form-control" type="text" formControlName="DB_TABLE_UPDATE_DATE_COLUMN"
+                      oninput="this.value = this.value.toLowerCase()">
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="ETL Details">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ETL STATUS</label>
+                    <select formControlName="ETL_STATUS" class="form-control">
+                      <option value="TODO">TODO</option>
+                      <option value="HOLD">HOLD</option>
+                      <option value="EDW_RETIRED">EDW RETIRED</option>
+                      <option value="NO_FACTORY_DATA">NO FACTORY DATA</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">ETL STATUS REASON</label>
+                    <input class="form-control" type="text" formControlName="ETL_STATUS_REASON">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ETL EXECUTION STATUS</label>
+                    <select formControlName="ETL_EXECUTION_STATUS" class="form-control">
+                      <option selected value="TODO">TODO</option>
+                      <option value="RUNNING">RUNNING</option>
+                      <option value="COMPLETE">COMPLETE</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="T1 Details">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">T1 PATH</label>
+                    <input class="form-control" type="text" formControlName="T1_PATH">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T1_RETENTION_STRATEGY</label>
+                    <input class="form-control" type="text" formControlName="T1_RETENTION_STRATEGY">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T1_RETENTION_DAYS</label>
+                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS">
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label">T1_STATUS</label>
+                    <input class="form-control" type="text" formControlName="T1_STATUS">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">T1_BATCH_IN_DAYS</label>
+                    <input class="form-control" type="text" formControlName="T1_BATCH_IN_DAYS">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T1_MAX_LOAD_END_DATE</label>
+                    <input class="form-control" type="text" formControlName="T1_MAX_LOAD_END_DATE">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T1_EXECUTION_STATUS</label>
+                    <input class="form-control" type="text" formControlName="T1_EXECUTION_STATUS">
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="T2 Details">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">T2_T3_RETENTION_STRATEGY</label>
+                    <input class="form-control" type="text" formControlName="T2_T3_RETENTION_STRATEGY">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2_T3_RETENTION_DAYS</label>
+                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2_STATUS</label>
+                    <input class="form-control" type="text" formControlName="T2_STATUS">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2_INSERT_DIR_BATCH_SIZE</label>
+                    <input class="form-control" type="text" formControlName="T2_INSERT_DIR_BATCH_SIZE">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">T2_PARTITION_JOB_TYPE</label>
+                    <input class="form-control" type="text" formControlName="T2_PARTITION_JOB_TYPE">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2_MAX_LOAD_END_DATE</label>
+                    <input class="form-control" type="text" formControlName="T2_MAX_LOAD_END_DATE">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2_EXECUTION_STATUS</label>
+                    <input class="form-control" type="text" formControlName="T2_EXECUTION_STATUS">
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="ANALYZE Details">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE_STATUS</label>
+                    <input class="form-control" type="text" formControlName="ANALYZE_STATUS">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE_EXECUTION_DAYS</label>
+                    <input class="form-control" type="number" formControlName="ANALYZE_EXECUTION_DAYS">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE_LAST_SUCCESS_DATE</label>
+                    <input class="form-control" type="text" formControlName="ANALYZE_LAST_SUCCESS_DATE">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE_EXECUTION_STATUS</label>
+                    <input class="form-control" type="text" formControlName="ANALYZE_EXECUTION_STATUS">
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">UPDATE_DATE</label>
+                  <input class="form-control" type="text" formControlName="UPDATE_DATE">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">UPDATED_BY</label>
+                  <input class="form-control" type="number" formControlName="UPDATED_BY">
                 </div>
               </div>
             </div>
-          <!-- </div> -->
-
-        </form>
-      </div>
-      <div class="tile-footer">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-3">
-            <button class="btn btn-primary" type="button" (click)="saveRecord('insert')">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+          </p-accordion>
+        </div>
+        <div class="tile-footer">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-3">.
+              <!-- <button class="btn btn-success">Update</button> -->
+              <button class="btn btn-primary">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+              <a class="btn btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

@@ -65,8 +65,9 @@ export class EditLoadControlComponent implements OnInit {
       operation: operation,
       record: this.record
     };
-    this.loadControlService.updateRecord(body).subscribe((data: any) => {
-      console.log(data);
-    });
+    this.router.navigate(['/loadcontrol']);
+    // this.loadControlService.updateRecord(body).subscribe((data: any) => {
+    //   console.log(data);
+    // });
   }
 }

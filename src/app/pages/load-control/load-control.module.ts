@@ -13,6 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { AccordionModule } from 'primeng/accordion';
+
 import { RecordService } from '../../services/record.service';
 import { MessageService } from 'primeng/api';
 import { AddLoadControlComponent } from './add-load-control/add-load-control.component';
@@ -30,6 +32,7 @@ import { LoadControlRouting } from './load-control.routing';
         ToastModule,
         TooltipModule,
         ConfirmDialogModule,
+        AccordionModule,
         FormsModule,
         ReactiveFormsModule,
     ],

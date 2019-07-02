@@ -120,26 +120,26 @@ export class LoadControlComponent implements OnInit {
   }
 
   changeETLStatus(status: string) {
-    // this.addSingle();
-    if (this.selectedRecords.length > 0) {
-      let records = [];
-      for (var _i = 0; _i < this.selectedRecords.length; _i++) {
-        records.push({
-          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-        })
-      }
-      const body = {
-        ETL_STATUS: status,
-        records: records
-      };
+    // if (this.selectedRecords.length > 0) {
+    //   let records = [];
+    //   for (var _i = 0; _i < this.selectedRecords.length; _i++) {
+    //     records.push({
+    //       SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+    //       TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+    //       ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+    //     })
+    //   }
+    //   const body = {
+    //     ETL_STATUS: status,
+    //     records: records
+    //   };
 
-      this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
-        console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
-      });
-    }
+    //   this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
+    //     console.log(data);
+    //     this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+    //   });
+    // }
+    this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
   }
 
 

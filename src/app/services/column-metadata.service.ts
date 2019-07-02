@@ -29,6 +29,13 @@ export class ColumnMetadataService {
         return this.state;
     }
 
+    getAllTablesInVersions() {
+        const url = `${environment.baseUrl}column-metadata/getAllTablesInVersions`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getTableVersions(tableData) {
         const url = `${environment.baseUrl}column-metadata/version`;
         return this.http

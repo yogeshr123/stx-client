@@ -37,7 +37,7 @@
                             <td>{{version.START_DATE | date: 'short' }}</td>
                             <td>{{version.UPDATE_DATE | date: 'short' }}</td>
                             <td>
-                                <button (click)="viewData(version.METADATA_VERSION)" class="btn btn-primary">View</button>
+                                <button (click)="viewData(version)" class="btn btn-primary">View</button>
                                 <button *ngIf="showGenerateVersion && i === versions.length - 1" class="ml-2 btn btn-info" (click)="generateNewVersion()">Generate New Version</button>
                                 <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button> -->
                             </td>
@@ -50,8 +50,8 @@
                 <ngx-loading [show]="loader.columns" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
                 </ngx-loading>
                 <h6>
-                    Version - {{selectedVersion}}
-                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion === 2">Add Column</button>
+                    Version - {{selectedVersion.METADATA_VERSION}}
+                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table [paginator]="versionData.length >= 5 ? true: false" [rows]="5" [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
@@ -88,10 +88,10 @@
                                 </td>
                                 <td style='white-space: nowrap'>
                                     <div>
-                                        <button [routerLink]="[ './edit-column', selectedVersion,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion === 2" class="btn btn-primary btn-sm">
+                                        <button [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'" class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil"></i>
                                       </button>
-                                        <button [routerLink]="[ './view-column/', selectedVersion,version.TARGET_COLUMN_ID]" title="view" class="btn btn-info btn-sm ml-1">
+                                        <button [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]" title="view" class="btn btn-info btn-sm ml-1">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                       </button>
                                     </div>

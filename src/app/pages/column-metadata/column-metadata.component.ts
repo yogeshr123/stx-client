@@ -14,7 +14,7 @@ export class ColumnMetadataComponent implements OnInit {
 
   versions = [];
   showMetaData = false;
-  selectedVersion = 1;
+  selectedVersion: any;
   versionData = [];
   loader = {
     columns: true,
@@ -72,7 +72,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   viewData(version) {
-    this.state.version = version;
+    this.state.version = version.METADATA_VERSION;
     this.selectedVersion = version;
     this.loader.columns = true;
     const request = {

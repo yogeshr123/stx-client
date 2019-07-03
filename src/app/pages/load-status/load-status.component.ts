@@ -211,8 +211,8 @@ export class LoadStatusComponent implements OnInit {
       if (this.taskData && this.taskData.length) {
         this.taskData.length = this.taskData.length < 10 ? this.taskData.length : 10;
         this.onSubmit(null, true);
-        this.loader.tasks = false;
       }
+      this.loader.tasks = false;
     }, error => {
       this.loader.tasks = false;
     });

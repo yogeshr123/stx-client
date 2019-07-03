@@ -3,6 +3,7 @@ import { DialogService } from 'primeng/api';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-column-metadata',
@@ -27,12 +28,12 @@ export class ColumnMetadataComponent implements OnInit {
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
+    private commonService: CommonService,
     public dialogService: DialogService
   ) { }
 
   ngOnInit() {
-    // this.showMapping(2);
-    this.state = this.columnMetadataService.getState();
+    this.state = this.commonService.getState();
     if (this.state.version) {
       this.viewData(this.state.version);
     }
@@ -72,8 +73,10 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   viewData(version) {
-    this.state.version = version.METADATA_VERSION;
-    this.selectedVersion = version;
+    console.log("version ", version);
+    this.state.version = version.METADATA_VERSION || version;
+    this.commonService.setState(this.state);
+    this.selectedVersion = version.METADATA_VERSION || version;
     this.loader.columns = true;
     const request = {
       table_name: this.selectedTable,

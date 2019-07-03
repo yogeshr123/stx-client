@@ -8,7 +8,23 @@ import { throwError } from 'rxjs';
 })
 export class CommonService {
 
+    state = {};
+
     constructor() { }
+
+    getState() {
+        this.state = JSON.parse(localStorage.getItem('appState'));
+        if (!this.state) {
+            this.state = {};
+        }
+        return this.state;
+    }
+
+    setState(state) {
+        this.state = state;
+        localStorage.setItem('appState', JSON.stringify(this.state));
+        return this.state;
+    }
 
     handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {

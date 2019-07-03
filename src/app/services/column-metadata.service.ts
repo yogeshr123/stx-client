@@ -12,21 +12,10 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 )
 export class ColumnMetadataService {
 
-    state = {};
-
     constructor(
         private commonService: CommonService,
         private http: HttpClient,
     ) {
-    }
-
-    getState() {
-        return this.state;
-    }
-
-    setState(state) {
-        this.state = state;
-        return this.state;
     }
 
     getAllTablesInVersions() {

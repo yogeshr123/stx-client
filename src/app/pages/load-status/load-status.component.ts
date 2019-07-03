@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 export class LoadStatusComponent implements OnInit {
 
   searchForm: FormGroup;
+  defaultDate: Date = new Date('Fri Jan 1 1970 00:00:00');
   config: any = {
     timeHeaders: [{ groupBy: 'Day', format: 'dddd, d MMMM yyyy' }, { groupBy: 'Hour', format: 'H' }],
     scale: 'Hour',
@@ -59,7 +60,8 @@ export class LoadStatusComponent implements OnInit {
       SCHEMA_NAME: '',
       TABLE_NAME: '',
       DAG_NAME: '',
-      AVG_TIME: 7
+      AVG_TIME: '',
+      START_TIME: ''
     });
   }
 
@@ -80,8 +82,9 @@ export class LoadStatusComponent implements OnInit {
 
   onSubmit(event?, isAutoComplete?) {
     if (event.keyCode === 8 && !event.target.value || isAutoComplete) {
-      const formValues = this.searchForm.value;
+      const formValues = Object.assign({}, this.searchForm.value);
       delete formValues.AVG_TIME;
+      delete formValues.START_TIME;
       for (const propName in formValues) {
         if (!formValues[propName]) {
           delete formValues[propName];
@@ -91,10 +94,20 @@ export class LoadStatusComponent implements OnInit {
           }
         }
       }
-      // if (Object.keys(formValues).length > 0 && formValues.constructor === Object) {
       this.taskData = this.getSearchResult(formValues);
+      if (this.searchForm.value.START_TIME) {
+        const filterStartTime = this.searchForm.value.START_TIME;
+        this.taskData = this.taskData.filter(i => {
+          const taskStartTime = i.start;
+          return new Date(taskStartTime).getTime() >= new Date(filterStartTime).getTime();
+        });
+      }
+      if (this.searchForm.value.AVG_TIME) {
+        const filterStartTime = new Date(this.searchForm.value.AVG_TIME);
+        const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
+        this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
+      }
       this.setGanttValues();
-      // }
     }
   }
 
@@ -205,7 +218,7 @@ export class LoadStatusComponent implements OnInit {
 
   changeLimit(limit) {
     const selectedLimit = parseInt(limit, 10);
-    this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
+    this.taskData = Object.assign({}, this.taskDataBackUp);
     if (limit !== 'all') {
       if (selectedLimit > this.taskDataBackUp.length) {
         this.taskData.length = this.taskDataBackUp.length;

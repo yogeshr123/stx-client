@@ -81,7 +81,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   onSubmit(event?, isAutoComplete?) {
-    if (event.keyCode === 8 && !event.target.value || isAutoComplete) {
+    if (event && event.keyCode === 8 && !event.target.value || isAutoComplete) {
       const formValues = Object.assign({}, this.searchForm.value);
       delete formValues.AVG_TIME;
       delete formValues.START_TIME;
@@ -95,6 +95,7 @@ export class LoadStatusComponent implements OnInit {
         }
       }
       this.taskData = this.getSearchResult(formValues);
+      // Filter for Start Time
       if (this.searchForm.value.START_TIME) {
         const filterStartTime = this.searchForm.value.START_TIME;
         this.taskData = this.taskData.filter(i => {
@@ -102,6 +103,7 @@ export class LoadStatusComponent implements OnInit {
           return new Date(taskStartTime).getTime() >= new Date(filterStartTime).getTime();
         });
       }
+      // Filter for Avg Time
       if (this.searchForm.value.AVG_TIME) {
         const filterStartTime = new Date(this.searchForm.value.AVG_TIME);
         const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
@@ -208,7 +210,7 @@ export class LoadStatusComponent implements OnInit {
       this.taskDataBackUp = this.taskData;
       if (this.taskData && this.taskData.length) {
         this.taskData.length = this.taskData.length < 10 ? this.taskData.length : 10;
-        this.setGanttValues();
+        this.onSubmit(null, true);
         this.loader.tasks = false;
       }
     }, error => {

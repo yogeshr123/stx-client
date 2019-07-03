@@ -11,11 +11,7 @@
         <div class="tile">
             <div *ngIf="tables && tables.length">
                 Table Name:
-                <select class="ml-2 form-control d-inline-block col-4" name="selectedTable" [(ngModel)]="selectedTable">
-                    <option *ngFor="let item of tables" [value]="item.TABLE_NAME">
-                        {{item.TABLE_NAME}}
-                    </option>
-                </select>
+                <p-dropdown class="ml-2 col-4" [options]="tables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
             </div>
             <div class="mt-2">
                 <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">

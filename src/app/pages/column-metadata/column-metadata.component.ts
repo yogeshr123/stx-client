@@ -47,7 +47,6 @@ export class ColumnMetadataComponent implements OnInit {
 
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
-      this.tables = resp.data;
       if (resp.data && resp.data.length) {
         this.tables = this.removeDuplicates(resp.data, 'TABLE_NAME');
       }

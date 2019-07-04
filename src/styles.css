@@ -62,8 +62,9 @@ input[type="submit"].disabled {
 }
 
 .ui-accordion .ui-accordion-header.ui-state-active a,
-body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active,
-body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
+.ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active,
+.ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight,
+.ui-table .ui-sortable-column.ui-state-highlight {
     background-color: #4e8c38 !important;
 }
 

@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
 *:focus {
     outline: none;
 }
+
 .app-header__logo {
     background: url('assets/images/seagate-logo.png') no-repeat center center;
     background-size: 60%;
@@ -189,7 +191,8 @@ daypilot-gantt .gantt_default_rowmove_handle {
     background-color: #cc0000;
 }
 
-app-load-status .ui-autocomplete input {
+app-load-status .ui-autocomplete input,
+app-load-status .ui-calendar input {
     width: 100%;
 }
 

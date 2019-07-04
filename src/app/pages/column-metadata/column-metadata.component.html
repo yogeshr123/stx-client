@@ -7,100 +7,103 @@
 </div>
 
 <div class="row">
-    <div class="col-12">
-        <div class="tile">
-            <div *ngIf="tables && tables.length">
-                Table Name:
-                <select class="ml-2 form-control d-inline-block col-4" name="selectedTable" [(ngModel)]="selectedTable">
-                    <option *ngFor="let item of tables" [value]="item.TABLE_NAME">
-                        {{item.TABLE_NAME}}
-                    </option>
-                </select>
+    <p-tabView class="col-12">
+        <p-tabPanel header="All New Version Tables">
+            <div class="col-12">
+
             </div>
-            <div class="mt-2">
-                <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
-                </ngx-loading>
-                <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Version</th>
-                            <th>Status</th>
-                            <th>Start Date Time</th>
-                            <th>Updated Date Time</th>
-                            <th>Action</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-version let-i="rowIndex">
-                        <tr>
-                            <td>{{version.METADATA_VERSION}}</td>
-                            <td>{{version.STATUS}}</td>
-                            <td>{{version.START_DATE | date: 'short' }}</td>
-                            <td>{{version.UPDATE_DATE | date: 'short' }}</td>
-                            <td>
-                                <button (click)="viewData(version)" class="btn btn-primary">View</button>
-                                <button *ngIf="showGenerateVersion && i === versions.length - 1" class="ml-2 btn btn-info" (click)="generateNewVersion()">Generate New Version</button>
-                                <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button> -->
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-            <hr>
-            <div class="mt-2" *ngIf="showMetaData">
-                <ngx-loading [show]="loader.columns" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
-                </ngx-loading>
-                <h6>
-                    Version - {{selectedVersion.METADATA_VERSION}}
-                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
-                </h6>
-                <div class="table-responsive" *ngIf="!loader.columns">
-                    <p-table [paginator]="versionData.length >= 5 ? true: false" [rows]="5" [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
+        </p-tabPanel>
+        <p-tabPanel header="Details - {{selectedTable}}">
+            <div class="col-12">
+                <div *ngIf="tables && tables.length">
+                    Table Name:
+                    <p-dropdown class="ml-2 col-4" [options]="tables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
+                </div>
+                <div class="mt-2">
+                    <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
+                    </ngx-loading>
+                    <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>TARGET COLUMN ID</th>
-                                <th>SRC COLUMN NAME</th>
-                                <th>SRC COLUMN TYPE</th>
-                                <th>SRC DATA TYPE</th>
-                                <th>TARGET COLUMN NAME</th>
-                                <th>TARGET DATA TYPE</th>
-                                <th>PRIMARY KEY</th>
-                                <th>DATE UPDATED</th>
+                                <th>Version</th>
+                                <th>Status</th>
+                                <th>Start Date Time</th>
+                                <th>Updated Date Time</th>
                                 <th>Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-version let-i="rowIndex">
                             <tr>
-                                <td>{{version.TARGET_COLUMN_ID}}</td>
-                                <td>{{version.SRC_COLUMN_NAME}}</td>
-                                <td>{{version.SRC_COLUMN_TYPE}}</td>
-                                <td>{{version.SRC_DATA_TYPE}}</td>
-                                <td>{{version.TARGET_COLUMN_NAME}}</td>
-                                <td>{{version.TARGET_DATA_TYPE}}</td>
+                                <td>{{version.METADATA_VERSION}}</td>
+                                <td>{{version.STATUS}}</td>
+                                <td>{{version.START_DATE | date: 'short' }}</td>
+                                <td>{{version.UPDATE_DATE | date: 'short' }}</td>
                                 <td>
-                                    <span>
-                                        {{version.IS_PKEY_COLUMN?.data[0] ? 'True': 'False'}}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>
-                                        {{version.IS_UPDATE_DATE_COLUMN?.data[0] ? 'True': 'False'}}
-                                    </span>
-                                </td>
-                                <td style='white-space: nowrap'>
-                                    <div>
-                                        <button [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-pencil"></i>
-                                      </button>
-                                        <button [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]" title="view" class="btn btn-info btn-sm ml-1">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                      </button>
-                                    </div>
+                                    <button (click)="viewData(version)" class="btn btn-primary">View</button>
+                                    <button *ngIf="showGenerateVersion && i === versions.length - 1" class="ml-2 btn btn-info" (click)="generateNewVersion()">Generate New Version</button>
+                                    <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-info ml-2">Show Mapping</button> -->
                                 </td>
                             </tr>
                         </ng-template>
                     </p-table>
                 </div>
+                <hr>
+                <div class="mt-2" *ngIf="showMetaData">
+                    <ngx-loading [show]="loader.columns" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+                    </ngx-loading>
+                    <h6>
+                        Version - {{selectedVersion.METADATA_VERSION}}
+                        <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
+                    </h6>
+                    <div class="table-responsive" *ngIf="!loader.columns">
+                        <p-table [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>TARGET COLUMN ID</th>
+                                    <th>SRC COLUMN NAME</th>
+                                    <th>SRC COLUMN TYPE</th>
+                                    <th>SRC DATA TYPE</th>
+                                    <th>TARGET COLUMN NAME</th>
+                                    <th>TARGET DATA TYPE</th>
+                                    <th>PRIMARY KEY</th>
+                                    <th>DATE UPDATED</th>
+                                    <th>Action</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-version let-i="rowIndex">
+                                <tr>
+                                    <td>{{version.TARGET_COLUMN_ID}}</td>
+                                    <td>{{version.SRC_COLUMN_NAME}}</td>
+                                    <td>{{version.SRC_COLUMN_TYPE}}</td>
+                                    <td>{{version.SRC_DATA_TYPE}}</td>
+                                    <td>{{version.TARGET_COLUMN_NAME}}</td>
+                                    <td>{{version.TARGET_DATA_TYPE}}</td>
+                                    <td>
+                                        <span>
+                                                {{version.IS_PKEY_COLUMN?.data[0] ? 'True': 'False'}}
+                                            </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                                {{version.IS_UPDATE_DATE_COLUMN?.data[0] ? 'True': 'False'}}
+                                            </span>
+                                    </td>
+                                    <td style='white-space: nowrap'>
+                                        <div>
+                                            <button [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                            <button [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]" title="view" class="btn btn-info btn-sm ml-1">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </p-tabPanel>
+    </p-tabView>
 </div>

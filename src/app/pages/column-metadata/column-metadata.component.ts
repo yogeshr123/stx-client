@@ -33,17 +33,20 @@ export class ColumnMetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.state = this.commonService.getState();
-    if (this.state.version) {
-      this.viewData(this.state.version);
-    }
     this.getVersions();
     this.getAllTables();
+    this.state = this.commonService.getState();
+  }
+
+  checkStateUpdateSelectedTable() {
+    if (this.state.version) {
+      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.version);
+      this.viewData(selectedVersion[0]);
+    }
   }
 
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
-      this.tables = resp.data;
       if (resp.data && resp.data.length) {
         this.tables = this.removeDuplicates(resp.data, 'TABLE_NAME');
       }
@@ -62,6 +65,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.columnMetadataService.getTableVersions(request).subscribe((resp: any) => {
       this.versions = resp.data;
       this.loader.versions = false;
+      this.checkStateUpdateSelectedTable();
       this.versions.forEach(element => {
         if (element.STATUS.toLowerCase() === 'new') {
           this.showGenerateVersion = false;
@@ -73,10 +77,9 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   viewData(version) {
-    console.log("version ", version);
-    this.state.version = version.METADATA_VERSION || version;
+    this.state.version = version.METADATA_VERSION;
     this.commonService.setState(this.state);
-    this.selectedVersion = version.METADATA_VERSION || version;
+    this.selectedVersion = version;
     this.loader.columns = true;
     const request = {
       table_name: this.selectedTable,

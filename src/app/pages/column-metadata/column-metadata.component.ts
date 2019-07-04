@@ -19,8 +19,9 @@ export class ColumnMetadataComponent implements OnInit {
   selectedVersion: any;
   versionData = [];
   loader = {
-    columns: true,
-    versions: false
+    columns: false,
+    versions: false,
+    tabs: false
   };
   state: any;
   tables: any;
@@ -28,6 +29,7 @@ export class ColumnMetadataComponent implements OnInit {
   showGenerateVersion = true;
   selectedTable = 'P250_ERROR_RATE_BY_ZONE_FACT';
   tableColumns = versionTableColumns;
+  activeTab = 0;
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
@@ -42,10 +44,15 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   checkStateUpdateSelectedTable() {
+    this.loader.tabs = true;
+    if (this.state.CMV && this.state.CMV.activeTab) {
+      this.activeTab = this.state.CMV.activeTab;
+    }
     if (this.state.CMV && this.state.CMV.version) {
       const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.version);
       this.viewData(selectedVersion[0]);
     }
+    this.loader.tabs = false;
   }
 
   getAllTables() {
@@ -76,12 +83,13 @@ export class ColumnMetadataComponent implements OnInit {
         }
       });
     }, error => {
+      console.log('error getVersions', error);
       this.loader.versions = false;
     });
   }
 
   viewData(version) {
-    this.state.CMV = { version: version.METADATA_VERSION };
+    this.state.CMV = { ...this.state.CMV, version: version.METADATA_VERSION };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
     this.loader.columns = true;
@@ -94,6 +102,7 @@ export class ColumnMetadataComponent implements OnInit {
       this.loader.columns = false;
       this.showMetaData = true;
     }, error => {
+      console.log('error viewData', error);
       this.loader.columns = false;
     });
   }
@@ -112,6 +121,12 @@ export class ColumnMetadataComponent implements OnInit {
       width: '45%',
       data: metadataVersion
     });
+  }
+
+  tabChanged(event) {
+    this.activeTab = event.index;
+    this.state.CMV = { ...this.state.CMV, activeTab: this.activeTab };
+    this.commonService.setState(this.state);
   }
 
 }

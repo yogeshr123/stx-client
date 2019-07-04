@@ -4,6 +4,7 @@ import { DialogService } from 'primeng/api';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
+import { versionTableColumns } from './tableColumns';
 
 @Component({
   selector: 'app-column-metadata',
@@ -23,8 +24,10 @@ export class ColumnMetadataComponent implements OnInit {
   };
   state: any;
   tables: any;
+  uniqueTables: any;
   showGenerateVersion = true;
   selectedTable = 'P250_ERROR_RATE_BY_ZONE_FACT';
+  tableColumns = versionTableColumns;
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
@@ -48,7 +51,8 @@ export class ColumnMetadataComponent implements OnInit {
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
-        this.tables = this.removeDuplicates(resp.data, 'TABLE_NAME');
+        this.tables = resp.data;
+        this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
       }
     }, error => { });
   }

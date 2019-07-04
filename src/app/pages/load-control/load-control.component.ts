@@ -17,7 +17,7 @@ export interface Car {
 @Component({
   selector: 'app-loadcontrol',
   templateUrl: './load-control.component.html',
-  styles: [':host{width: 100%; height: 100%;}']
+  styles: []
 })
 export class LoadControlComponent implements OnInit {
 

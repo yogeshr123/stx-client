@@ -230,3 +230,7 @@ app-load-status .ui-calendar input {
     height: 25px;
     display: inline-block;
 }
+
+.scroll-table .ui-table-wrapper{
+    overflow-y: scroll;
+}

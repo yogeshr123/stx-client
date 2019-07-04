@@ -101,10 +101,15 @@ export class ColumnMetadataComponent implements OnInit {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
-        if (!this.state.CMV || this.state.CMV.selectedTable) {
+        if (!this.state.CMV || !this.state.CMV.selectedTable) {
           this.selectedTable = this.uniqueTables[0];
           this.viewData(this.selectedTable);
           this.getVersions();
+        } else {
+          const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
+          if (selectedTableName && selectedTableName.length) {
+            this.selectedTableName = selectedTableName[0];
+          }
         }
       }
     });

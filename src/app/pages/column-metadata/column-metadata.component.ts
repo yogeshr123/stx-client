@@ -4,7 +4,7 @@ import { DialogService } from 'primeng/api';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
-import { versionTableColumns } from './tableColumns';
+import { versionTableColumns, columnTableColumns } from './tableColumns';
 
 @Component({
   selector: 'app-column-metadata',
@@ -30,7 +30,42 @@ export class ColumnMetadataComponent implements OnInit {
   showGenerateVersion = true;
   selectedTable: any;
   tableColumns = versionTableColumns;
+  columnTableColumns = columnTableColumns;
   activeTab = 0;
+
+  selectedColumns = [
+    {
+      header: 'TARGET COLUMN ID',
+      field: 'TARGET_COLUMN_ID'
+    },
+    {
+      header: 'SRC COLUMN NAME',
+      field: 'SRC_COLUMN_NAME'
+    },
+    {
+      header: 'SRC COLUMN TYPE',
+      field: 'SRC_COLUMN_TYPE'
+    },
+    {
+      header: 'SRC DATA TYPE',
+      field: 'SRC_DATA_TYPE'
+    },
+    {
+      header: 'TARGET COLUMN NAME',
+      field: 'TARGET_COLUMN_NAME'
+    },
+    {
+      header: 'TARGET DATA TYPE',
+      field: 'TARGET_DATA_TYPE'
+    },
+    {
+      header: 'PRIMARY KEY',
+      field: 'IS_PKEY_COLUMN'
+    },
+    {
+      header: 'DATE UPDATED',
+      field: 'UPDATE_DATE'
+    }];
 
   constructor(
     private columnMetadataService: ColumnMetadataService,

@@ -12,7 +12,7 @@
     <p-tabView class="col-md-12 p-0" (onChange)="tabChanged($event)">
         <p-tabPanel header="All Version Tables" [selected]="activeTab === 0">
             <div class="col-12 mt-2">
-                <p-table #dt [paginator]="tables?.length >= 5 ? true : false" [rows]="5" [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns" [reorderableColumns]="true">
+                <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns" [reorderableColumns]="true">
                     <ng-template pTemplate="caption">
                         <div class="globalSearch">
                             <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
@@ -97,37 +97,32 @@
                         <button [routerLink]="[ './add-column']" class="mb-2 btn btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
                     </h6>
                     <div class="table-responsive" *ngIf="!loader.columns">
-                        <p-table [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}">
-                            <ng-template pTemplate="header">
+                        <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
+                            <ng-template pTemplate="caption">
+                                <div style="text-align: right">
+                                    <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"></p-multiSelect>
+                                </div>
+                                <div class="globalSearch">
+                                    <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
+                                    <button class="btn btn-primary" type="button" (click)="search()">
+                                        <i class="fa fa-lg fa-fw fa-search"></i>
+                                    </button>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th>TARGET COLUMN ID</th>
-                                    <th>SRC COLUMN NAME</th>
-                                    <th>SRC COLUMN TYPE</th>
-                                    <th>SRC DATA TYPE</th>
-                                    <th>TARGET COLUMN NAME</th>
-                                    <th>TARGET DATA TYPE</th>
-                                    <th>PRIMARY KEY</th>
-                                    <th>DATE UPDATED</th>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                        {{col.header}}
+                                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                                        </p-sortIcon>
+                                    </th>
                                     <th>Action</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-version let-i="rowIndex">
-                                <tr>
-                                    <td>{{version.TARGET_COLUMN_ID}}</td>
-                                    <td>{{version.SRC_COLUMN_NAME}}</td>
-                                    <td>{{version.SRC_COLUMN_TYPE}}</td>
-                                    <td>{{version.SRC_DATA_TYPE}}</td>
-                                    <td>{{version.TARGET_COLUMN_NAME}}</td>
-                                    <td>{{version.TARGET_DATA_TYPE}}</td>
-                                    <td>
-                                        <span>
-                                                {{version.IS_PKEY_COLUMN?.data[0] ? 'True': 'False'}}
-                                            </span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                                {{version.IS_UPDATE_DATE_COLUMN?.data[0] ? 'True': 'False'}}
-                                            </span>
+                            <ng-template pTemplate="body" let-version let-columns="columns">
+                                <tr [pSelectableRow]="version">
+                                    <td *ngFor="let col of columns">
+                                        {{version[col.field]}}
                                     </td>
                                     <td style='white-space: nowrap'>
                                         <div>

@@ -9,7 +9,7 @@ export class Stuff {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styles: [':host{width: 100%; height: 100%;}']
+  styles: []
 })
 export class DashboardComponent implements OnInit {
   public stuff: Stuff = new Stuff()

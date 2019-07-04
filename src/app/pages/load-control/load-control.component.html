@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<div class="app-title">
+<div class="app-title mb-3 p-3">
     <div>
         <h1>
             <i class="fa fa-table"></i> Load Control
@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 p-0">
         <div class="tile">
             <p-confirmDialog></p-confirmDialog>
             <div class="mb-3">
@@ -41,18 +41,13 @@
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
                 dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"
                 stateStorage="local" stateKey="statedemo-local" [tableStyle]="{'table-layout':'auto'}"
-                tableStyleClass="scroll-table">
+                styleClass="scroll-table">
                 <ng-template pTemplate="caption">
                     <div style="text-align: right">
                         <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="field"
                             selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
                             defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                     </div>
-                    <!-- <div style="text-align: right">
-                        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                        <input type="text" pInputText size="50" placeholder="Global Filter" [(ngModel)]="globalQuery">
-                        <button class="dropdown-item" (click)="search()">Search</button>
-                    </div> -->
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
                         <button class="btn btn-primary" type="button" (click)="search()">

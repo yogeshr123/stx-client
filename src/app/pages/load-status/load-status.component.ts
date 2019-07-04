@@ -61,7 +61,8 @@ export class LoadStatusComponent implements OnInit {
       TABLE_NAME: '',
       DAG_NAME: '',
       AVG_TIME: '',
-      START_TIME: ''
+      START_TIME: '',
+      ENV_NAME: 'PRD'
     });
   }
 

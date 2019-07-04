@@ -26,8 +26,9 @@ export class ColumnMetadataComponent implements OnInit {
   state: any;
   tables: any;
   uniqueTables: any;
+  selectedTableName: any;
   showGenerateVersion = true;
-  selectedTable = 'P250_ERROR_RATE_BY_ZONE_FACT';
+  selectedTable: any;
   tableColumns = versionTableColumns;
   activeTab = 0;
 
@@ -38,9 +39,12 @@ export class ColumnMetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getVersions();
     this.getAllTables();
     this.state = this.commonService.getState();
+    if (this.state.CMV && this.state.CMV.selectedTable) {
+      this.selectedTable = this.state.CMV.selectedTable;
+      this.getVersions();
+    }
   }
 
   checkStateUpdateSelectedTable() {
@@ -48,9 +52,11 @@ export class ColumnMetadataComponent implements OnInit {
     if (this.state.CMV && this.state.CMV.activeTab) {
       this.activeTab = this.state.CMV.activeTab;
     }
-    if (this.state.CMV && this.state.CMV.version) {
-      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.version);
-      this.viewData(selectedVersion[0]);
+    if (this.state.CMV && this.state.CMV.selectedTable) {
+      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.selectedTable.METADATA_VERSION);
+      if (selectedVersion && selectedVersion.length) {
+        this.viewData(selectedVersion[0]);
+      }
     }
     this.loader.tabs = false;
   }
@@ -60,8 +66,13 @@ export class ColumnMetadataComponent implements OnInit {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
+        if (!this.state.CMV || this.state.CMV.selectedTable) {
+          this.selectedTable = this.uniqueTables[0];
+          this.viewData(this.selectedTable);
+          this.getVersions();
+        }
       }
-    }, error => { });
+    });
   }
 
   removeDuplicates(myArr, prop) {
@@ -72,7 +83,7 @@ export class ColumnMetadataComponent implements OnInit {
 
   getVersions() {
     this.loader.versions = true;
-    const request = { table_name: this.selectedTable };
+    const request = { table_name: this.selectedTable.TABLE_NAME };
     this.columnMetadataService.getTableVersions(request).subscribe((resp: any) => {
       this.versions = resp.data;
       this.loader.versions = false;
@@ -83,18 +94,28 @@ export class ColumnMetadataComponent implements OnInit {
         }
       });
     }, error => {
-      console.log('error getVersions', error);
       this.loader.versions = false;
     });
   }
 
+  viewDetails(version) {
+    const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === version.TABLE_NAME);
+    if (selectedTableName && selectedTableName.length) {
+      this.selectedTableName = selectedTableName[0];
+    }
+    this.selectedTable = version;
+    this.state.CMV = { ...this.state.CMV, selectedTable: version };
+    this.tabChanged({ index: 1 });
+    this.getVersions();
+  }
+
   viewData(version) {
-    this.state.CMV = { ...this.state.CMV, version: version.METADATA_VERSION };
+    this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
     this.loader.columns = true;
     const request = {
-      table_name: this.selectedTable,
+      table_name: this.selectedTable.TABLE_NAME,
       columnVersion: 1
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
@@ -102,7 +123,6 @@ export class ColumnMetadataComponent implements OnInit {
       this.loader.columns = false;
       this.showMetaData = true;
     }, error => {
-      console.log('error viewData', error);
       this.loader.columns = false;
     });
   }

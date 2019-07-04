@@ -15,9 +15,6 @@
 
                 <p-table #dt [paginator]="tables?.length >= 5 ? true : false" [rows]="5" [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns" [reorderableColumns]="true">
                     <ng-template pTemplate="caption">
-                        <div style="text-align: right">
-                            <p-multiSelect [options]="cols" [(ngModel)]="tableColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
-                        </div>
                         <div class="globalSearch">
                             <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
                             <button class="btn btn-primary" type="button" (click)="search()">

@@ -322,4 +322,9 @@ export class LoadStatusComponent implements OnInit {
     return hours + ':' + minutes + ':' + seconds;
   }
 
+  reset() {
+    this.searchFormInit();
+    this.discard();
+  }
+
 }

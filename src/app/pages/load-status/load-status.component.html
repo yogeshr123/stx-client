@@ -44,11 +44,11 @@
                     </div>
                     <div class="col-6">
                         <div class="row">
-                            <select class="form-control col-6 ml-2" formControlName="ENV_NAME">
+                            <select (change)="onSubmit(null, true)" class="form-control col-6 ml-2" formControlName="ENV_NAME">
                                 <option value="PRD">PRD</option>
                                 <option value="DEV">DEV</option>
                             </select>
-                            <i (click)="discard()" class="fa fa-refresh btn btn-dark col-3 ml-2" aria-hidden="true" title="Reset Form"></i>
+                            <i (click)="reset()" class="fa fa-refresh btn btn-dark col-3 ml-2" aria-hidden="true" title="Reset Form"></i>
                         </div>
                     </div>
                 </div>

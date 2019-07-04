@@ -57,14 +57,74 @@ export class LoadControlComponent implements OnInit {
       { field: 'TABLE_NAME' },
       { field: 'ENV_NAME' },
       { field: 'TARGET_SCHEMA_NAME' },
-      // { field: 'TARGET_TABLE_NAME' },
-      // { field: 'EMAIL_ALERTS' },
-      // { field: 'TABLE_SOURCE' },
-      // { field: 'LOAD_STRATEGY' },
-    ];
-    // this.selectedColumns = this.cols;
+      { field: 'TARGET_TABLE_NAME' },
+      { field: 'EMAIL_ALERTS' },
+      { field: 'TABLE_SOURCE' },
+      { field: 'LOAD_STRATEGY' },
+      { field: 'RAW_FACTORY_PATH' },
+      { field: 'RAW_FACTORY_RETENTION_STRATEGY' },
+      { field: 'RAW_FACTORY_RETENTION_DAYS' },
+      { field: 'DB_ID' },
+      { field: 'DB_SCHEMA' },
+      { field: 'DB_TABLE' },
+      { field: 'DB_TABLE_PK_COLUMNS' },
+      { field: 'DB_TABLE_UPDATE_DATE_COLUMN' },
+      { field: 'T1_PATH' },
+      { field: 'T1_RETENTION_STRATEGY' },
+      { field: 'T1_RETENTION_DAYS' },
+      { field: 'T2_T3_RETENTION_STRATEGY' },
+      { field: 'T2_T3_RETENTION_DAYS' },
+      { field: 'ETL_STATUS' },
+      { field: 'ETL_STATUS_REASON' },
+      { field: 'ETL_DAG_NAME' },
+      { field: 'ETL_DAG_RUN_ID' },
+      { field: 'ETL_DAG_RUN_URL' },
+      { field: 'ETL_PROCESS_START_DATE' },
+      { field: 'ETL_PROCESS_END_DATE' },
+      { field: 'ETL_EXECUTION_STATUS' },
+      { field: 'ETL_PROCESS' },
+      { field: 'T1_STATUS' },
+      { field: 'T1_BATCH_IN_DAYS' },
+      { field: 'T1_MAX_LOAD_END_DATE' },
+      { field: 'T1_CLUSTER_ID' },
+      { field: 'T1_LIVY_BATCH_ID' },
+      { field: 'T1_SPARK_APP_ID' },
+      { field: 'T1_SPARK_UI_URL' },
+      { field: 'T1_SPARK_LOG_URL' },
+      { field: 'T1_PROCESS_START_DATE' },
+      { field: 'T1_PROCESS_END_DATE' },
+      { field: 'T1_EXECUTION_STATUS' },
+      { field: 'T1_ERROR' },
+      { field: 'T1_ERROR_TRACE' },
+      { field: 'T2_STATUS' },
+      { field: 'T2_INSERT_DIR_BATCH_SIZE' },
+      { field: 'T2_PARTITION_JOB_TYPE' },
+      { field: 'T2_MAX_LOAD_END_DATE' },
+      { field: 'T2_MAX_ATLAS_VERSION' },
+      { field: 'T2_CLUSTER_ID' },
+      { field: 'T2_LIVY_BATCH_ID' },
+      { field: 'T2_SPARK_APP_ID' },
+      { field: 'T2_SPARK_UI_URL' },
+      { field: 'T2_SPARK_LOG_URL' },
+      { field: 'T2_PROCESS_START_DATE' },
+      { field: 'T2_PROCESS_END_DATE' },
+      { field: 'T2_EXECUTION_STATUS' },
+      { field: 'T2_ERROR' },
+      { field: 'T2_ERROR_TRACE' },
+      { field: 'ANALYZE_STATUS' },
+      { field: 'ANALYZE_EXECUTION_DAYS' },
+      { field: 'ANALYZE_LAST_SUCCESS_DATE' },
+      { field: 'ANALYZE_PROCESS_START_DATE' },
+      { field: 'ANALYZE_PROCESS_END_DATE' },
+      { field: 'ANALYZE_EXECUTION_STATUS' },
+      { field: 'ANALYZE_ERROR' },
+      { field: 'ANALYZE_ERROR_TRACE' },
+      { field: 'UPDATE_DATE' },
+      { field: 'UPDATED_BY' }
+    ]
+
     if (!localStorage.getItem('selectedColumns')) {
-      this.selectedColumns = this.cols;
+      this.initColumnState();
     } else {
       // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
@@ -99,10 +159,32 @@ export class LoadControlComponent implements OnInit {
 
   saveColumnState() {
     localStorage.setItem('selectedColumns', JSON.stringify(this.selectedColumns));
-    this.resetTable();
+    this.resetFilters();
+  }
+
+  initColumnState() {
+    this.selectedColumns = [
+      { field: 'SCHEMA_NAME' },
+      { field: 'TABLE_NAME' },
+      { field: 'ENV_NAME' },
+      { field: 'TARGET_SCHEMA_NAME' },
+    ];
   }
 
   resetTable() {
+    const statefilter = JSON.parse(localStorage.getItem('statedemo-local'));
+    if (statefilter) {
+      localStorage.removeItem('statedemo-local');
+    }
+    const columnState = JSON.parse(localStorage.getItem('selectedColumns'));
+    if (columnState) {
+      localStorage.removeItem('selectedColumns');
+      this.initColumnState();
+    }
+    this.tableComponent.reset();
+  }
+
+  resetFilters() {
     const statefilter = JSON.parse(localStorage.getItem('statedemo-local'));
     if (statefilter) {
       localStorage.removeItem('statedemo-local');

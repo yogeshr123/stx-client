@@ -40,7 +40,8 @@
 
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
                 dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"
-                stateStorage="local" stateKey="statedemo-local" [tableStyle]="{'table-layout':'auto'}">
+                stateStorage="local" stateKey="statedemo-local" [tableStyle]="{'table-layout':'auto'}"
+                tableStyleClass="scroll-table">
                 <ng-template pTemplate="caption">
                     <div style="text-align: right">
                         <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="field"

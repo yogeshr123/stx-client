@@ -42,8 +42,8 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   checkStateUpdateSelectedTable() {
-    if (this.state.version) {
-      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.version);
+    if (this.state.CMV && this.state.CMV.version) {
+      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.version);
       this.viewData(selectedVersion[0]);
     }
   }
@@ -81,7 +81,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   viewData(version) {
-    this.state.version = version.METADATA_VERSION;
+    this.state.CMV = { version: version.METADATA_VERSION };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
     this.loader.columns = true;

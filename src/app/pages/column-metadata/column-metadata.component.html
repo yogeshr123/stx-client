@@ -122,7 +122,14 @@
                             <ng-template pTemplate="body" let-version let-columns="columns">
                                 <tr [pSelectableRow]="version">
                                     <td *ngFor="let col of columns">
-                                        {{version[col.field]}}
+                                        <ng-container *ngIf="checkDataType(version[col.field], 'object'); else elseTemplate">
+                                            {{ version[col.field].data[0] ? 'True' : 'False' }}
+                                        </ng-container>
+                                        <ng-template #elseTemplate>
+                                            <span>
+                                                {{version[col.field]}}
+                                            </span>
+                                        </ng-template>
                                     </td>
                                     <td style='white-space: nowrap'>
                                         <div>

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/api';
+import { Table } from 'primeng/components/table/table';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
-import { versionTableColumns, columnTableColumns } from './tableColumns';
+import { versionTableColumns, columnTableColumns, initColumnState } from './tableColumns';
 
 @Component({
   selector: 'app-column-metadata',
@@ -32,40 +33,9 @@ export class ColumnMetadataComponent implements OnInit {
   tableColumns = versionTableColumns;
   columnTableColumns = columnTableColumns;
   activeTab = 0;
+  @ViewChild(Table, { static: false }) tableComponent: Table;
 
-  selectedColumns = [
-    {
-      header: 'TARGET COLUMN ID',
-      field: 'TARGET_COLUMN_ID'
-    },
-    {
-      header: 'SRC COLUMN NAME',
-      field: 'SRC_COLUMN_NAME'
-    },
-    {
-      header: 'SRC COLUMN TYPE',
-      field: 'SRC_COLUMN_TYPE'
-    },
-    {
-      header: 'SRC DATA TYPE',
-      field: 'SRC_DATA_TYPE'
-    },
-    {
-      header: 'TARGET COLUMN NAME',
-      field: 'TARGET_COLUMN_NAME'
-    },
-    {
-      header: 'TARGET DATA TYPE',
-      field: 'TARGET_DATA_TYPE'
-    },
-    {
-      header: 'PRIMARY KEY',
-      field: 'IS_PKEY_COLUMN'
-    },
-    {
-      header: 'DATE UPDATED',
-      field: 'UPDATE_DATE'
-    }];
+  selectedColumns: any;
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
@@ -80,6 +50,46 @@ export class ColumnMetadataComponent implements OnInit {
       this.selectedTable = this.state.CMV.selectedTable;
       this.getVersions();
     }
+    this.getSelectedColumns();
+  }
+
+  getSelectedColumns() {
+    if (!localStorage.getItem('selectedVersionColumns')) {
+      this.initColumnState();
+    } else {
+      // get selected columns from local storage
+      this.selectedColumns = JSON.parse(localStorage.getItem('selectedVersionColumns'));
+    }
+  }
+
+  saveColumnState() {
+    localStorage.setItem('selectedVersionColumns', JSON.stringify(this.selectedColumns));
+    this.resetFilters();
+  }
+
+  resetTable() {
+    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
+    if (statefilter) {
+      localStorage.removeItem('stateSelectedVersionColumns');
+    }
+    const columnState = JSON.parse(localStorage.getItem('selectedVersionColumns'));
+    if (columnState) {
+      localStorage.removeItem('selectedVersionColumns');
+      this.initColumnState();
+    }
+    this.tableComponent.reset();
+  }
+
+  resetFilters() {
+    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
+    if (statefilter) {
+      localStorage.removeItem('stateSelectedVersionColumns');
+    }
+    this.tableComponent.reset();
+  }
+
+  initColumnState() {
+    this.selectedColumns = initColumnState;
   }
 
   checkStateUpdateSelectedTable() {
@@ -187,6 +197,13 @@ export class ColumnMetadataComponent implements OnInit {
     this.activeTab = event.index;
     this.state.CMV = { ...this.state.CMV, activeTab: this.activeTab };
     this.commonService.setState(this.state);
+  }
+
+  checkDataType(val, dataType) {
+    if (dataType === 'object') {
+      return typeof val === 'object' && val !== null;
+    }
+    return typeof val === dataType;
   }
 
 }

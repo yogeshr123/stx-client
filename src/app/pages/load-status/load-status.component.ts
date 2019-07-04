@@ -324,6 +324,7 @@ export class LoadStatusComponent implements OnInit {
 
   reset() {
     this.searchFormInit();
+    this.toogleButtonPeriod = 7;
     this.discard();
   }
 

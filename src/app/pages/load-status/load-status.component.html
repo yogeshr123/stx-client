@@ -31,13 +31,13 @@
                     <h5 class="col-12">Time Period</h5>
                     <div class="col-6">
                         <div class="btn-group btn-group-toggle">
-                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info" title="Last 7 Days">
                                 <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 D
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info" title="Last 1 Month">
                                 <input id="1month" type="radio" name="timePeriod" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 M
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info" title="Last 6 Months">
                                 <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 M
                             </label>
                         </div>

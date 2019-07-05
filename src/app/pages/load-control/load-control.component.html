@@ -37,16 +37,15 @@
                     <a class="btn btn-primary mr-2" routerLinkActive="active" routerLink="/loadcontrol/add">Add new</a>
                 </div>
             </div>
-
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
                 dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"
                 stateStorage="local" stateKey="statedemo-local" [tableStyle]="{'table-layout':'auto'}"
                 styleClass="scroll-table">
                 <ng-template pTemplate="caption">
-                    <div style="text-align: right">
-                        <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="field"
-                            selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
-                            defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
+                    <div style="text-align: left">
+                        <p-multiSelect [options]="totalcols" [(ngModel)]="selectedColumns" optionLabel="field"
+                            selectedItemsLabel="{0} columns selected" defaultLabel="Choose Columns"
+                            (onChange)="saveColumnState()"></p-multiSelect>
                     </div>
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
@@ -57,17 +56,17 @@
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th style="width: 3em">
+                        <th class="leftfixedcol">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
                             {{col.field}}
                             <p-sortIcon [field]="col.field"></p-sortIcon>
                         </th>
-                        <th></th>
+                        <th class="rightfixedcol"></th>
                     </tr>
                     <tr>
-                        <th style="width: 3em">
+                        <th class="leftfixedcol">
                         </th>
                         <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
                             <p-multiSelect *ngSwitchCase="'ENV_NAME'" [options]="ENV_NAME" defaultLabel="ENV_NAME"
@@ -75,18 +74,18 @@
                             <input pInputText *ngSwitchDefault type="text" (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
                                 [value]="dt1.filters[col.field]?.value">
                         </th>
-                        <th></th>
+                        <th class="rightfixedcol"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
-                        <td>
+                        <td class="leftfixedcol">
                             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                         </td>
                         <td *ngFor="let col of columns">
                             {{rowData[col.field]}}
                         </td>
-                        <td style="text-align:center">
+                        <td class="rightfixedcol" style="text-align:center">
                             <button class="btn btn-primary btn-sm" type="button" (click)="onRowEdit(rowData)">
                                 <i class="fa fa-pencil"></i>
                             </button>

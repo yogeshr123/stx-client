@@ -17,8 +17,7 @@ export class EditLoadControlComponent implements OnInit {
   submitted = false;
   record: any;
   loadControl: any;
-  newRecord: boolean = true;
-  temprecord = { "SCHEMA_NAME": "DRIVE", "TABLE_NAME": "P250_ERROR_RATE_BY_ZONE_FACT", "ENV_NAME": "PRD", "TARGET_SCHEMA_NAME": "DRIVE", "TARGET_TABLE_NAME": "P250_TEST", "EMAIL_ALERTS": "Y", "TABLE_SOURCE": "RAW_FACTORY", "LOAD_STRATEGY": "SAMPLED", "RAW_FACTORY_PATH": "s3://stx-usw2-ehc-prd-data-staging/p250_error_rate_by_zone/t0/", "RAW_FACTORY_RETENTION_STRATEGY": "GLACIER", "RAW_FACTORY_RETENTION_DAYS": 1830, "DB_ID": null, "DB_SCHEMA": null, "DB_TABLE": null, "DB_TABLE_PK_COLUMNS": null, "DB_TABLE_UPDATE_DATE_COLUMN": null, "T1_PATH": "s3://stx-usw2-ehc-prd-data-t1/drive.db_p250_error_rate_by_zone_fact/", "T1_RETENTION_STRATEGY": "DELETE", "T1_RETENTION_DAYS": 30, "T2_T3_RETENTION_STRATEGY": "NONE", "T2_T3_RETENTION_DAYS": null, "ETL_STATUS": "TODO", "ETL_DAG_NAME": null, "ETL_DAG_RUN_ID": null, "ETL_DAG_RUN_URL": null, "ETL_PROCESS_START_DATE": null, "ETL_PROCESS_END_DATE": null, "ETL_EXECUTION_STATUS": "NONE", "ETL_PROCESS": null, "T1_STATUS": "TODO", "T1_BATCH_IN_DAYS": 1, "T1_MAX_LOAD_END_DATE": "1990-01-01T00:00:00.000Z", "T1_CLUSTER_ID": null, "T1_LIVY_BATCH_ID": null, "T1_SPARK_APP_ID": null, "T1_SPARK_UI_URL": null, "T1_SPARK_LOG_URL": null, "T1_PROCESS_START_DATE": null, "T1_PROCESS_END_DATE": null, "T1_EXECUTION_STATUS": "TODO", "T1_ERROR": null, "T1_ERROR_TRACE": null, "T2_STATUS": "TODO", "T2_INSERT_DIR_BATCH_SIZE": 10000, "T2_PARTITION_JOB_TYPE": "SINGLE", "T2_MAX_LOAD_END_DATE": "1970-01-01T00:00:01.000Z", "T2_MAX_ATLAS_VERSION": 0, "T2_CLUSTER_ID": null, "T2_LIVY_BATCH_ID": null, "T2_SPARK_APP_ID": null, "T2_SPARK_UI_URL": null, "T2_SPARK_LOG_URL": null, "T2_PROCESS_START_DATE": "2019-06-07T08:22:55.000Z", "T2_PROCESS_END_DATE": "2019-06-07T08:22:55.000Z", "T2_EXECUTION_STATUS": "TODO", "T2_ERROR": null, "T2_ERROR_TRACE": null, "ANALYZE_STATUS": "NONE", "ANALYZE_EXECUTION_DAYS": 7, "ANALYZE_LAST_SUCCESS_DATE": null, "ANALYZE_PROCESS_START_DATE": null, "ANALYZE_PROCESS_END_DATE": null, "ANALYZE_EXECUTION_STATUS": "NONE", "ANALYZE_ERROR": null, "ANALYZE_ERROR_TRACE": null, "UPDATE_DATE": "2019-06-07T08:22:55.000Z", "UPDATED_BY": "USER" };
+  recordMeta: any;
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -29,51 +28,14 @@ export class EditLoadControlComponent implements OnInit {
   }
   ngOnInit() {
     this.formInit();
-    // this.recordService.currentRecord.subscribe(record => this.record = record);
-    // if (this.record) {
-    //   this.newRecord = false;
-    //   for (var _i = 0; _i < this.loadControl.length; _i++) {
-    //     const columnName = this.loadControl[_i].columnName;
-    //     // this.loadControl[_i][columnName] = this.record[columnName];
-    //     if (this.loadControl[_i].dataType == "TIMESTAMP") {
-    //       this.record[columnName] = new Date(this.record[columnName]);
-    //     }
-    //     if (this.loadControl[_i].valueSet) {
-    //       const tempArray = this.loadControl[_i].valueSet.split(',').map(item => item.trim());;
-    //       this.loadControl[_i].valueSetNew = tempArray;
-    //     }
-    //   }
-    // }
-    // else {
-    //   this.newRecord = true;
-    //   for (var _i = 0; _i < this.loadControl.length; _i++) {
-    //     const columnName = this.loadControl[_i].columnName;
-    //     this.record[columnName] = null;
-    //     if (this.loadControl[_i].valueSet) {
-    //       const tempArray = this.loadControl[_i].valueSet.split(',').map(item => item.trim());;
-    //       this.loadControl[_i].valueSetNew = tempArray;
-    //     }
-    //   }
 
-    //   // this.router.navigate(['/loadcontrol']);
-    // }
-    let test = JSON.stringify(this.temprecord);
-    this.record = JSON.parse(test);
-    this.editLoadControlForm.setValue(this.record);
-
-    // Set form data
-    const formControls = this.editLoadControlForm.controls;
-    for (const key in formControls) {
-      if (formControls.hasOwnProperty(key)) {
-        const element = formControls[key];
-        if (this.record[key] && Object.keys(this.record[key]).length > 0 && this.record[key].constructor === Object) {
-          element.patchValue(this.record[key].data[0]);
-        } else {
-          element.patchValue(this.record[key]);
-        }
-      }
+    this.recordService.currentRecord.subscribe(record => this.record = record);
+    if (this.record) {
+      this.loadRecordData();
     }
-
+    else {
+      this.router.navigate(['/loadcontrol/add']);
+    }
   }
 
   formInit() {
@@ -100,7 +62,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
       ETL_STATUS: [''],
-      // ETL_STATUS_REASON: [''],
+      ETL_STATUS_REASON: [''],
       ETL_DAG_NAME: [''],
       ETL_DAG_RUN_ID: [''],
       ETL_DAG_RUN_URL: [''],
@@ -146,6 +108,35 @@ export class EditLoadControlComponent implements OnInit {
       ANALYZE_ERROR_TRACE: [''],
       UPDATE_DATE: ['', Validators.required],
       UPDATED_BY: ['', Validators.required]
+    });
+  }
+
+  loadRecordData() {
+    const body = {
+      query: "SELECT distinct COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'table_load_control'"
+    };
+    this.loadControlService.getQueryResult(body).subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.recordMeta = data.data;
+        // Set form data
+        const formControls = this.editLoadControlForm.controls;
+        for (const key in formControls) {
+          if (formControls.hasOwnProperty(key)) {
+
+            const element = formControls[key];
+            const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
+            const dataType = this.recordMeta[index].DATA_TYPE;
+            if (this.record[key]) {
+              if (dataType == "timestamp") {
+                element.patchValue(new Date(this.record[key]));
+              }
+              else {
+                element.patchValue(this.record[key]);
+              }
+            }
+          }
+        }
+      }
     });
   }
 

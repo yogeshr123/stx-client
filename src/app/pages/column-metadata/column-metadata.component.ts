@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
+import { MessageService } from 'primeng/api';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
@@ -38,6 +39,7 @@ export class ColumnMetadataComponent implements OnInit {
   selectedColumns: any;
 
   constructor(
+    private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
     public dialogService: DialogService
@@ -178,11 +180,28 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   generateNewVersion() {
+    this.loader.columns = true;
     const allVersions = [];
     this.versions.forEach(element => {
       allVersions.push(element.METADATA_VERSION);
     });
     console.log(Math.max(...allVersions));
+    const request = {
+      table_name: this.selectedTable.TABLE_NAME,
+      version: Math.max(...allVersions)
+    };
+    this.columnMetadataService.generateNewVersion(request).subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        this.messageService.add({ severity: 'success', summary: 'Version Created!', life: 3000 });
+        this.ngOnInit();
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Could not create version.', life: 3000 });
+      }
+      this.loader.columns = false;
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Could not create version.', life: 3000 });
+      this.loader.columns = false;
+    });
   }
 
   showMapping(metadataVersion) {

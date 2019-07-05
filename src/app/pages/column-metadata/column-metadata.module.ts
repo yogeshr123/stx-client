@@ -10,6 +10,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -30,8 +32,10 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
     AccordionModule,
     DropdownModule,
     TabViewModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ToastModule
   ],
+  providers: [MessageService],
   entryComponents: [MetadataMappingComponent]
 })
 export class ColumnMetadataModule { }

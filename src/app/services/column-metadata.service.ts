@@ -45,4 +45,11 @@ export class ColumnMetadataService {
             .post(url, tableData)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    generateNewVersion(tableData) {
+        const url = `${environment.baseUrl}column-metadata/generateNewVersion`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

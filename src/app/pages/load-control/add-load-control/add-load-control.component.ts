@@ -4,6 +4,7 @@ import { RecordService } from '../../../services/record.service';
 import { Router } from '@angular/router';
 import { LoadControl } from '../../../model/load-control';
 import { LoadControlService } from '../../../services/load-control.service';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -21,23 +22,13 @@ export class AddLoadControlComponent implements OnInit {
     private formBuilder: FormBuilder,
     private recordService: RecordService,
     private router: Router,
-    private loadControlService: LoadControlService
+    private loadControlService: LoadControlService,
+    private messageService: MessageService
   ) {
     this.loadControl = LoadControl;
   }
   ngOnInit() {
     this.formInit();
-    for (var _i = 0; _i < this.loadControl.length; _i++) {
-      const columnName = this.loadControl[_i].columnName;
-      // this.record[columnName] = null;
-      if (this.loadControl[_i].valueSet) {
-        const tempArray = this.loadControl[_i].valueSet.split(',').map(item => item.trim());;
-        this.loadControl[_i].valueSetNew = tempArray;
-      }
-    }
-    // let test = JSON.stringify(this.temprecord);
-    // this.record = JSON.parse(test);
-    // this.router.navigate(['/loadcontrol']);
   }
 
   ngOnDestroy() {
@@ -99,18 +90,12 @@ export class AddLoadControlComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/loadcontrol']);
+    const body = {
+      record: this.addLoadControlForm.value
+    };
+    this.loadControlService.addRecord(body).subscribe((data: any) => {
+      this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+      this.router.navigate(['/loadcontrol']);
+    });
   }
-
-  saveRecord(operation: string): void {
-    // console.log("After save click:" + this.record);
-    // const body = {
-    //   operation: operation,
-    //   record: this.record
-    // };
-    // this.loadControlService.updateRecord(body).subscribe((data: any) => {
-    //   console.log(data);
-    // });
-  }
-
 }

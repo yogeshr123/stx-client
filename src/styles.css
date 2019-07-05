@@ -233,4 +233,25 @@ app-load-status .ui-calendar input {
 
 .scroll-table .ui-table-wrapper{
     overflow-y: scroll;
+    overflow-x: auto;
+	overflow-y: visible;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.scroll-table .ui-table-wrapper th{
+    height: 60px;
+}
+.scroll-table .ui-table-wrapper td{
+    height: 60px;
+}
+.leftfixedcol {
+	position: absolute;
+	left: 0;
+    width: 50px;
+}
+
+.rightfixedcol {
+	position: absolute;
+	right: 0;
+    width: 50px;
 }

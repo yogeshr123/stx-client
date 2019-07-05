@@ -15,6 +15,7 @@ declare var $: any;
 export class EditLoadControlComponent implements OnInit {
   editLoadControlForm: FormGroup;
   submitted = false;
+  newRecord = false;
   record: any;
   loadControl: any;
   recordMeta: any;

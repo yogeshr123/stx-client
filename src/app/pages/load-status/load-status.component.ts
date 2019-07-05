@@ -61,7 +61,8 @@ export class LoadStatusComponent implements OnInit {
       TABLE_NAME: '',
       DAG_NAME: '',
       AVG_TIME: '',
-      START_TIME: ''
+      START_TIME: '',
+      ENV_NAME: 'PRD'
     });
   }
 
@@ -319,6 +320,12 @@ export class LoadStatusComponent implements OnInit {
     if (minutes < 10) { minutes = '0' + minutes; }
     if (seconds < 10) { seconds = '0' + seconds; }
     return hours + ':' + minutes + ':' + seconds;
+  }
+
+  reset() {
+    this.searchFormInit();
+    this.toogleButtonPeriod = 7;
+    this.discard();
   }
 
 }

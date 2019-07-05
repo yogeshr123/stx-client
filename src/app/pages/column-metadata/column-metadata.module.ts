@@ -9,6 +9,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -28,7 +29,8 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
     ScrollPanelModule,
     AccordionModule,
     DropdownModule,
-    TabViewModule
+    TabViewModule,
+    MultiSelectModule
   ],
   entryComponents: [MetadataMappingComponent]
 })

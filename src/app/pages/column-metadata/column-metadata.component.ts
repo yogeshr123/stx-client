@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/api';
+import { Table } from 'primeng/components/table/table';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
+import { versionTableColumns, columnTableColumns, initColumnState } from './tableColumns';
 
 @Component({
   selector: 'app-column-metadata',
@@ -18,13 +20,22 @@ export class ColumnMetadataComponent implements OnInit {
   selectedVersion: any;
   versionData = [];
   loader = {
-    columns: true,
-    versions: false
+    columns: false,
+    versions: false,
+    tabs: false
   };
   state: any;
   tables: any;
+  uniqueTables: any;
+  selectedTableName: any;
   showGenerateVersion = true;
-  selectedTable = 'P250_ERROR_RATE_BY_ZONE_FACT';
+  selectedTable: any;
+  tableColumns = versionTableColumns;
+  columnTableColumns = columnTableColumns;
+  activeTab = 0;
+  @ViewChild(Table, { static: false }) tableComponent: Table;
+
+  selectedColumns: any;
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
@@ -33,24 +44,85 @@ export class ColumnMetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getVersions();
     this.getAllTables();
     this.state = this.commonService.getState();
+    if (this.state.CMV && this.state.CMV.selectedTable) {
+      this.selectedTable = this.state.CMV.selectedTable;
+      this.getVersions();
+    }
+    this.getSelectedColumns();
+  }
+
+  getSelectedColumns() {
+    if (!localStorage.getItem('selectedVersionColumns')) {
+      this.initColumnState();
+    } else {
+      // get selected columns from local storage
+      this.selectedColumns = JSON.parse(localStorage.getItem('selectedVersionColumns'));
+    }
+  }
+
+  saveColumnState() {
+    localStorage.setItem('selectedVersionColumns', JSON.stringify(this.selectedColumns));
+    this.resetFilters();
+  }
+
+  resetTable() {
+    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
+    if (statefilter) {
+      localStorage.removeItem('stateSelectedVersionColumns');
+    }
+    const columnState = JSON.parse(localStorage.getItem('selectedVersionColumns'));
+    if (columnState) {
+      localStorage.removeItem('selectedVersionColumns');
+      this.initColumnState();
+    }
+    this.tableComponent.reset();
+  }
+
+  resetFilters() {
+    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
+    if (statefilter) {
+      localStorage.removeItem('stateSelectedVersionColumns');
+    }
+    this.tableComponent.reset();
+  }
+
+  initColumnState() {
+    this.selectedColumns = initColumnState;
   }
 
   checkStateUpdateSelectedTable() {
-    if (this.state.version) {
-      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.version);
-      this.viewData(selectedVersion[0]);
+    this.loader.tabs = true;
+    if (this.state.CMV && this.state.CMV.activeTab) {
+      this.activeTab = this.state.CMV.activeTab;
     }
+    if (this.state.CMV && this.state.CMV.selectedTable) {
+      const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.selectedTable.METADATA_VERSION);
+      if (selectedVersion && selectedVersion.length) {
+        this.viewData(selectedVersion[0]);
+      }
+    }
+    this.loader.tabs = false;
   }
 
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
-        this.tables = this.removeDuplicates(resp.data, 'TABLE_NAME');
+        this.tables = resp.data;
+        this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
+        if (!this.state.CMV || !this.state.CMV.selectedTable) {
+          this.selectedTable = this.uniqueTables[0];
+          this.viewData(this.selectedTable);
+          this.getVersions();
+        } else {
+          const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
+          if (selectedTableName && selectedTableName.length) {
+            this.selectedTableName = selectedTableName[0];
+          }
+        }
       }
-    }, error => { });
+    });
   }
 
   removeDuplicates(myArr, prop) {
@@ -61,7 +133,7 @@ export class ColumnMetadataComponent implements OnInit {
 
   getVersions() {
     this.loader.versions = true;
-    const request = { table_name: this.selectedTable };
+    const request = { table_name: this.selectedTable.TABLE_NAME };
     this.columnMetadataService.getTableVersions(request).subscribe((resp: any) => {
       this.versions = resp.data;
       this.loader.versions = false;
@@ -76,13 +148,24 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
+  viewDetails(version) {
+    const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === version.TABLE_NAME);
+    if (selectedTableName && selectedTableName.length) {
+      this.selectedTableName = selectedTableName[0];
+    }
+    this.selectedTable = version;
+    this.state.CMV = { ...this.state.CMV, selectedTable: version };
+    this.tabChanged({ index: 1 });
+    this.getVersions();
+  }
+
   viewData(version) {
-    this.state.version = version.METADATA_VERSION;
+    this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
     this.loader.columns = true;
     const request = {
-      table_name: this.selectedTable,
+      table_name: this.selectedTable.TABLE_NAME,
       columnVersion: 1
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
@@ -108,6 +191,19 @@ export class ColumnMetadataComponent implements OnInit {
       width: '45%',
       data: metadataVersion
     });
+  }
+
+  tabChanged(event) {
+    this.activeTab = event.index;
+    this.state.CMV = { ...this.state.CMV, activeTab: this.activeTab };
+    this.commonService.setState(this.state);
+  }
+
+  checkDataType(val, dataType) {
+    if (dataType === 'object') {
+      return typeof val === 'object' && val !== null;
+    }
+    return typeof val === dataType;
   }
 
 }

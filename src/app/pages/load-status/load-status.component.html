@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<div class="app-title">
+<div class="app-title mb-3 p-3">
     <div>
         <h1>
             <i class="fa fa-tasks"></i> Load Status
@@ -9,7 +9,7 @@
 </div>
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-12 p-0">
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
                 <div class="col-8 row">
@@ -29,22 +29,27 @@
                 </div>
                 <div class="col-4 row">
                     <h5 class="col-12">Time Period</h5>
-                    <div class="col-7">
+                    <div class="col-6">
                         <div class="btn-group btn-group-toggle">
                             <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info">
-                                <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 days
+                                <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 D
                             </label>
                             <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info">
-                                <input id="1month" type="radio" name="timePeriod" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 Month
+                                <input id="1month" type="radio" name="timePeriod" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 M
                             </label>
                             <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info">
-                                <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 Months
+                                <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 M
                             </label>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <!-- <input type="submit" class="btn btn-primary" value="Submit"> -->
-                        <input (click)="discard()" type="reset" class="btn btn-dark ml-5" value="Reset">
+                    <div class="col-6">
+                        <div class="row">
+                            <select (change)="onSubmit(null, true)" class="form-control col-6 ml-2" formControlName="ENV_NAME">
+                                <option value="PRD">PRD</option>
+                                <option value="DEV">DEV</option>
+                            </select>
+                            <i (click)="reset()" class="fa fa-refresh btn btn-dark col-3 ml-2" aria-hidden="true" title="Reset Form"></i>
+                        </div>
                     </div>
                 </div>
             </form>

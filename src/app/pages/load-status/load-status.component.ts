@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
 import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { GanttComponent, GanttConfiguration, GanttTaskItem, GanttTaskLink, GanttEvents } from 'gantt-ui-component';
+
+import * as frappeGantt from 'frappe-gantt';
 
 @Component({
   selector: 'app-load-status',
@@ -64,6 +66,8 @@ export class LoadStatusComponent implements OnInit {
     DAG_NAME: []
   };
   toogleButtonPeriod = 7;
+  frappeGanttChart: any;
+  @ViewChild('ganttChart', { static: false }) ganttChart: ElementRef;
 
   constructor(
     private messageService: MessageService,
@@ -74,6 +78,22 @@ export class LoadStatusComponent implements OnInit {
   ngOnInit() {
     this.searchFormInit();
     this.getTasks();
+    const tasks = [
+      {
+        id: 'Task 1',
+        name: 'Redesign website',
+        start: '2016-12-28 01:00:00',
+        end: '2016-12-28 12:00:00',
+        progress: 20
+      }
+    ];
+    setTimeout(() => {
+      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
+        // view_mode: 'hour'  
+      });
+      this.frappeGanttChart.change_view_mode('Hour');
+    }, 1000);
+
   }
 
   searchFormInit() {

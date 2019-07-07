@@ -24,6 +24,7 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "node_modules/frappe-gantt/dist/frappe-gantt.css",
                             "node_modules/gantt-ui-component/gantt/gantt.css",
                             "node_modules/primeng/resources/themes/nova-light/theme.css",
                             "node_modules/primeng/resources/primeng.min.css",
@@ -33,6 +34,7 @@
                             "src/styles.scss"
                         ],
                         "scripts": [
+                            "node_modules/frappe-gantt/dist/frappe-gantt.min.js",
                             "node_modules/jquery/dist/jquery.min.js",
                             "src/assets/js/popper.min.js",
                             "node_modules/bootstrap/dist/js/bootstrap.min.js",

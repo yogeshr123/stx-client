@@ -25,6 +25,7 @@
     "daypilot-pro-angular": "https://npm.daypilot.org/daypilot-pro-angular/trial/2019.2.3880.tar.gz",
     "dhtmlx-gantt": "^6.1.7",
     "font-awesome": "^4.7.0",
+    "frappe-gantt": "^0.3.0",
     "gantt-ui-component": "^0.2.1",
     "jquery": "^3.3.1",
     "ngx-gantt": "^0.3.5",

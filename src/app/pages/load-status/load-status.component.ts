@@ -3,6 +3,7 @@ import { LoadStatusService } from 'src/app/services/load-status.service';
 import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { GanttComponent, GanttConfiguration, GanttTaskItem, GanttTaskLink, GanttEvents } from 'gantt-ui-component';
 
 @Component({
   selector: 'app-load-status',
@@ -10,6 +11,26 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./load-status.component.css']
 })
 export class LoadStatusComponent implements OnInit {
+
+  tasks = [
+    { id: 111, title: '', start_date: '2017-06-15', end_date: '2017-06-16', progress: 0.6, text: '' },
+    { id: 1, title: 'Task #1', start_date: '2017-06-15 01:00', end_date: '2017-06-15 03:00', progress: 0.6, text: 'Task 1' },
+    { id: 2, title: 'Task #2', start_date: '2017-06-15 02:00', end_date: '2017-06-15 02:30', progress: 0.6, text: 'Task 2' },
+  ];
+  ganttConfiguration: GanttConfiguration = {
+    fit_tasks: true,
+    scale_unit: 'hour',
+    // step: {
+    //   hour: 1
+    // },
+    row_height: 25,
+    drag_resize: false,
+    grid_columns: ['title'],
+    controls: {
+      hour: true
+    }
+  };
+
 
   searchForm: FormGroup;
   defaultDate: Date = new Date('Fri Jan 1 1970 00:00:00');

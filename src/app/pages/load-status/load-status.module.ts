@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
 import { NgxLoadingModule } from 'ngx-loading';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+// import { GanttModule, GanttService } from 'ngx-gantt';
+import { GanttModule } from 'gantt-ui-component';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';
@@ -16,6 +18,7 @@ import { LoadStatusRouting } from './load-status.routing';
 @NgModule({
   declarations: [LoadStatusComponent],
   imports: [
+    GanttModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

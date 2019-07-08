@@ -33,6 +33,7 @@ export class LoadStatusComponent implements OnInit {
   loader = {
     tasks: false,
     saveTasks: false,
+    gantt: false
   };
   tasksMoved = false;
   taskData: any;
@@ -62,7 +63,7 @@ export class LoadStatusComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   setFrappeGanttChart() {
-    // console.log("this.taskData ", this.taskData);
+    this.loader.gantt = true;
     const today = new Date();
     const year = today.getFullYear();
     const date = today.getDate();
@@ -117,6 +118,7 @@ export class LoadStatusComponent implements OnInit {
         }
       });
       this.getElementInfo();
+      this.loader.gantt = false;
     }, 1000);
   }
 

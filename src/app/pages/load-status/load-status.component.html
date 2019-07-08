@@ -78,6 +78,8 @@
                 <div *ngIf="errors.updateEror" class="alert alert-danger mt-2" role="alert">
                     Could not update all records. Please try again.
                 </div>
+                <ngx-loading [show]="loader.gantt" [config]="{ backdropBorderRadius: '3px', backdropBackgroundColour: 'rgba(0, 0, 0, 0.7)' }">
+                </ngx-loading>
                 <div class="mt3" *ngIf="taskData?.length; else elseTemplate">
                     <h2>Frappe Gantt</h2>
                     <div class="gantt-frappe row">

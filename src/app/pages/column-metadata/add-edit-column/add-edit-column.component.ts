@@ -21,7 +21,8 @@ export class AddEditColumnComponent implements OnInit {
     isEditMode: false
   };
   loader = {
-    formData: false
+    formData: false,
+    saveColumn: false
   };
   columnData: any;
   TABLE_NAME: any;
@@ -154,7 +155,6 @@ export class AddEditColumnComponent implements OnInit {
       this.addEditColumnForm.controls.SRC_DATA_TYPE.patchValue('');
       this.addEditColumnForm.controls.SRC_DATA_TYPE.updateValueAndValidity();
     }
-    console.log('this.addEditColumnForm.value ', this.addEditColumnForm.value);
   }
 
   checkFormValues(functionToCall) {
@@ -175,6 +175,7 @@ export class AddEditColumnComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loader.saveColumn = true;
     let functionToCall: any = 'addColumn';
     let messages = {
       success: 'Column Add!',
@@ -196,11 +197,15 @@ export class AddEditColumnComponent implements OnInit {
     this.columnMetadataService[functionToCall](request).subscribe((res: any) => {
       if (!res.error) {
         this.showToast('success', messages.success);
-        this.goBack();
+        setTimeout(() => {
+          this.goBack();
+        }, 1500);
       } else {
         this.showToast('error', messages.error);
       }
+      this.loader.saveColumn = false;
     }, error => {
+      this.loader.saveColumn = false;
       this.showToast('error', messages.error);
     });
   }

@@ -22,10 +22,11 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid}" class="btn btn-primary" type="button" (click)="onSubmit()">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn}" class="btn btn-primary" type="button" (click)="onSubmit()">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>
+                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
                         <button class="btn btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
                         </button>
@@ -50,7 +51,7 @@
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">SRC COLUMN TYPE</label>
                                     <div class="col-md-8">
-                                    <select formControlName="SRC_COLUMN_TYPE" class="form-control" (change)="updateValidation()">
+                                        <select formControlName="SRC_COLUMN_TYPE" class="form-control" (change)="updateValidation()">
                                       <option value="MAPPED">MAPPED</option>
                                       <option value="DERIVED">DERIVED</option>
                                       <option value="PREDEFINED">PREDEFINED</option>
@@ -199,10 +200,11 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid }" class="btn btn-primary" type="button" (click)="onSubmit()">
+                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn }" class="btn btn-primary" type="button" (click)="onSubmit()">
                           <i class="fa fa-fw fa-lg fa-check-circle"></i>
                           Save
                         </button>
+                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
                         <button class="btn btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>
                             Cancel

@@ -134,6 +134,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   getVersions() {
+    this.showGenerateVersion = true;
     this.loader.versions = true;
     const request = { table_name: this.selectedTable.TABLE_NAME };
     this.columnMetadataService.getTableVersions(request).subscribe((resp: any) => {
@@ -185,21 +186,20 @@ export class ColumnMetadataComponent implements OnInit {
     this.versions.forEach(element => {
       allVersions.push(element.METADATA_VERSION);
     });
-    console.log(Math.max(...allVersions));
     const request = {
       table_name: this.selectedTable.TABLE_NAME,
       version: Math.max(...allVersions)
     };
     this.columnMetadataService.generateNewVersion(request).subscribe((resp: any) => {
       if (resp && !resp.error) {
-        this.messageService.add({ severity: 'success', summary: 'Version Created!', life: 3000 });
+        this.showToast('success', 'Version Created!');
         this.ngOnInit();
       } else {
-        this.messageService.add({ severity: 'error', summary: 'Could not create version.', life: 3000 });
+        this.showToast('success', 'Could not create version.');
       }
       this.loader.columns = false;
     }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Could not create version.', life: 3000 });
+      this.showToast('success', 'Could not create version.');
       this.loader.columns = false;
     });
   }
@@ -223,6 +223,10 @@ export class ColumnMetadataComponent implements OnInit {
       return typeof val === 'object' && val !== null;
     }
     return typeof val === dataType;
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

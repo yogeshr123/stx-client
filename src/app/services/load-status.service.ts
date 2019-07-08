@@ -28,7 +28,7 @@ export class LoadStatusService {
     updateTasks(taskData) {
         const url = `${environment.baseUrl}table_load_status/updateTasks`;
         return this.http
-            .post(url, taskData)
+            .put(url, taskData)
             .pipe(catchError(this.commonService.handleError));
     }
 }

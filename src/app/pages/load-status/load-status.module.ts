@@ -11,7 +11,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 // import { GanttModule, GanttService } from 'ngx-gantt';
 import { GanttModule } from 'gantt-ui-component';
-import { NgGanttEditorModule } from 'ng-gantt'
+import { NgGanttEditorModule } from 'ng-gantt';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';

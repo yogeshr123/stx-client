@@ -84,20 +84,6 @@ export class LoadStatusComponent implements OnInit {
   ngOnInit() {
     this.searchFormInit();
     this.getTasks();
-    const tasks = [
-      {
-        id: 'Task 1',
-        name: 'Redesign website',
-        start: '2016-12-28 01:00:00',
-        end: '2016-12-28 12:00:00',
-        progress: 20
-      }
-    ];
-    setTimeout(() => {
-      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
-        view_mode: 'Day'
-      });
-    }, 1000);
 
     //
     this.editorOptions = {
@@ -112,6 +98,31 @@ export class LoadStatusComponent implements OnInit {
 
     //
 
+  }
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngAfterViewInit() {
+    const tasks = [
+      {
+        id: 'Task 1',
+        name: 'Redesign website',
+        start: '2016-12-28 01:00:00',
+        end: '2016-12-29 12:00:00',
+        progress: 80
+      },
+      {
+        id: 'Task 2',
+        name: 'Redesign website 2',
+        start: '2016-12-29 01:00:00',
+        end: '2016-12-30 12:00:00',
+        progress: 50
+      }
+    ];
+    setTimeout(() => {
+      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
+        view_mode: 'Day'
+      });
+    }, 2000);
   }
 
   initialData() {

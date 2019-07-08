@@ -79,25 +79,18 @@
                     Could not update all records. Please try again.
                 </div>
                 <div class="mt3">
-                    <h2>frappeGanttChart</h2>
+                    <h2>Frappe Chart</h2>
                     <div id="ganttChart" #ganttChart></div>
                 </div>
-                <!-- <div class="mt-3">
-                    <h2>ng-gantt</h2>
-                    <ng-gantt [options]="editorOptions" [data]="data"></ng-gantt>
-                </div>
-                <div class="mt-3">
-                    <h2>gantt-ui-component</h2>
-                    <gantt class="" [tasks]="tasks" [config]="ganttConfiguration"></gantt>
-                </div> -->
-                <!-- <div class="mt-3" *ngIf="taskData.length; else elseTemplate">
+                <div class="mt-3" *ngIf="taskData?.length; else elseTemplate">
+                    <h2>Daypilot Chart</h2>
                     <daypilot-gantt [config]="config"></daypilot-gantt>
-                </div> -->
-                <!-- <ng-template #elseTemplate>
+                </div>
+                <ng-template #elseTemplate>
                     <div class="text-center">
                         Data Not Available!
                     </div>
-                </ng-template> -->
+                </ng-template>
             </div>
         </div>
     </div>

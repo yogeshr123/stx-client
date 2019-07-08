@@ -74,6 +74,16 @@ input[type="submit"].disabled {
 
 /* FOR GANTT START */
 
+
+/* GANTT NEW */
+
+g.handle-group {
+    pointer-events: none;
+}
+
+
+/* GANTT NEW */
+
 .gantt_default_main {
     background: rgb(243, 243, 243);
 }
@@ -260,24 +270,4 @@ app-load-status .ui-calendar input {
     position: absolute;
     right: 0;
     width: 50px;
-}
-
-
-/* GANTT NEW */
-
-.dking_gantt {
-    .gantt_layout_outer_scroll_vertical {
-        display: inline-block;
-    }
-    .gantt_layout_outer_scroll_vertical {
-        display: inline-block;
-    }
-    .gantt_container_resize_watcher,
-    .gantt_grid_icon_indicator {
-        display: none;
-    }
-}
-
-g.handle-group {
-    pointer-events: none;
 }

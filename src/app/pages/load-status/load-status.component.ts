@@ -3,9 +3,7 @@ import { LoadStatusService } from 'src/app/services/load-status.service';
 import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { GanttComponent, GanttConfiguration, GanttTaskItem, GanttTaskLink, GanttEvents } from 'gantt-ui-component';
-import { GanttEditorComponent, GanttEditorOptions } from 'ng-gantt';
-import * as frappeGantt from 'frappe-gantt';
+import * as frappeGantt from '../../../../frappe-gantt';
 
 import * as $ from 'jQuery';
 
@@ -15,26 +13,6 @@ import * as $ from 'jQuery';
   styleUrls: ['./load-status.component.css']
 })
 export class LoadStatusComponent implements OnInit {
-
-  tasks = [
-    { id: 111, title: '', start_date: '2017-06-15', end_date: '2017-06-16', progress: 0.6, text: '' },
-    { id: 1, title: 'Task #1', start_date: '2017-06-15 01:00', end_date: '2017-06-15 03:00', progress: 0.6, text: 'Task 1' },
-    { id: 2, title: 'Task #2', start_date: '2017-06-15 02:00', end_date: '2017-06-15 02:30', progress: 0.6, text: 'Task 2' },
-  ];
-  ganttConfiguration: GanttConfiguration = {
-    fit_tasks: true,
-    scale_unit: 'hour',
-    // step: {
-    //   hour: 1
-    // },
-    row_height: 25,
-    drag_resize: false,
-    grid_columns: ['title'],
-    controls: {
-      hour: true
-    }
-  };
-
 
   searchForm: FormGroup;
   defaultDate: Date = new Date('Fri Jan 1 1970 00:00:00');
@@ -71,12 +49,6 @@ export class LoadStatusComponent implements OnInit {
   frappeGanttChart: any;
   @ViewChild('ganttChart', { static: false }) ganttChart: ElementRef;
 
-  //
-  public editorOptions: GanttEditorOptions;
-  public data: any;
-  @ViewChild(GanttEditorComponent, { static: false }) editor: GanttEditorComponent;
-  //
-
   constructor(
     private messageService: MessageService,
     private loadStatusService: LoadStatusService,
@@ -86,43 +58,34 @@ export class LoadStatusComponent implements OnInit {
   ngOnInit() {
     this.searchFormInit();
     this.getTasks();
-
-    //
-    this.editorOptions = {
-      vShowComp: false,
-      vShowRes: false,
-      vShowCost: false,
-      vShowDur: false,
-      vFormatArr: ['Day'],
-      vQuarterColWidth: 36,
-    };
-    this.data = this.initialData();
-
-    //
-
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
-  ngAfterViewInit() {
-    const tasks = [
-      {
-        id: 'Task 1',
-        name: 'Redesign website',
-        start: '2016-12-28 01:00:00',
-        end: '2016-12-28 12:00:00',
-        progress: 80
-      },
-      {
-        id: 'Task 2',
-        name: 'Redesign website 2',
-        start: '2016-12-28 12:00:00',
-        end: '2016-12-29 1:00:00',
-        progress: 50
+  setFrappeGanttChart() {
+    // console.log("this.taskData ", this.taskData);
+    const today = new Date();
+    const year = today.getFullYear();
+    const date = today.getDate();
+    const month = today.getMonth() + 1;
+    this.taskData = this.taskData.map(i => {
+      let calculatedEndTime: any = `${this.secondsToHMS(this.hmsToSeconds(i.START_TIME) + i.EXEC_TIME)}`;
+      let hours: any = calculatedEndTime.substr(0, 2);
+      const rest = calculatedEndTime.substr(2);
+      if (hours > 24) {
+        hours = hours - 24;
+        calculatedEndTime = new Date(`${year}-${month}-${date + 1} ${hours}${rest}`);
+      } else {
+        calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(i.START_TIME) + i.EXEC_TIME)}`);
       }
-    ];
+      i.id = i.DAG_RUN_ID;
+      i.name = `${i.SCHEMA_NAME}.${i.DAG_NAME}`;
+      i.start = new Date(`${year}-${month}-${date} ${i.START_TIME}`);
+      i.end = calculatedEndTime;
+      i.progress = (i.T1_EXEC / i.EXEC_TIME) * 100;
+      return i;
+    });
     setTimeout(() => {
-      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
-        step: 1,
+      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, this.taskData, {
         // custom_popup_html: (task) => {
         //   console.log("task ", task);
         //   const end_date = task._end.toString();
@@ -135,7 +98,6 @@ export class LoadStatusComponent implements OnInit {
         // `;
         // },
         view_mode: 'Hour',
-        column_width: 5,
         on_click: (task, too) => {
           console.log('on_click', task);
         },
@@ -149,24 +111,7 @@ export class LoadStatusComponent implements OnInit {
           console.log('on_view_change', mode);
         }
       });
-    }, 2000);
-  }
-
-  initialData() {
-    return [{
-      'pID': 1,
-      'pName': 'Task 1',
-      'pStart': '2017-02-20',
-      'pEnd': '2017-02-25',
-      'pClass': 'ggroupblack'
-    },
-    {
-      'pID': 2,
-      'pName': 'Task 2',
-      'pStart': '2017-02-20',
-      'pEnd': '2017-03-21',
-      'pClass': 'ggroupblack'
-    }];
+    }, 1000);
   }
 
   searchFormInit() {
@@ -225,6 +170,7 @@ export class LoadStatusComponent implements OnInit {
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
       this.setGanttValues();
+      this.setFrappeGanttChart();
     }
   }
 

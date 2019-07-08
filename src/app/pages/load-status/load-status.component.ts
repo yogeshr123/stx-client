@@ -7,6 +7,8 @@ import { GanttComponent, GanttConfiguration, GanttTaskItem, GanttTaskLink, Gantt
 import { GanttEditorComponent, GanttEditorOptions } from 'ng-gantt';
 import * as frappeGantt from 'frappe-gantt';
 
+import * as $ from 'jQuery';
+
 @Component({
   selector: 'app-load-status',
   templateUrl: './load-status.component.html',
@@ -107,20 +109,45 @@ export class LoadStatusComponent implements OnInit {
         id: 'Task 1',
         name: 'Redesign website',
         start: '2016-12-28 01:00:00',
-        end: '2016-12-29 12:00:00',
+        end: '2016-12-28 12:00:00',
         progress: 80
       },
       {
         id: 'Task 2',
         name: 'Redesign website 2',
-        start: '2016-12-29 01:00:00',
-        end: '2016-12-30 12:00:00',
+        start: '2016-12-28 12:00:00',
+        end: '2016-12-29 1:00:00',
         progress: 50
       }
     ];
     setTimeout(() => {
       this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
-        view_mode: 'Day'
+        step: 1,
+        // custom_popup_html: (task) => {
+        //   console.log("task ", task);
+        //   const end_date = task._end.toString();
+        //   return `
+        //   <div class="details-container">
+        //     <h5>${task.name}</h5>
+        //     <p>Expected to finish by ${end_date}</p>
+        //     <p>${task.progress}% completed!</p>
+        //   </div>
+        // `;
+        // },
+        view_mode: 'Hour',
+        column_width: 5,
+        on_click: (task, too) => {
+          console.log('on_click', task);
+        },
+        on_date_change: (task, start, end) => {
+          console.log('on_date_change', task, start, end);
+        },
+        on_progress_change: (task, progress) => {
+          console.log('on_progress_change', task, progress);
+        },
+        on_view_change: (mode) => {
+          console.log('on_view_change', mode);
+        }
       });
     }, 2000);
   }

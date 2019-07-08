@@ -322,20 +322,19 @@ export class LoadStatusComponent implements OnInit {
     // });
     // console.log('updatedTasks ', updatedTasks);
     this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
-      // console.log('resp ', resp.data);
       if (!resp.data.error || !resp.data.error.length) {
         this.tasksMoved = false;
         this.loader.saveTasks = false;
-        this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
+        this.showToast('success', 'Details successfully saved!');
       } else {
         this.errors.updateEror = true;
-        this.messageService.add({ severity: 'error', summary: 'Could not update all records.', life: 3000 });
+        this.showToast('error', 'Could not update all records.');
       }
       this.getTasks();
       this.loader.saveTasks = false;
       this.tasksMoved = false;
     }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Could not save details.', life: 3000 });
+      this.showToast('error', 'Could not save details.');
       this.loader.saveTasks = false;
     });
   }
@@ -398,6 +397,10 @@ export class LoadStatusComponent implements OnInit {
     this.searchFormInit();
     this.toogleButtonPeriod = 7;
     this.discard();
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

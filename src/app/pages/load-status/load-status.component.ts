@@ -82,22 +82,28 @@ export class LoadStatusComponent implements OnInit {
       i.start = new Date(`${year}-${month}-${date} ${i.START_TIME}`);
       i.end = calculatedEndTime;
       i.progress = (i.T1_EXEC / i.EXEC_TIME) * 100;
+      i.htmlRight = {
+        t1: `${this.secondsToHMS(i.T1_EXEC)} (${Math.round((i.T1_EXEC / i.EXEC_TIME) * 100)} %)`,
+        t2: `${this.secondsToHMS(i.T2_EXEC)} (${Math.round((i.T2_EXEC / i.EXEC_TIME) * 100)} %)`,
+        avg: `${this.secondsToHMS(i.EXEC_TIME)}`
+      };
       return i;
     });
     setTimeout(() => {
       this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, this.taskData, {
-        // custom_popup_html: (task) => {
-        //   console.log("task ", task);
-        //   const end_date = task._end.toString();
-        //   return `
-        //   <div class="details-container">
-        //     <h5>${task.name}</h5>
-        //     <p>Expected to finish by ${end_date}</p>
-        //     <p>${task.progress}% completed!</p>
-        //   </div>
-        // `;
-        // },
+        custom_popup_html: (task) => {
+          // console.log("task ", task);
+          return `
+            <div class="details-container">
+              <h5>${task.name}</h5>
+              <span>T1 Time: ${task.htmlRight.t1}</span>
+              <span>T2 Time: ${task.htmlRight.t2}</span>
+              <span>Avg. Time: ${task.htmlRight.avg}</span>
+            </div>
+          `;
+        },
         view_mode: 'Hour',
+        change_popup_mode: 'mouseover',
         on_click: (task, too) => {
           console.log('on_click', task);
         },
@@ -111,7 +117,13 @@ export class LoadStatusComponent implements OnInit {
           console.log('on_view_change', mode);
         }
       });
+      this.getElementInfo();
     }, 1000);
+  }
+
+  getElementInfo() {
+    $('span.space').css('height', $('.grid-header').height());
+    $('span.dag-name').css('height', $('.grid-row').height());
   }
 
   searchFormInit() {

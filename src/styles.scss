@@ -77,8 +77,20 @@ input[type="submit"].disabled {
 
 /* GANTT NEW */
 
-g.handle-group {
-    pointer-events: none;
+.gantt-container {
+    g.handle-group {
+        pointer-events: none;
+    }
+    .details-container {
+        padding: 10px;
+        text-align: center;
+        h5 {
+            font-size: 10px;
+        }
+        span {
+            display: block;
+        }
+    }
 }
 
 

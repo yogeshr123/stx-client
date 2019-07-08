@@ -61,7 +61,6 @@ export class LoadStatusComponent implements OnInit {
     this.getTasks();
   }
 
-  // tslint:disable-next-line:use-life-cycle-interface
   setFrappeGanttChart() {
     this.loader.gantt = true;
     const today = new Date();

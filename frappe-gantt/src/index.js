@@ -639,7 +639,7 @@ export default class Gantt {
                 this.options.column_width -
             this.options.column_width;
 
-        parent_element.scrollLeft = scroll_pos;
+        parent_element.scrollLeft = 0;
     }
 
     bind_grid_click() {

@@ -24,6 +24,7 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "node_modules/jsgantt-improved/dist/jsgantt.css",
                             "node_modules/frappe-gantt/dist/frappe-gantt.css",
                             "node_modules/gantt-ui-component/gantt/gantt.css",
                             "node_modules/primeng/resources/themes/nova-light/theme.css",

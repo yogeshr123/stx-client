@@ -4,7 +4,7 @@ import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { GanttComponent, GanttConfiguration, GanttTaskItem, GanttTaskLink, GanttEvents } from 'gantt-ui-component';
-
+import { GanttEditorComponent, GanttEditorOptions } from 'ng-gantt';
 import * as frappeGantt from 'frappe-gantt';
 
 @Component({
@@ -69,6 +69,12 @@ export class LoadStatusComponent implements OnInit {
   frappeGanttChart: any;
   @ViewChild('ganttChart', { static: false }) ganttChart: ElementRef;
 
+  //
+  public editorOptions: GanttEditorOptions;
+  public data: any;
+  @ViewChild(GanttEditorComponent, { static: false }) editor: GanttEditorComponent;
+  //
+
   constructor(
     private messageService: MessageService,
     private loadStatusService: LoadStatusService,
@@ -89,11 +95,40 @@ export class LoadStatusComponent implements OnInit {
     ];
     setTimeout(() => {
       this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, tasks, {
-        // view_mode: 'hour'  
+        view_mode: 'Day'
       });
-      this.frappeGanttChart.change_view_mode('Hour');
     }, 1000);
 
+    //
+    this.editorOptions = {
+      vShowComp: false,
+      vShowRes: false,
+      vShowCost: false,
+      vShowDur: false,
+      vFormatArr: ['Day'],
+      vQuarterColWidth: 36,
+    };
+    this.data = this.initialData();
+
+    //
+
+  }
+
+  initialData() {
+    return [{
+      'pID': 1,
+      'pName': 'Task 1',
+      'pStart': '2017-02-20',
+      'pEnd': '2017-02-25',
+      'pClass': 'ggroupblack'
+    },
+    {
+      'pID': 2,
+      'pName': 'Task 2',
+      'pStart': '2017-02-20',
+      'pEnd': '2017-03-21',
+      'pClass': 'ggroupblack'
+    }];
   }
 
   searchFormInit() {

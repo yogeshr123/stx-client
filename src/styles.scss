@@ -78,8 +78,18 @@ input[type="submit"].disabled {
 /* GANTT NEW */
 
 .gantt-container {
+    background: #f3f3f3;
+    svg {
+        fill: #f3f3f3;
+    }
     g.handle-group {
         pointer-events: none;
+    }
+    .gantt {
+        .grid-header,
+        .grid-row {
+            fill: #f3f3f3;
+        }
     }
     .details-container {
         padding: 10px;

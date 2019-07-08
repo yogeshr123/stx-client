@@ -455,7 +455,7 @@ export default class Gantt {
                 const $upper_text = createSVG('text', {
                     x: date.upper_x,
                     y: date.upper_y,
-                    innerHTML: date.upper_text,
+                    innerHTML: date.upper_text + ' / ' + (new Date().getMonth() + 1)+ ' / ' + new Date().getFullYear(),
                     class: 'upper-text',
                     append_to: this.layers.date
                 });

@@ -9,7 +9,8 @@ const versionTableColumns = [
     },
     {
         header: 'Status',
-        field: 'STATUS'
+        field: 'STATUS',
+        value: 'NEW'
     },
     {
         header: 'Start Date Time',

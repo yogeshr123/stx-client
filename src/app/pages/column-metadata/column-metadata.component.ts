@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { MessageService } from 'primeng/api';
@@ -34,7 +34,9 @@ export class ColumnMetadataComponent implements OnInit {
   tableColumns = versionTableColumns;
   columnTableColumns = columnTableColumns;
   activeTab = 0;
+  statusDefaultFilter = 'NEW';
   @ViewChild(Table, { static: false }) tableComponent: Table;
+  @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
 
   selectedColumns: any;
 
@@ -53,6 +55,15 @@ export class ColumnMetadataComponent implements OnInit {
       this.getVersions();
     }
     this.getSelectedColumns();
+  }
+
+  triggerDefaultFilter() {
+    const el: HTMLElement = this.statusFilter.nativeElement;
+    const event = new Event('input', {
+      bubbles: true,
+      cancelable: true
+    });
+    el.dispatchEvent(event);
   }
 
   getSelectedColumns() {
@@ -112,6 +123,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
+        this.triggerDefaultFilter();
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
         if (!this.state.CMV || !this.state.CMV.selectedTable) {
           this.selectedTable = this.uniqueTables[0];

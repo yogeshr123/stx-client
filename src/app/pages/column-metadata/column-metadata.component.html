@@ -36,6 +36,7 @@
                             <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
                                 <span *ngSwitchCase="'START_DATE'"></span>
                                 <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
                                 <input pInputText *ngSwitchDefault type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value">
                             </th>
                             <th></th>
@@ -101,7 +102,7 @@
                     <div class="table-responsive" *ngIf="!loader.columns">
                         <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
                             <ng-template pTemplate="caption">
-                                <div style="text-align: right">
+                                <div style="text-align: left">
                                     <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"></p-multiSelect>
                                 </div>
                                 <div class="globalSearch">

@@ -103,7 +103,6 @@ export class LoadStatusComponent implements OnInit {
           `;
         },
         view_mode: 'Hour',
-        change_popup_mode: 'mouseover',
         on_click: (task, too) => {
           console.log('on_click', task);
         },

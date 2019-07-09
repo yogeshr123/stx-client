@@ -54,7 +54,7 @@
                             <td *ngFor="let col of columns">
                                 <span> {{version[col.field]}} </span>
                             </td>
-                            <td style='white-space: nowrap' class="text-center">
+                            <td style='white-space: nowrap'>
                                 <div>
                                     <button (click)="approveHeader(version)" title="Approve" *ngIf="version.STATUS === 'NEW'" class="btn btn-success btn-sm">
                                         <i class="fa fa-thumbs-up"></i>

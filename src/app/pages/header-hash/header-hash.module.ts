@@ -1,15 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { TableModule } from 'primeng/table';
+import { NgxLoadingModule } from 'ngx-loading';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
 
 @NgModule({
-  declarations: [
-    HeaderHashComponent
-  ],
+  declarations: [HeaderHashComponent],
   imports: [
     CommonModule,
-    HeaderHashRouting
+    FormsModule,
+    ReactiveFormsModule,
+    HeaderHashRouting,
+    NgxLoadingModule.forRoot({}),
+    MultiSelectModule,
+    ToastModule,
+    TableModule
+  ],
+  providers: [
+    MessageService
   ]
 })
 export class HeaderHashModule { }

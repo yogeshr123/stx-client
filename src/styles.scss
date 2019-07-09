@@ -87,10 +87,13 @@ input[type="submit"].disabled {
         overflow-y: visible;
         margin-left: 50px;
         margin-right: 50px;
+        th, td{
+            height: 40px;
+        }
         .fixedcol{
             position: absolute;
             width: 50px;
-            height: 43px;
+            height: 41px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,132 +118,132 @@ input[type="submit"].disabled {
 
 
 
-// /* FOR GANTT START */
+/* FOR GANTT START */
 
-// .gantt_default_main {
-//     background: rgb(243, 243, 243);
-// }
+.gantt_default_main {
+    background: rgb(243, 243, 243);
+}
 
-// .gantt_default_corner {
-//     visibility: hidden;
-// }
+.gantt_default_corner {
+    visibility: hidden;
+}
 
-// .gantt_default_rowheader_scroll {
-//     background: rgb(243, 243, 243);
-// }
+.gantt_default_rowheader_scroll {
+    background: rgb(243, 243, 243);
+}
 
-// .gantt_default_event.movedItem b {
-//     color: #fff;
-// }
+.gantt_default_event.movedItem b {
+    color: #fff;
+}
 
-// daypilot-gantt div[aria-label=""] {
-//     visibility: hidden;
-//     background: rgb(243, 243, 243);
-// }
+daypilot-gantt div[aria-label=""] {
+    visibility: hidden;
+    background: rgb(243, 243, 243);
+}
 
-// daypilot-gantt .gantt_default_event_inner {
-//     text-align: center;
-//     font-size: 10px;
-// }
+daypilot-gantt .gantt_default_event_inner {
+    text-align: center;
+    font-size: 10px;
+}
 
-// daypilot-gantt .statusCircle {
-//     height: 15px;
-//     width: 15px;
-//     background-color: #bbb;
-//     border-radius: 50%;
-//     display: inline-block;
-//     vertical-align: bottom;
-// }
+daypilot-gantt .statusCircle {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: bottom;
+}
 
-// daypilot-gantt .statusCircle.COMPLETED {
-//     background-color: green;
-// }
+daypilot-gantt .statusCircle.COMPLETED {
+    background-color: green;
+}
 
-// daypilot-gantt .statusCircle.RUNNING {
-//     background-color: orange;
-// }
+daypilot-gantt .statusCircle.RUNNING {
+    background-color: orange;
+}
 
-// daypilot-gantt .statusCircle.FAILED {
-//     background-color: red;
-// }
+daypilot-gantt .statusCircle.FAILED {
+    background-color: red;
+}
 
-// daypilot-gantt .gantt_default_event_hover:before {
-//     content: '';
-//     display: inline-block;
-//     border: 1px solid rgb(204, 204, 204);
-//     width: 13px;
-//     height: 12px;
-//     background: transparent;
-//     position: absolute;
-//     right: 3px;
-//     top: 6px;
-//     z-index: 1;
-// }
+daypilot-gantt .gantt_default_event_hover:before {
+    content: '';
+    display: inline-block;
+    border: 1px solid rgb(204, 204, 204);
+    width: 13px;
+    height: 12px;
+    background: transparent;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+    z-index: 1;
+}
 
-// daypilot-gantt .gantt_default_event_bar_inner {
-//     height: 24px;
-// }
+daypilot-gantt .gantt_default_event_bar_inner {
+    height: 24px;
+}
 
-// daypilot-gantt .gantt_default_event_hover:after {
-//     content: '';
-//     display: inline-block;
-//     width: 0;
-//     height: 0;
-//     border-left: 3px solid transparent;
-//     border-right: 3px solid transparent;
-//     border-top: 6px solid #000;
-//     z-index: 30;
-//     position: absolute;
-//     right: 7px;
-//     top: 10px;
-// }
+daypilot-gantt .gantt_default_event_hover:after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 6px solid #000;
+    z-index: 30;
+    position: absolute;
+    right: 7px;
+    top: 10px;
+}
 
-// daypilot-gantt .gantt_default_scrollable {
-//     margin-top: 10px;
-// }
+daypilot-gantt .gantt_default_scrollable {
+    margin-top: 10px;
+}
 
-// daypilot-gantt .gantt_default_corner {
-//     margin-bottom: 10px;
-// }
+daypilot-gantt .gantt_default_corner {
+    margin-bottom: 10px;
+}
 
-// daypilot-gantt .gantt_default_rowmove_handle {
-//     visibility: hidden !important;
-// }
+daypilot-gantt .gantt_default_rowmove_handle {
+    visibility: hidden !important;
+}
 
 
-// /* context menu icons */
+/* context menu icons */
 
-// .menu_default_main .icon:before {
-//     position: absolute;
-//     margin-left: 0;
-//     margin-top: 3px;
-//     width: 14px;
-//     height: 14px;
-//     content: '';
-//     background-color: transparent;
-//     border: 1px solid;
-// }
+.menu_default_main .icon:before {
+    position: absolute;
+    margin-left: 0;
+    margin-top: 3px;
+    width: 14px;
+    height: 14px;
+    content: '';
+    background-color: transparent;
+    border: 1px solid;
+}
 
-// .menu_default_main .icon-blue:before {
-//     background-color: #1155cc;
-// }
+.menu_default_main .icon-blue:before {
+    background-color: #1155cc;
+}
 
-// .menu_default_main .icon-green:before {
-//     background-color: #6aa84f;
-// }
+.menu_default_main .icon-green:before {
+    background-color: #6aa84f;
+}
 
-// .menu_default_main .icon-yellow:before {
-//     background-color: #f1c232;
-// }
+.menu_default_main .icon-yellow:before {
+    background-color: #f1c232;
+}
 
-// .menu_default_main .icon-red:before {
-//     background-color: #cc0000;
-// }
+.menu_default_main .icon-red:before {
+    background-color: #cc0000;
+}
 
-// app-load-status .ui-autocomplete input,
-// app-load-status .ui-calendar input {
-//     width: 100%;
-// }
+app-load-status .ui-autocomplete input,
+app-load-status .ui-calendar input {
+    width: 100%;
+}
 
 
 // /* FOR GANTT END */

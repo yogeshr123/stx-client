@@ -103,7 +103,7 @@
                         <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
                             <ng-template pTemplate="caption">
                                 <div style="text-align: left">
-                                    <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"></p-multiSelect>
+                                    <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                                 </div>
                                 <div class="globalSearch">
                                     <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">

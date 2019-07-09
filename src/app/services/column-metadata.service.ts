@@ -52,4 +52,18 @@ export class ColumnMetadataService {
             .post(url, tableData)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    updateColumn(columnData) {
+        const url = `${environment.baseUrl}column-metadata/updateColumn`;
+        return this.http
+            .put(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    addColumn(columnData) {
+        const url = `${environment.baseUrl}column-metadata/addColumn`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

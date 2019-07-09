@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
         providedIn: 'root'
     }
 )
-export class LoadStatusService {
+export class HeaderHashService {
 
     constructor(
         private commonService: CommonService,
@@ -18,17 +18,24 @@ export class LoadStatusService {
     ) {
     }
 
-    getTasks(dayLimit = 7) {
-        const url = `${environment.baseUrl}table_load_status?dayLimit=${dayLimit}`;
+    getHeaders(tableData) {
+        const url = `${environment.baseUrl}header-hash`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getAllTables() {
+        const url = `${environment.baseUrl}header-hash/getAllTables`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
 
-    updateTasks(taskData) {
-        const url = `${environment.baseUrl}table_load_status/updateTasks`;
+    updateTasks(tableData) {
+        const url = `${environment.baseUrl}header-hash`;
         return this.http
-            .put(url, taskData)
+            .put(url, tableData)
             .pipe(catchError(this.commonService.handleError));
     }
 }

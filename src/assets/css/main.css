@@ -3389,6 +3389,7 @@ input[type="button"].btn-block {
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  font-size: 0.7rem;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {

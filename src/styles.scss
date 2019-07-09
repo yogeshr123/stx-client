@@ -85,9 +85,7 @@ input[type="submit"].disabled {
 
 .scroll-table {
     .ui-table-wrapper {
-        overflow-y: scroll;
         overflow-x: auto;
-        overflow-y: visible;
         margin-left: 50px;
         margin-right: 50px;
         th,

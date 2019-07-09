@@ -114,7 +114,7 @@ export class LoadStatusComponent implements OnInit {
       });
       this.getElementInfo();
       this.loader.gantt = false;
-    }, 1000);
+    }, 500);
   }
 
   getElementInfo() {
@@ -178,7 +178,9 @@ export class LoadStatusComponent implements OnInit {
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
       this.setGanttValues();
-      this.setFrappeGanttChart();
+      if (this.taskData && this.taskData.length) {
+        this.setFrappeGanttChart();
+      }
     }
   }
 

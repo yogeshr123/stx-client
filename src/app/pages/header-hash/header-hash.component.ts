@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
-
-import { initColumnState, columnTableColumns } from './tableColumns';
+import { Location } from '@angular/common';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
+
+import { initColumnState, columnTableColumns } from './tableColumns';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class HeaderHashComponent implements OnInit {
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
+    private location: Location,
     private messageService: MessageService,
     private headerHashService: HeaderHashService
   ) { }
@@ -112,6 +114,12 @@ export class HeaderHashComponent implements OnInit {
 
   showToast(severity, summary) {
     this.messageService.add({ severity, summary, life: 3000 });
+  }
+
+
+
+  goBack() {
+    this.location.back();
   }
 
 }

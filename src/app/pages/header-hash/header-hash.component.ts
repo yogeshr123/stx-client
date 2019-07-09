@@ -71,9 +71,8 @@ export class HeaderHashComponent implements OnInit {
       // console.log("res ", res);
       this.headers = res.data;
     }, error => {
-      console.error("error ", error);
-
-    })
+      console.error('error ', error);
+    });
   }
 
 }

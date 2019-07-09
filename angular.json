@@ -13,7 +13,6 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "preserveSymlinks": true,
                         "outputPath": "dist/stx-clientUI",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -25,8 +24,8 @@
                         ],
                         "styles": [
                             "lib/frappe-gantt/dist/frappe-gantt.css",
-                            "node_modules/primeng/resources/themes/nova-light/theme.css",
-                            "node_modules/primeng/resources/primeng.min.css",
+                            "src/assets/css/primeng/themes/theme.css",
+                            "src/assets/css/primeng/primeng.css",
                             "node_modules/primeicons/primeicons.css",
                             "node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "src/assets/css/main.css",
@@ -90,7 +89,7 @@
                         "tsConfig": "src/tsconfig.spec.json",
                         "karmaConfig": "src/karma.conf.js",
                         "styles": [
-                            "src/styles.css"
+                            "src/styles.scss"
                         ],
                         "scripts": [],
                         "assets": [

@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<div class="app-title mb-3 p-3">
+<div class="app-title">
     <div>
         <h1>
             <i class="fa fa-table"></i> Load Control
@@ -7,21 +7,21 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 p-0">
+    <div class="col-md-12">
         <div class="tile">
             <p-confirmDialog></p-confirmDialog>
             <div class="mb-3">
-                <button class="btn btn-primary mr-2" pTooltip="Trigger ETL" tooltipPosition="bottom"
+                <button class="btn btn-sm btn-primary mr-2" pTooltip="Trigger ETL" tooltipPosition="bottom"
                     type="button" (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')">
                     <i class="fa fa-bolt"></i>
                 </button>
-                <button class="btn btn-primary" pTooltip="Kill ETL" tooltipPosition="bottom" type="button"
-                    (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')">
+                <button class="btn btn-sm btn-primary" pTooltip="Kill ETL" tooltipPosition="bottom"
+                    type="button" (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')">
                     <i class="fa fa-ban"></i>
                 </button>
                 <div class="separator-vertical"></div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         More Actions
                     </button>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="btn-group float-right">
-                    <a class="btn btn-primary mr-2" routerLinkActive="active" routerLink="/loadcontrol/add">Add new</a>
+                    <a class="btn btn-sm btn-primary" routerLinkActive="active" routerLink="/loadcontrol/add">Add new</a>
                 </div>
             </div>
             <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
@@ -49,24 +49,24 @@
                     </div>
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
-                        <button class="btn btn-primary" type="button" (click)="search()">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="search()">
                             <i class="fa fa-lg fa-fw fa-search"></i>
                         </button>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th class="leftfixedcol">
+                        <th class="fixedcol leftfixedcol">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
                             {{col.field}}
                             <p-sortIcon [field]="col.field"></p-sortIcon>
                         </th>
-                        <th class="rightfixedcol"></th>
+                        <th class="fixedcol rightfixedcol"></th>
                     </tr>
                     <tr>
-                        <th class="leftfixedcol">
+                        <th class="fixedcol leftfixedcol">
                         </th>
                         <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
                             <p-multiSelect *ngSwitchCase="'ENV_NAME'" [options]="ENV_NAME" defaultLabel="ENV_NAME"
@@ -74,19 +74,19 @@
                             <input pInputText *ngSwitchDefault type="text" (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
                                 [value]="dt1.filters[col.field]?.value">
                         </th>
-                        <th class="rightfixedcol"></th>
+                        <th class="fixedcol rightfixedcol"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
-                        <td class="leftfixedcol">
+                        <td class="fixedcol leftfixedcol">
                             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                         </td>
                         <td *ngFor="let col of columns">
                             {{rowData[col.field]}}
                         </td>
-                        <td class="rightfixedcol" style="text-align:center">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="onRowEdit(rowData)">
+                        <td class="fixedcol rightfixedcol" style="text-align:center">
+                            <button class="btn btn-sm btn-primary btn-sm" type="button" (click)="onRowEdit(rowData)">
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </td>

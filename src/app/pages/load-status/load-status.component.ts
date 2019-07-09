@@ -10,7 +10,7 @@ import * as $ from 'jQuery';
 @Component({
   selector: 'app-load-status',
   templateUrl: './load-status.component.html',
-  styleUrls: ['./load-status.component.css'],
+  styleUrls: ['./load-status.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class LoadStatusComponent implements OnInit {

@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<div class="app-title mb-3 p-3">
+<div class="app-title">
     <div>
         <h1>
             <i class="fa fa-tasks"></i> Load Status
@@ -9,7 +9,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12 p-0">
+    <div class="col-md-12">
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
                 <div class="col-8 row">
@@ -31,14 +31,16 @@
                     <h5 class="col-12">Time Period</h5>
                     <div class="col-6">
                         <div class="btn-group btn-group-toggle">
-                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-info" title="Last 7 Days">
-                                <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7" (click)="updateTimePeriod(7)"> 7 D
+                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-sm btn-info" title="Last 7 Days">
+                                <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7"
+                                    (click)="updateTimePeriod(7)"> 7 D
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-info" title="Last 1 Month">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-sm btn-info" title="Last 1 Month">
                                 <input id="1month" type="radio" name="timePeriod" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 M
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-info" title="Last 6 Months">
-                                <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180" (click)="updateTimePeriod(180)"> 6 M
+                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-sm btn-info" title="Last 6 Months">
+                                <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180"
+                                    (click)="updateTimePeriod(180)"> 6 M
                             </label>
                         </div>
                     </div>
@@ -48,17 +50,15 @@
                                 <option value="PRD">PRD</option>
                                 <option value="DEV">DEV</option>
                             </select>
-                            <i (click)="reset()" class="fa fa-refresh btn btn-dark col-3 ml-2" aria-hidden="true" title="Reset Form"></i>
+                            <i (click)="reset()" class="fa fa-refresh btn btn-sm btn-dark col-3 ml-2" aria-hidden="true" title="Reset Form"></i>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="col-12">
-                <hr>
-            </div>
+            <div class="separator"></div>
             <ngx-loading [show]="loader.tasks" [config]="{ backdropBorderRadius: '3px' }">
             </ngx-loading>
-            <div class="mt-2 col-12" *ngIf="!loader.tasks">
+            <div class="mt-2" *ngIf="!loader.tasks">
                 <div class="clearfix">
                     <div class="div" class="float-left mt-2">
                         <label>Show</label>
@@ -71,8 +71,8 @@
                         <label class="ml-1">Records</label>
                     </div>
                     <img *ngIf="loader.saveTasks" class="float-right" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-success ml-2" (click)="save()">Save Changes</button>
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-danger" (click)="
+                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-sm btn-success ml-2" (click)="save()">Save Changes</button>
+                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}" class="float-right btn btn-sm btn-danger" (click)="
                     discard()">Discard Changes</button>
                 </div>
                 <div *ngIf="errors.updateEror" class="alert alert-danger mt-2" role="alert">

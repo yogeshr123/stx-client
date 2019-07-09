@@ -13,19 +13,15 @@
         <div class="tile">
             <div *ngIf="uniqueTables?.length">
                 Table Name:
-                <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
-                    optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
+                <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
 
                 <button class="btn btn-sm btn-primary float-right">Add New</button>
             </div>
             <div class="table-responsive">
-                <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}"
-                    [columns]="selectedColumns" [reorderableColumns]="true">
+                <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
                     <ng-template pTemplate="caption">
                         <div style="text-align: left">
-                            <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field"
-                                selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
-                                defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
+                            <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                         </div>
                         <div class="globalSearch">
                             <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
@@ -38,8 +34,7 @@
                         <tr>
                             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                                 {{col.header}}
-                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-                                    ariaLabelAsc="Activate to sort in ascending order">
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
                                 </p-sortIcon>
                             </th>
                             <th>Action</th>
@@ -48,11 +43,8 @@
                             <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
                                 <span *ngSwitchCase="'START_DATE'"></span>
                                 <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
-                                    (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
-                                    [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                                <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
-                                    [value]="dt2.filters[col.field]?.value">
+                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                                <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value">
                             </th>
                             <th></th>
                         </tr>
@@ -64,11 +56,7 @@
                             </td>
                             <td style='white-space: nowrap' class="text-center">
                                 <div>
-<<<<<<< HEAD
                                     <button (click)="approveHeader(version)" title="Approve" *ngIf="version.STATUS === 'NEW'" class="btn btn-success btn-sm">
-=======
-                                    <button title="Approve" *ngIf="version.STATUS === 'NEW'" class="btn btn-sm btn-success btn-sm">
->>>>>>> 34778dccec868cdb2efc0589d1577fbcf808d4f7
                                         <i class="fa fa-thumbs-up"></i>
                                     </button>
                                     <button title="Edit" *ngIf="version.STATUS === 'NEW'" class="btn btn-sm btn-primary btn-sm ml-1">

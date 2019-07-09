@@ -4,7 +4,7 @@
         <h5>
             <i class="fa fa-columns"></i>
             <span> Column Metadata Version</span>
-            <span *ngIf="routeInfo"> - {{routeInfo.id ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Column</span>
+            <span *ngIf="routeInfo"> - {{routeInfo.id && !routeInfo.isViewOnly ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Column</span>
         </h5>
         <div class="mt-4">
             Table Name:

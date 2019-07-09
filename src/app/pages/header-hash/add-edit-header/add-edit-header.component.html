@@ -1,3 +1,15 @@
-<p>
-  add-edit-header works!
-</p>
+<p-toast></p-toast>
+<div class="app-title mb-3 p-3">
+    <div>
+        <h5>
+            <i class="fa fa-hashtag"></i>
+            <span> File Header Hash</span>
+            <span *ngIf="routeInfo"> - {{routeInfo.id && !routeInfo.isViewOnly ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Header</span>
+        </h5>
+        <!-- <div class="mt-4">
+      Table Name:
+      <h6 class="d-inline-block" *ngIf="TABLE_NAME"> {{TABLE_NAME}} </h6>
+    </div> -->
+    </div>
+    <a class="btn btn-link goBack float-right" (click)="goBack()">Go Back</a>
+</div>

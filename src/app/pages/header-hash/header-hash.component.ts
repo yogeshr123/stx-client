@@ -116,8 +116,6 @@ export class HeaderHashComponent implements OnInit {
     this.messageService.add({ severity, summary, life: 3000 });
   }
 
-
-
   goBack() {
     this.location.back();
   }

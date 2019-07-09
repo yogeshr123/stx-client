@@ -1,0 +1,250 @@
+// /* You can add global styles to this file, and also import other style files */
+
+/* GLOBAL CSS*/
+*:focus {
+    outline: none;
+}
+
+.app-header__logo {
+    background: url('assets/images/seagate-logo.png') no-repeat center center;
+    background-size: 60%;
+    background-color: #000;
+}
+
+.pace .pace-progress {
+    background: #249c42;
+}
+
+.treeview-item {
+    padding: 12px 15px 12px 35px;
+}
+
+.separator {
+    height: 1px;
+    width: 100%;
+    margin: 10px 0;
+    background-color: #ddd;
+}
+
+.separator-vertical {
+    width: 2px;
+    background-color: #ddd;
+    margin: -8px 15px;
+    height: 25px;
+    display: inline-block;
+}
+
+.btn .icon,
+.btn .fa {
+    margin-right: 0;
+}
+
+button.disabled,
+input[type="submit"].disabled {
+    cursor: not-allowed !important;
+}
+
+.ui-toast.ui-toast-top-right {
+    z-index: 2000 !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: dimgrey;
+    outline: 1px solid dimgrey;
+}
+
+.globalSearch{
+    display: flex;
+    input[type="text"] {
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        outline: none;
+        padding: 5px 10px;
+    }
+    button {
+        border-radius: 0;
+    }
+}
+
+/* GLOBAL CSS ENDs */
+
+
+/* Scrollable table with fixed left and right col */
+.scroll-table{
+    .ui-table-wrapper {
+        overflow-y: scroll;
+        overflow-x: auto;
+        overflow-y: visible;
+        margin-left: 50px;
+        margin-right: 50px;
+        .fixedcol{
+            position: absolute;
+            width: 50px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .leftfixedcol {
+            left: 0;
+        }
+        .rightfixedcol {
+            right: 0;
+        }
+        .ui-table-tbody > tr.ui-state-highlight {
+            background-color: #ffffff !important;
+            color: #333333 !important;
+        }
+        .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
+            background-color: #f9f9f9 !important;
+        }
+    }
+} 
+/* Scrollable table with fixed left and right col ends */
+
+
+
+// /* FOR GANTT START */
+
+// .gantt_default_main {
+//     background: rgb(243, 243, 243);
+// }
+
+// .gantt_default_corner {
+//     visibility: hidden;
+// }
+
+// .gantt_default_rowheader_scroll {
+//     background: rgb(243, 243, 243);
+// }
+
+// .gantt_default_event.movedItem b {
+//     color: #fff;
+// }
+
+// daypilot-gantt div[aria-label=""] {
+//     visibility: hidden;
+//     background: rgb(243, 243, 243);
+// }
+
+// daypilot-gantt .gantt_default_event_inner {
+//     text-align: center;
+//     font-size: 10px;
+// }
+
+// daypilot-gantt .statusCircle {
+//     height: 15px;
+//     width: 15px;
+//     background-color: #bbb;
+//     border-radius: 50%;
+//     display: inline-block;
+//     vertical-align: bottom;
+// }
+
+// daypilot-gantt .statusCircle.COMPLETED {
+//     background-color: green;
+// }
+
+// daypilot-gantt .statusCircle.RUNNING {
+//     background-color: orange;
+// }
+
+// daypilot-gantt .statusCircle.FAILED {
+//     background-color: red;
+// }
+
+// daypilot-gantt .gantt_default_event_hover:before {
+//     content: '';
+//     display: inline-block;
+//     border: 1px solid rgb(204, 204, 204);
+//     width: 13px;
+//     height: 12px;
+//     background: transparent;
+//     position: absolute;
+//     right: 3px;
+//     top: 6px;
+//     z-index: 1;
+// }
+
+// daypilot-gantt .gantt_default_event_bar_inner {
+//     height: 24px;
+// }
+
+// daypilot-gantt .gantt_default_event_hover:after {
+//     content: '';
+//     display: inline-block;
+//     width: 0;
+//     height: 0;
+//     border-left: 3px solid transparent;
+//     border-right: 3px solid transparent;
+//     border-top: 6px solid #000;
+//     z-index: 30;
+//     position: absolute;
+//     right: 7px;
+//     top: 10px;
+// }
+
+// daypilot-gantt .gantt_default_scrollable {
+//     margin-top: 10px;
+// }
+
+// daypilot-gantt .gantt_default_corner {
+//     margin-bottom: 10px;
+// }
+
+// daypilot-gantt .gantt_default_rowmove_handle {
+//     visibility: hidden !important;
+// }
+
+
+// /* context menu icons */
+
+// .menu_default_main .icon:before {
+//     position: absolute;
+//     margin-left: 0;
+//     margin-top: 3px;
+//     width: 14px;
+//     height: 14px;
+//     content: '';
+//     background-color: transparent;
+//     border: 1px solid;
+// }
+
+// .menu_default_main .icon-blue:before {
+//     background-color: #1155cc;
+// }
+
+// .menu_default_main .icon-green:before {
+//     background-color: #6aa84f;
+// }
+
+// .menu_default_main .icon-yellow:before {
+//     background-color: #f1c232;
+// }
+
+// .menu_default_main .icon-red:before {
+//     background-color: #cc0000;
+// }
+
+// app-load-status .ui-autocomplete input,
+// app-load-status .ui-calendar input {
+//     width: 100%;
+// }
+
+
+// /* FOR GANTT END */
+
+
+
+

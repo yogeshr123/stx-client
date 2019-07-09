@@ -5,15 +5,6 @@ import { RecordService } from '../../services/record.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 
-export interface Car {
-  TABLE_NAME?;
-  ENV_NAME?;
-  TARGET_SCHEMA_NAME?;
-  color?;
-  price?;
-  saleDate?;
-}
-
 @Component({
   selector: 'app-loadcontrol',
   templateUrl: './load-control.component.html',

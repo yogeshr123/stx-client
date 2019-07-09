@@ -69,7 +69,7 @@
                         <th class="fixedcol leftfixedcol">
                         </th>
                         <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                            <p-multiSelect *ngSwitchCase="'ENV_NAME'" [options]="ENV_NAME" defaultLabel="ENV_NAME"
+                            <p-multiSelect appendTo="body" *ngSwitchCase="'ENV_NAME'" [options]="ENV_NAME" defaultLabel="ENV_NAME"
                                 [panelStyle]="{width:'200px'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
                             <input pInputText *ngSwitchDefault type="text" (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
                                 [value]="dt1.filters[col.field]?.value">

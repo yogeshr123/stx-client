@@ -62,6 +62,7 @@
                 <div *ngIf="uniqueTables?.length">
                     Table Name:
                     <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
+                    <a [routerLink]="[ '/header-hash']" class="btn btn-primary float-right">Show Header Hash</a>
                 </div>
                 <div class="mt-3">
                     <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">

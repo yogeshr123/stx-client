@@ -34,6 +34,10 @@ const routes: Routes = [
                 path: 'CMU',
                 loadChildren: '../../pages/column-metadata/column-metadata.module#ColumnMetadataModule'
             },
+            {
+                path: 'header-hash',
+                loadChildren: '../../pages/header-hash/header-hash.module#HeaderHashModule'
+            },
 
             // {
             // 	path: 'error/403',

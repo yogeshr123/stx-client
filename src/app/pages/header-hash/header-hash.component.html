@@ -15,7 +15,7 @@
             <div *ngIf="uniqueTables?.length">
                 Table Name:
                 <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
-                <button class="btn btn-sm btn-primary float-right">Add New</button>
+                <button [routerLink]="[ './add-header' ]" class="btn btn-sm btn-primary float-right">Add New</button>
             </div>
             <div class="table-responsive mt-2">
                 <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
@@ -49,22 +49,22 @@
                             <th></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-version let-columns="columns">
-                        <tr [pSelectableRow]="version">
+                    <ng-template pTemplate="body" let-header let-columns="columns">
+                        <tr [pSelectableRow]="header">
                             <td *ngFor="let col of columns">
-                                <span> {{version[col.field]}} </span>
+                                <span> {{header[col.field]}} </span>
                             </td>
                             <td style='white-space: nowrap'>
                                 <div>
-                                    <button (click)="approveHeader(version)" title="Approve" *ngIf="version.STATUS === 'NEW'" class="btn btn-success btn-sm">
+                                    <button (click)="approveHeader(header)" title="Approve" *ngIf="header.STATUS === 'NEW'" class="btn btn-success btn-sm">
                                         <i class="fa fa-thumbs-up"></i>
                                     </button>
-                                    <button title="Edit" *ngIf="version.STATUS === 'NEW'" class="btn btn-sm btn-primary btn-sm ml-1">
+                                    <button [routerLink]="[ './edit-header', header.HEADER_HASH ]" title="Edit" *ngIf="header.STATUS === 'NEW'" class="btn btn-sm btn-primary btn-sm ml-1">
                                         <i class="fa fa-pencil"></i>
                                     </button>
-                                    <button title="view" class="btn btn-sm btn-info btn-sm ml-1">
+                                    <button [routerLink]="[ './view-header', header.HEADER_HASH ]" title="view" class="btn btn-sm btn-info btn-sm ml-1">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </button>
+                                        </button>
                                 </div>
                             </td>
                         </tr>

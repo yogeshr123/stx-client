@@ -11,9 +11,10 @@ import { DropdownModule } from 'primeng/dropdown';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
+import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.component';
 
 @NgModule({
-  declarations: [HeaderHashComponent],
+  declarations: [HeaderHashComponent, AddEditHeaderComponent],
   imports: [
     CommonModule,
     FormsModule,

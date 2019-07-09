@@ -42,6 +42,13 @@ export class AddEditHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appState = JSON.parse(localStorage.getItem('appState'));
+    if (this.appState && this.appState.CMV && this.appState.CMV.selectedTable) {
+      this.TABLE_NAME = this.appState.CMV.selectedTable.TABLE_NAME;
+      // this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.CMV.selectedTable.SCHEMA_NAME);
+      // this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.CMV.selectedTable.TABLE_NAME);
+      // this.addEditColumnForm.controls.METADATA_VERSION.patchValue(this.appState.CMV.selectedTable.METADATA_VERSION);
+    }
   }
 
   goBack() {

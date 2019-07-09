@@ -106,6 +106,10 @@ input[type="submit"].disabled {
             fill: rgb(230, 109, 245);
         }
     }
+    .gantt .bar-wrapper:hover .bar-progress,
+    .gantt .bar-progress {
+        fill: rgb(0, 150, 136);
+    }
 }
 
 

@@ -207,11 +207,11 @@ export class ColumnMetadataComponent implements OnInit {
         this.showToast('success', 'Version Created!');
         this.ngOnInit();
       } else {
-        this.showToast('success', 'Could not create version.');
+        this.showToast('error', 'Could not create version.');
       }
       this.loader.columns = false;
     }, error => {
-      this.showToast('success', 'Could not create version.');
+      this.showToast('error', 'Could not create version.');
       this.loader.columns = false;
     });
   }

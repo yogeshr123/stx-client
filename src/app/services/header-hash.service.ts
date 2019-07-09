@@ -32,6 +32,14 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    approveHeader(header) {
+        const url = `${environment.baseUrl}header-hash/approveHeader`;
+        return this.http
+            .put(url, header)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+
     updateTasks(tableData) {
         const url = `${environment.baseUrl}header-hash`;
         return this.http

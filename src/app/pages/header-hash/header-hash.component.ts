@@ -3,6 +3,7 @@ import { HeaderHashService } from 'src/app/services/header-hash.service';
 
 import { initColumnState, columnTableColumns } from './tableColumns';
 import { Table } from 'primeng/table';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class HeaderHashComponent implements OnInit {
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
+    private messageService: MessageService,
     private headerHashService: HeaderHashService
   ) { }
 
@@ -87,10 +89,29 @@ export class HeaderHashComponent implements OnInit {
     });
   }
 
+  approveHeader(header) {
+    this.headerHashService.approveHeader({ header }).subscribe((resp: any) => {
+      console.log('res ', resp);
+      if (resp && !resp.error) {
+        this.showToast('success', 'Successfully Approved');
+        this.ngOnInit();
+      } else {
+        this.showToast('error', 'Approval failed');
+      }
+    }, error => {
+      this.showToast('error', 'Approval failed');
+      console.error('error ', error);
+    });
+  }
+
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

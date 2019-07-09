@@ -121,12 +121,23 @@
                                     </th>
                                     <th>Action</th>
                                 </tr>
+                                <tr>
+                                    <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
+                                        <span *ngSwitchCase="'START_DATE'"></span>
+                                        <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                                        <!-- <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                                            (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
+                                            [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter"> -->
+                                        <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value">
+                                    </th>
+                                    <th></th>
+                                </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-version let-columns="columns">
                                 <tr [pSelectableRow]="version">
                                     <td *ngFor="let col of columns">
                                         <ng-container *ngIf="checkDataType(version[col.field], 'object'); else elseTemplate">
-                                            {{ version[col.field].data[0] ? 'True' : 'False' }}
+                                            {{ version[col.field].data[0] || !version[col.field] ? 'True' : 'False' }}
                                         </ng-container>
                                         <ng-template #elseTemplate>
                                             <span>

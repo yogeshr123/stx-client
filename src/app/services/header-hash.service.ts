@@ -25,6 +25,13 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getAllTables() {
+        const url = `${environment.baseUrl}header-hash/getAllTables`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     updateTasks(tableData) {
         const url = `${environment.baseUrl}header-hash`;
         return this.http

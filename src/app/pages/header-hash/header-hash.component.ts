@@ -14,6 +14,8 @@ export class HeaderHashComponent implements OnInit {
 
   headers: any;
   selectedColumns: any;
+  selectedTableName: any;
+  uniqueTables: any;
   columnTableColumns = columnTableColumns;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
@@ -24,6 +26,7 @@ export class HeaderHashComponent implements OnInit {
   ngOnInit() {
     this.getHeaders();
     this.getSelectedColumns();
+    this.getAllTables();
   }
 
   getSelectedColumns() {
@@ -65,6 +68,15 @@ export class HeaderHashComponent implements OnInit {
     this.selectedColumns = initColumnState;
   }
 
+  getAllTables() {
+    this.headerHashService.getAllTables().subscribe((res: any) => {
+      const allTables = res.data;
+      this.uniqueTables = this.removeDuplicates(allTables, 'TABLE_NAME');
+    }, error => {
+      console.error('error ', error);
+    });
+  }
+
   getHeaders() {
     const request = { table_name: 'P250_ERROR_RATE_BY_ZONE_FACT' };
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
@@ -72,6 +84,12 @@ export class HeaderHashComponent implements OnInit {
       this.headers = res.data;
     }, error => {
       console.error('error ', error);
+    });
+  }
+
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
   }
 

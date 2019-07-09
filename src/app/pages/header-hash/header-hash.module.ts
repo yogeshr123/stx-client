@@ -7,6 +7,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
@@ -21,7 +22,8 @@ import { HeaderHashRouting } from './header-hash.routing';
     NgxLoadingModule.forRoot({}),
     MultiSelectModule,
     ToastModule,
-    TableModule
+    TableModule,
+    DropdownModule
   ],
   providers: [
     MessageService

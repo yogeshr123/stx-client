@@ -13,7 +13,7 @@
         <div class="tile">
             <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="row">
                 <div class="col-8 row">
-                    <h5 class="col-12">Filter by</h5>
+                    <h6 class="col-12">Filter by</h6>
                     <div class="col-3">
                         <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name" [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')" (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
@@ -28,17 +28,17 @@
                     </div>
                 </div>
                 <div class="col-4 row">
-                    <h5 class="col-12">Time Period</h5>
+                    <h6 class="col-12">Time Period</h6>
                     <div class="col-6">
                         <div class="btn-group btn-group-toggle">
-                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-sm btn-info" title="Last 7 Days">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-sm btn-primary" title="Last 7 Days">
                                 <input id="7days" type="radio" name="timePeriod" autocomplete="off" checked="" value="7"
                                     (click)="updateTimePeriod(7)"> 7 D
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-sm btn-info" title="Last 1 Month">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 30}" class="btn btn-sm btn-primary" title="Last 1 Month">
                                 <input id="1month" type="radio" name="timePeriod" autocomplete="off" value="30" (click)="updateTimePeriod(30)"> 1 M
                             </label>
-                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-sm btn-info" title="Last 6 Months">
+                            <label [ngClass]="{'active': toogleButtonPeriod === 180}" class="btn btn-sm btn-primary" title="Last 6 Months">
                                 <input id="6months" type="radio" name="timePeriod" autocomplete="off" value="180"
                                     (click)="updateTimePeriod(180)"> 6 M
                             </label>

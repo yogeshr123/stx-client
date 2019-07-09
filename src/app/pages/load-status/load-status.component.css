@@ -10,3 +10,175 @@
     border: 1px solid #e0e0e0;
     height: 100%;
 }
+
+
+/* FOR GANTT START */
+
+
+/* GANTT NEW */
+
+.gantt-container {
+    background: #f3f3f3;
+    svg {
+        fill: #f3f3f3;
+    }
+    g.handle-group {
+        pointer-events: none;
+    }
+    .gantt {
+        .grid-header,
+        .grid-row {
+            fill: #f3f3f3;
+        }
+    }
+    .details-container {
+        padding: 10px;
+        text-align: center;
+        h5 {
+            font-size: 10px;
+        }
+        span {
+            display: block;
+        }
+    }
+    .bar-wrapper.moved {
+        .bar {
+            fill: rgb(230, 109, 245);
+        }
+    }
+    .gantt .bar-wrapper:hover .bar-progress,
+    .gantt .bar-progress {
+        fill: rgb(0, 150, 136);
+    }
+}
+
+
+/* GANTT NEW */
+
+.gantt_default_main {
+    background: rgb(243, 243, 243);
+}
+
+.gantt_default_corner {
+    visibility: hidden;
+}
+
+.gantt_default_rowheader_scroll {
+    background: rgb(243, 243, 243);
+}
+
+.gantt_default_event.movedItem b {
+    color: #fff;
+}
+
+daypilot-gantt div[aria-label=""] {
+    visibility: hidden;
+    background: rgb(243, 243, 243);
+}
+
+daypilot-gantt .gantt_default_event_inner {
+    text-align: center;
+    font-size: 10px;
+}
+
+daypilot-gantt .statusCircle {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+daypilot-gantt .statusCircle.COMPLETED {
+    background-color: green;
+}
+
+daypilot-gantt .statusCircle.RUNNING {
+    background-color: orange;
+}
+
+daypilot-gantt .statusCircle.FAILED {
+    background-color: red;
+}
+
+daypilot-gantt .gantt_default_event_hover:before {
+    content: '';
+    display: inline-block;
+    border: 1px solid rgb(204, 204, 204);
+    width: 13px;
+    height: 12px;
+    background: transparent;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+    z-index: 1;
+}
+
+daypilot-gantt .gantt_default_event_bar_inner {
+    height: 24px;
+}
+
+daypilot-gantt .gantt_default_event_hover:after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 6px solid #000;
+    z-index: 30;
+    position: absolute;
+    right: 7px;
+    top: 10px;
+}
+
+daypilot-gantt .gantt_default_scrollable {
+    margin-top: 10px;
+}
+
+daypilot-gantt .gantt_default_corner {
+    margin-bottom: 10px;
+}
+
+daypilot-gantt .gantt_default_rowmove_handle {
+    visibility: hidden !important;
+}
+
+
+/* context menu icons */
+
+.menu_default_main .icon:before {
+    position: absolute;
+    margin-left: 0;
+    margin-top: 3px;
+    width: 14px;
+    height: 14px;
+    content: '';
+    background-color: transparent;
+    border: 1px solid;
+}
+
+.menu_default_main .icon-blue:before {
+    background-color: #1155cc;
+}
+
+.menu_default_main .icon-green:before {
+    background-color: #6aa84f;
+}
+
+.menu_default_main .icon-yellow:before {
+    background-color: #f1c232;
+}
+
+.menu_default_main .icon-red:before {
+    background-color: #cc0000;
+}
+
+app-load-status .ui-autocomplete input,
+app-load-status .ui-calendar input {
+    width: 100%;
+}
+
+
+/* FOR GANTT END */

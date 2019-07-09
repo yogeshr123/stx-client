@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
 import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -10,7 +10,8 @@ import * as $ from 'jQuery';
 @Component({
   selector: 'app-load-status',
   templateUrl: './load-status.component.html',
-  styleUrls: ['./load-status.component.css']
+  styleUrls: ['./load-status.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LoadStatusComponent implements OnInit {
 

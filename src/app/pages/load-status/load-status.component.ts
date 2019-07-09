@@ -107,6 +107,8 @@ export class LoadStatusComponent implements OnInit {
         },
         view_mode: 'Hour',
         on_date_change: (task, start, end) => {
+          this.tasksMoved = true;
+          task.updated = true;
           console.log('on_date_change', task, start, end);
         }
       });

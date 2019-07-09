@@ -80,9 +80,9 @@
                 </div>
                 <ngx-loading [show]="loader.gantt" [config]="{ backdropBorderRadius: '3px', backdropBackgroundColour: 'rgba(0, 0, 0, 0.7)' }">
                 </ngx-loading>
-                <div class="mt3" *ngIf="taskData?.length; else elseTemplate">
-                    <h2>Frappe Gantt</h2>
-                    <div class="gantt-frappe row">
+                <div class="mt-3" *ngIf="taskData?.length; else elseTemplate">
+                    <!-- <h2>Frappe Gantt</h2> -->
+                    <div class="gantt-frappe row col-12 pr-0">
                         <div class="col-3 p-0">
                             <div class="sidebar">
                                 <span class="space">
@@ -100,10 +100,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-3" *ngIf="taskData?.length; else elseTemplate">
+                <!-- <div class="mt-3" *ngIf="taskData?.length; else elseTemplate">
                     <h2>Daypilot Gantt</h2>
                     <daypilot-gantt [config]="config"></daypilot-gantt>
-                </div>
+                </div> -->
                 <ng-template #elseTemplate>
                     <div class="text-center">
                         Data Not Available!

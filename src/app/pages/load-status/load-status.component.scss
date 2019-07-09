@@ -2,6 +2,7 @@
     display: block;
     border-bottom: 1px solid #e0e0e0;
     padding: 0 10px;
+    padding-top: 9px;
 }
 
 .sidebar {
@@ -47,8 +48,9 @@
         }
     }
     .gantt .bar-wrapper:hover .bar-progress,
-    .gantt .bar-progress {
-        fill: rgb(0, 150, 136);
+    .gantt .bar-progress,
+    .gantt .bar-wrapper.active .bar-progress {
+        fill: rgb(0, 150, 136) !important;
     }
 }
 

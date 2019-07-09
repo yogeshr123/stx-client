@@ -101,6 +101,11 @@ input[type="submit"].disabled {
             display: block;
         }
     }
+    .bar-wrapper.moved {
+        .bar {
+            fill: rgb(230, 109, 245);
+        }
+    }
 }
 
 

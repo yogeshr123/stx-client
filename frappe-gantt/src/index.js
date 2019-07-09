@@ -680,6 +680,7 @@ export default class Gantt {
             }
 
             bar_wrapper.classList.add('active');
+            bar_wrapper.classList.add('moved');
 
             x_on_start = e.offsetX;
             y_on_start = e.offsetY;

@@ -1,5 +1,8 @@
 const columnTableColumns = [
-
+    {
+        header: 'SCHEMA NAME',
+        field: 'SCHEMA_NAME'
+    },
     {
         header: 'TABLE NAME',
         field: 'TABLE_NAME'
@@ -15,10 +18,6 @@ const columnTableColumns = [
     {
         header: 'HEADER COLUMNS',
         field: 'HEADER_COLUMNS'
-    },
-    {
-        header: 'SCHEMA NAME',
-        field: 'SCHEMA_NAME'
     },
     {
         header: 'UPDATE DATE',

@@ -128,6 +128,12 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
+  changeTable() {
+    this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
+    this.commonService.setState(this.state);
+    this.ngOnInit();
+  }
+
   viewData(version) {
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);

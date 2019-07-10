@@ -100,7 +100,7 @@ export class LoadStatusComponent implements OnInit {
       });
       this.getElementInfo();
       this.loader.gantt = false;
-    }, 500);
+    }, 100);
   }
 
   getElementInfo() {

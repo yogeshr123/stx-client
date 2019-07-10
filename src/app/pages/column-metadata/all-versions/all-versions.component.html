@@ -25,7 +25,7 @@
                             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
                             </p-sortIcon>
                         </th>
-                        <th>Action</th>
+                        <th>Action{{statusDefaultFilter}}</th>
                     </tr>
                     <tr>
                         <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">

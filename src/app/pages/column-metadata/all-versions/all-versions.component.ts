@@ -16,7 +16,7 @@ export class AllVersionsComponent implements OnInit {
   tableColumns = versionTableColumns;
   tables: any;
   state: any;
-  statusDefaultFilter = 'NEW';
+  statusDefaultFilter: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
 
@@ -35,7 +35,15 @@ export class AllVersionsComponent implements OnInit {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
-        this.triggerDefaultFilter();
+        this.tables.forEach(element => {
+          if (element.STATUS.toLowerCase() === 'new') {
+            this.statusDefaultFilter = 'NEW';
+          }
+        });
+        // Trigger New Filter After some Time
+        setTimeout(() => {
+          this.triggerDefaultFilter();
+        }, 0);
       }
     });
   }

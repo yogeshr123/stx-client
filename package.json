@@ -22,7 +22,6 @@
         "@angular/router": "~7.2.0",
         "bootstrap": "^4.0.0",
         "core-js": "^2.5.4",
-        "daypilot-pro-angular": "https://npm.daypilot.org/daypilot-pro-angular/trial/2019.2.3880.tar.gz",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.1",
         "ngx-loading": "^3.0.1",

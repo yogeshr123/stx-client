@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
-import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import * as frappeGantt from '../../../../lib/frappe-gantt';
@@ -17,20 +16,6 @@ export class LoadStatusComponent implements OnInit {
 
   searchForm: FormGroup;
   defaultDate: Date = new Date('Fri Jan 1 1970 00:00:00');
-  config: any = {
-    timeHeaders: [{ groupBy: 'Day', format: 'dddd, d MMMM yyyy' }, { groupBy: 'Hour', format: 'H' }],
-    scale: 'Hour',
-    startDate: new Date(),
-    cellWidth: 25,
-    TaskResizing: 'Disabled',
-    days: 2,
-    onTaskMove: args => {
-      this.checkMovedTaskValidation(args);
-    },
-    onTaskClick: args => {
-      // args.e.data.contextMenu.show();
-    }
-  };
   loader = {
     tasks: false,
     saveTasks: false,
@@ -107,9 +92,10 @@ export class LoadStatusComponent implements OnInit {
         },
         view_mode: 'Hour',
         on_date_change: (task, start, end) => {
-          this.tasksMoved = true;
-          task.updated = true;
-          console.log('on_date_change', task, start, end);
+          // this.tasksMoved = true;
+          // task.updated = true;
+          // console.log('on_date_change', task, start, end);
+          this.checkMovedTaskValidation(task, start, end);
         }
       });
       this.getElementInfo();
@@ -177,101 +163,10 @@ export class LoadStatusComponent implements OnInit {
         const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
-      this.setGanttValues();
       if (this.taskData && this.taskData.length) {
         this.setFrappeGanttChart();
       }
     }
-  }
-
-  setGanttValues() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const date = today.getDate();
-    const month = today.getMonth() + 1;
-    this.taskData.map(item => {
-      let barColor = '#009688';
-      switch (item.STATUS) {
-        case 'COMPLETED':
-          barColor = 'green';
-          break;
-        case 'RUNNING':
-          barColor = 'orange';
-          break;
-        case 'FAILED':
-          barColor = 'red';
-          break;
-      }
-      let calculatedEndTime: any = `${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`;
-      let hours: any = calculatedEndTime.substr(0, 2);
-      const rest = calculatedEndTime.substr(2);
-      if (hours > 24) {
-        hours = hours - 24;
-        calculatedEndTime = new Date(`${year}-${month}-${date + 1} ${hours}${rest}`);
-      } else {
-        calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`);
-      }
-      item.start = new Date(`${year}-${month}-${date} ${item.START_TIME}`);
-      item.complete = (item.T1_EXEC / item.EXEC_TIME) * 100;
-      item.end = calculatedEndTime;
-      item.type = 'Task';
-      item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}`;
-      item.id = item.DAG_RUN_ID;
-      item.box = {
-        clickDisabled: false,
-        bubbleHtml: `<b>
-                        T1: ${
-          Math.round((item.T1_EXEC / item.EXEC_TIME) * 100)
-          }% and T2: ${Math.round((item.T2_EXEC / item.EXEC_TIME) * 100)}% | ${item.DAG_NAME}
-                    </b>`,
-        resizeDisabled: true,
-        html: ` <b>${item.DAG_NAME}</b>`,
-        htmlRight: `
-                    <span
-                        class="statusCircle ${item.DAG_NAME}"
-                        title="T1: ${this.secondsToHMS(item.T1_EXEC)} and T2: ${this.secondsToHMS(item.T2_EXEC)}">
-                    </span>
-                          <span>Avg. Time: ${this.secondsToHMS(item.EXEC_TIME)}</span>`,
-        barColor,
-        contextMenu: new DayPilot.Menu({
-          items: [
-            // {
-            //   text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
-            //   icon: 'icon',
-            //   onClick: args => {
-            //     args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
-            //     this.tasksMoved = true;
-            //     if (args.item.icon.indexOf('icon-blue') > -1) {
-            //       args.item.icon = 'icon';
-            //     } else {
-            //       args.item.icon = 'icon icon-blue';
-            //     }
-            //     args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
-            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-            //     args.source.data.updated = true;
-            //   }
-            // },
-            // {
-            //   text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
-            //   icon: 'icon',
-            //   onClick: args => {
-            //     args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
-            //     this.tasksMoved = true;
-            //     if (args.item.icon.indexOf('icon-yellow') > -1) {
-            //       args.item.icon = 'icon';
-            //     } else {
-            //       args.item.icon = 'icon icon-yellow';
-            //     }
-            //     args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
-            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-            //     args.source.data.updated = true;
-            //   }
-            // }
-          ]
-        })
-      };
-    });
-    this.config.tasks = this.taskData;
   }
 
   getTasks() {
@@ -301,7 +196,7 @@ export class LoadStatusComponent implements OnInit {
     } else {
       this.taskData.length = this.taskDataBackUp.length;
     }
-    this.setGanttValues();
+    this.setFrappeGanttChart();
   }
 
   discard() {
@@ -337,18 +232,18 @@ export class LoadStatusComponent implements OnInit {
     });
   }
 
-  checkMovedTaskValidation(event) {
-    const args = event.e.data;
-    const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
-    const currentStartDate = new Date(this.config.startDate).getUTCDate();
-    if (newStartDate < currentStartDate || currentStartDate === 1 && [30, 31, 28].indexOf(newStartDate) > -1) {
-      event.preventDefault();
-    } else {
-      this.tasksMoved = true;
-      args.task.updated = true;
-      args.task.box.backColor = 'rgba(230, 109, 245, 1)';
-      args.task.box.cssClass = 'movedItem';
-    }
+  checkMovedTaskValidation(task, start, end) {
+    // const args = event.e.data;
+    // const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
+    // const currentStartDate = new Date(this.config.startDate).getUTCDate();
+    // if (newStartDate < currentStartDate || currentStartDate === 1 && [30, 31, 28].indexOf(newStartDate) > -1) {
+    //   event.preventDefault();
+    // } else {
+    //   this.tasksMoved = true;
+    //   args.task.updated = true;
+    //   args.task.box.backColor = 'rgba(230, 109, 245, 1)';
+    //   args.task.box.cssClass = 'movedItem';
+    // }
   }
 
   filter(query, arrayToFilter) {

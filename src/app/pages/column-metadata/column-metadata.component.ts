@@ -128,16 +128,6 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  viewDetails(version) {
-    const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === version.TABLE_NAME);
-    if (selectedTableName && selectedTableName.length) {
-      this.selectedTableName = selectedTableName[0];
-    }
-    this.selectedTable = version;
-    this.state.CMV = { ...this.state.CMV, selectedTable: version };
-    this.getVersions();
-  }
-
   viewData(version) {
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);

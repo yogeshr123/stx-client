@@ -32,6 +32,13 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getHeaderMismatches(tableData) {
+        const url = `${environment.baseUrl}header-hash/getHeaderMismatches`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     approveHeader(header) {
         const url = `${environment.baseUrl}header-hash/approveHeader`;
         return this.http

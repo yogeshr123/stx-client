@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 
-import { columnTableColumns } from './tableColumns';
+import { columnTableColumns, headerMismatchesTableCols } from './tableColumns';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
 
@@ -17,10 +17,12 @@ import { CommonService } from 'src/app/services/common.service';
 export class HeaderHashComponent implements OnInit {
 
   headers: any;
+  headerMismatches: any;
   selectedColumns: any;
   selectedTable: any;
   uniqueTables: any;
   columnTableColumns = columnTableColumns;
+  headerMismatchesTableCols = headerMismatchesTableCols;
   state: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
@@ -37,8 +39,8 @@ export class HeaderHashComponent implements OnInit {
     if (this.state.CMV && this.state.CMV.selectedTable) {
       this.selectedTable = this.state.CMV.selectedTable;
       this.getHeaders();
+      this.getHeaderMismatches();
     }
-    // this.getHeaders();
     this.getSelectedColumns();
     this.getAllTables();
   }
@@ -95,6 +97,7 @@ export class HeaderHashComponent implements OnInit {
       if (!this.state.CMV || !this.state.CMV.selectedTable) {
         this.selectedTable = this.uniqueTables[0];
         this.getHeaders();
+        this.getHeaderMismatches();
       }
       // else {
       //   const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
@@ -111,6 +114,15 @@ export class HeaderHashComponent implements OnInit {
     const request = { table_name: this.selectedTable.TABLE_NAME };
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
       this.headers = res.data;
+    }, error => {
+      console.error('error ', error);
+    });
+  }
+
+  getHeaderMismatches() {
+    const request = { table_name: this.selectedTable.TABLE_NAME };
+    this.headerHashService.getHeaderMismatches(request).subscribe((res: any) => {
+      this.headerMismatches = res.data;
     }, error => {
       console.error('error ', error);
     });

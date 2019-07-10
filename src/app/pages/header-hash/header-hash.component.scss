@@ -7,6 +7,11 @@
 }
 
 /deep/ .scroll-table-fhh {
+    &.mismatch {
+        .ui-table-wrapper {
+            margin-right: 0;
+        }
+    }
     .ui-table-wrapper {
         overflow-y: scroll;
         overflow-x: auto;

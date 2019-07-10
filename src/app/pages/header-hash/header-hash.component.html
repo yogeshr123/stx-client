@@ -49,7 +49,7 @@
                                     <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
                                     <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value">
                                 </th>
-                                <th class="fixedcol rightfixedcol"></th>
+                                <!-- <th></th> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-header let-columns="columns">

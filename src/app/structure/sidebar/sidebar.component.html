@@ -31,11 +31,25 @@
                 <span class="app-menu__label">Load Control</span>
             </a>
         </li>
-        <li>
-            <a class="app-menu__item" routerLink="/CMU" routerLinkActive="active">
+        <li class="treeview is-expanded">
+            <a class="app-menu__item" routerLink="/CMU" routerLinkActive="active" data-toggle="treeview">
                 <i class="app-menu__icon fa fa-columns"></i>
                 <span class="app-menu__label">Column Metadata Version</span>
             </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a class="treeview-item" routerLink="/CMU">
+                        <i class="icon fa fa-circle-o"></i> All Version</a>
+                </li>
+                <li>
+                    <a class="treeview-item" routerLink="/CMU">
+                        <i class="icon fa fa-circle-o"></i> Details</a>
+                </li>
+                <li>
+                    <a class="treeview-item" routerLink="/CMU">
+                        <i class="icon fa fa-circle-o"></i> File Header Hash</a>
+                </li>
+            </ul>
         </li>
         <li>
             <a class="app-menu__item" routerLink="/load-status" routerLinkActive="active">

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import * as frappeGantt from '../../../../lib/frappe-gantt';
 
-import * as $ from 'jQuery';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-load-status',

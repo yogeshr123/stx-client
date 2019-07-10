@@ -6,7 +6,8 @@ import { MessageService } from 'primeng/api';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
-import { versionTableColumns, columnTableColumns, initColumnState } from './tableColumns';
+import { columnTableColumns } from './tableColumns';
+
 
 @Component({
   selector: 'app-column-metadata',
@@ -22,22 +23,15 @@ export class ColumnMetadataComponent implements OnInit {
   versionData = [];
   loader = {
     columns: false,
-    versions: false,
-    tabs: false
+    versions: false
   };
   state: any;
-  tables: any;
   uniqueTables: any;
   selectedTableName: any;
   showGenerateVersion = true;
   selectedTable: any;
-  tableColumns = versionTableColumns;
   columnTableColumns = columnTableColumns;
-  activeTab = 0;
-  statusDefaultFilter = 'NEW';
   @ViewChild(Table, { static: false }) tableComponent: Table;
-  @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
-
   selectedColumns: any;
 
   constructor(
@@ -57,15 +51,6 @@ export class ColumnMetadataComponent implements OnInit {
     this.getSelectedColumns();
   }
 
-  triggerDefaultFilter() {
-    const el: HTMLElement = this.statusFilter.nativeElement;
-    const event = new Event('input', {
-      bubbles: true,
-      cancelable: true
-    });
-    el.dispatchEvent(event);
-  }
-
   getSelectedColumns() {
     if (!localStorage.getItem('selectedVersionColumns')) {
       this.initColumnState();
@@ -80,19 +65,6 @@ export class ColumnMetadataComponent implements OnInit {
     this.resetFilters();
   }
 
-  resetTable() {
-    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
-    if (statefilter) {
-      localStorage.removeItem('stateSelectedVersionColumns');
-    }
-    const columnState = JSON.parse(localStorage.getItem('selectedVersionColumns'));
-    if (columnState) {
-      localStorage.removeItem('selectedVersionColumns');
-      this.initColumnState();
-    }
-    this.tableComponent.reset();
-  }
-
   resetFilters() {
     const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
     if (statefilter) {
@@ -102,28 +74,21 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   initColumnState() {
-    this.selectedColumns = initColumnState;
+    this.selectedColumns = columnTableColumns;
   }
 
   checkStateUpdateSelectedTable() {
-    this.loader.tabs = true;
-    if (this.state.CMV && this.state.CMV.activeTab) {
-      this.activeTab = this.state.CMV.activeTab;
-    }
     if (this.state.CMV && this.state.CMV.selectedTable) {
       const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.selectedTable.METADATA_VERSION);
       if (selectedVersion && selectedVersion.length) {
         this.viewData(selectedVersion[0]);
       }
     }
-    this.loader.tabs = false;
   }
 
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
-        this.tables = resp.data;
-        this.triggerDefaultFilter();
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
         if (!this.state.CMV || !this.state.CMV.selectedTable) {
           this.selectedTable = this.uniqueTables[0];
@@ -170,7 +135,6 @@ export class ColumnMetadataComponent implements OnInit {
     }
     this.selectedTable = version;
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
-    this.tabChanged({ index: 1 });
     this.getVersions();
   }
 
@@ -222,12 +186,6 @@ export class ColumnMetadataComponent implements OnInit {
       width: '45%',
       data: metadataVersion
     });
-  }
-
-  tabChanged(event) {
-    this.activeTab = event.index;
-    this.state.CMV = { ...this.state.CMV, activeTab: this.activeTab };
-    this.commonService.setState(this.state);
   }
 
   checkDataType(val, dataType) {

@@ -90,41 +90,4 @@ const columnTableColumns = [
     }
 ];
 
-const initColumnState = [
-    {
-        header: 'TARGET COLUMN ID',
-        field: 'TARGET_COLUMN_ID'
-    },
-    {
-        header: 'SRC COLUMN NAME',
-        field: 'SRC_COLUMN_NAME'
-    },
-    {
-        header: 'SRC COLUMN TYPE',
-        field: 'SRC_COLUMN_TYPE'
-    },
-    {
-        header: 'SRC DATA TYPE',
-        field: 'SRC_DATA_TYPE'
-    },
-    {
-        header: 'TARGET COLUMN NAME',
-        field: 'TARGET_COLUMN_NAME'
-    },
-    {
-        header: 'TARGET DATA TYPE',
-        field: 'TARGET_DATA_TYPE'
-    },
-    {
-        header: 'PRIMARY KEY',
-        field: 'IS_PKEY_COLUMN'
-    },
-    {
-        header: 'DATE UPDATED',
-        field: 'UPDATE_DATE'
-    }
-];
-
-
-
-export { versionTableColumns, ENV_NAME, columnTableColumns, initColumnState };
+export { versionTableColumns, ENV_NAME, columnTableColumns };

@@ -13,7 +13,7 @@
         <div class="tile">
             <div *ngIf="uniqueTables?.length">
                 Table Name:
-                <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()"></p-dropdown>
+                <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()"></p-dropdown>
                 <a [routerLink]="[ '/header-hash']" class="btn btn-sm btn-primary float-right">Show Header Hash</a>
             </div>
             <div class="mt-3">

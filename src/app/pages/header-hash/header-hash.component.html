@@ -13,14 +13,14 @@
         <div class="tile">
             <div *ngIf="uniqueTables?.length">
                 Table Name:
-                <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
+                <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()"></p-dropdown>
                 <button [routerLink]="[ './add-header' ]" class="btn btn-sm btn-primary float-right">Add New</button>
             </div>
             <div class="table-responsive mt-2">
-                <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true">
+                <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true" styleClass="scroll-table-fhh">
                     <ng-template pTemplate="caption">
                         <div style="text-align: left">
-                            <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
+                            <p-multiSelect appendTo="body" [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                         </div>
                         <div class="globalSearch">
                             <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
@@ -36,7 +36,7 @@
                                 <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
                                 </p-sortIcon>
                             </th>
-                            <th>Action</th>
+                            <th class="fixedcol rightfixedcol">Action</th>
                         </tr>
                         <tr>
                             <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
@@ -45,7 +45,7 @@
                                 <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
                                 <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value">
                             </th>
-                            <th></th>
+                            <th class="fixedcol rightfixedcol"></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-header let-columns="columns">
@@ -53,7 +53,7 @@
                             <td *ngFor="let col of columns">
                                 <span> {{header[col.field]}} </span>
                             </td>
-                            <td style='white-space: nowrap'>
+                            <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
                                     <button (click)="approveHeader(header)" title="Approve" *ngIf="header.STATUS === 'NEW'" class="btn btn-success btn-sm">
                                         <i class="fa fa-thumbs-up"></i>

@@ -91,7 +91,7 @@ export class LoadStatusComponent implements OnInit {
           `;
         },
         view_mode: 'Hour',
-        on_date_change: (task, start, end) => {
+        on_date_change: (task) => {
           this.tasksMoved = true;
           task.updated = true;
         }
@@ -104,6 +104,9 @@ export class LoadStatusComponent implements OnInit {
   getElementInfo() {
     $('span.space').css('height', $('.grid-header').height());
     $('span.dag-name').css('height', $('.grid-row').height());
+    $('.bar').on('click', () => {
+      this.tasksMoved = true;
+    });
   }
 
   searchFormInit() {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Table } from 'primeng/components/table/table';
-import { Router } from "@angular/router"
+import { Router } from '@angular/router';
 
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { versionTableColumns } from '../tableColumns';

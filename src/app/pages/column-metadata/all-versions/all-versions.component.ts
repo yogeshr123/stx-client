@@ -40,10 +40,10 @@ export class AllVersionsComponent implements OnInit {
     });
   }
 
-  viewDetails(version) {
+  viewDetails(version, redirectRoute) {
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
-    this.router.navigate(['/CMV']);
+    this.router.navigate([`/${redirectRoute}`]);
 
   }
 

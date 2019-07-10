@@ -92,10 +92,8 @@ export class LoadStatusComponent implements OnInit {
         },
         view_mode: 'Hour',
         on_date_change: (task, start, end) => {
-          // this.tasksMoved = true;
-          // task.updated = true;
-          // console.log('on_date_change', task, start, end);
-          this.checkMovedTaskValidation(task, start, end);
+          this.tasksMoved = true;
+          task.updated = true;
         }
       });
       this.getElementInfo();
@@ -186,7 +184,7 @@ export class LoadStatusComponent implements OnInit {
 
   changeLimit(limit) {
     const selectedLimit = parseInt(limit, 10);
-    this.taskData = Object.assign({}, this.taskDataBackUp);
+    this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
     if (limit !== 'all') {
       if (selectedLimit > this.taskDataBackUp.length) {
         this.taskData.length = this.taskDataBackUp.length;
@@ -196,7 +194,9 @@ export class LoadStatusComponent implements OnInit {
     } else {
       this.taskData.length = this.taskDataBackUp.length;
     }
-    this.setFrappeGanttChart();
+    if (this.taskData && this.taskData.length) {
+      this.setFrappeGanttChart();
+    }
   }
 
   discard() {
@@ -209,11 +209,9 @@ export class LoadStatusComponent implements OnInit {
     this.errors.updateEror = false;
     this.loader.saveTasks = true;
     const updatedTasks = this.taskData.filter(item => item.updated === true);
-    // updatedTasks.map(i => {
-    //   console.log("i.start ", i.start);
-    //   i.start = `${i.start}.000Z`;
-    // });
-    // console.log('updatedTasks ', updatedTasks);
+    updatedTasks.map(i => {
+      i.start = `${i._start}`;
+    });
     this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
       if (!resp.data.error || !resp.data.error.length) {
         this.tasksMoved = false;
@@ -230,20 +228,6 @@ export class LoadStatusComponent implements OnInit {
       this.showToast('error', 'Could not save details.');
       this.loader.saveTasks = false;
     });
-  }
-
-  checkMovedTaskValidation(task, start, end) {
-    // const args = event.e.data;
-    // const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
-    // const currentStartDate = new Date(this.config.startDate).getUTCDate();
-    // if (newStartDate < currentStartDate || currentStartDate === 1 && [30, 31, 28].indexOf(newStartDate) > -1) {
-    //   event.preventDefault();
-    // } else {
-    //   this.tasksMoved = true;
-    //   args.task.updated = true;
-    //   args.task.box.backColor = 'rgba(230, 109, 245, 1)';
-    //   args.task.box.cssClass = 'movedItem';
-    // }
   }
 
   filter(query, arrayToFilter) {

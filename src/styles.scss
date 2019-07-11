@@ -259,11 +259,12 @@ app-load-status .ui-calendar input {
         th,
         td {
             height: 40px;
+            white-space: nowrap;
         }
         .fixedcol {
             position: absolute;
             width: 80px;
-            height: 41px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;

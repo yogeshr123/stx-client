@@ -57,6 +57,7 @@
                 </ngx-loading>
                 <h6>
                     Version - {{selectedVersion.METADATA_VERSION}}
+                    <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
                     <button [routerLink]="[ './add-column']" class="mb-2 btn btn-sm btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">

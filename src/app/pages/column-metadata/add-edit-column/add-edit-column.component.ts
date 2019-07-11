@@ -53,15 +53,14 @@ export class AddEditColumnComponent implements OnInit {
   ngOnInit() {
     this.formInit();
     this.appState = JSON.parse(localStorage.getItem('appState'));
+    if (this.appState && this.appState.CMV && this.appState.CMV.selectedTable) {
+      this.TABLE_NAME = this.appState.CMV.selectedTable.TABLE_NAME;
+      this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.CMV.selectedTable.SCHEMA_NAME);
+      this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.CMV.selectedTable.TABLE_NAME);
+      this.addEditColumnForm.controls.METADATA_VERSION.patchValue(this.appState.CMV.selectedTable.METADATA_VERSION);
+    }
     if (this.routeInfo.versionId && this.routeInfo.id) {
       this.getColumnData();
-    } else {
-      if (this.appState && this.appState.CMV && this.appState.CMV.selectedTable) {
-        this.TABLE_NAME = this.appState.CMV.selectedTable.TABLE_NAME;
-        this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.CMV.selectedTable.SCHEMA_NAME);
-        this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.CMV.selectedTable.TABLE_NAME);
-        this.addEditColumnForm.controls.METADATA_VERSION.patchValue(this.appState.CMV.selectedTable.METADATA_VERSION);
-      }
     }
   }
 
@@ -98,12 +97,14 @@ export class AddEditColumnComponent implements OnInit {
   getColumnData() {
     this.loader.formData = true;
     const request = {
+      table_name: this.TABLE_NAME,
       columnVersion: this.routeInfo.versionId,
       targetColumnId: this.routeInfo.id
     };
     this.columnMetadataService.getSingleColumn(request).subscribe((resp: any) => {
       this.columnData = resp.data[0];
       this.TABLE_NAME = this.columnData.TABLE_NAME;
+      console.log("this.TABLE_NAME ", this.TABLE_NAME);
       if (this.columnData) {
         console.log('this.columnData ', this.columnData);
         const formControls = this.addEditColumnForm.controls;

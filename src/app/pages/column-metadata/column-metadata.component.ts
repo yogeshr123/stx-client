@@ -152,6 +152,19 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
+  validate(version) {
+    this.columnMetadataService.validateVersion({ version }).subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        this.showToast('success', 'Version Validated!');
+        this.ngOnInit();
+      } else {
+        this.showToast('error', 'Could not validate version.');
+      }
+    }, error => {
+      this.showToast('error', 'Could not validate version.');
+    });
+  }
+
   generateNewVersion() {
     this.loader.columns = true;
     const allVersions = [];

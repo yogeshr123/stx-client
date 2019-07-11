@@ -57,7 +57,6 @@ export class AddEditHeaderComponent implements OnInit {
     }
     this.getHeaderMismatches();
     this.getHeaderByHash();
-    this.addToCMV();
   }
 
   getHeaderByHash() {
@@ -95,11 +94,15 @@ export class AddEditHeaderComponent implements OnInit {
     });
   }
 
-  addToCMV() {
+  addToCMV(header, status) {
     const ref = this.dialogService.open(AddCmvPopupComponent, {
       header: 'Add Column To Column Metadata',
-      width: '45%',
-      data: {}
+      width: '55%',
+      closeOnEscape: true,
+      data: {
+        header,
+        status
+      }
     });
   }
 

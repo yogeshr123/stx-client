@@ -2,7 +2,7 @@
 <div class="app-title mb-3 p-3">
     <div>
         <h5>
-            <i class="fa fa-hashtag"></i>
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
             <span> File Header Hash</span>
             <span> -
                 Header Mismatch
@@ -69,8 +69,12 @@
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
-                                    <button (click)="addToCMV()" title="Add to CMV" *ngIf="header.STATUS !== 'APPROVED'"
-                                        class="btn btn-success btn-sm">
+                                    <button (click)="addToCMV(header, header.STATUS)" title="Add to CMV"
+                                        *ngIf="header.STATUS === 'APPROVED'" class="btn btn-success btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <button (click)="addToCMV(header)" title="Add to CMV"
+                                        *ngIf="header.STATUS !== 'APPROVED'" class="btn btn-success btn-sm">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>

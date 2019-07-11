@@ -46,8 +46,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-version let-i="rowIndex">
                     <tr>
-                        <td>{{version.TABLE_NAME}}</td>
                         <td>{{version.METADATA_VERSION}}</td>
+                        <td>{{version.TABLE_NAME}}</td>
                         <td>{{version.STATUS}}</td>
                         <td>{{version.START_DATE | date: 'short' }}</td>
                         <td>{{version.UPDATE_DATE | date: 'short' }}</td>

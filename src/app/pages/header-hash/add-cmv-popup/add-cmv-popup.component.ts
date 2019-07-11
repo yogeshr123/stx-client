@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DynamicDialogConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-add-cmv-popup',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddCmvPopupComponent implements OnInit {
 
-  constructor() { }
+  header: any;
+  status: any;
+
+  constructor(
+    public config: DynamicDialogConfig
+  ) { }
 
   ngOnInit() {
+    this.header = this.config.data.header;
+    this.status = this.config.data.status;
+  }
+
+  closePopUp() {
   }
 
 }

@@ -92,6 +92,11 @@ export class HeaderHashComponent implements OnInit {
       if (!this.state.CMV || !this.state.CMV.selectedTable) {
         this.selectedTable = this.uniqueTables[0];
         this.getHeaders();
+      } else {
+        const selectedTable = this.uniqueTables.filter(i => i.TABLE_NAME === this.selectedTable.TABLE_NAME);
+        if (selectedTable && selectedTable.length) {
+          this.selectedTable = selectedTable[0];
+        }
       }
     }, error => {
       console.error('error ', error);

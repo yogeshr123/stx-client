@@ -55,7 +55,12 @@
                         <ng-template pTemplate="body" let-header let-columns="columns">
                             <tr [pSelectableRow]="header">
                                 <td *ngFor="let col of columns">
-                                    <span> {{header[col.field]}} </span>
+                                    <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                                        <span> {{header[col.field] | date: 'short'}} </span>
+                                    </ng-container>
+                                    <ng-template #elseTemplate>
+                                        <span> {{header[col.field]}} </span>
+                                    </ng-template>
                                 </td>
                                 <!-- <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                                             <div>
@@ -119,7 +124,12 @@
                     <ng-template pTemplate="body" let-header let-columns="columns">
                         <tr [pSelectableRow]="header">
                             <td *ngFor="let col of columns">
-                                <span> {{header[col.field]}} </span>
+                                <ng-container *ngIf="col.type === 'date'; else elseTemplate2">
+                                    <span> {{header[col.field] | date: 'short'}} </span>
+                                </ng-container>
+                                <ng-template #elseTemplate2>
+                                    <span> {{header[col.field]}} </span>
+                                </ng-template>
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>

@@ -21,11 +21,13 @@ const columnTableColumns = [
     },
     {
         header: 'UPDATE DATE',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     },
     {
         header: 'INSERT DATE',
-        field: 'INSERT_DATE'
+        field: 'INSERT_DATE',
+        type: 'date'
     }
 ];
 
@@ -60,7 +62,8 @@ const headerMismatchesTableCols = [
     },
     {
         header: 'INSERT DATE',
-        field: 'INSERT_DATE'
+        field: 'INSERT_DATE',
+        type: 'date'
     }
 ];
 

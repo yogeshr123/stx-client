@@ -197,13 +197,6 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  checkDataType(val, dataType) {
-    if (dataType === 'object') {
-      return typeof val === 'object' && val !== null;
-    }
-    return typeof val === dataType;
-  }
-
   showToast(severity, summary) {
     this.messageService.add({ severity, summary, life: 3000 });
   }

@@ -94,14 +94,19 @@
                         <ng-template pTemplate="body" let-version let-columns="columns">
                             <tr [pSelectableRow]="version">
                                 <td *ngFor="let col of columns">
-                                    <ng-container *ngIf="checkDataType(version[col.field], 'object'); else elseTemplate">
-                                        {{ version[col.field].data[0] || !version[col.field] ? 'True' : 'False' }}
-                                    </ng-container>
-                                    <ng-template #elseTemplate>
-                                        <span>
-                                            {{version[col.field]}}
+                                    <ng-container>
+                                        <span [ngSwitch]="col.type">
+                                            <span *ngSwitchCase="'date'">
+                                                {{version[col.field] | date: 'short'}}
+                                            </span>
+                                        <span *ngSwitchCase="'boolean'">
+                                                {{version[col.field] && version[col.field].data[0] ? 'True' : 'False' }}
                                         </span>
-                                    </ng-template>
+                                        <span *ngSwitchDefault>
+                                                {{version[col.field]}}
+                                            </span>
+                                        </span>
+                                    </ng-container>
                                 </td>
                                 <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                     <div>

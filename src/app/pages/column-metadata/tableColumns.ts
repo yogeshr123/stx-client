@@ -54,15 +54,18 @@ const columnTableColumns = [
     },
     {
         header: 'PRIMARY KEY',
-        field: 'IS_PKEY_COLUMN'
+        field: 'IS_PKEY_COLUMN',
+        type: 'boolean'
     },
     {
         header: 'DATE UPDATED',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     },
     {
         header: 'INTERNAL COLUMN',
-        field: 'INTERNAL_COLUMN'
+        field: 'INTERNAL_COLUMN',
+        type: 'boolean'
     },
     {
         header: 'PREDEFINED_VALUE',
@@ -70,23 +73,28 @@ const columnTableColumns = [
     },
     {
         header: 'IS_PARTITION_COLUMN',
-        field: 'IS_PARTITION_COLUMN'
+        field: 'IS_PARTITION_COLUMN',
+        type: 'boolean'
     },
     {
         header: 'IS_UPDATE_DATE_COLUMN',
-        field: 'IS_UPDATE_DATE_COLUMN'
+        field: 'IS_UPDATE_DATE_COLUMN',
+        type: 'boolean'
     },
     {
         header: 'IS_DATATYPE_CHANGED',
-        field: 'IS_DATATYPE_CHANGED'
+        field: 'IS_DATATYPE_CHANGED',
+        type: 'boolean'
     },
     {
         header: 'IS_RENAMED',
-        field: 'IS_RENAMED'
+        field: 'IS_RENAMED',
+        type: 'boolean'
     },
     {
         header: 'IS_NEW',
-        field: 'IS_NEW'
+        field: 'IS_NEW',
+        type: 'boolean'
     }
 ];
 

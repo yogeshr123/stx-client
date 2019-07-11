@@ -45,6 +45,10 @@ const headerMismatchesTableCols = [
         field: 'HEADER_HASH'
     },
     {
+        header: 'COLUMN STATUS',
+        field: 'COLUMN_STATUS'
+    },
+    {
         header: 'STATUS',
         field: 'STATUS'
     },

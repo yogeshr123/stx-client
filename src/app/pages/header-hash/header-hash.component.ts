@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
 import { Location } from '@angular/common';
 import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
 
-import { columnTableColumns, headerMismatchesTableCols } from './tableColumns';
+import { columnTableColumns } from './tableColumns';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
 
@@ -17,12 +16,10 @@ import { CommonService } from 'src/app/services/common.service';
 export class HeaderHashComponent implements OnInit {
 
   headers: any;
-  headerMismatches: any;
   selectedColumns: any;
   selectedTable: any;
   uniqueTables: any;
   columnTableColumns = columnTableColumns;
-  headerMismatchesTableCols = headerMismatchesTableCols;
   state: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
@@ -30,7 +27,6 @@ export class HeaderHashComponent implements OnInit {
     private commonService: CommonService,
     private columnMetadataService: ColumnMetadataService,
     private location: Location,
-    private messageService: MessageService,
     private headerHashService: HeaderHashService
   ) { }
 
@@ -39,7 +35,6 @@ export class HeaderHashComponent implements OnInit {
     if (this.state.CMV && this.state.CMV.selectedTable) {
       this.selectedTable = this.state.CMV.selectedTable;
       this.getHeaders();
-      this.getHeaderMismatches();
     }
     this.getSelectedColumns();
     this.getAllTables();
@@ -97,14 +92,7 @@ export class HeaderHashComponent implements OnInit {
       if (!this.state.CMV || !this.state.CMV.selectedTable) {
         this.selectedTable = this.uniqueTables[0];
         this.getHeaders();
-        this.getHeaderMismatches();
       }
-      // else {
-      //   const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
-      //   if (selectedTableName && selectedTableName.length) {
-      //     this.selectedTableName = selectedTableName[0];
-      //   }
-      // }
     }, error => {
       console.error('error ', error);
     });
@@ -119,38 +107,10 @@ export class HeaderHashComponent implements OnInit {
     });
   }
 
-  getHeaderMismatches() {
-    const request = { table_name: this.selectedTable.TABLE_NAME };
-    this.headerHashService.getHeaderMismatches(request).subscribe((res: any) => {
-      this.headerMismatches = res.data;
-    }, error => {
-      console.error('error ', error);
-    });
-  }
-
-  approveHeader(header) {
-    this.headerHashService.approveHeader({ header }).subscribe((resp: any) => {
-      console.log('res ', resp);
-      if (resp && !resp.error) {
-        this.showToast('success', 'Successfully Approved');
-        this.ngOnInit();
-      } else {
-        this.showToast('error', 'Approval failed');
-      }
-    }, error => {
-      this.showToast('error', 'Approval failed');
-      console.error('error ', error);
-    });
-  }
-
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
-  }
-
-  showToast(severity, summary) {
-    this.messageService.add({ severity, summary, life: 3000 });
   }
 
   goBack() {

@@ -1,3 +1,42 @@
-<p>
-  add-cmv-popup works!
-</p>
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <table class="col-12">
+                <tr>
+                    <td>SCHEMA NAME</td>
+                    <td>DRIVE</td>
+                    <td>TABLE</td>
+                    <td>P250_ERROR_RATE_BY_ZONE_FACT</td>
+                </tr>
+                <tr>
+                    <td>HEADER HASH</td>
+                    <td>xyznewheaderhash</td>
+                    <td>COLUMN STATUS</td>
+                    <td>DATATYPE_MISMATCH</td>
+                </tr>
+                <tr>
+                    <td>COLUMN NAME</td>
+                    <td>PARAM_RETENTION_WEEK</td>
+                    <td>SAMPLE VALUES</td>
+                    <td>[]</td>
+                </tr>
+                <tr>
+                    <td>DATA TYPE</td>
+                    <td>float64</td>
+                </tr>
+                <tr></tr>
+            </table>
+            <hr>
+            <div>
+                <button class="btn btn-primary" type="button" (click)="onSubmit()">
+                    <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                    Save
+                </button>
+                <img class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+                <button class="btn btn-secondary ml-2" (click)="goBack()">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

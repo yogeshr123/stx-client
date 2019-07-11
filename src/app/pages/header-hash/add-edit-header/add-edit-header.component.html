@@ -23,16 +23,21 @@
                 <h6 *ngIf="header && routeInfo.id">
                     Hash - {{routeInfo.id}}
                     <span class="ml-3 mr-3">|</span> Status - {{header.STATUS}}
-                    <button (click)="approveHeader()" class="btn btn-primary float-right" *ngIf="header.STATUS.toLowerCase() !== 'approved'">Approve</button>
+                    <button (click)="approveHeader()" class="btn btn-primary float-right"
+                        *ngIf="header.STATUS.toLowerCase() !== 'approved'">Approve</button>
                 </h6>
             </div>
             <div class="table-responsive">
-                <p-table #dt1 [responsive]="true" [value]="headerMismatches" [tableStyle]="{'table-layout':'auto'}" [columns]="headerMismatchesTableCols" [reorderableColumns]="true" styleClass="scroll-table-fhh mismatch">
+                <p-table #dt1 [responsive]="true" [value]="headerMismatches" [tableStyle]="{'table-layout':'auto'}"
+                    [columns]="headerMismatchesTableCols" [reorderableColumns]="true"
+                    styleClass="scroll-table-fhh mismatch">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                                 {{col.header}}
-                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                    ariaLabelDesc="Activate to sort in descending order"
+                                    ariaLabelAsc="Activate to sort in ascending order">
                                 </p-sortIcon>
                             </th>
                             <th class="fixedcol rightfixedcol">Action</th>
@@ -42,8 +47,12 @@
                                 <span *ngSwitchCase="'START_DATE'"></span>
                                 <span *ngSwitchCase="'UPDATE_DATE'"></span>
                                 <span *ngSwitchCase="'INSERT_DATE'"></span>
-                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt1.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                                <input pInputText *ngSwitchDefault type="text" (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt1.filters[col.field]?.value">
+                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                                    (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
+                                    [value]="dt1.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                                <input pInputText *ngSwitchDefault type="text"
+                                    (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
+                                    [value]="dt1.filters[col.field]?.value">
                             </th>
                             <th class="fixedcol rightfixedcol"></th>
                         </tr>
@@ -60,7 +69,8 @@
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
-                                    <button (click)="addToCMV()" title="Add to CMV" *ngIf="header.STATUS !== 'APPROVED'" class="btn btn-success btn-sm">
+                                    <button (click)="addToCMV()" title="Add to CMV" *ngIf="header.STATUS !== 'APPROVED'"
+                                        class="btn btn-success btn-sm">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>

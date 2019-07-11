@@ -9,20 +9,23 @@
 <div class="row">
     <div class="col-12 mt-2">
         <div class="tile">
-            <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns" [reorderableColumns]="true">
+            <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns"
+                [reorderableColumns]="true">
                 <ng-template pTemplate="caption">
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
                         <button class="btn btn-sm btn-primary" type="button" (click)="search()">
-                  <i class="fa fa-lg fa-fw fa-search"></i>
-                </button>
+                            <i class="fa fa-lg fa-fw fa-search"></i>
+                        </button>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                             {{col.header}}
-                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order">
                             </p-sortIcon>
                         </th>
                         <th>Action</th>
@@ -31,8 +34,12 @@
                         <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
                             <span *ngSwitchCase="'START_DATE'"></span>
                             <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                            <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                            <input pInputText *ngSwitchDefault type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value">
+                            <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                            <input pInputText *ngSwitchDefault type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                [value]="dt.filters[col.field]?.value">
                         </th>
                         <th></th>
                     </tr>
@@ -45,8 +52,10 @@
                         <td>{{version.START_DATE | date: 'short' }}</td>
                         <td>{{version.UPDATE_DATE | date: 'short' }}</td>
                         <td>
-                            <button (click)="viewDetails(version, 'CMV')" class="btn btn-sm btn-primary">View Details</button>
-                            <button (click)="viewDetails(version, 'header-hash')" class="btn btn-sm btn-info ml-2">View Header Hash</button>
+                            <button (click)="viewDetails(version, 'CMV')" class="btn btn-sm btn-primary">View
+                                Details</button>
+                            <button (click)="viewDetails(version, 'header-hash')" class="btn btn-sm btn-info ml-2">View
+                                Header Hash</button>
                         </td>
                     </tr>
                 </ng-template>

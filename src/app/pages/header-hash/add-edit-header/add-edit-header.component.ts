@@ -57,6 +57,7 @@ export class AddEditHeaderComponent implements OnInit {
     }
     this.getHeaderMismatches();
     this.getHeaderByHash();
+    this.addToCMV();
   }
 
   getHeaderByHash() {

@@ -104,9 +104,7 @@ export class AddEditColumnComponent implements OnInit {
     this.columnMetadataService.getSingleColumn(request).subscribe((resp: any) => {
       this.columnData = resp.data[0];
       this.TABLE_NAME = this.columnData.TABLE_NAME;
-      console.log("this.TABLE_NAME ", this.TABLE_NAME);
       if (this.columnData) {
-        console.log('this.columnData ', this.columnData);
         const formControls = this.addEditColumnForm.controls;
         for (const key in formControls) {
           if (formControls.hasOwnProperty(key)) {
@@ -159,7 +157,6 @@ export class AddEditColumnComponent implements OnInit {
   }
 
   checkFormValues(functionToCall) {
-    console.log('this.addEditColumnForm.value ', this.addEditColumnForm.value);
     if (functionToCall === 'addColumn') {
       this.addEditColumnForm.controls.IS_NEW.patchValue(1);
     }

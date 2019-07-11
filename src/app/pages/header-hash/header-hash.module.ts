@@ -12,9 +12,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
 import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.component';
+import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
 
 @NgModule({
-  declarations: [HeaderHashComponent, AddEditHeaderComponent],
+  declarations: [HeaderHashComponent, AddEditHeaderComponent, AddCmvPopupComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -28,6 +29,7 @@ import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.compon
   ],
   providers: [
     MessageService
-  ]
+  ],
+  entryComponents: [AddCmvPopupComponent]
 })
 export class HeaderHashModule { }

@@ -35,7 +35,7 @@
                             <th>Action</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-version let-columns="columns">
+                    <ng-template pTemplate="body" let-version let-columns="columns" let-i="rowIndex">
                         <tr [pSelectableRow]="version">
                             <td *ngFor="let col of columns">
                                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">

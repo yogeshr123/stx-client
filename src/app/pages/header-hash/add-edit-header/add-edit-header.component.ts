@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, DialogService } from 'primeng/api';
 import { headerMismatchesTableCols } from '../tableColumns';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
+import { AddCmvPopupComponent } from '../add-cmv-popup/add-cmv-popup.component';
 
 @Component({
   selector: 'app-add-edit-header',
   templateUrl: './add-edit-header.component.html',
-  styleUrls: ['./add-edit-header.component.scss']
+  styleUrls: ['./add-edit-header.component.scss'],
+  providers: [DialogService]
 })
 export class AddEditHeaderComponent implements OnInit {
 
@@ -30,6 +32,7 @@ export class AddEditHeaderComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private location: Location,
+    public dialogService: DialogService,
     private formBuilder: FormBuilder,
     private headerHashService: HeaderHashService
   ) {
@@ -88,6 +91,14 @@ export class AddEditHeaderComponent implements OnInit {
       }
     }, error => {
       this.showToast('error', 'Approval failed');
+    });
+  }
+
+  addToCMV() {
+    const ref = this.dialogService.open(AddCmvPopupComponent, {
+      header: 'Add Column To Column Metadata',
+      width: '45%',
+      data: {}
     });
   }
 

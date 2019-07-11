@@ -60,7 +60,7 @@
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
-                                    <button title="Add to CMV" *ngIf="header.STATUS !== 'APPROVED'" class="btn btn-success btn-sm">
+                                    <button (click)="addToCMV()" title="Add to CMV" *ngIf="header.STATUS !== 'APPROVED'" class="btn btn-success btn-sm">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>

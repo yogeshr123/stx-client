@@ -8,6 +8,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
@@ -25,7 +26,8 @@ import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
     MultiSelectModule,
     ToastModule,
     TableModule,
-    DropdownModule
+    DropdownModule,
+    DynamicDialogModule
   ],
   providers: [
     MessageService

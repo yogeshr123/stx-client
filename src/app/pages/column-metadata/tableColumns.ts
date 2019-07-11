@@ -68,31 +68,31 @@ const columnTableColumns = [
         type: 'boolean'
     },
     {
-        header: 'PREDEFINED_VALUE',
+        header: 'PREDEFINED VALUE',
         field: 'PREDEFINED_VALUE'
     },
     {
-        header: 'IS_PARTITION_COLUMN',
+        header: 'IS PARTITION COLUMN',
         field: 'IS_PARTITION_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'IS_UPDATE_DATE_COLUMN',
+        header: 'IS UPDATE_DATE COLUMN',
         field: 'IS_UPDATE_DATE_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'IS_DATATYPE_CHANGED',
+        header: 'IS DATATYPE CHANGED',
         field: 'IS_DATATYPE_CHANGED',
         type: 'boolean'
     },
     {
-        header: 'IS_RENAMED',
+        header: 'IS RENAMED',
         field: 'IS_RENAMED',
         type: 'boolean'
     },
     {
-        header: 'IS_NEW',
+        header: 'IS NEW',
         field: 'IS_NEW',
         type: 'boolean'
     }

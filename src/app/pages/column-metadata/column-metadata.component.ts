@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
-import { columnTableColumns } from './tableColumns';
+import { columnTableColumns, versionTableColumns } from './tableColumns';
 
 
 @Component({
@@ -31,6 +31,7 @@ export class ColumnMetadataComponent implements OnInit {
   showGenerateVersion = true;
   selectedTable: any;
   columnTableColumns = columnTableColumns;
+  versionTableColumns = versionTableColumns;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   selectedColumns: any;
 

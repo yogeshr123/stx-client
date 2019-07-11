@@ -19,28 +19,34 @@
             <div class="mt-3">
                 <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
                 </ngx-loading>
-                <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
-                    <ng-template pTemplate="header">
+                <p-table #dt [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [columns]="versionTableColumns" [tableStyle]="{'table-layout':'auto'}">
+                    <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th>Version</th>
-                            <th>Status</th>
-                            <th>Start Date Time</th>
-                            <th>Updated Date Time</th>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                                </p-sortIcon>
+                            </th>
                             <th>Action</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-version let-i="rowIndex">
-                        <tr>
-                            <td>{{version.METADATA_VERSION}}</td>
-                            <td>{{version.STATUS}}</td>
-                            <td>{{version.START_DATE | date: 'short' }}</td>
-                            <td>{{version.UPDATE_DATE | date: 'short' }}</td>
+                    <ng-template pTemplate="body" let-version let-columns="columns">
+                        <tr [pSelectableRow]="version">
+                            <td *ngFor="let col of columns">
+                                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                                    <span> {{ version[col.field] | date: 'short' }} </span>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <span> {{ version[col.field] }} </span>
+                                </ng-template>
+                            </td>
                             <td>
                                 <button (click)="viewData(version)" class="btn btn-sm btn-primary">View</button>
                                 <button *ngIf="version.STATUS.toLowerCase() === 'new'" (click)="validate(version)" class="ml-2 btn btn-sm btn-warning">Validate</button>
                                 <button *ngIf="showGenerateVersion && i === versions.length - 1" class="ml-2 btn btn-sm btn-info" (click)="generateNewVersion()">Generate New
                                     Version</button>
-                                <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-sm btn-info ml-2">Show Mapping</button> -->
+                                <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1"
+                                    class="btn btn-sm btn-info ml-2">Show Mapping</button> -->
                             </td>
                         </tr>
                     </ng-template>

@@ -14,11 +14,13 @@ const versionTableColumns = [
     },
     {
         header: 'Start Date Time',
-        field: 'START_DATE'
+        field: 'START_DATE',
+        type: 'date'
     },
     {
         header: 'Updated Date Time',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     }
 ];
 

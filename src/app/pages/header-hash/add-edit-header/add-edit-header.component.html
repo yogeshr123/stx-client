@@ -20,10 +20,10 @@
     <div class="col-md-12">
         <div class="tile mt-2">
             <div class="mb-2 clearfix">
-                <h6>
+                <h6 *ngIf="header && routeInfo.id">
                     Hash - {{routeInfo.id}}
-                    <!-- <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}} -->
-                    <button (click)="approveHeader()" class="btn btn-primary float-right">Approve</button>
+                    <span class="ml-3 mr-3">|</span> Status - {{header.STATUS}}
+                    <button (click)="approveHeader()" class="btn btn-primary float-right" *ngIf="header.STATUS.toLowerCase() !== 'approved'">Approve</button>
                 </h6>
             </div>
             <div class="table-responsive">

@@ -22,6 +22,7 @@ export class AddEditHeaderComponent implements OnInit {
   };
   TABLE_NAME: any;
   appState: any;
+  header: any;
   headerMismatches: any;
   headerMismatchesTableCols = headerMismatchesTableCols;
 
@@ -52,6 +53,19 @@ export class AddEditHeaderComponent implements OnInit {
       this.TABLE_NAME = this.appState.CMV.selectedTable.TABLE_NAME;
     }
     this.getHeaderMismatches();
+    this.getHeaderByHash();
+  }
+
+  getHeaderByHash() {
+    const request = {
+      table_name: this.TABLE_NAME,
+      header_hash: this.routeInfo.id
+    };
+    this.headerHashService.getHeaderByHash(request).subscribe((res: any) => {
+      if (res.data && res.data.length) {
+        this.header = res.data[0];
+      }
+    });
   }
 
   getHeaderMismatches() {
@@ -61,14 +75,11 @@ export class AddEditHeaderComponent implements OnInit {
     };
     this.headerHashService.getHeaderMismatches(request).subscribe((res: any) => {
       this.headerMismatches = res.data;
-    }, error => {
-      console.error('error ', error);
     });
   }
 
   approveHeader() {
-    this.headerHashService.approveHeader({}).subscribe((resp: any) => {
-      console.log('res ', resp);
+    this.headerHashService.approveHeader({ header: this.header }).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Successfully Approved');
         this.ngOnInit();
@@ -77,7 +88,6 @@ export class AddEditHeaderComponent implements OnInit {
       }
     }, error => {
       this.showToast('error', 'Approval failed');
-      console.error('error ', error);
     });
   }
 

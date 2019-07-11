@@ -1,8 +1,8 @@
 const versionTableColumns = [
-    {
-        header: 'Table Name',
-        field: 'TABLE_NAME'
-    },
+    // {
+    //     header: 'Table Name',
+    //     field: 'TABLE_NAME'
+    // },
     {
         header: 'Version',
         field: 'METADATA_VERSION'

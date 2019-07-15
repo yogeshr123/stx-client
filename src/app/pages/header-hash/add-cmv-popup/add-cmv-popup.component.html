@@ -26,12 +26,10 @@
                 </tr>
                 <tr *ngIf="status !== 'APPROVED'">
                     <td class="text-right">
-                        <form>
-                            <label class="">Select Data Type :</label>
-                        </form>
+                        <label class="">Select Data Type :</label>
                     </td>
                     <td>
-                        <select class="form-control" [(ngModel)]="formValues.dataType">
+                        <select class="form-control" [(ngModel)]="formValues.dataType" required>
                             <option value="int">int</option>
                             <option value="string">string</option>
                             <option value="timestamp">timestamp</option>
@@ -39,9 +37,11 @@
                         </select>
                     </td>
                     <td class="text-right" *ngIf="formValues.dataType === 'decimal'">
-                        <form>
-                            <label class="">Decimal Precision :</label>
-                        </form>
+                        <label>
+                            Decimal Precision :
+                            <br>
+                            <span class="font-weight-bold">e.g. (0,0) or (38,0)</span>
+                        </label>
                     </td>
                     <td *ngIf="formValues.dataType === 'decimal'">
                         <input type="text" [(ngModel)]="formValues.precision" class="form-control">
@@ -51,7 +51,7 @@
             <hr>
             <div>
                 <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
-                    [ngClass]="{'disabled': saveLoader}">
+                    [ngClass]="{'disabled': saveLoader || !formValues.dataType}">
                     <i class="fa fa-fw fa-lg fa-check-circle"></i>
                     Save
                 </button>

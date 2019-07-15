@@ -14,7 +14,7 @@ export class AddCmvPopupComponent implements OnInit {
   saveLoader = false;
   formValues = {
     dataType: '',
-    precision: ''
+    precision: '(0,0)'
   };
 
   constructor(
@@ -31,7 +31,21 @@ export class AddCmvPopupComponent implements OnInit {
 
   saveColumn() {
     this.saveLoader = true;
-    this.headerHashService.addToColumnMetadata({ columnData: this.header }).subscribe((resp: any) => {
+    let formValues = Object.assign({}, this.header);
+    formValues = { ...formValues, formValues: this.formValues };
+    formValues.formValues.precision = formValues.formValues.precision.replace(/\s/g, '');
+    if (!formValues.formValues.precision) {
+      formValues.formValues.precision = '(0,0)';
+    }
+    const checkLeftBracket = /\(/g.test(formValues.formValues.precision);
+    const checkRightBracket = /\)/g.test(formValues.formValues.precision);
+    if (!checkLeftBracket) {
+      formValues.formValues.precision = `(${formValues.formValues.precision}`;
+    }
+    if (!checkRightBracket) {
+      formValues.formValues.precision = `${formValues.formValues.precision})`;
+    }
+    this.headerHashService.addToColumnMetadata({ columnData: formValues }).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Successfully Added!');
       } else {
@@ -42,6 +56,7 @@ export class AddCmvPopupComponent implements OnInit {
       this.saveLoader = false;
       this.showToast('error', 'Could not add!');
     });
+    this.saveLoader = false;
   }
 
   closePopUp() {

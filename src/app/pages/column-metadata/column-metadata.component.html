@@ -47,8 +47,8 @@
                             </td>
                             <td>
                                 <button (click)="viewData(version)" class="btn btn-sm btn-primary">View</button>
-                                <button *ngIf="version.STATUS.toLowerCase() === 'new'" (click)="validate(version)"
-                                    class="ml-2 btn btn-sm btn-warning">Validate</button>
+                                <button *ngIf="version.STATUS.toLowerCase() === 'new' && i === isFirstNewVersion"
+                                    (click)="validate(version)" class="ml-2 btn btn-sm btn-warning">Validate</button>
                                 <button *ngIf="showGenerateVersion && i === versions.length - 1"
                                     class="ml-2 btn btn-sm btn-info" (click)="generateNewVersion()">Generate New
                                     Version</button>

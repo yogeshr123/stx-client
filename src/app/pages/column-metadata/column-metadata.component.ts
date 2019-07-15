@@ -29,6 +29,7 @@ export class ColumnMetadataComponent implements OnInit {
   uniqueTables: any;
   selectedTableName: any;
   showGenerateVersion = true;
+  isFirstNewVersion: any = null;
   selectedTable: any;
   columnTableColumns = columnTableColumns;
   versionTableColumns = versionTableColumns;
@@ -119,9 +120,12 @@ export class ColumnMetadataComponent implements OnInit {
       this.versions = resp.data;
       this.loader.versions = false;
       this.checkStateUpdateSelectedTable();
-      this.versions.forEach(element => {
+      this.versions.forEach((element, index) => {
         if (element.STATUS.toLowerCase() === 'new') {
           this.showGenerateVersion = false;
+          if (!this.isFirstNewVersion) {
+            this.isFirstNewVersion = index;
+          }
         }
       });
     }, error => {
@@ -162,6 +166,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.columnMetadataService.validateVersion({ version }).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Version Validated!');
+        this.isFirstNewVersion = null;
         this.ngOnInit();
       } else {
         this.showToast('error', 'Could not validate version.');

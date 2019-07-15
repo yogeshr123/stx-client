@@ -51,14 +51,14 @@
             <hr>
             <div>
                 <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
-                    [ngClass]="{'disabled': saveLoader || !formValues.dataType || columnAdded}">
+                    [ngClass]="{'disabled': saveLoader || !formValues.dataType}">
                     <i class="fa fa-fw fa-lg fa-check-circle"></i>
                     Save
                 </button>
                 <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-                <!-- <button class="btn btn-secondary ml-2" (click)="closePopUp()">
-                    <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
-                </button> -->
+                <button class="btn btn-secondary ml-2" (click)="closePopUp(false)">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i> Close
+                </button>
             </div>
         </div>
     </div>

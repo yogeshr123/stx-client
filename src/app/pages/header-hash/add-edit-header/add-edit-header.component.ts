@@ -104,6 +104,12 @@ export class AddEditHeaderComponent implements OnInit {
         status: this.header.STATUS !== 'APPROVED' ? status : this.header.STATUS
       }
     });
+
+    ref.onClose.subscribe((reason) => {
+      if (reason) {
+        this.ngOnInit();
+      }
+    });
   }
 
   goBack() {

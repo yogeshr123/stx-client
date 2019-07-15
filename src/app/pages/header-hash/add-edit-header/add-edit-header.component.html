@@ -57,24 +57,26 @@
                             <th class="fixedcol rightfixedcol"></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-header let-columns="columns">
-                        <tr [pSelectableRow]="header">
+                    <ng-template pTemplate="body" let-item let-columns="columns">
+                        <tr [pSelectableRow]="item">
                             <td *ngFor="let col of columns">
                                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                                    <span> {{header[col.field] | date: 'short'}} </span>
+                                    <span> {{item[col.field] | date: 'short'}} </span>
                                 </ng-container>
                                 <ng-template #elseTemplate>
-                                    <span> {{header[col.field]}} </span>
+                                    <span> {{item[col.field]}} </span>
                                 </ng-template>
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
-                                    <button (click)="addToCMV(header, header.STATUS)" title="Add to CMV"
-                                        *ngIf="header.STATUS === 'APPROVED'" class="btn btn-success btn-sm">
+                                    <button (click)="addToCMV(item, item.STATUS)" title="Add to CMV"
+                                        *ngIf="item.STATUS === 'APPROVED'|| header.STATUS === 'APPROVED'"
+                                        class="btn btn-success btn-sm">
                                         <i class="fa fa-eye"></i>
                                     </button>
-                                    <button (click)="addToCMV(header)" title="Add to CMV"
-                                        *ngIf="header.STATUS !== 'APPROVED'" class="btn btn-success btn-sm">
+                                    <button (click)="addToCMV(item)" title="Add to CMV"
+                                        *ngIf="item.STATUS !== 'APPROVED' && header.STATUS !== 'APPROVED'"
+                                        class="btn btn-success btn-sm">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>

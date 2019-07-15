@@ -101,7 +101,7 @@ export class AddEditHeaderComponent implements OnInit {
       closeOnEscape: true,
       data: {
         header,
-        status
+        status: this.header.STATUS !== 'APPROVED' ? status : this.header.STATUS
       }
     });
   }

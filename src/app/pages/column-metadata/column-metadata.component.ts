@@ -142,7 +142,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.loader.columns = true;
     const request = {
       table_name: this.selectedTable.TABLE_NAME,
-      columnVersion: 1
+      columnVersion: version.METADATA_VERSION
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       this.versionData = resp.data;
@@ -151,6 +151,11 @@ export class ColumnMetadataComponent implements OnInit {
     }, error => {
       this.loader.columns = false;
     });
+  }
+
+  deleteColumn(version) {
+    console.log('version ', version);
+
   }
 
   validate(version) {

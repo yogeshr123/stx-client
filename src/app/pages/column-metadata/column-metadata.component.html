@@ -135,13 +135,17 @@
                                         <button
                                             [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]"
                                             title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'"
-                                            class="btn btn-sm btn-primary btn-sm">
+                                            class="btn btn-sm btn-primary">
                                             <i class="fa fa-pencil"></i>
                                         </button>
                                         <button
                                             [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]"
-                                            title="view" class="btn btn-sm btn-info btn-sm ml-1">
+                                            title="view" class="btn btn-sm btn-info ml-1">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button (click)="deleteColumn(version)" title="Delete"
+                                            class="btn btn-danger btn-sm ml-1" *ngIf="version.IS_NEW?.data[0]">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </div>
                                 </td>

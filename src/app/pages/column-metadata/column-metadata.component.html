@@ -145,7 +145,8 @@
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                         </button>
                                         <button (click)="deleteColumn(version)" title="Delete"
-                                            class="btn btn-danger btn-sm ml-1" *ngIf="version.IS_NEW?.data[0]">
+                                            class="btn btn-danger btn-sm ml-1"
+                                            *ngIf="version.IS_NEW?.data[0] && selectedVersion?.STATUS?.toUpperCase() === 'NEW'">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </div>

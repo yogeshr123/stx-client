@@ -73,4 +73,11 @@ export class ColumnMetadataService {
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    deleteColumn(columnData) {
+        const url = `${environment.baseUrl}column-metadata/deleteColumn`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

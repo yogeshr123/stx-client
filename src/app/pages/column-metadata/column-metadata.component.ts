@@ -158,8 +158,22 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   deleteColumn(version) {
-    console.log('version ', version);
-
+    const request = {
+      columnVersion: version.METADATA_VERSION,
+      targetColumnId: version.TARGET_COLUMN_ID,
+      table_name: this.selectedTable.TABLE_NAME
+    };
+    this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        this.showToast('success', 'Column Deleted!');
+        this.isFirstNewVersion = null;
+        this.ngOnInit();
+      } else {
+        this.showToast('error', 'Could not delete column.');
+      }
+    }, error => {
+      this.showToast('error', 'Could not delete column.');
+    });
   }
 
   validate(version) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, MessageService } from 'primeng/api';
+import { DynamicDialogConfig, MessageService, DialogService } from 'primeng/api';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
 
 @Component({
@@ -12,8 +12,13 @@ export class AddCmvPopupComponent implements OnInit {
   header: any;
   status: any;
   saveLoader = false;
+  formValues = {
+    dataType: '',
+    precision: ''
+  };
 
   constructor(
+    public dialogService: DialogService,
     private messageService: MessageService,
     private headerHashService: HeaderHashService,
     public config: DynamicDialogConfig
@@ -37,6 +42,10 @@ export class AddCmvPopupComponent implements OnInit {
       this.saveLoader = false;
       this.showToast('error', 'Could not add!');
     });
+  }
+
+  closePopUp() {
+    // this.dialogService.open()
   }
 
   showToast(severity, summary) {

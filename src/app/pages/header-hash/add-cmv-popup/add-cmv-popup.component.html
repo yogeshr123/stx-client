@@ -31,12 +31,20 @@
                         </form>
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" [(ngModel)]="formValues.dataType">
                             <option value="int">int</option>
                             <option value="string">string</option>
-                            <option value="boolean">boolean</option>
                             <option value="timestamp">timestamp</option>
+                            <option value="decimal">decimal</option>
                         </select>
+                    </td>
+                    <td class="text-right" *ngIf="formValues.dataType === 'decimal'">
+                        <form>
+                            <label class="">Decimal Precision :</label>
+                        </form>
+                    </td>
+                    <td *ngIf="formValues.dataType === 'decimal'">
+                        <input type="text" [(ngModel)]="formValues.precision" class="form-control">
                     </td>
                 </tr>
             </table>

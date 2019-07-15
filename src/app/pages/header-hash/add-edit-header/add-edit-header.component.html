@@ -69,12 +69,12 @@
                             </td>
                             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                 <div>
-                                    <button (click)="addToCMV(item, item.STATUS)" title="Add to CMV"
+                                    <button (click)="addToCMV(item, item.STATUS)" title="View"
                                         *ngIf="item.STATUS === 'APPROVED'|| header?.STATUS === 'APPROVED'"
                                         class="btn btn-success btn-sm">
                                         <i class="fa fa-eye"></i>
                                     </button>
-                                    <button (click)="addToCMV(item)" title="Add to CMV"
+                                    <button (click)="addToCMV(item, item.STATUS)" title="Add to CMV"
                                         *ngIf="item.STATUS !== 'APPROVED' && header?.STATUS !== 'APPROVED'"
                                         class="btn btn-success btn-sm">
                                         <i class="fa fa-plus"></i>

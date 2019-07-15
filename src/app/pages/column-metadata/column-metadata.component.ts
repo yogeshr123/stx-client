@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DialogService } from 'primeng/api';
+import { DialogService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { MessageService } from 'primeng/api';
 
@@ -13,7 +13,7 @@ import { columnTableColumns, versionTableColumns } from './tableColumns';
   selector: 'app-column-metadata',
   templateUrl: './column-metadata.component.html',
   styleUrls: ['./column-metadata.component.css'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class ColumnMetadataComponent implements OnInit {
 
@@ -23,7 +23,8 @@ export class ColumnMetadataComponent implements OnInit {
   versionData = [];
   loader = {
     columns: false,
-    versions: false
+    versions: false,
+    delete: false
   };
   state: any;
   uniqueTables: any;
@@ -37,6 +38,7 @@ export class ColumnMetadataComponent implements OnInit {
   selectedColumns: any;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
@@ -158,21 +160,29 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   deleteColumn(version) {
-    const request = {
-      columnVersion: version.METADATA_VERSION,
-      targetColumnId: version.TARGET_COLUMN_ID,
-      table_name: this.selectedTable.TABLE_NAME
-    };
-    this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
-      if (resp && !resp.error) {
-        this.showToast('success', 'Column Deleted!');
-        this.isFirstNewVersion = null;
-        this.ngOnInit();
-      } else {
-        this.showToast('error', 'Could not delete column.');
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this column?',
+      accept: () => {
+        this.loader.delete = true;
+        const request = {
+          columnVersion: version.METADATA_VERSION,
+          targetColumnId: version.TARGET_COLUMN_ID,
+          table_name: this.selectedTable.TABLE_NAME
+        };
+        this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
+          if (resp && !resp.error) {
+            this.showToast('success', 'Column Deleted!');
+            this.isFirstNewVersion = null;
+            this.ngOnInit();
+          } else {
+            this.showToast('error', 'Could not delete column.');
+          }
+          this.loader.delete = false;
+        }, error => {
+          this.loader.delete = false;
+          this.showToast('error', 'Could not delete column.');
+        });
       }
-    }, error => {
-      this.showToast('error', 'Could not delete column.');
     });
   }
 

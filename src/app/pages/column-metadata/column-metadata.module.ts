@@ -12,6 +12,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -34,7 +35,8 @@ import { AllVersionsComponent } from './all-versions/all-versions.component';
     DropdownModule,
     TabViewModule,
     MultiSelectModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule
   ],
   providers: [MessageService],
   entryComponents: [MetadataMappingComponent]

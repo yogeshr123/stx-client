@@ -96,7 +96,7 @@ export class AddEditHeaderComponent implements OnInit {
 
   addToCMV(header, status) {
     const ref = this.dialogService.open(AddCmvPopupComponent, {
-      header: 'Add Column To Column Metadata',
+      header: status === 'NEW' ? 'Add Column To Column Metadata' : 'View Details',
       width: '55%',
       closeOnEscape: true,
       data: {

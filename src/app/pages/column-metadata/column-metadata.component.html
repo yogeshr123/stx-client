@@ -95,7 +95,8 @@
                             <tr>
                                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                                     {{col.header}}
-                                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                    <p-sortIcon *ngIf="col.type !== 'boolean'" [field]="col.field"
+                                        ariaLabel="Activate to sort"
                                         ariaLabelDesc="Activate to sort in descending order"
                                         ariaLabelAsc="Activate to sort in ascending order">
                                     </p-sortIcon>
@@ -103,9 +104,9 @@
                                 <th class="fixedcol rightfixedcol">Action</th>
                             </tr>
                             <tr>
-                                <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                                    <span *ngSwitchCase="'START_DATE'"></span>
-                                    <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                                <th *ngFor="let col of columns" [ngSwitch]="col.type" class="ui-flclassuid">
+                                    <span *ngSwitchCase="'boolean'"></span>
+                                    <span *ngSwitchCase="'date'"></span>
                                     <input pInputText *ngSwitchDefault type="text"
                                         (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
                                         [value]="dt2.filters[col.field]?.value">

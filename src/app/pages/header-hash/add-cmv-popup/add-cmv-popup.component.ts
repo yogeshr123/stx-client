@@ -16,6 +16,7 @@ export class AddCmvPopupComponent implements OnInit {
     dataType: '',
     precision: '(0,0)'
   };
+  columnAdded = false;
 
   constructor(
     public dialogService: DialogService,
@@ -45,16 +46,20 @@ export class AddCmvPopupComponent implements OnInit {
     if (!checkRightBracket) {
       formValues.formValues.precision = `${formValues.formValues.precision})`;
     }
+    if (formValues.formValues.dataType === 'decimal') {
+      formValues.formValues.dataType = `${formValues.formValues.dataType}${formValues.formValues.precision}`;
+    }
     this.headerHashService.addToColumnMetadata({ columnData: formValues }).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Successfully Added!');
+        this.columnAdded = true;
       } else {
-        this.showToast('error', 'Could not add!');
+        this.showToast('error', 'Could not be added!');
       }
       this.saveLoader = false;
     }, () => {
       this.saveLoader = false;
-      this.showToast('error', 'Could not add!');
+      this.showToast('error', 'Could not be added!');
     });
     this.saveLoader = false;
   }

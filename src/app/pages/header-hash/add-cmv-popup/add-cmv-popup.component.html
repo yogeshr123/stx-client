@@ -51,7 +51,7 @@
             <hr>
             <div>
                 <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
-                    [ngClass]="{'disabled': saveLoader || !formValues.dataType}">
+                    [ngClass]="{'disabled': saveLoader || !formValues.dataType || columnAdded}">
                     <i class="fa fa-fw fa-lg fa-check-circle"></i>
                     Save
                 </button>

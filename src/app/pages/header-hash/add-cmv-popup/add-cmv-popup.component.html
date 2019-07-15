@@ -35,17 +35,19 @@
                             <option value="int">int</option>
                             <option value="string">string</option>
                             <option value="boolean">boolean</option>
+                            <option value="timestamp">timestamp</option>
                         </select>
                     </td>
                 </tr>
             </table>
             <hr>
             <div>
-                <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="onSubmit()">
+                <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
+                    [ngClass]="{'disabled': saveLoader}">
                     <i class="fa fa-fw fa-lg fa-check-circle"></i>
                     Save
                 </button>
-                <!-- <img class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image"> -->
+                <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
                 <!-- <button class="btn btn-secondary ml-2" (click)="closePopUp()">
                     <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
                 </button> -->

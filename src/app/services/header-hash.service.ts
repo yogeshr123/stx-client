@@ -53,4 +53,11 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    addToColumnMetadata(columnData) {
+        const url = `${environment.baseUrl}header-hash/addToColumnMetadata`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
 }

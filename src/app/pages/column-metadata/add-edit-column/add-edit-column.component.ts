@@ -48,7 +48,7 @@ export class AddEditColumnComponent implements OnInit {
       if (this.routeInfo.path.indexOf('edit') > -1) {
         this.routeInfo.isEditMode = true;
       }
-      if (params[1].path.indexOf('fhh') > -1) {
+      if (params[1] && params[1].path.indexOf('fhh') > -1) {
         this.routeInfo.fromHeaderHash = true;
       }
     });
@@ -76,20 +76,23 @@ export class AddEditColumnComponent implements OnInit {
       SCHEMA_NAME: ['', Validators.required],
       TABLE_NAME: ['', Validators.required],
       METADATA_VERSION: ['', Validators.required],
-      SRC_COLUMN_NAME: ['', Validators.required],
-      SRC_COLUMN_TYPE: ['', Validators.required],
+      SRC_COLUMN_NAME: [{ value: '', disabled: this.routeInfo.fromHeaderHash }, Validators.required],
+      SRC_COLUMN_TYPE: [
+        {
+          value: this.routeInfo.fromHeaderHash ? 'MAPPED' : '',
+          disabled: this.routeInfo.fromHeaderHash
+        },
+        Validators.required],
       SRC_DATA_TYPE: [''],
       SRC_PRECISION: ['', Validators.required],
-      SRC_SCALE: ['', Validators.required],
       INTERNAL_COLUMN: [0, Validators.required],
       DERIVED_COLUMN_FORMULA: [''],
       LOOKUP_TABLE_ALIAS: [''],
       PREDEFINED_VALUE: [''],
-      TARGET_COLUMN_NAME: ['', Validators.required],
+      TARGET_COLUMN_NAME: [{ value: '', disabled: this.routeInfo.fromHeaderHash }, Validators.required],
       TARGET_DATA_TYPE: ['', Validators.required],
       TARGET_LENGTH: ['', Validators.required],
       TARGET_PRECISION: ['', Validators.required],
-      TARGET_SCALE: ['', Validators.required],
       TARGET_COLUMN_ID: ['1'],
       TARGET_DEFAULT_VALUE: [''],
       IS_PKEY_COLUMN: [0, Validators.required],

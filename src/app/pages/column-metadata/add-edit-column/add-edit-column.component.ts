@@ -84,14 +84,16 @@ export class AddEditColumnComponent implements OnInit {
         },
         Validators.required],
       SRC_DATA_TYPE: [''],
+      SRC_LEFT_PRECISION: [''],
+      SRC_RIGHT_PRECISION: [''],
       INTERNAL_COLUMN: [0, Validators.required],
       DERIVED_COLUMN_FORMULA: [''],
       LOOKUP_TABLE_ALIAS: [''],
       PREDEFINED_VALUE: [''],
       TARGET_COLUMN_NAME: [{ value: '', disabled: this.routeInfo.fromHeaderHash }, Validators.required],
       TARGET_DATA_TYPE: ['', Validators.required],
-      TARGET_LENGTH: ['', Validators.required],
-      TARGET_PRECISION: ['', Validators.required],
+      TARGET_LEFT_PRECISION: [''],
+      TARGET_RIGHT_PRECISION: [''],
       TARGET_COLUMN_ID: ['1'],
       TARGET_DEFAULT_VALUE: [''],
       IS_PKEY_COLUMN: [0, Validators.required],
@@ -183,15 +185,30 @@ export class AddEditColumnComponent implements OnInit {
     if (functionToCall === 'addColumn') {
       this.addEditColumnForm.controls.IS_NEW.patchValue(1);
     }
-    if (this.addEditColumnForm.controls.SRC_COLUMN_NAME !== this.addEditColumnForm.controls.TARGET_COLUMN_NAME) {
+    if (this.addEditColumnForm.value.SRC_COLUMN_NAME !== this.addEditColumnForm.value.TARGET_COLUMN_NAME) {
       this.addEditColumnForm.controls.IS_RENAMED.patchValue(1);
     } else {
       this.addEditColumnForm.controls.IS_RENAMED.patchValue(0);
     }
-    if (this.addEditColumnForm.controls.SRC_DATA_TYPE !== this.addEditColumnForm.controls.TARGET_DATA_TYPE) {
+    if (this.addEditColumnForm.value.SRC_DATA_TYPE !== this.addEditColumnForm.value.TARGET_DATA_TYPE) {
       this.addEditColumnForm.controls.IS_DATATYPE_CHANGED.patchValue(1);
     } else {
       this.addEditColumnForm.controls.IS_DATATYPE_CHANGED.patchValue(0);
+    }
+  }
+
+  addPrecisionValues(formValues) {
+    if (/decimal/g.test(formValues.TARGET_DATA_TYPE)) {
+      formValues.TARGET_DATA_TYPE =
+        `${formValues.TARGET_DATA_TYPE}(${formValues.TARGET_LEFT_PRECISION || 0},${formValues.TARGET_RIGHT_PRECISION || 0})`;
+    }
+    if (/varchar/g.test(formValues.TARGET_DATA_TYPE)) {
+      formValues.TARGET_DATA_TYPE =
+        `${formValues.TARGET_DATA_TYPE}(${formValues.TARGET_LEFT_PRECISION || 0})`;
+    }
+    if (/decimal/g.test(formValues.SRC_DATA_TYPE)) {
+      formValues.SRC_DATA_TYPE =
+        `${formValues.SRC_DATA_TYPE}(${formValues.SRC_LEFT_PRECISION || 0},${formValues.SRC_RIGHT_PRECISION || 0})`;
     }
   }
 
@@ -209,10 +226,12 @@ export class AddEditColumnComponent implements OnInit {
         error: 'Could not update column.'
       };
     }
+    const formValues = Object.assign({}, this.addEditColumnForm.value);
+    this.addPrecisionValues(formValues);
     const request: any = {
       table_name: this.TABLE_NAME,
-      data: this.addEditColumnForm.value,
-      targetColumnId: this.routeInfo.id || this.addEditColumnForm.value.METADATA_VERSION,
+      data: formValues,
+      targetColumnId: this.routeInfo.id || formValues.METADATA_VERSION,
       fromHeaderHash: this.routeInfo.fromHeaderHash
     };
     this.checkFormValues(functionToCall);

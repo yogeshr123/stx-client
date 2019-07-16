@@ -4,7 +4,8 @@
         <h5>
             <i class="fa fa-columns"></i>
             <span> Column Metadata Version</span>
-            <span *ngIf="routeInfo"> - {{routeInfo.id ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Column</span>
+            <span *ngIf="routeInfo"> -
+                {{routeInfo.id && !routeInfo.isViewOnly ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}} Column</span>
         </h5>
         <div class="mt-4">
             Table Name:
@@ -22,11 +23,14 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn}" class="btn btn-primary" type="button" (click)="onSubmit()">
-                          <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                          Save
+                        <button
+                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn}"
+                            class="btn btn-primary" type="button" (click)="onSubmit()">
+                            <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                            Save
                         </button>
-                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                            alt="Loader Image">
                         <button class="btn btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
                         </button>
@@ -51,14 +55,16 @@
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">SRC COLUMN TYPE</label>
                                     <div class="col-md-8">
-                                        <select formControlName="SRC_COLUMN_TYPE" class="form-control" (change)="updateValidation()">
-                                      <option value="MAPPED">MAPPED</option>
-                                      <option value="DERIVED">DERIVED</option>
-                                      <option value="PREDEFINED">PREDEFINED</option>
-                                    </select>
+                                        <select formControlName="SRC_COLUMN_TYPE" class="form-control"
+                                            (change)="updateValidation()">
+                                            <option value="MAPPED">MAPPED</option>
+                                            <option value="DERIVED">DERIVED</option>
+                                            <option value="PREDEFINED">PREDEFINED</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
                                     <label class="control-label col-md-4">SRC DATA TYPE</label>
                                     <div class="col-md-8">
                                         <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
@@ -76,16 +82,19 @@
                                         <input formControlName="SRC_SCALE" class="form-control" type="number" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
                                     <label class="control-label col-md-4">INTERNAL COLUMN</label>
                                     <div class="col-md-8">
                                         <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
                                     <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
                                     <div class="col-md-8">
-                                        <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text" />
+                                        <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control"
+                                            type="text" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
@@ -94,19 +103,21 @@
                                         <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row" *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
                                     <label class="control-label col-md-4">PREDEFINED VALUE</label>
                                     <div class="col-md-8">
                                         <select formControlName="PREDEFINED_VALUE" class="form-control">
-                                      <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
-                                      <option value="INPUT_FILENAME">INPUT_FILENAME</option>
-                                    </select>
+                                            <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
+                                            <option value="INPUT_FILENAME">INPUT_FILENAME</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </p-accordionTab>
                         <!-- TARGET Info-->
-                        <p-accordionTab header="Target Info" class="col-12" [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
+                        <p-accordionTab header="Target Info" class="col-12"
+                            [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET COLUMN NAME</label>
@@ -147,13 +158,15 @@
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
                                     <div class="col-md-8">
-                                        <input formControlName="TARGET_DEFAULT_VALUE" class="form-control" type="text" />
+                                        <input formControlName="TARGET_DEFAULT_VALUE" class="form-control"
+                                            type="text" />
                                     </div>
                                 </div>
                             </div>
                         </p-accordionTab>
                         <!-- Other Info  -->
-                        <p-accordionTab header="Other Info" class="col-12" [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
+                        <p-accordionTab header="Other Info" class="col-12"
+                            [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
                             <div class="row mt-2">
 
                                 <div class="form-group col-6 row">
@@ -165,7 +178,8 @@
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">IS PARTITION COLUMN</label>
                                     <div class="col-md-8">
-                                        <input formControlName="IS_PARTITION_COLUMN" class="form-control" type="checkbox" />
+                                        <input formControlName="IS_PARTITION_COLUMN" class="form-control"
+                                            type="checkbox" />
                                     </div>
                                 </div>
                                 <!-- <div class="form-group col-6 row">
@@ -200,11 +214,14 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn }" class="btn btn-primary" type="button" (click)="onSubmit()">
-                          <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                          Save
+                        <button
+                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn }"
+                            class="btn btn-primary" type="button" (click)="onSubmit()">
+                            <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                            Save
                         </button>
-                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                            alt="Loader Image">
                         <button class="btn btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>
                             Cancel

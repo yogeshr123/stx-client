@@ -25,10 +25,24 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getHeaderByHash(tableData) {
+        const url = `${environment.baseUrl}header-hash/getHeaderByHash`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getAllTables() {
         const url = `${environment.baseUrl}header-hash/getAllTables`;
         return this.http
             .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getHeaderMismatches(tableData) {
+        const url = `${environment.baseUrl}header-hash/getHeaderMismatches`;
+        return this.http
+            .post(url, tableData)
             .pipe(catchError(this.commonService.handleError));
     }
 
@@ -39,11 +53,11 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
-
-    updateTasks(tableData) {
-        const url = `${environment.baseUrl}header-hash`;
+    addToColumnMetadata(columnData) {
+        const url = `${environment.baseUrl}header-hash/addToColumnMetadata`;
         return this.http
-            .put(url, tableData)
+            .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));
     }
+
 }

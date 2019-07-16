@@ -31,7 +31,7 @@ const routes: Routes = [
                 loadChildren: '../../pages/load-status/load-status.module#LoadStatusModule'
             },
             {
-                path: 'CMU',
+                path: 'CMV',
                 loadChildren: '../../pages/column-metadata/column-metadata.module#ColumnMetadataModule'
             },
             {

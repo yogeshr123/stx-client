@@ -1,0 +1,10 @@
+th,
+td {
+    height: 30px;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}

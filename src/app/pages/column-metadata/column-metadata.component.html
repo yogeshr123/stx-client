@@ -1,4 +1,11 @@
 <p-toast></p-toast>
+<p-confirmDialog #cd header="Column Delete" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <button class="btn-danger" type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()"></button>
+        <img *ngIf="loader.delete" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+    </p-footer>
+</p-confirmDialog>
 
 <div class="app-title">
     <div>
@@ -9,159 +16,156 @@
 </div>
 
 <div class="row">
-    <ngx-loading [show]="loader.tabs" [config]="{ backdropBorderRadius: '3px' }">
-    </ngx-loading>
-    <p-tabView class="col-md-12" (onChange)="tabChanged($event)">
-        <p-tabPanel header="All Version Tables" [selected]="activeTab === 0">
-            <div class="col-12 mt-2">
-                <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns" [reorderableColumns]="true">
-                    <ng-template pTemplate="caption">
-                        <div class="globalSearch">
-                            <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
-                            <button class="btn btn-sm btn-primary" type="button" (click)="search()">
-                                <i class="fa fa-lg fa-fw fa-search"></i>
-                            </button>
-                        </div>
-                    </ng-template>
+    <div class="col-12">
+        <div class="tile">
+            <div *ngIf="uniqueTables?.length">
+                Table Name:
+                <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
+                    optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
+                </p-dropdown>
+                <a [routerLink]="[ '/header-hash']" class="btn btn-sm btn-primary float-right">Show Header Hash</a>
+            </div>
+            <div class="mt-3">
+                <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
+                </ngx-loading>
+                <p-table #dt [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions"
+                    [columns]="versionTableColumns" [tableStyle]="{'table-layout':'auto'}">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                                 {{col.header}}
-                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                    ariaLabelDesc="Activate to sort in descending order"
+                                    ariaLabelAsc="Activate to sort in ascending order">
                                 </p-sortIcon>
                             </th>
                             <th>Action</th>
                         </tr>
-                        <tr>
-                            <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                                <span *ngSwitchCase="'START_DATE'"></span>
-                                <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                                <input pInputText *ngSwitchDefault type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt.filters[col.field]?.value">
-                            </th>
-                            <th></th>
-                        </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-version let-i="rowIndex">
-                        <tr>
-                            <td>{{version.TABLE_NAME}}</td>
-                            <td>{{version.METADATA_VERSION}}</td>
-                            <td>{{version.STATUS}}</td>
-                            <td>{{version.START_DATE | date: 'short' }}</td>
-                            <td>{{version.UPDATE_DATE | date: 'short' }}</td>
+                    <ng-template pTemplate="body" let-version let-columns="columns" let-i="rowIndex">
+                        <tr [pSelectableRow]="version">
+                            <td *ngFor="let col of columns">
+                                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                                    <span> {{ version[col.field] | date: 'short' }} </span>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <span> {{ version[col.field] }} </span>
+                                </ng-template>
+                            </td>
                             <td>
-                                <button (click)="viewDetails(version)" class="btn btn-sm btn-primary">View Details</button>
+                                <button (click)="viewData(version)" class="btn btn-sm btn-primary">View</button>
+                                <button *ngIf="version.STATUS.toLowerCase() === 'new' && i === isFirstNewVersion"
+                                    (click)="validate(version)" class="ml-2 btn btn-sm btn-warning">Validate</button>
+                                <button *ngIf="showGenerateVersion && i === versions.length - 1"
+                                    class="ml-2 btn btn-sm btn-info" (click)="generateNewVersion()">Generate New
+                                    Version</button>
+                                <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1"
+                                    class="btn btn-sm btn-info ml-2">Show Mapping</button> -->
                             </td>
                         </tr>
                     </ng-template>
                 </p-table>
-            </div>
-        </p-tabPanel>
-        <p-tabPanel header="Details - {{selectedTable?.TABLE_NAME}}" [selected]="activeTab === 1">
-            <div class="col-12 mt-2">
-                <div *ngIf="uniqueTables?.length">
-                    Table Name:
-                    <p-dropdown class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName" optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME"></p-dropdown>
-                    <a [routerLink]="[ '/header-hash']" class="btn btn-sm btn-primary float-right">Show Header Hash</a>
+                <div colspan="10" class="text-center p-2 border" *ngIf="!versions || !versions.length">
+                    <h6>No Data Available!</h6>
                 </div>
-                <div class="mt-3">
-                    <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
-                    </ngx-loading>
-                    <p-table [paginator]="versions.length >= 5 ? true : false" [rows]="5" [value]="versions" [tableStyle]="{'table-layout':'auto'}">
-                        <ng-template pTemplate="header">
+            </div>
+        </div>
+        <hr>
+        <div class="tile">
+            <div class="mt-2" *ngIf="showMetaData">
+                <ngx-loading [show]="loader.columns" [config]="{ backdropBorderRadius: '3px' }">
+                </ngx-loading>
+                <h6>
+                    Version - {{selectedVersion.METADATA_VERSION}}
+                    <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
+                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-sm btn-secondary float-right"
+                        *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
+                </h6>
+                <div class="table-responsive" *ngIf="!loader.columns">
+                    <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}"
+                        [columns]="selectedColumns" [reorderableColumns]="true" styleClass="scroll-table-cmv">
+                        <ng-template pTemplate="caption">
+                            <div style="text-align: left">
+                                <p-multiSelect appendTo="body" [options]="columnTableColumns"
+                                    [(ngModel)]="selectedColumns" optionLabel="field"
+                                    selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
+                                    defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
+                            </div>
+                            <div class="globalSearch">
+                                <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
+                                <button class="btn btn-sm btn-primary" type="button" (click)="search()">
+                                    <i class="fa fa-lg fa-fw fa-search"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-columns>
                             <tr>
-                                <th>Version</th>
-                                <th>Status</th>
-                                <th>Start Date Time</th>
-                                <th>Updated Date Time</th>
-                                <th>Action</th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{col.header}}
+                                    <p-sortIcon *ngIf="col.type !== 'boolean'" [field]="col.field"
+                                        ariaLabel="Activate to sort"
+                                        ariaLabelDesc="Activate to sort in descending order"
+                                        ariaLabelAsc="Activate to sort in ascending order">
+                                    </p-sortIcon>
+                                </th>
+                                <th class="fixedcol rightfixedcol">Action</th>
+                            </tr>
+                            <tr>
+                                <th *ngFor="let col of columns" [ngSwitch]="col.type" class="ui-flclassuid">
+                                    <span *ngSwitchCase="'boolean'"></span>
+                                    <span *ngSwitchCase="'date'"></span>
+                                    <input pInputText *ngSwitchDefault type="text"
+                                        (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
+                                        [value]="dt2.filters[col.field]?.value">
+                                </th>
+                                <th class="fixedcol rightfixedcol"></th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-version let-i="rowIndex">
-                            <tr>
-                                <td>{{version.METADATA_VERSION}}</td>
-                                <td>{{version.STATUS}}</td>
-                                <td>{{version.START_DATE | date: 'short' }}</td>
-                                <td>{{version.UPDATE_DATE | date: 'short' }}</td>
-                                <td>
-                                    <button (click)="viewData(version)" class="btn btn-sm btn-primary">View</button>
-                                    <button *ngIf="showGenerateVersion && i === versions.length - 1" class="ml-2 btn btn-sm btn-info" (click)="generateNewVersion()">Generate New Version</button>
-                                    <!-- <button (click)="showMapping(version.METADATA_VERSION)" *ngIf="version.METADATA_VERSION > 1" class="btn btn-sm btn-info ml-2">Show Mapping</button> -->
+                        <ng-template pTemplate="body" let-version let-columns="columns">
+                            <tr [pSelectableRow]="version">
+                                <td *ngFor="let col of columns">
+                                    <ng-container>
+                                        <span [ngSwitch]="col.type">
+                                            <span *ngSwitchCase="'date'">
+                                                {{version[col.field] | date: 'short'}}
+                                            </span>
+                                            <span *ngSwitchCase="'boolean'">
+                                                {{version[col.field] && version[col.field].data[0] ? 'True' : 'False' }}
+                                            </span>
+                                            <span *ngSwitchDefault>
+                                                {{version[col.field]}}
+                                            </span>
+                                        </span>
+                                    </ng-container>
+                                </td>
+                                <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
+                                    <div>
+                                        <button
+                                            [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]"
+                                            title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button
+                                            [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]"
+                                            title="view" class="btn btn-sm btn-info ml-1">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button (click)="deleteColumn(version)" title="Delete"
+                                            class="btn btn-danger btn-sm ml-1"
+                                            *ngIf="version.IS_NEW?.data[0] && selectedVersion?.STATUS?.toUpperCase() === 'NEW'">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </ng-template>
                     </p-table>
-                </div>
-                <hr>
-                <div class="mt-2" *ngIf="showMetaData">
-                    <ngx-loading [show]="loader.columns" [config]="{ backdropBorderRadius: '3px' }">
-                    </ngx-loading>
-                    <h6>
-                        Version - {{selectedVersion.METADATA_VERSION}}
-                        <button [routerLink]="[ './add-column']" class="mb-2 btn btn-sm btn-secondary float-right" *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
-                    </h6>
-                    <div class="table-responsive" *ngIf="!loader.columns">
-                        <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns" [reorderableColumns]="true" styleClass="scroll-table-cmv">
-                            <ng-template pTemplate="caption">
-                                <div style="text-align: left">
-                                    <p-multiSelect [options]="columnTableColumns" [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
-                                </div>
-                                <div class="globalSearch">
-                                    <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
-                                    <button class="btn btn-sm btn-primary" type="button" (click)="search()">
-                                        <i class="fa fa-lg fa-fw fa-search"></i>
-                                    </button>
-                                </div>
-                            </ng-template>
-                            <ng-template pTemplate="header" let-columns>
-                                <tr>
-                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                                        {{col.header}}
-                                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-                                        </p-sortIcon>
-                                    </th>
-                                    <th class="fixedcol rightfixedcol">Action</th>
-                                </tr>
-                                <tr>
-                                    <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                                        <span *ngSwitchCase="'START_DATE'"></span>
-                                        <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                                        <!-- <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
-                                            (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
-                                            [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter"> -->
-                                        <input pInputText *ngSwitchDefault type="text" (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)" [value]="dt2.filters[col.field]?.value">
-                                    </th>
-                                    <th class="fixedcol rightfixedcol"></th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-version let-columns="columns">
-                                <tr [pSelectableRow]="version">
-                                    <td *ngFor="let col of columns">
-                                        <ng-container *ngIf="checkDataType(version[col.field], 'object'); else elseTemplate">
-                                            {{ version[col.field].data[0] || !version[col.field] ? 'True' : 'False' }}
-                                        </ng-container>
-                                        <ng-template #elseTemplate>
-                                            <span>
-                                                {{version[col.field]}}
-                                            </span>
-                                        </ng-template>
-                                    </td>
-                                    <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
-                                        <div>
-                                            <button [routerLink]="[ './edit-column', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID ]" title="Edit" *ngIf="selectedVersion.STATUS === 'NEW'" class="btn btn-sm btn-primary btn-sm">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                            <button [routerLink]="[ './view-column/', selectedVersion.METADATA_VERSION,version.TARGET_COLUMN_ID]" title="view" class="btn btn-sm btn-info btn-sm ml-1">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
+                    <div colspan="10" class="text-center p-2 border" *ngIf="!versionData || !versionData.length">
+                        <h6>No Data Available!</h6>
                     </div>
                 </div>
             </div>
-        </p-tabPanel>
-    </p-tabView>
+        </div>
+    </div>
 </div>

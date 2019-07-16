@@ -1,24 +1,25 @@
 const versionTableColumns = [
     {
-        header: 'Table Name',
-        field: 'TABLE_NAME'
-    },
-    {
         header: 'Version',
         field: 'METADATA_VERSION'
     },
     {
+        header: 'Table Name',
+        field: 'TABLE_NAME'
+    },
+    {
         header: 'Status',
-        field: 'STATUS',
-        value: 'NEW'
+        field: 'STATUS'
     },
     {
         header: 'Start Date Time',
-        field: 'START_DATE'
+        field: 'START_DATE',
+        type: 'date'
     },
     {
         header: 'Updated Date Time',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     }
 ];
 
@@ -54,77 +55,48 @@ const columnTableColumns = [
     },
     {
         header: 'PRIMARY KEY',
-        field: 'IS_PKEY_COLUMN'
+        field: 'IS_PKEY_COLUMN',
+        type: 'boolean'
     },
     {
         header: 'DATE UPDATED',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     },
     {
         header: 'INTERNAL COLUMN',
-        field: 'INTERNAL_COLUMN'
+        field: 'INTERNAL_COLUMN',
+        type: 'boolean'
     },
     {
-        header: 'PREDEFINED_VALUE',
+        header: 'PREDEFINED VALUE',
         field: 'PREDEFINED_VALUE'
     },
     {
-        header: 'IS_PARTITION_COLUMN',
-        field: 'IS_PARTITION_COLUMN'
+        header: 'IS PARTITION COLUMN',
+        field: 'IS_PARTITION_COLUMN',
+        type: 'boolean'
     },
     {
-        header: 'IS_UPDATE_DATE_COLUMN',
-        field: 'IS_UPDATE_DATE_COLUMN'
+        header: 'IS UPDATE_DATE COLUMN',
+        field: 'IS_UPDATE_DATE_COLUMN',
+        type: 'boolean'
     },
     {
-        header: 'IS_DATATYPE_CHANGED',
-        field: 'IS_DATATYPE_CHANGED'
+        header: 'IS DATATYPE CHANGED',
+        field: 'IS_DATATYPE_CHANGED',
+        type: 'boolean'
     },
     {
-        header: 'IS_RENAMED',
-        field: 'IS_RENAMED'
+        header: 'IS RENAMED',
+        field: 'IS_RENAMED',
+        type: 'boolean'
     },
     {
-        header: 'IS_NEW',
-        field: 'IS_NEW'
+        header: 'IS NEW',
+        field: 'IS_NEW',
+        type: 'boolean'
     }
 ];
 
-const initColumnState = [
-    {
-        header: 'TARGET COLUMN ID',
-        field: 'TARGET_COLUMN_ID'
-    },
-    {
-        header: 'SRC COLUMN NAME',
-        field: 'SRC_COLUMN_NAME'
-    },
-    {
-        header: 'SRC COLUMN TYPE',
-        field: 'SRC_COLUMN_TYPE'
-    },
-    {
-        header: 'SRC DATA TYPE',
-        field: 'SRC_DATA_TYPE'
-    },
-    {
-        header: 'TARGET COLUMN NAME',
-        field: 'TARGET_COLUMN_NAME'
-    },
-    {
-        header: 'TARGET DATA TYPE',
-        field: 'TARGET_DATA_TYPE'
-    },
-    {
-        header: 'PRIMARY KEY',
-        field: 'IS_PKEY_COLUMN'
-    },
-    {
-        header: 'DATE UPDATED',
-        field: 'UPDATE_DATE'
-    }
-];
-
-
-
-export { versionTableColumns, ENV_NAME, columnTableColumns, initColumnState };
+export { versionTableColumns, ENV_NAME, columnTableColumns };

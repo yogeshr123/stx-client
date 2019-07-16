@@ -32,6 +32,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    validateVersion(version) {
+        const url = `${environment.baseUrl}column-metadata/validateVersion`;
+        return this.http
+            .post(url, version)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getAllColumns(tableData) {
         const url = `${environment.baseUrl}column-metadata/getAllColumns`;
         return this.http
@@ -62,6 +69,13 @@ export class ColumnMetadataService {
 
     addColumn(columnData) {
         const url = `${environment.baseUrl}column-metadata/addColumn`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    deleteColumn(columnData) {
+        const url = `${environment.baseUrl}column-metadata/deleteColumn`;
         return this.http
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));

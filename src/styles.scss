@@ -256,15 +256,16 @@ app-load-status .ui-calendar input {
         overflow-y: scroll;
         overflow-x: auto;
         overflow-y: visible;
-        margin-right: 80px;
+        margin-right: 110px;
         th,
         td {
             height: 40px;
+            white-space: nowrap;
         }
         .fixedcol {
             position: absolute;
-            width: 80px;
-            height: 41px;
+            width: 110px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;

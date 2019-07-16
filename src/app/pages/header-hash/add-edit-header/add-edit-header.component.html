@@ -1,0 +1,93 @@
+<p-toast></p-toast>
+<div class="app-title mb-3 p-3">
+    <div>
+        <h5>
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            <span> File Header Hash</span>
+            <span> -
+                Header Mismatch
+            </span>
+        </h5>
+        <div class="mt-4">
+            Table Name:
+            <h6 class="d-inline-block" *ngIf="TABLE_NAME"> {{TABLE_NAME}} </h6>
+        </div>
+    </div>
+    <a class="btn btn-link goBack float-right" (click)="goBack()">Go Back</a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile mt-2">
+            <div class="mb-2 clearfix">
+                <h6 *ngIf="header && routeInfo.id">
+                    Hash - {{routeInfo.id}}
+                    <span class="ml-3 mr-3">|</span> Status - {{header.STATUS}}
+                    <button (click)="approveHeader()" class="btn btn-primary float-right"
+                        *ngIf="header.STATUS.toLowerCase() !== 'approved'">Approve</button>
+                </h6>
+            </div>
+            <div class="table-responsive">
+                <p-table #dt1 [responsive]="true" [value]="headerMismatches" [tableStyle]="{'table-layout':'auto'}"
+                    [columns]="headerMismatchesTableCols" [reorderableColumns]="true"
+                    styleClass="scroll-table-fhh mismatch">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                    ariaLabelDesc="Activate to sort in descending order"
+                                    ariaLabelAsc="Activate to sort in ascending order">
+                                </p-sortIcon>
+                            </th>
+                            <th class="fixedcol rightfixedcol">Action</th>
+                        </tr>
+                        <tr>
+                            <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
+                                <span *ngSwitchCase="'START_DATE'"></span>
+                                <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                                <span *ngSwitchCase="'INSERT_DATE'"></span>
+                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                                    (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
+                                    [value]="dt1.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                                <input pInputText *ngSwitchDefault type="text"
+                                    (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
+                                    [value]="dt1.filters[col.field]?.value">
+                            </th>
+                            <th class="fixedcol rightfixedcol"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item let-columns="columns">
+                        <tr [pSelectableRow]="item">
+                            <td *ngFor="let col of columns">
+                                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                                    <span> {{item[col.field] | date: 'short'}} </span>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <span> {{item[col.field]}} </span>
+                                </ng-template>
+                            </td>
+                            <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
+                                <div>
+                                    <button (click)="addToCMV(item, item.STATUS)" title="View"
+                                        *ngIf="item.STATUS === 'APPROVED'|| header?.STATUS === 'APPROVED'"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <button (click)="addToCMV(item, item.STATUS)" title="Add to CMV"
+                                        *ngIf="item.STATUS !== 'APPROVED' && header?.STATUS !== 'APPROVED'"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <div colspan="10" class="text-center p-2 border" *ngIf="!headerMismatches || !headerMismatches.length">
+                    <h6>No Data Available!</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

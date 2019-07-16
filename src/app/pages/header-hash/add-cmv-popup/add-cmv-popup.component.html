@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <table class="col-12">
+                <tr>
+                    <td class="text-right">SCHEMA NAME :</td>
+                    <td class="font-weight-bold">{{header.SCHEMA_NAME}}</td>
+                    <td class="text-right">TABLE :</td>
+                    <td class="font-weight-bold">{{header.TABLE_NAME}}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">HEADER HASH :</td>
+                    <td class="font-weight-bold">{{header.HEADER_HASH}}</td>
+                    <td class="text-right">COLUMN NAME :</td>
+                    <td class="font-weight-bold">{{header.COLUMN_NAME}}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">COLUMN STATUS :</td>
+                    <td class="font-weight-bold">{{header.COLUMN_STATUS}}</td>
+                    <td class="text-right">SAMPLE VALUES :</td>
+                    <td class="font-weight-bold">{{header.SAMPLE_VALUES}}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">DATA TYPE :</td>
+                    <td class="font-weight-bold">{{header.DATA_TYPE}}</td>
+                </tr>
+                <tr *ngIf="status !== 'APPROVED'">
+                    <td class="text-right">
+                        <label class="">Select Data Type :</label>
+                    </td>
+                    <td>
+                        <select class="form-control" [(ngModel)]="formValues.dataType" required>
+                            <option value="int">int</option>
+                            <option value="string">string</option>
+                            <option value="timestamp">timestamp</option>
+                            <option value="decimal">decimal</option>
+                        </select>
+                    </td>
+                    <td class="text-right" *ngIf="formValues.dataType === 'decimal'">
+                        <label>
+                            Decimal Precision :
+                            <br>
+                            <span class="font-weight-bold">e.g. (0,0) or (38,0)</span>
+                        </label>
+                    </td>
+                    <td *ngIf="formValues.dataType === 'decimal'">
+                        <input type="text" [(ngModel)]="formValues.precision" class="form-control">
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <div>
+                <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
+                    [ngClass]="{'disabled': saveLoader || !formValues.dataType}">
+                    <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                    Save
+                </button>
+                <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+                <button class="btn btn-secondary ml-2" (click)="closePopUp(false)">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

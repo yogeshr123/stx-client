@@ -12,14 +12,16 @@ import { TabViewModule } from 'primeng/tabview';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { AddEditColumnComponent } from './add-edit-column/add-edit-column.component';
+import { AllVersionsComponent } from './all-versions/all-versions.component';
 
 @NgModule({
-  declarations: [ColumnMetadataComponent, MetadataMappingComponent, AddEditColumnComponent],
+  declarations: [ColumnMetadataComponent, MetadataMappingComponent, AddEditColumnComponent, AllVersionsComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -33,7 +35,8 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
     DropdownModule,
     TabViewModule,
     MultiSelectModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule
   ],
   providers: [MessageService],
   entryComponents: [MetadataMappingComponent]

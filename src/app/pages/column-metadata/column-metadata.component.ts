@@ -1,18 +1,19 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DialogService } from 'primeng/api';
+import { DialogService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { MessageService } from 'primeng/api';
 
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
-import { versionTableColumns, columnTableColumns, initColumnState } from './tableColumns';
+import { columnTableColumns, versionTableColumns } from './tableColumns';
+
 
 @Component({
   selector: 'app-column-metadata',
   templateUrl: './column-metadata.component.html',
   styleUrls: ['./column-metadata.component.css'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class ColumnMetadataComponent implements OnInit {
 
@@ -23,24 +24,21 @@ export class ColumnMetadataComponent implements OnInit {
   loader = {
     columns: false,
     versions: false,
-    tabs: false
+    delete: false
   };
   state: any;
-  tables: any;
   uniqueTables: any;
   selectedTableName: any;
   showGenerateVersion = true;
+  isFirstNewVersion: any = null;
   selectedTable: any;
-  tableColumns = versionTableColumns;
   columnTableColumns = columnTableColumns;
-  activeTab = 0;
-  statusDefaultFilter = 'NEW';
+  versionTableColumns = versionTableColumns;
   @ViewChild(Table, { static: false }) tableComponent: Table;
-  @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
-
   selectedColumns: any;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
@@ -57,15 +55,6 @@ export class ColumnMetadataComponent implements OnInit {
     this.getSelectedColumns();
   }
 
-  triggerDefaultFilter() {
-    const el: HTMLElement = this.statusFilter.nativeElement;
-    const event = new Event('input', {
-      bubbles: true,
-      cancelable: true
-    });
-    el.dispatchEvent(event);
-  }
-
   getSelectedColumns() {
     if (!localStorage.getItem('selectedVersionColumns')) {
       this.initColumnState();
@@ -80,19 +69,6 @@ export class ColumnMetadataComponent implements OnInit {
     this.resetFilters();
   }
 
-  resetTable() {
-    const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
-    if (statefilter) {
-      localStorage.removeItem('stateSelectedVersionColumns');
-    }
-    const columnState = JSON.parse(localStorage.getItem('selectedVersionColumns'));
-    if (columnState) {
-      localStorage.removeItem('selectedVersionColumns');
-      this.initColumnState();
-    }
-    this.tableComponent.reset();
-  }
-
   resetFilters() {
     const statefilter = JSON.parse(localStorage.getItem('stateSelectedVersionColumns'));
     if (statefilter) {
@@ -102,28 +78,21 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   initColumnState() {
-    this.selectedColumns = initColumnState;
+    this.selectedColumns = columnTableColumns;
   }
 
   checkStateUpdateSelectedTable() {
-    this.loader.tabs = true;
-    if (this.state.CMV && this.state.CMV.activeTab) {
-      this.activeTab = this.state.CMV.activeTab;
-    }
     if (this.state.CMV && this.state.CMV.selectedTable) {
       const selectedVersion = this.versions.filter(i => i.METADATA_VERSION === this.state.CMV.selectedTable.METADATA_VERSION);
       if (selectedVersion && selectedVersion.length) {
         this.viewData(selectedVersion[0]);
       }
     }
-    this.loader.tabs = false;
   }
 
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
-        this.tables = resp.data;
-        this.triggerDefaultFilter();
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
         if (!this.state.CMV || !this.state.CMV.selectedTable) {
           this.selectedTable = this.uniqueTables[0];
@@ -153,9 +122,12 @@ export class ColumnMetadataComponent implements OnInit {
       this.versions = resp.data;
       this.loader.versions = false;
       this.checkStateUpdateSelectedTable();
-      this.versions.forEach(element => {
+      this.versions.forEach((element, index) => {
         if (element.STATUS.toLowerCase() === 'new') {
           this.showGenerateVersion = false;
+          if (!this.isFirstNewVersion) {
+            this.isFirstNewVersion = index;
+          }
         }
       });
     }, error => {
@@ -163,15 +135,10 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  viewDetails(version) {
-    const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === version.TABLE_NAME);
-    if (selectedTableName && selectedTableName.length) {
-      this.selectedTableName = selectedTableName[0];
-    }
-    this.selectedTable = version;
-    this.state.CMV = { ...this.state.CMV, selectedTable: version };
-    this.tabChanged({ index: 1 });
-    this.getVersions();
+  changeTable() {
+    this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
+    this.commonService.setState(this.state);
+    this.ngOnInit();
   }
 
   viewData(version) {
@@ -181,7 +148,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.loader.columns = true;
     const request = {
       table_name: this.selectedTable.TABLE_NAME,
-      columnVersion: 1
+      columnVersion: version.METADATA_VERSION
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       this.versionData = resp.data;
@@ -189,6 +156,47 @@ export class ColumnMetadataComponent implements OnInit {
       this.showMetaData = true;
     }, error => {
       this.loader.columns = false;
+    });
+  }
+
+  deleteColumn(version) {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this column?',
+      accept: () => {
+        this.loader.delete = true;
+        const request = {
+          columnVersion: version.METADATA_VERSION,
+          targetColumnId: version.TARGET_COLUMN_ID,
+          table_name: this.selectedTable.TABLE_NAME
+        };
+        this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
+          if (resp && !resp.error) {
+            this.showToast('success', 'Column Deleted!');
+            this.isFirstNewVersion = null;
+            this.ngOnInit();
+          } else {
+            this.showToast('error', 'Could not delete column.');
+          }
+          this.loader.delete = false;
+        }, error => {
+          this.loader.delete = false;
+          this.showToast('error', 'Could not delete column.');
+        });
+      }
+    });
+  }
+
+  validate(version) {
+    this.columnMetadataService.validateVersion({ version }).subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        this.showToast('success', 'Version Validated!');
+        this.isFirstNewVersion = null;
+        this.ngOnInit();
+      } else {
+        this.showToast('error', 'Could not validate version.');
+      }
+    }, error => {
+      this.showToast('error', 'Could not validate version.');
     });
   }
 
@@ -222,19 +230,6 @@ export class ColumnMetadataComponent implements OnInit {
       width: '45%',
       data: metadataVersion
     });
-  }
-
-  tabChanged(event) {
-    this.activeTab = event.index;
-    this.state.CMV = { ...this.state.CMV, activeTab: this.activeTab };
-    this.commonService.setState(this.state);
-  }
-
-  checkDataType(val, dataType) {
-    if (dataType === 'object') {
-      return typeof val === 'object' && val !== null;
-    }
-    return typeof val === dataType;
   }
 
   showToast(severity, summary) {

@@ -2,33 +2,40 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
 import { Location } from '@angular/common';
 import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
 
-import { initColumnState, columnTableColumns } from './tableColumns';
+import { columnTableColumns } from './tableColumns';
+import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
+import { CommonService } from 'src/app/services/common.service';
 
 
 @Component({
   selector: 'app-header-hash',
   templateUrl: './header-hash.component.html',
-  styleUrls: ['./header-hash.component.css']
+  styleUrls: ['./header-hash.component.scss']
 })
 export class HeaderHashComponent implements OnInit {
 
   headers: any;
   selectedColumns: any;
-  selectedTableName: any;
+  selectedTable: any;
   uniqueTables: any;
   columnTableColumns = columnTableColumns;
+  state: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
+    private commonService: CommonService,
+    private columnMetadataService: ColumnMetadataService,
     private location: Location,
-    private messageService: MessageService,
     private headerHashService: HeaderHashService
   ) { }
 
   ngOnInit() {
-    this.getHeaders();
+    this.state = this.commonService.getState();
+    if (this.state.CMV && this.state.CMV.selectedTable) {
+      this.selectedTable = this.state.CMV.selectedTable;
+      this.getHeaders();
+    }
     this.getSelectedColumns();
     this.getAllTables();
   }
@@ -69,39 +76,38 @@ export class HeaderHashComponent implements OnInit {
   }
 
   initColumnState() {
-    this.selectedColumns = initColumnState;
+    this.selectedColumns = columnTableColumns;
+  }
+
+  changeTable() {
+    this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTable };
+    this.commonService.setState(this.state);
+    this.ngOnInit();
   }
 
   getAllTables() {
-    this.headerHashService.getAllTables().subscribe((res: any) => {
+    this.columnMetadataService.getAllTablesInVersions().subscribe((res: any) => {
       const allTables = res.data;
       this.uniqueTables = this.removeDuplicates(allTables, 'TABLE_NAME');
+      if (!this.state.CMV || !this.state.CMV.selectedTable) {
+        this.selectedTable = this.uniqueTables[0];
+        this.getHeaders();
+      } else {
+        const selectedTable = this.uniqueTables.filter(i => i.TABLE_NAME === this.selectedTable.TABLE_NAME);
+        if (selectedTable && selectedTable.length) {
+          this.selectedTable = selectedTable[0];
+        }
+      }
     }, error => {
       console.error('error ', error);
     });
   }
 
   getHeaders() {
-    const request = { table_name: 'P250_ERROR_RATE_BY_ZONE_FACT' };
+    const request = { table_name: this.selectedTable.TABLE_NAME };
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
-      // console.log("res ", res);
       this.headers = res.data;
     }, error => {
-      console.error('error ', error);
-    });
-  }
-
-  approveHeader(header) {
-    this.headerHashService.approveHeader({ header }).subscribe((resp: any) => {
-      console.log('res ', resp);
-      if (resp && !resp.error) {
-        this.showToast('success', 'Successfully Approved');
-        this.ngOnInit();
-      } else {
-        this.showToast('error', 'Approval failed');
-      }
-    }, error => {
-      this.showToast('error', 'Approval failed');
       console.error('error ', error);
     });
   }
@@ -111,12 +117,6 @@ export class HeaderHashComponent implements OnInit {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
   }
-
-  showToast(severity, summary) {
-    this.messageService.add({ severity, summary, life: 3000 });
-  }
-
-
 
   goBack() {
     this.location.back();

@@ -1,35 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { LoadStatusService } from 'src/app/services/load-status.service';
-import { DayPilot } from 'daypilot-pro-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import * as frappeGantt from '../../../../lib/frappe-gantt';
+
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-load-status',
   templateUrl: './load-status.component.html',
-  styleUrls: ['./load-status.component.css']
+  styleUrls: ['./load-status.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LoadStatusComponent implements OnInit {
 
   searchForm: FormGroup;
   defaultDate: Date = new Date('Fri Jan 1 1970 00:00:00');
-  config: any = {
-    timeHeaders: [{ groupBy: 'Day', format: 'dddd, d MMMM yyyy' }, { groupBy: 'Hour', format: 'H' }],
-    scale: 'Hour',
-    startDate: new Date(),
-    cellWidth: 25,
-    TaskResizing: 'Disabled',
-    days: 2,
-    onTaskMove: args => {
-      this.checkMovedTaskValidation(args);
-    },
-    onTaskClick: args => {
-      // args.e.data.contextMenu.show();
-    }
-  };
   loader = {
     tasks: false,
     saveTasks: false,
+    gantt: false
   };
   tasksMoved = false;
   taskData: any;
@@ -43,6 +33,8 @@ export class LoadStatusComponent implements OnInit {
     DAG_NAME: []
   };
   toogleButtonPeriod = 7;
+  frappeGanttChart: any;
+  @ViewChild('ganttChart', { static: false }) ganttChart: ElementRef;
 
   constructor(
     private messageService: MessageService,
@@ -53,6 +45,68 @@ export class LoadStatusComponent implements OnInit {
   ngOnInit() {
     this.searchFormInit();
     this.getTasks();
+  }
+
+  setFrappeGanttChart() {
+    this.loader.gantt = true;
+    const today = new Date();
+    const year = today.getFullYear();
+    const date = today.getDate();
+    const month = today.getMonth() + 1;
+    this.taskData = this.taskData.map(i => {
+      let calculatedEndTime: any = `${this.secondsToHMS(this.hmsToSeconds(i.START_TIME) + i.EXEC_TIME)}`;
+      let hours: any = calculatedEndTime.substr(0, 2);
+      const rest = calculatedEndTime.substr(2);
+      if (hours > 24) {
+        hours = hours - 24;
+        calculatedEndTime = new Date(`${year}-${month}-${date + 1} ${hours}${rest}`);
+      } else {
+        calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(i.START_TIME) + i.EXEC_TIME)}`);
+      }
+      i.id = i.DAG_RUN_ID;
+      i.name = `${i.SCHEMA_NAME}.${i.DAG_NAME}`;
+      i.start = new Date(`${year}-${month}-${date} ${i.START_TIME}`);
+      i.end = calculatedEndTime;
+      i.progress = (i.T1_EXEC / i.EXEC_TIME) * 100;
+      i.htmlRight = {
+        t1: `${this.secondsToHMS(i.T1_EXEC)} (${Math.round((i.T1_EXEC / i.EXEC_TIME) * 100)} %)`,
+        t2: `${this.secondsToHMS(i.T2_EXEC)} (${Math.round((i.T2_EXEC / i.EXEC_TIME) * 100)} %)`,
+        avg: `${this.secondsToHMS(i.EXEC_TIME)}`
+      };
+      return i;
+    });
+    setTimeout(() => {
+      this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, this.taskData, {
+        header_height: 40,
+        bar_height: 20,
+        custom_popup_html: (task) => {
+          // console.log("task ", task);
+          return `
+            <div class="details-container">
+              <h5>${task.name}</h5>
+              <span>T1 Time: ${task.htmlRight.t1}</span>
+              <span>T2 Time: ${task.htmlRight.t2}</span>
+              <span>Avg. Time: ${task.htmlRight.avg}</span>
+            </div>
+          `;
+        },
+        view_mode: 'Hour',
+        on_date_change: (task) => {
+          this.tasksMoved = true;
+          task.updated = true;
+        }
+      });
+      this.getElementInfo();
+      this.loader.gantt = false;
+    }, 100);
+  }
+
+  getElementInfo() {
+    $('span.space').css('height', $('.grid-header').height());
+    $('span.dag-name').css('height', $('.grid-row').height());
+    $('.bar').on('click', () => {
+      this.tasksMoved = true;
+    });
   }
 
   searchFormInit() {
@@ -110,98 +164,10 @@ export class LoadStatusComponent implements OnInit {
         const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
-      this.setGanttValues();
+      if (this.taskData && this.taskData.length) {
+        this.setFrappeGanttChart();
+      }
     }
-  }
-
-  setGanttValues() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const date = today.getDate();
-    const month = today.getMonth() + 1;
-    this.taskData.map(item => {
-      let barColor = '#009688';
-      switch (item.STATUS) {
-        case 'COMPLETED':
-          barColor = 'green';
-          break;
-        case 'RUNNING':
-          barColor = 'orange';
-          break;
-        case 'FAILED':
-          barColor = 'red';
-          break;
-      }
-      let calculatedEndTime: any = `${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`;
-      let hours: any = calculatedEndTime.substr(0, 2);
-      const rest = calculatedEndTime.substr(2);
-      if (hours > 24) {
-        hours = hours - 24;
-        calculatedEndTime = new Date(`${year}-${month}-${date + 1} ${hours}${rest}`);
-      } else {
-        calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(item.START_TIME) + item.EXEC_TIME)}`);
-      }
-      item.start = new Date(`${year}-${month}-${date} ${item.START_TIME}`);
-      item.complete = (item.T1_EXEC / item.EXEC_TIME) * 100;
-      item.end = calculatedEndTime;
-      item.type = 'Task';
-      item.text = `${item.SCHEMA_NAME}.${item.TABLE_NAME}`;
-      item.id = item.DAG_RUN_ID;
-      item.box = {
-        clickDisabled: false,
-        bubbleHtml: `<b>
-                        T1: ${
-          Math.round((item.T1_EXEC / item.EXEC_TIME) * 100)
-          }% and T2: ${Math.round((item.T2_EXEC / item.EXEC_TIME) * 100)}% | ${item.DAG_NAME}
-                    </b>`,
-        resizeDisabled: true,
-        html: ` <b>${item.DAG_NAME}</b>`,
-        htmlRight: `
-                    <span
-                        class="statusCircle ${item.DAG_NAME}"
-                        title="T1: ${this.secondsToHMS(item.T1_EXEC)} and T2: ${this.secondsToHMS(item.T2_EXEC)}">
-                    </span>
-                          <span>Avg. Time: ${this.secondsToHMS(item.EXEC_TIME)}</span>`,
-        barColor,
-        contextMenu: new DayPilot.Menu({
-          items: [
-            // {
-            //   text: item.T1_status === 'HOLD' ? `T1: RESUME` : 'T1: HOLD',
-            //   icon: 'icon',
-            //   onClick: args => {
-            //     args.item.text = args.item.text === 'T1: HOLD' ? 'T1: RESUME' : 'T1: HOLD';
-            //     this.tasksMoved = true;
-            //     if (args.item.icon.indexOf('icon-blue') > -1) {
-            //       args.item.icon = 'icon';
-            //     } else {
-            //       args.item.icon = 'icon icon-blue';
-            //     }
-            //     args.source.data.T1_status = args.item.text === 'T1: HOLD' ? 'RESUME' : 'HOLD';
-            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-            //     args.source.data.updated = true;
-            //   }
-            // },
-            // {
-            //   text: item.T2_status === 'HOLD' ? `T2: RESUME` : 'T2: HOLD',
-            //   icon: 'icon',
-            //   onClick: args => {
-            //     args.item.text = args.item.text === 'T2: HOLD' ? 'T2: RESUME' : 'T2: HOLD';
-            //     this.tasksMoved = true;
-            //     if (args.item.icon.indexOf('icon-yellow') > -1) {
-            //       args.item.icon = 'icon';
-            //     } else {
-            //       args.item.icon = 'icon icon-yellow';
-            //     }
-            //     args.source.data.T2_status = args.item.text === 'T2: HOLD' ? 'RESUME' : 'HOLD';
-            //     args.source.data.box.backColor = 'rgba(230, 109, 245, 1)';
-            //     args.source.data.updated = true;
-            //   }
-            // }
-          ]
-        })
-      };
-    });
-    this.config.tasks = this.taskData;
   }
 
   getTasks() {
@@ -221,7 +187,7 @@ export class LoadStatusComponent implements OnInit {
 
   changeLimit(limit) {
     const selectedLimit = parseInt(limit, 10);
-    this.taskData = Object.assign({}, this.taskDataBackUp);
+    this.taskData = JSON.parse(JSON.stringify(this.taskDataBackUp));
     if (limit !== 'all') {
       if (selectedLimit > this.taskDataBackUp.length) {
         this.taskData.length = this.taskDataBackUp.length;
@@ -231,55 +197,40 @@ export class LoadStatusComponent implements OnInit {
     } else {
       this.taskData.length = this.taskDataBackUp.length;
     }
-    this.setGanttValues();
+    if (this.taskData && this.taskData.length) {
+      this.setFrappeGanttChart();
+    }
   }
 
   discard() {
-    this.getTasks();
-    this.tasksMoved = false;
     this.toogleButtonPeriod = 7;
+    this.tasksMoved = false;
+    this.getTasks();
   }
 
   save() {
     this.errors.updateEror = false;
     this.loader.saveTasks = true;
     const updatedTasks = this.taskData.filter(item => item.updated === true);
-    // updatedTasks.map(i => {
-    //   console.log("i.start ", i.start);
-    //   i.start = `${i.start}.000Z`;
-    // });
-    // console.log('updatedTasks ', updatedTasks);
+    updatedTasks.map(i => {
+      i.start = `${i._start}`;
+    });
     this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
-      // console.log('resp ', resp.data);
       if (!resp.data.error || !resp.data.error.length) {
         this.tasksMoved = false;
         this.loader.saveTasks = false;
-        this.messageService.add({ severity: 'success', summary: 'Details successfully saved!', life: 3000 });
+        this.showToast('success', 'Details successfully saved!');
       } else {
         this.errors.updateEror = true;
-        this.messageService.add({ severity: 'error', summary: 'Could not update all records.', life: 3000 });
+        this.showToast('error', 'Could not update all records.');
       }
       this.getTasks();
       this.loader.saveTasks = false;
       this.tasksMoved = false;
     }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Could not save details.', life: 3000 });
+      this.showToast('error', 'Could not save details.');
       this.loader.saveTasks = false;
     });
-  }
-
-  checkMovedTaskValidation(event) {
-    const args = event.e.data;
-    const newStartDate = new Date(`${event.newStart}.000Z`).getUTCDate();
-    const currentStartDate = new Date(this.config.startDate).getUTCDate();
-    if (newStartDate < currentStartDate || currentStartDate === 1 && [30, 31, 28].indexOf(newStartDate) > -1) {
-      event.preventDefault();
-    } else {
-      this.tasksMoved = true;
-      args.task.updated = true;
-      args.task.box.backColor = 'rgba(230, 109, 245, 1)';
-      args.task.box.cssClass = 'movedItem';
-    }
   }
 
   filter(query, arrayToFilter) {
@@ -326,6 +277,10 @@ export class LoadStatusComponent implements OnInit {
     this.searchFormInit();
     this.toogleButtonPeriod = 7;
     this.discard();
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

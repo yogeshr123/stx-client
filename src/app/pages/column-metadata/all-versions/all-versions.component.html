@@ -1,0 +1,68 @@
+<div class="app-title">
+    <div>
+        <h1>
+            <i class="fa fa-columns"></i> Column Metadata Version - All Versions
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mt-2">
+        <div class="tile">
+            <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns"
+                [reorderableColumns]="true">
+                <ng-template pTemplate="caption">
+                    <div class="globalSearch">
+                        <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="search()">
+                            <i class="fa fa-lg fa-fw fa-search"></i>
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order">
+                            </p-sortIcon>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
+                            <span *ngSwitchCase="'START_DATE'"></span>
+                            <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                            <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                            <input pInputText *ngSwitchDefault type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                [value]="dt.filters[col.field]?.value">
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-version let-i="rowIndex">
+                    <tr>
+                        <td>{{version.METADATA_VERSION}}</td>
+                        <td>{{version.TABLE_NAME}}</td>
+                        <td>{{version.STATUS}}</td>
+                        <td>{{version.START_DATE | date: 'short' }}</td>
+                        <td>{{version.UPDATE_DATE | date: 'short' }}</td>
+                        <td>
+                            <button (click)="viewDetails(version, 'CMV')" class="btn btn-sm btn-primary">View
+                                Details</button>
+                            <button (click)="viewDetails(version, 'header-hash')" class="btn btn-sm btn-info ml-2">View
+                                Header Hash</button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div colspan="10" class="text-center p-2 border" *ngIf="!tables || !tables.length">
+                <h6>No Data Available!</h6>
+            </div>
+        </div>
+    </div>
+</div>

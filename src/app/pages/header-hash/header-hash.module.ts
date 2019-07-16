@@ -8,12 +8,15 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
+import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.component';
+import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
 
 @NgModule({
-  declarations: [HeaderHashComponent],
+  declarations: [HeaderHashComponent, AddEditHeaderComponent, AddCmvPopupComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,10 +26,12 @@ import { HeaderHashRouting } from './header-hash.routing';
     MultiSelectModule,
     ToastModule,
     TableModule,
-    DropdownModule
+    DropdownModule,
+    DynamicDialogModule
   ],
   providers: [
     MessageService
-  ]
+  ],
+  entryComponents: [AddCmvPopupComponent]
 })
 export class HeaderHashModule { }

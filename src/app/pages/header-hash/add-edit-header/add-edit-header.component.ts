@@ -95,7 +95,7 @@ export class AddEditHeaderComponent implements OnInit {
   }
 
   addToCMV(header, status) {
-    if (header.COLUMN_STATUS === 'DATATYPE_MISMATCH') {
+    if (header.COLUMN_STATUS === 'DATATYPE_MISMATCH' || header.STATUS === 'APPROVED') {
       const ref = this.dialogService.open(AddCmvPopupComponent, {
         header: status === 'NEW' ? 'Add Column To Column Metadata' : 'View Details',
         width: '55%',

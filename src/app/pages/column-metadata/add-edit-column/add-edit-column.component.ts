@@ -18,7 +18,8 @@ export class AddEditColumnComponent implements OnInit {
     id: '',
     versionId: '',
     isViewOnly: false,
-    isEditMode: false
+    isEditMode: false,
+    fromHeaderHash: false
   };
   loader = {
     formData: false,
@@ -47,6 +48,9 @@ export class AddEditColumnComponent implements OnInit {
       if (this.routeInfo.path.indexOf('edit') > -1) {
         this.routeInfo.isEditMode = true;
       }
+      if (params[1].path.indexOf('fhh') > -1) {
+        this.routeInfo.fromHeaderHash = true;
+      }
     });
   }
 
@@ -61,6 +65,9 @@ export class AddEditColumnComponent implements OnInit {
     }
     if (this.routeInfo.versionId && this.routeInfo.id) {
       this.getColumnData();
+    }
+    if (this.routeInfo.fromHeaderHash) {
+      this.getHeaderHashData();
     }
   }
 
@@ -90,8 +97,22 @@ export class AddEditColumnComponent implements OnInit {
       IS_UPDATE_DATE_COLUMN: [0, Validators.required],
       IS_DATATYPE_CHANGED: [0],
       IS_RENAMED: [0, Validators.required],
-      IS_NEW: [0, Validators.required]
+      IS_NEW: [0, Validators.required],
+      HEADER_HASH: [0, Validators.required],
     });
+  }
+
+  getHeaderHashData() {
+    if (this.appState && this.appState.header) {
+      this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.header.SCHEMA_NAME);
+      this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.header.TABLE_NAME);
+      this.addEditColumnForm.controls.SRC_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME);
+      this.addEditColumnForm.controls.TARGET_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME);
+      this.addEditColumnForm.controls.SRC_DATA_TYPE.patchValue(this.appState.header.DATA_TYPE);
+      this.addEditColumnForm.controls.TARGET_DATA_TYPE.patchValue(this.appState.header.DATA_TYPE);
+      this.addEditColumnForm.controls.IS_NEW.patchValue(1);
+      this.addEditColumnForm.controls.HEADER_HASH.patchValue(this.appState.header.HEADER_HASH);
+    }
   }
 
   getColumnData() {
@@ -189,7 +210,8 @@ export class AddEditColumnComponent implements OnInit {
     const request: any = {
       table_name: this.TABLE_NAME,
       data: this.addEditColumnForm.value,
-      targetColumnId: this.routeInfo.id || this.addEditColumnForm.value.METADATA_VERSION
+      targetColumnId: this.routeInfo.id || this.addEditColumnForm.value.METADATA_VERSION,
+      fromHeaderHash: this.routeInfo.fromHeaderHash
     };
     this.checkFormValues(functionToCall);
     this.columnMetadataService[functionToCall](request).subscribe((res: any) => {

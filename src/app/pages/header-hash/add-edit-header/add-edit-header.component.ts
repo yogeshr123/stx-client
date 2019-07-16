@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService, DialogService } from 'primeng/api';
 import { headerMismatchesTableCols } from '../tableColumns';
 import { HeaderHashService } from 'src/app/services/header-hash.service';
 import { AddCmvPopupComponent } from '../add-cmv-popup/add-cmv-popup.component';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-header',
@@ -15,7 +15,6 @@ import { AddCmvPopupComponent } from '../add-cmv-popup/add-cmv-popup.component';
 })
 export class AddEditHeaderComponent implements OnInit {
 
-  addEditHeaderForm: FormGroup;
   routeInfo = {
     path: '',
     id: '',
@@ -29,11 +28,12 @@ export class AddEditHeaderComponent implements OnInit {
   headerMismatchesTableCols = headerMismatchesTableCols;
 
   constructor(
+    private router: Router,
     private messageService: MessageService,
+    private commonService: CommonService,
     private route: ActivatedRoute,
     private location: Location,
     public dialogService: DialogService,
-    private formBuilder: FormBuilder,
     private headerHashService: HeaderHashService
   ) {
     this.route.params.subscribe(params => {
@@ -95,21 +95,27 @@ export class AddEditHeaderComponent implements OnInit {
   }
 
   addToCMV(header, status) {
-    const ref = this.dialogService.open(AddCmvPopupComponent, {
-      header: status === 'NEW' ? 'Add Column To Column Metadata' : 'View Details',
-      width: '55%',
-      closeOnEscape: true,
-      data: {
-        header,
-        status: this.header.STATUS !== 'APPROVED' ? status : this.header.STATUS
-      }
-    });
+    if (header.COLUMN_STATUS === 'DATATYPE_MISMATCH') {
+      const ref = this.dialogService.open(AddCmvPopupComponent, {
+        header: status === 'NEW' ? 'Add Column To Column Metadata' : 'View Details',
+        width: '55%',
+        closeOnEscape: true,
+        data: {
+          header,
+          status: this.header.STATUS !== 'APPROVED' ? status : this.header.STATUS
+        }
+      });
 
-    ref.onClose.subscribe((reason) => {
-      if (reason) {
-        this.ngOnInit();
-      }
-    });
+      ref.onClose.subscribe((reason) => {
+        if (reason) {
+          this.ngOnInit();
+        }
+      });
+    } else {
+      this.appState = { ...this.appState, header };
+      this.commonService.setState(this.appState);
+      this.router.navigate([`/CMV/add-column/fhh`]);
+    }
   }
 
   goBack() {

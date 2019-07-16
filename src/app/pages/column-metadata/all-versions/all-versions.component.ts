@@ -52,7 +52,6 @@ export class AllVersionsComponent implements OnInit {
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
     this.router.navigate([`/${redirectRoute}`]);
-
   }
 
   triggerDefaultFilter() {

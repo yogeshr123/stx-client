@@ -50,8 +50,8 @@ input[type="submit"].disabled {
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -91,6 +91,7 @@ input[type="submit"].disabled {
         th,
         td {
             height: 40px;
+            white-space: nowrap; 
         }
         .fixedcol {
             position: absolute;
@@ -281,3 +282,4 @@ app-load-status .ui-calendar input {
         }
     }
 }
+

@@ -14,6 +14,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { AccordionModule } from 'primeng/accordion';
+import { DialogModule } from 'primeng/dialog';
+import { FieldsetModule } from 'primeng/fieldset';
+import { TabViewModule } from 'primeng/tabview';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { RecordService } from '../../services/record.service';
 import { MessageService } from 'primeng/api';
@@ -34,6 +38,10 @@ import { LoadControlRouting } from './load-control.routing';
         ConfirmDialogModule,
         AccordionModule,
         FormsModule,
+        DialogModule,
+        FieldsetModule,
+        TabViewModule,
+        CheckboxModule,
         ReactiveFormsModule,
     ],
     providers: [

@@ -47,4 +47,18 @@ export class LoadControlService {
             .post(url, body)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    resetExecutionStatus(body: any) {
+        const url = `${environment.baseUrl}table_load_control/resetExecutionStatus`;
+        return this.http
+            .put(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    setSchedulerInterval(body: any) {
+        const url = `${environment.baseUrl}table_load_control/scheduledag`;
+        return this.http
+            .put(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

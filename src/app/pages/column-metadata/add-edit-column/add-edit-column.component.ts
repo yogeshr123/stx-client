@@ -84,7 +84,6 @@ export class AddEditColumnComponent implements OnInit {
         },
         Validators.required],
       SRC_DATA_TYPE: [''],
-      SRC_PRECISION: ['', Validators.required],
       INTERNAL_COLUMN: [0, Validators.required],
       DERIVED_COLUMN_FORMULA: [''],
       LOOKUP_TABLE_ALIAS: [''],

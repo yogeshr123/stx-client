@@ -94,15 +94,16 @@ export class AddEditColumnComponent implements OnInit {
       TARGET_DATA_TYPE: ['', Validators.required],
       TARGET_LEFT_PRECISION: [''],
       TARGET_RIGHT_PRECISION: [''],
+      IS_UPDATE_DATE_COLUMN: [''],
       TARGET_COLUMN_ID: ['1'],
       TARGET_DEFAULT_VALUE: [''],
-      IS_PKEY_COLUMN: [0, Validators.required],
-      IS_PARTITION_COLUMN: [0, Validators.required],
-      IS_UPDATE_DATE_COLUMN: [0, Validators.required],
+      IS_PKEY_COLUMN: [0],
+      IS_PARTITION_COLUMN: [0],
       IS_DATATYPE_CHANGED: [0],
-      IS_RENAMED: [0, Validators.required],
-      IS_NEW: [0, Validators.required],
-      HEADER_HASH: [0, Validators.required],
+      IS_RENAMED: [0],
+      IS_NEW: [0],
+      HEADER_HASH: [0],
+      UPDATED_BY: ['User'],
     });
   }
 

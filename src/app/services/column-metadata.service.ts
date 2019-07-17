@@ -19,6 +19,7 @@ export class ColumnMetadataService {
     }
 
     localCopyOfVersion: any;
+    columnInfo: any;
 
     getLocalCopyOfVersion() {
         const localCopyOfVersion = JSON.parse(localStorage.getItem('localCopyOfVersion'));
@@ -30,6 +31,15 @@ export class ColumnMetadataService {
 
     setLocalCopyOfVersion(version) {
         localStorage.setItem('localCopyOfVersion', JSON.stringify(version));
+        return true;
+    }
+
+    getColumnToEdit() {
+        return this.columnInfo;
+    }
+
+    setColumnToEdit(columnInfo) {
+        this.columnInfo = columnInfo;
         return true;
     }
 

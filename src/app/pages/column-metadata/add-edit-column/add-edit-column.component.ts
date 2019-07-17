@@ -63,7 +63,7 @@ export class AddEditColumnComponent implements OnInit {
       this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.CMV.selectedTable.TABLE_NAME);
       this.addEditColumnForm.controls.METADATA_VERSION.patchValue(this.appState.CMV.selectedTable.METADATA_VERSION);
     }
-    if (this.routeInfo.versionId && this.routeInfo.id) {
+    if (this.routeInfo.versionId && (this.routeInfo.id || this.routeInfo.id === 'new')) {
       this.getColumnData();
     }
     if (this.routeInfo.fromHeaderHash) {
@@ -123,32 +123,23 @@ export class AddEditColumnComponent implements OnInit {
 
   getColumnData() {
     this.loader.formData = true;
-    const request = {
-      table_name: this.TABLE_NAME,
-      columnVersion: this.routeInfo.versionId,
-      targetColumnId: this.routeInfo.id
-    };
-    this.columnMetadataService.getSingleColumn(request).subscribe((resp: any) => {
-      this.columnData = resp.data[0];
+    this.columnData = this.columnMetadataService.getColumnToEdit();
+    if (this.columnData) {
       this.TABLE_NAME = this.columnData.TABLE_NAME;
-      if (this.columnData) {
-        const formControls = this.addEditColumnForm.controls;
-        for (const key in formControls) {
-          if (formControls.hasOwnProperty(key)) {
-            const element = formControls[key];
-            if (this.columnData[key] && Object.keys(this.columnData[key]).length > 0 && this.columnData[key].constructor === Object) {
-              element.patchValue(this.columnData[key].data[0]);
-            } else {
-              element.patchValue(this.columnData[key]);
-            }
+      const formControls = this.addEditColumnForm.controls;
+      for (const key in formControls) {
+        if (formControls.hasOwnProperty(key)) {
+          const element = formControls[key];
+          if (this.columnData[key] && Object.keys(this.columnData[key]).length > 0 && this.columnData[key].constructor === Object) {
+            element.patchValue(this.columnData[key].data[0]);
+          } else {
+            element.patchValue(this.columnData[key]);
           }
         }
-        this.addEditColumnForm.controls.UPDATE_DATE.patchValue(new Date());
       }
-      this.loader.formData = false;
-    }, error => {
-      this.loader.formData = false;
-    });
+      this.addEditColumnForm.controls.UPDATE_DATE.patchValue(new Date());
+    }
+    this.loader.formData = false;
   }
 
   updateValidation() {
@@ -189,7 +180,7 @@ export class AddEditColumnComponent implements OnInit {
       formValues.IS_NEW = 1;
       formValues.action = 'newColumn';
     } else {
-      formValues.action = 'updatedColumn';
+      formValues.action = this.routeInfo.id === 'new' ? 'newColumn' : 'updatedColumn';
     }
     if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
       formValues.IS_RENAMED = 1;
@@ -252,28 +243,6 @@ export class AddEditColumnComponent implements OnInit {
     this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
     this.loader.saveColumn = false;
     this.goBack();
-
-
-    // const request: any = {
-    //   table_name: this.TABLE_NAME,
-    //   data: formValues,
-    //   targetColumnId: this.routeInfo.id || formValues.METADATA_VERSION,
-    //   fromHeaderHash: this.routeInfo.fromHeaderHash
-    // };
-    // this.columnMetadataService[functionToCall](request).subscribe((res: any) => {
-    //   if (!res.error) {
-    //     this.showToast('success', messages.success);
-    //     setTimeout(() => {
-    //       this.goBack();
-    //     }, 1500);
-    //   } else {
-    //     this.showToast('error', messages.error);
-    //   }
-    //   this.loader.saveColumn = false;
-    // }, error => {
-    //   this.loader.saveColumn = false;
-    //   this.showToast('error', messages.error);
-    // });
   }
 
   goBack() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { MessageService } from 'primeng/api';
@@ -7,6 +7,7 @@ import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.co
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
 import { columnTableColumns, versionTableColumns } from './tableColumns';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -37,8 +38,12 @@ export class ColumnMetadataComponent implements OnInit {
   versionTableColumns = versionTableColumns;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   selectedColumns: any;
+  errors: any = {
+    hasError: false
+  };
 
   constructor(
+    private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
@@ -60,7 +65,6 @@ export class ColumnMetadataComponent implements OnInit {
     if (!localStorage.getItem('selectedVersionColumns')) {
       this.initColumnState();
     } else {
-      // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedVersionColumns'));
     }
   }
@@ -212,27 +216,14 @@ export class ColumnMetadataComponent implements OnInit {
           this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
           this.ngOnInit();
-          // const request = {
-          //   columnVersion: version.METADATA_VERSION,
-          //   targetColumnId: version.TARGET_COLUMN_ID,
-          //   table_name: this.selectedTable.TABLE_NAME
-          // };
-          // this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
-          //   if (resp && !resp.error) {
-          //     this.showToast('success', 'Column Deleted!');
-          //     this.isFirstNewVersion = null;
-          //     this.ngOnInit();
-          //   } else {
-          //     this.showToast('error', 'Could not delete column.');
-          //   }
-          //   this.loader.delete = false;
-          // }, error => {
-          //   this.loader.delete = false;
-          //   this.showToast('error', 'Could not delete column.');
-          // });
         }
       });
     }
+  }
+
+  editColumn(version) {
+    this.columnMetadataService.setColumnToEdit(version);
+    this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
   }
 
   validate(version) {
@@ -247,6 +238,39 @@ export class ColumnMetadataComponent implements OnInit {
     }, error => {
       this.showToast('error', 'Could not validate version.');
     });
+  }
+
+  checkForDuplicatesInArray(array) {
+    const uniq = array
+      .map((name) => {
+        return {
+          count: 1,
+          name
+        };
+      })
+      .reduce((a, b) => {
+        a[b.name] = (a[b.name] || 0) + b.count;
+        return a;
+      }, {});
+    const duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1);
+    return duplicates;
+  }
+
+  saveChanges() {
+    this.errors = {
+      hasError: false
+    };
+    // Check CMV Validations
+    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
+    // Check Unique Target Target Column Name
+    const targetColumnNames = colums.map(i => i.TARGET_COLUMN_NAME);
+    const checkDuplicatetTargetNames = this.checkForDuplicatesInArray(targetColumnNames);
+    // console.log();
+    if (checkDuplicatetTargetNames && checkDuplicatetTargetNames.length) {
+      this.errors.hasError = true;
+      this.errors.duplicatetTargetNames = checkDuplicatetTargetNames;
+    }
   }
 
   generateNewVersion() {

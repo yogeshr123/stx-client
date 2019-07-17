@@ -23,8 +23,8 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button
-                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn}"
+                        <button *ngIf="!routeInfo.isViewOnly"
+                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn}"
                             class="btn btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save
@@ -196,8 +196,8 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button
-                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn }"
+                        <button *ngIf="!routeInfo.isViewOnly"
+                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn }"
                             class="btn btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save

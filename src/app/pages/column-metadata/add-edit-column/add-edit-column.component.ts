@@ -104,6 +104,7 @@ export class AddEditColumnComponent implements OnInit {
       IS_NEW: [0],
       HEADER_HASH: [0],
       UPDATED_BY: ['User'],
+      UPDATE_DATE: [new Date()],
     });
   }
 
@@ -182,19 +183,19 @@ export class AddEditColumnComponent implements OnInit {
     }
   }
 
-  checkFormValues(functionToCall) {
+  checkFormValues(functionToCall, formValues) {
     if (functionToCall === 'addColumn') {
-      this.addEditColumnForm.controls.IS_NEW.patchValue(1);
+      formValues.IS_NEW = 1;
     }
-    if (this.addEditColumnForm.value.SRC_COLUMN_NAME !== this.addEditColumnForm.value.TARGET_COLUMN_NAME) {
-      this.addEditColumnForm.controls.IS_RENAMED.patchValue(1);
+    if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
+      formValues.IS_RENAMED = 1;
     } else {
-      this.addEditColumnForm.controls.IS_RENAMED.patchValue(0);
+      formValues.IS_RENAMED = 0;
     }
-    if (this.addEditColumnForm.value.SRC_DATA_TYPE !== this.addEditColumnForm.value.TARGET_DATA_TYPE) {
-      this.addEditColumnForm.controls.IS_DATATYPE_CHANGED.patchValue(1);
+    if (formValues.SRC_DATA_TYPE !== formValues.TARGET_DATA_TYPE) {
+      formValues.IS_DATATYPE_CHANGED = 1;
     } else {
-      this.addEditColumnForm.controls.IS_DATATYPE_CHANGED.patchValue(0);
+      formValues.IS_DATATYPE_CHANGED = 0;
     }
   }
 
@@ -235,7 +236,7 @@ export class AddEditColumnComponent implements OnInit {
       targetColumnId: this.routeInfo.id || formValues.METADATA_VERSION,
       fromHeaderHash: this.routeInfo.fromHeaderHash
     };
-    this.checkFormValues(functionToCall);
+    this.checkFormValues(functionToCall, formValues);
     this.columnMetadataService[functionToCall](request).subscribe((res: any) => {
       if (!res.error) {
         this.showToast('success', messages.success);

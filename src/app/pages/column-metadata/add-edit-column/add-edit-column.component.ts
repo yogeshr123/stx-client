@@ -38,7 +38,7 @@ export class AddEditColumnComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.routeInfo.id = params.columnId;
-      this.routeInfo.versionId = '1'; // params.versionId;
+      this.routeInfo.versionId = params.versionId;
     });
     this.route.url.subscribe(params => {
       this.routeInfo.path = params[0].path;
@@ -95,7 +95,7 @@ export class AddEditColumnComponent implements OnInit {
       TARGET_LEFT_PRECISION: [''],
       TARGET_RIGHT_PRECISION: [''],
       IS_UPDATE_DATE_COLUMN: [''],
-      TARGET_COLUMN_ID: ['1'],
+      TARGET_COLUMN_ID: [''],
       TARGET_DEFAULT_VALUE: [''],
       IS_PKEY_COLUMN: [0],
       IS_PARTITION_COLUMN: [0],
@@ -143,6 +143,7 @@ export class AddEditColumnComponent implements OnInit {
             }
           }
         }
+        this.addEditColumnForm.controls.UPDATE_DATE.patchValue(new Date());
       }
       this.loader.formData = false;
     }, error => {
@@ -186,6 +187,9 @@ export class AddEditColumnComponent implements OnInit {
   checkFormValues(functionToCall, formValues) {
     if (functionToCall === 'addColumn') {
       formValues.IS_NEW = 1;
+      formValues.action = 'newColumn';
+    } else {
+      formValues.action = 'updatedColumn';
     }
     if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
       formValues.IS_RENAMED = 1;
@@ -230,27 +234,46 @@ export class AddEditColumnComponent implements OnInit {
     }
     const formValues = Object.assign({}, this.addEditColumnForm.value);
     this.addPrecisionValues(formValues);
-    const request: any = {
-      table_name: this.TABLE_NAME,
-      data: formValues,
-      targetColumnId: this.routeInfo.id || formValues.METADATA_VERSION,
-      fromHeaderHash: this.routeInfo.fromHeaderHash
-    };
     this.checkFormValues(functionToCall, formValues);
-    this.columnMetadataService[functionToCall](request).subscribe((res: any) => {
-      if (!res.error) {
-        this.showToast('success', messages.success);
-        setTimeout(() => {
-          this.goBack();
-        }, 1500);
-      } else {
-        this.showToast('error', messages.error);
-      }
-      this.loader.saveColumn = false;
-    }, error => {
-      this.loader.saveColumn = false;
-      this.showToast('error', messages.error);
-    });
+    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    if (functionToCall === 'addColumn') {
+      localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`].unshift(formValues);
+    } else {
+      localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`] =
+        localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`]
+          .map(i => {
+            if (i.TARGET_COLUMN_ID === formValues.TARGET_COLUMN_ID) {
+              i = formValues;
+            }
+            return i;
+          });
+    }
+
+    this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+    this.loader.saveColumn = false;
+    this.goBack();
+
+
+    // const request: any = {
+    //   table_name: this.TABLE_NAME,
+    //   data: formValues,
+    //   targetColumnId: this.routeInfo.id || formValues.METADATA_VERSION,
+    //   fromHeaderHash: this.routeInfo.fromHeaderHash
+    // };
+    // this.columnMetadataService[functionToCall](request).subscribe((res: any) => {
+    //   if (!res.error) {
+    //     this.showToast('success', messages.success);
+    //     setTimeout(() => {
+    //       this.goBack();
+    //     }, 1500);
+    //   } else {
+    //     this.showToast('error', messages.error);
+    //   }
+    //   this.loader.saveColumn = false;
+    // }, error => {
+    //   this.loader.saveColumn = false;
+    //   this.showToast('error', messages.error);
+    // });
   }
 
   goBack() {

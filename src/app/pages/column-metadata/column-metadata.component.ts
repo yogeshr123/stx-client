@@ -12,7 +12,7 @@ import { columnTableColumns, versionTableColumns } from './tableColumns';
 @Component({
   selector: 'app-column-metadata',
   templateUrl: './column-metadata.component.html',
-  styleUrls: ['./column-metadata.component.css'],
+  styleUrls: ['./column-metadata.component.scss'],
   providers: [DialogService, ConfirmationService]
 })
 export class ColumnMetadataComponent implements OnInit {
@@ -24,7 +24,8 @@ export class ColumnMetadataComponent implements OnInit {
   loader = {
     columns: false,
     versions: false,
-    delete: false
+    delete: false,
+    save: false
   };
   state: any;
   uniqueTables: any;
@@ -150,40 +151,88 @@ export class ColumnMetadataComponent implements OnInit {
       table_name: this.selectedTable.TABLE_NAME,
       columnVersion: version.METADATA_VERSION
     };
-    this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
-      this.versionData = resp.data;
-      this.loader.columns = false;
+    let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    if (!localCopyOfVersion) {
+      this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+        this.versionData = resp.data;
+        this.loader.columns = false;
+        this.showMetaData = true;
+        if (version.STATUS === 'NEW') {
+          localCopyOfVersion = {
+            [`${version.METADATA_VERSION}_${version.TABLE_NAME}`]: this.versionData
+          };
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+        }
+      }, error => {
+        this.loader.columns = false;
+      });
+    } else {
+      this.versionData = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+      console.log('this.versionData ', this.versionData);
       this.showMetaData = true;
-    }, error => {
       this.loader.columns = false;
-    });
+    }
   }
 
   deleteColumn(version) {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to delete this column?',
-      accept: () => {
-        this.loader.delete = true;
-        const request = {
-          columnVersion: version.METADATA_VERSION,
-          targetColumnId: version.TARGET_COLUMN_ID,
-          table_name: this.selectedTable.TABLE_NAME
-        };
-        this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
-          if (resp && !resp.error) {
-            this.showToast('success', 'Column Deleted!');
-            this.isFirstNewVersion = null;
-            this.ngOnInit();
-          } else {
-            this.showToast('error', 'Could not delete column.');
-          }
+    if (version.action === 'deleted') {
+      this.confirmationService.confirm({
+        message: 'Would you like to undo delete?',
+        accept: () => {
+          this.loader.delete = true;
+          const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .map(i => {
+                if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  delete i.action;
+                }
+                return i;
+              });
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
-        }, error => {
+          this.ngOnInit();
+        }
+      });
+    } else {
+
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to delete this column?',
+        accept: () => {
+          this.loader.delete = true;
+          const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .map(i => {
+                if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  i.action = 'deleted';
+                }
+                return i;
+              });
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
-          this.showToast('error', 'Could not delete column.');
-        });
-      }
-    });
+          this.ngOnInit();
+          // const request = {
+          //   columnVersion: version.METADATA_VERSION,
+          //   targetColumnId: version.TARGET_COLUMN_ID,
+          //   table_name: this.selectedTable.TABLE_NAME
+          // };
+          // this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
+          //   if (resp && !resp.error) {
+          //     this.showToast('success', 'Column Deleted!');
+          //     this.isFirstNewVersion = null;
+          //     this.ngOnInit();
+          //   } else {
+          //     this.showToast('error', 'Could not delete column.');
+          //   }
+          //   this.loader.delete = false;
+          // }, error => {
+          //   this.loader.delete = false;
+          //   this.showToast('error', 'Could not delete column.');
+          // });
+        }
+      });
+    }
   }
 
   validate(version) {

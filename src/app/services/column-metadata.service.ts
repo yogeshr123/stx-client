@@ -18,6 +18,21 @@ export class ColumnMetadataService {
     ) {
     }
 
+    localCopyOfVersion: any;
+
+    getLocalCopyOfVersion() {
+        const localCopyOfVersion = JSON.parse(localStorage.getItem('localCopyOfVersion'));
+        if (localCopyOfVersion) {
+            return localCopyOfVersion;
+        }
+        return this.localCopyOfVersion;
+    }
+
+    setLocalCopyOfVersion(version) {
+        localStorage.setItem('localCopyOfVersion', JSON.stringify(version));
+        return true;
+    }
+
     getAllTablesInVersions() {
         const url = `${environment.baseUrl}column-metadata/getAllTablesInVersions`;
         return this.http

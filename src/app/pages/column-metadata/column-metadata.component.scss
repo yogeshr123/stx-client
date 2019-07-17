@@ -1,0 +1,24 @@
+th,
+td {
+    height: 30px;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+/deep/ body .ui-table .ui-table-tbody > tr {
+    &.newColumn {
+        background-color: #cde46e;
+    }
+
+    &.updatedColumn {
+        background-color: #b9ecea;
+    }
+
+    &.deleted {
+        background-color: #eca4a4;
+    }
+}

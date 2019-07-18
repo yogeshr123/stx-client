@@ -1,7 +1,7 @@
 <div class="container">
-    <div>
-        <div class=" row m-0">
-            <table class="col-6">
+    <div class="row m-0">
+        <div class="col-6">
+            <table class="col-12">
                 <tr>
                     <td class="text-right">SCHEMA NAME :</td>
                     <td class="font-weight-bold">{{header.SCHEMA_NAME}}</td>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr *ngIf="status !== 'APPROVED'">
                     <td class="text-right">
-                        <label class="">Select Data Type :</label>
+                        <label>Select Data Type :</label>
                     </td>
                     <td>
                         <select class="form-control" [(ngModel)]="formValues.dataType" (change)="checkFormValidation()">
@@ -32,7 +32,9 @@
                     </td>
                 </tr>
             </table>
-            <table class="col-4 offset-1">
+        </div>
+        <div class="col-6">
+            <table>
                 <tr>
                     <td class="text-right">TABLE :</td>
                     <td class="font-weight-bold">{{header.TABLE_NAME}}</td>
@@ -65,18 +67,18 @@
                     </td>
                 </tr>
             </table>
-            <hr class="col-12">
-            <div>
-                <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
-                    [ngClass]="{'disabled': saveLoader || isValid}">
-                    <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                    Save
-                </button>
-                <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-                <button class="btn btn-secondary ml-2" (click)="closePopUp(false)">
-                    <i class="fa fa-fw fa-lg fa-times-circle"></i> Close
-                </button>
-            </div>
+        </div>
+        <hr class="col-12">
+        <div>
+            <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
+                [ngClass]="{'disabled': saveLoader || isValid}">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                Save
+            </button>
+            <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+            <button class="btn btn-secondary ml-2" (click)="closePopUp(false)">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i> Close
+            </button>
         </div>
     </div>
 </div>

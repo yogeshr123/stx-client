@@ -80,17 +80,25 @@
                     Please fix following Erros:
                 </h6>
                 <div class="ml-4" *ngIf="errors.duplicatetTargetNames">
-                    Duplicate Target Column Names are not allowed:
+                    <span class="mb-2"><b>Duplicate Target Column Names</b> are not allowed:</span>
                     <ul>
                         <li *ngFor="let item of errors.duplicatetTargetNames">{{item}}</li>
                     </ul>
                 </div>
                 <div class="ml-4 mt-3" *ngIf="errors.checkSrcAndTableAlias">
-                    Duplicate Source Column Name & Lookup Table Alias Combination are not allowed:
+                    <b>Duplicate Source Column Name & Lookup Table Alias Combination</b> are not allowed:
                     <ul *ngFor="let item of errors.checkSrcAndTableAlias">
                         <li *ngIf="item !== 'undefined'">
                             Source Column Name: {{ item.split('+')[0] }} And Lookup Table Alias:
                             {{ item.split('+')[1] }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumn">
+                    There can <b>only be 1 IS_PARTITION_COLUMN</b>:
+                    <ul *ngFor="let item of errors.isPartitionColumn">
+                        <li>
+                            Source Column Name: {{ item }}
                         </li>
                     </ul>
                 </div>
@@ -156,7 +164,7 @@
                                                 {{version[col.field] | date: 'short'}}
                                             </span>
                                             <span *ngSwitchCase="'boolean'">
-                                                {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version.IS_NEW === 1 ? 'True' : 'False' }}
+                                                {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true ? 'True' : 'False' }}
                                             </span>
                                             <span *ngSwitchDefault>
                                                 {{version[col.field]}}

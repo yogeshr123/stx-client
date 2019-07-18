@@ -281,6 +281,18 @@ export class ColumnMetadataComponent implements OnInit {
       this.errors.hasError = true;
       this.errors.checkSrcAndTableAlias = checkSrcAndTableAlias;
     }
+    // Check IS_PARTITION_COLUMN should be only 1
+    let isPartitionColumn = colums.map(i => {
+      if (i.IS_PARTITION_COLUMN === 1 ||
+        i.IS_PARTITION_COLUMN === true || (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+        return i.SRC_COLUMN_NAME;
+      }
+    });
+    isPartitionColumn = isPartitionColumn.filter(i => i !== undefined);
+    if (isPartitionColumn && isPartitionColumn.length) {
+      this.errors.hasError = true;
+      this.errors.isPartitionColumn = isPartitionColumn;
+    }
   }
 
   generateNewVersion() {

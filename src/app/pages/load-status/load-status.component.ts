@@ -97,7 +97,9 @@ export class LoadStatusComponent implements OnInit {
         }
       });
       this.getElementInfo();
-      this.loader.gantt = false;
+      setTimeout(() => {
+        this.loader.gantt = false;
+      }, 500);
     }, 100);
   }
 
@@ -107,6 +109,14 @@ export class LoadStatusComponent implements OnInit {
     $('.bar').on('click', () => {
       this.tasksMoved = true;
     });
+    const getClosetBar = $('#ganttChart .bar .bar-wrapper');
+    setTimeout(() => {
+      getClosetBar.each(function (index, item) {
+        const width = $(this).find('.bar-group .bar').width();
+        const x = $(this).find('.bar-group .bar').attr('x');
+        $(this).find('.bar-group .bar-label').attr('x', parseInt(x, 10) + width + 10);
+      });
+    }, 500);
   }
 
   searchFormInit() {

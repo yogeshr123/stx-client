@@ -75,7 +75,6 @@
         </div>
         <hr *ngIf="errors.hasError">
         <div class="tile" *ngIf="errors.hasError">
-            <!-- <div class="errors"> -->
             <div class="alert alert-danger m-0" role="alert">
                 <h6>
                     Please fix following Erros:
@@ -86,8 +85,16 @@
                         <li *ngFor="let item of errors.duplicatetTargetNames">{{item}}</li>
                     </ul>
                 </div>
+                <div class="ml-4 mt-3" *ngIf="errors.checkSrcAndTableAlias">
+                    Duplicate Source Column Name & Lookup Table Alias Combination are not allowed:
+                    <ul *ngFor="let item of errors.checkSrcAndTableAlias">
+                        <li *ngIf="item !== 'undefined'">
+                            Source Column Name: {{ item.split('+')[0] }} And Lookup Table Alias:
+                            {{ item.split('+')[1] }}
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <!-- </div> -->
         </div>
         <hr>
         <div class="tile">

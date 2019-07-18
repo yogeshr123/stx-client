@@ -266,10 +266,20 @@ export class ColumnMetadataComponent implements OnInit {
     // Check Unique Target Target Column Name
     const targetColumnNames = colums.map(i => i.TARGET_COLUMN_NAME);
     const checkDuplicatetTargetNames = this.checkForDuplicatesInArray(targetColumnNames);
-    // console.log();
     if (checkDuplicatetTargetNames && checkDuplicatetTargetNames.length) {
       this.errors.hasError = true;
       this.errors.duplicatetTargetNames = checkDuplicatetTargetNames;
+    }
+    // Check Unique Combination of SRC_COLUMN_NAME & LOOKUP_TABLE_ALIAS
+    const srcAndTableAlias = colums.map(i => {
+      if (i.LOOKUP_TABLE_ALIAS) {
+        return `${i.SRC_COLUMN_NAME}+${i.LOOKUP_TABLE_ALIAS ? i.LOOKUP_TABLE_ALIAS : ''}`;
+      }
+    });
+    const checkSrcAndTableAlias = this.checkForDuplicatesInArray(srcAndTableAlias);
+    if (checkSrcAndTableAlias && checkSrcAndTableAlias.length) {
+      this.errors.hasError = true;
+      this.errors.checkSrcAndTableAlias = checkSrcAndTableAlias;
     }
   }
 

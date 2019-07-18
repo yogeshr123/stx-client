@@ -110,6 +110,14 @@
                         </li>
                     </ul>
                 </div>
+                <div class="ml-4 mt-3" *ngIf="errors.isUpdateDateColumn">
+                    There can <b>only be 1 IS_UPDATE_DATE_COLUMN</b>:
+                    <ul *ngFor="let item of errors.isUpdateDateColumn">
+                        <li>
+                            Source Column Name: {{ item }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <hr>

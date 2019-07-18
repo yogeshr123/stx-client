@@ -312,6 +312,18 @@ export class ColumnMetadataComponent implements OnInit {
       this.errors.hasError = true;
       this.errors.isPartitionColumnDataType = isPartitionColumn2;
     }
+    // Check IS_UPDATE_DATE_COLUMN should be only 1
+    let isUpdateDateColumn = colums.map(i => {
+      if (i.IS_UPDATE_DATE_COLUMN === 1 ||
+        i.IS_UPDATE_DATE_COLUMN === true || (i.IS_UPDATE_DATE_COLUMN && i.IS_UPDATE_DATE_COLUMN.data && i.IS_UPDATE_DATE_COLUMN.data[0])) {
+        return i.SRC_COLUMN_NAME;
+      }
+    });
+    isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
+    if (isUpdateDateColumn && isUpdateDateColumn.length) {
+      this.errors.hasError = true;
+      this.errors.isUpdateDateColumn = isUpdateDateColumn;
+    }
   }
 
   generateNewVersion() {

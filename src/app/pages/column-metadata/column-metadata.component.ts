@@ -293,6 +293,25 @@ export class ColumnMetadataComponent implements OnInit {
       this.errors.hasError = true;
       this.errors.isPartitionColumn = isPartitionColumn;
     }
+    // Partition Column Should have TARGET_DATA_TYPE as varchar
+    let isPartitionColumn2 = colums.map(i => {
+      if (i.IS_PARTITION_COLUMN === 1 ||
+        i.IS_PARTITION_COLUMN === true || (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+        return `${i.SRC_COLUMN_NAME}+${i.TARGET_DATA_TYPE}`;
+      }
+    });
+    isPartitionColumn2 = isPartitionColumn2.filter(i => i !== undefined);
+    isPartitionColumn2 = isPartitionColumn2.map(i => {
+      const checkDataType = i.split('+')[1];
+      if (!/^int|varchar/g.test(checkDataType)) {
+        return i.split('+')[0];
+      }
+    });
+    isPartitionColumn2 = isPartitionColumn2.filter(i => i !== undefined);
+    if (isPartitionColumn2 && isPartitionColumn2.length) {
+      this.errors.hasError = true;
+      this.errors.isPartitionColumnDataType = isPartitionColumn2;
+    }
   }
 
   generateNewVersion() {

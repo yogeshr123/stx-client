@@ -102,6 +102,14 @@
                         </li>
                     </ul>
                 </div>
+                <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumnDataType">
+                    <b>IS_PARTITION_COLUMN</b> should have <b>TARGET_DATA_TYPE int or varchar</b>:
+                    <ul *ngFor="let item of errors.isPartitionColumnDataType">
+                        <li>
+                            Source Column Name: {{ item }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <hr>

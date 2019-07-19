@@ -291,7 +291,7 @@ export class ColumnMetadataComponent implements OnInit {
       }
     });
     isPartitionColumn = isPartitionColumn.filter(i => i !== undefined);
-    if (isPartitionColumn && isPartitionColumn.length) {
+    if (isPartitionColumn && isPartitionColumn.length > 1) {
       this.errors.hasError = true;
       this.errors.isPartitionColumn = isPartitionColumn;
     }
@@ -326,6 +326,71 @@ export class ColumnMetadataComponent implements OnInit {
       this.errors.hasError = true;
       this.errors.isUpdateDateColumn = isUpdateDateColumn;
     }
+    if (!this.errors.hasError) {
+      this.saveMasterData(localCopyOfVersion);
+    }
+  }
+
+  saveMasterData(localCopyOfVersion) {
+    const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
+    const addColumns = colums.filter(i => i.action === 'newColumn');
+    const updateColumns = colums.filter(i => i.action === 'updatedColumn');
+    const deleteColumns = colums.filter(i => i.action === 'deleted');
+    if (addColumns && addColumns.length) {
+      for (const iterator of addColumns) {
+        this.addColumn(iterator);
+      }
+    }
+    if (updateColumns && updateColumns.length) {
+      for (const iterator of updateColumns) {
+        this.updateColumn(iterator);
+      }
+    }
+    if (deleteColumns && deleteColumns.length) {
+      for (const iterator of deleteColumns) {
+        this.deleteColumnConfirm(iterator);
+      }
+    }
+  }
+
+  addColumn(columnInfo) {
+    this.columnMetadataService.addColumn({ data: columnInfo }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('error', 'Could not add column');
+      }
+    }, error => {
+      this.showToast('error', 'Could not add column');
+    });
+  }
+
+  updateColumn(columnInfo) {
+    const request = {
+      data: columnInfo,
+      table_name: columnInfo.TABLE_NAME,
+      targetColumnId: columnInfo.TARGET_COLUMN_ID
+    };
+    this.columnMetadataService.updateColumn(request).subscribe((resp: any) => {
+      if (resp.error) {
+        this.showToast('error', 'Could not update column');
+      }
+    }, error => {
+      this.showToast('error', 'Could not update column');
+    });
+  }
+
+  deleteColumnConfirm(columnInfo) {
+    const request = {
+      columnVersion: columnInfo.METADATA_VERSION,
+      table_name: columnInfo.TABLE_NAME,
+      targetColumnId: columnInfo.TARGET_COLUMN_ID
+    };
+    this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
+      if (resp.error) {
+        this.showToast('error', 'Could not delete column');
+      }
+    }, error => {
+      this.showToast('error', 'Could not delete column');
+    });
   }
 
   generateNewVersion() {

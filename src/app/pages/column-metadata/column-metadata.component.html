@@ -88,7 +88,7 @@
                 <div class="ml-4 mt-3" *ngIf="errors.checkSrcAndTableAlias">
                     <b>Duplicate Source Column Name & Lookup Table Alias Combination</b> are not allowed:
                     <ul *ngFor="let item of errors.checkSrcAndTableAlias">
-                        <li *ngIf="item !== 'undefined'">
+                        <li>
                             Source Column Name: {{ item.split('+')[0] }} And Lookup Table Alias:
                             {{ item.split('+')[1] }}
                         </li>

@@ -156,7 +156,7 @@ export class ColumnMetadataComponent implements OnInit {
       columnVersion: version.METADATA_VERSION
     };
     let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    if (!localCopyOfVersion) {
+    if (!localCopyOfVersion || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -172,7 +172,7 @@ export class ColumnMetadataComponent implements OnInit {
       });
     } else {
       this.versionData = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
-      console.log('this.versionData ', this.versionData);
+      // console.log('this.versionData ', this.versionData);
       this.showMetaData = true;
       this.loader.columns = false;
     }
@@ -252,7 +252,9 @@ export class ColumnMetadataComponent implements OnInit {
         a[b.name] = (a[b.name] || 0) + b.count;
         return a;
       }, {});
-    const duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1);
+    let duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1);
+    // tslint:disable-next-line:triple-equals
+    duplicates = duplicates.filter(i => i != 'undefined');
     return duplicates;
   }
 

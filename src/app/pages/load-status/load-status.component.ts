@@ -109,15 +109,6 @@ export class LoadStatusComponent implements OnInit {
     $('.bar').on('click', () => {
       this.tasksMoved = true;
     });
-    const getClosetBar = $('#ganttChart .bar .bar-wrapper');
-    setTimeout(() => {
-      // tslint:disable-next-line:space-before-function-paren
-      getClosetBar.each(function (index, item) {
-        const width = $(this).find('.bar-group .bar').width();
-        const x = $(this).find('.bar-group .bar').attr('x');
-        $(this).find('.bar-group .bar-label').attr('x', parseInt(x, 10) + width + 10);
-      });
-    }, 500);
   }
 
   searchFormInit() {

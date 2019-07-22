@@ -208,11 +208,16 @@ export class ColumnMetadataComponent implements OnInit {
           localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
               .map(i => {
-                if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                if (!i.TARGET_COLUMN_ID && version.action === 'newColumn') {
+                  return undefined;
+                } else if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
                   i.action = 'deleted';
                 }
                 return i;
               });
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .filter(i => i !== undefined);
           this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
           this.ngOnInit();
@@ -334,63 +339,11 @@ export class ColumnMetadataComponent implements OnInit {
   saveMasterData(localCopyOfVersion) {
     const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
     const addColumns = colums.filter(i => i.action === 'newColumn');
+    console.log("addColumns ", JSON.stringify(addColumns));
     const updateColumns = colums.filter(i => i.action === 'updatedColumn');
+    console.log("updateColumns ", JSON.stringify(updateColumns));
     const deleteColumns = colums.filter(i => i.action === 'deleted');
-    if (addColumns && addColumns.length) {
-      for (const iterator of addColumns) {
-        this.addColumn(iterator);
-      }
-    }
-    if (updateColumns && updateColumns.length) {
-      for (const iterator of updateColumns) {
-        this.updateColumn(iterator);
-      }
-    }
-    if (deleteColumns && deleteColumns.length) {
-      for (const iterator of deleteColumns) {
-        this.deleteColumnConfirm(iterator);
-      }
-    }
-  }
-
-  addColumn(columnInfo) {
-    this.columnMetadataService.addColumn({ data: columnInfo }).subscribe((resp: any) => {
-      if (!resp.error) {
-        this.showToast('error', 'Could not add column');
-      }
-    }, error => {
-      this.showToast('error', 'Could not add column');
-    });
-  }
-
-  updateColumn(columnInfo) {
-    const request = {
-      data: columnInfo,
-      table_name: columnInfo.TABLE_NAME,
-      targetColumnId: columnInfo.TARGET_COLUMN_ID
-    };
-    this.columnMetadataService.updateColumn(request).subscribe((resp: any) => {
-      if (resp.error) {
-        this.showToast('error', 'Could not update column');
-      }
-    }, error => {
-      this.showToast('error', 'Could not update column');
-    });
-  }
-
-  deleteColumnConfirm(columnInfo) {
-    const request = {
-      columnVersion: columnInfo.METADATA_VERSION,
-      table_name: columnInfo.TABLE_NAME,
-      targetColumnId: columnInfo.TARGET_COLUMN_ID
-    };
-    this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
-      if (resp.error) {
-        this.showToast('error', 'Could not delete column');
-      }
-    }, error => {
-      this.showToast('error', 'Could not delete column');
-    });
+    console.log("deleteColumns ", JSON.stringify(deleteColumns));
   }
 
   generateNewVersion() {

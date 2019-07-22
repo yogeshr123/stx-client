@@ -337,13 +337,26 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   saveMasterData(localCopyOfVersion) {
+    this.loader.save = true;
     const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
     const addColumns = colums.filter(i => i.action === 'newColumn');
-    console.log("addColumns ", JSON.stringify(addColumns));
     const updateColumns = colums.filter(i => i.action === 'updatedColumn');
-    console.log("updateColumns ", JSON.stringify(updateColumns));
     const deleteColumns = colums.filter(i => i.action === 'deleted');
-    console.log("deleteColumns ", JSON.stringify(deleteColumns));
+    this.columnMetadataService.saveMaster({ addColumns, updateColumns, deleteColumns }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('success', 'All operations are successful.');
+      } else {
+        this.errors.saveError = true;
+        this.errors.errorMsg = resp.message;
+        this.showToast('error', 'Could not perform all operations.');
+      }
+      localStorage.removeItem('localCopyOfVersion');
+      this.ngOnInit();
+      this.loader.save = false;
+    }, error => {
+      this.showToast('error', 'Could not perform all operations.');
+      this.loader.save = false;
+    });
   }
 
   generateNewVersion() {

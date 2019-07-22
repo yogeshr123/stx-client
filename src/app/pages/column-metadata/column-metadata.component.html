@@ -30,6 +30,20 @@
                     Save Changes
                 </button>
             </div>
+            <div class="mt-3" *ngIf="errors.saveError">
+                <div class="alert alert-danger m-0" role="alert">
+                    <h6>
+                        Following operations failed:
+                    </h6>
+                    <ul *ngFor="let item of errors.errorMsg | keyvalue">
+                        <li *ngIf="item.value.indexOf('Successfully') < 0">
+                            <span>
+                                {{ item.value.toString() }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="mt-3">
                 <ngx-loading [show]="loader.versions" [config]="{ backdropBorderRadius: '3px' }">
                 </ngx-loading>

@@ -105,4 +105,11 @@ export class ColumnMetadataService {
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    saveMaster(columnData) {
+        const url = `${environment.baseUrl}column-metadata/saveMaster`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

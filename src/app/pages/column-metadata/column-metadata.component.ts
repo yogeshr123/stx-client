@@ -41,6 +41,7 @@ export class ColumnMetadataComponent implements OnInit {
   errors: any = {
     hasError: false
   };
+  enableSaveChanges = false;
 
   constructor(
     private router: Router,
@@ -176,6 +177,14 @@ export class ColumnMetadataComponent implements OnInit {
       this.showMetaData = true;
       this.loader.columns = false;
     }
+    if (this.versionData && this.versionData.length) {
+      this.enableSaveChanges = false;
+      this.versionData.map(i => {
+        if (i.action) {
+          this.enableSaveChanges = true;
+        }
+      });
+    }
   }
 
   deleteColumn(version) {
@@ -221,6 +230,14 @@ export class ColumnMetadataComponent implements OnInit {
           this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
           this.ngOnInit();
+        }
+      });
+    }
+    if (this.versionData && this.versionData.length) {
+      this.enableSaveChanges = false;
+      this.versionData.map(i => {
+        if (i.action) {
+          this.enableSaveChanges = true;
         }
       });
     }

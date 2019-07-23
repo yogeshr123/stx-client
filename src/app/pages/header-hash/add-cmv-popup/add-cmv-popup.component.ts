@@ -14,8 +14,10 @@ export class AddCmvPopupComponent implements OnInit {
   saveLoader = false;
   formValues = {
     dataType: '',
-    precision: '(0,0)'
+    precisionLeft: '',
+    precisionRight: ''
   };
+  isValid = true;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -29,24 +31,29 @@ export class AddCmvPopupComponent implements OnInit {
     this.status = this.config.data.status;
   }
 
+  checkFormValidation() {
+    if (!this.formValues.dataType) {
+      this.isValid = false;
+    } else {
+      if (this.formValues.dataType === 'decimal') {
+        if (!this.formValues.precisionLeft || !this.formValues.precisionRight) {
+          this.isValid = true;
+        } else {
+          this.isValid = false;
+        }
+      } else {
+        this.isValid = false;
+      }
+    }
+  }
+
   saveColumn() {
     this.saveLoader = true;
     let formValues = Object.assign({}, this.header);
     formValues = { ...formValues, formValues: this.formValues };
-    formValues.formValues.precision = formValues.formValues.precision.replace(/\s/g, '');
-    if (!formValues.formValues.precision) {
-      formValues.formValues.precision = '(0,0)';
-    }
-    const checkLeftBracket = /\(/g.test(formValues.formValues.precision);
-    const checkRightBracket = /\)/g.test(formValues.formValues.precision);
-    if (!checkLeftBracket) {
-      formValues.formValues.precision = `(${formValues.formValues.precision}`;
-    }
-    if (!checkRightBracket) {
-      formValues.formValues.precision = `${formValues.formValues.precision})`;
-    }
     if (formValues.formValues.dataType === 'decimal') {
-      formValues.formValues.dataType = `${formValues.formValues.dataType}${formValues.formValues.precision}`;
+      formValues.formValues.dataType =
+        `${formValues.formValues.dataType}(${formValues.formValues.precisionLeft},${formValues.formValues.precisionRight})`;
     }
     this.headerHashService.addToColumnMetadata({ columnData: formValues }).subscribe((resp: any) => {
       if (resp && !resp.error) {

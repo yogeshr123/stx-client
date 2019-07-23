@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { MessageService } from 'primeng/api';
@@ -7,12 +7,13 @@ import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.co
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
 import { columnTableColumns, versionTableColumns } from './tableColumns';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-column-metadata',
   templateUrl: './column-metadata.component.html',
-  styleUrls: ['./column-metadata.component.css'],
+  styleUrls: ['./column-metadata.component.scss'],
   providers: [DialogService, ConfirmationService]
 })
 export class ColumnMetadataComponent implements OnInit {
@@ -24,7 +25,8 @@ export class ColumnMetadataComponent implements OnInit {
   loader = {
     columns: false,
     versions: false,
-    delete: false
+    delete: false,
+    save: false
   };
   state: any;
   uniqueTables: any;
@@ -36,8 +38,13 @@ export class ColumnMetadataComponent implements OnInit {
   versionTableColumns = versionTableColumns;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   selectedColumns: any;
+  errors: any = {
+    hasError: false
+  };
+  enableSaveChanges = false;
 
   constructor(
+    private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
@@ -59,7 +66,6 @@ export class ColumnMetadataComponent implements OnInit {
     if (!localStorage.getItem('selectedVersionColumns')) {
       this.initColumnState();
     } else {
-      // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedVersionColumns'));
     }
   }
@@ -139,9 +145,11 @@ export class ColumnMetadataComponent implements OnInit {
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
     this.ngOnInit();
+    this.enableSaveChanges = false;
   }
 
   viewData(version) {
+    this.versionData = [];
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
@@ -150,40 +158,95 @@ export class ColumnMetadataComponent implements OnInit {
       table_name: this.selectedTable.TABLE_NAME,
       columnVersion: version.METADATA_VERSION
     };
-    this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
-      this.versionData = resp.data;
-      this.loader.columns = false;
+    let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    const key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+    if (!localCopyOfVersion && !key || version.STATUS !== 'NEW') {
+      this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+        this.versionData = resp.data;
+        this.loader.columns = false;
+        this.showMetaData = true;
+        if (version.STATUS === 'NEW') {
+          localCopyOfVersion = {
+            [`${version.METADATA_VERSION}_${version.TABLE_NAME}`]: this.versionData
+          };
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+        }
+      }, error => {
+        this.loader.columns = false;
+      });
+    } else {
+      this.versionData = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
       this.showMetaData = true;
-    }, error => {
       this.loader.columns = false;
-    });
+    }
+    if (this.versionData && this.versionData.length) {
+      this.enableSaveChanges = false;
+      this.versionData.map(i => {
+        if (i.action) {
+          this.enableSaveChanges = true;
+        }
+      });
+    }
   }
 
   deleteColumn(version) {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to delete this column?',
-      accept: () => {
-        this.loader.delete = true;
-        const request = {
-          columnVersion: version.METADATA_VERSION,
-          targetColumnId: version.TARGET_COLUMN_ID,
-          table_name: this.selectedTable.TABLE_NAME
-        };
-        this.columnMetadataService.deleteColumn(request).subscribe((resp: any) => {
-          if (resp && !resp.error) {
-            this.showToast('success', 'Column Deleted!');
-            this.isFirstNewVersion = null;
-            this.ngOnInit();
-          } else {
-            this.showToast('error', 'Could not delete column.');
-          }
+    if (version.action === 'deleted') {
+      this.confirmationService.confirm({
+        message: 'Would you like to undo delete?',
+        accept: () => {
+          this.loader.delete = true;
+          const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .map(i => {
+                if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  delete i.action;
+                }
+                return i;
+              });
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
-        }, error => {
+          this.ngOnInit();
+        }
+      });
+    } else {
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to delete this column?',
+        accept: () => {
+          this.loader.delete = true;
+          const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .map(i => {
+                if (!i.TARGET_COLUMN_ID && version.action === 'newColumn') {
+                  return undefined;
+                } else if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  i.action = 'deleted';
+                }
+                return i;
+              });
+          localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
+            localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
+              .filter(i => i !== undefined);
+          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
           this.loader.delete = false;
-          this.showToast('error', 'Could not delete column.');
-        });
-      }
-    });
+          this.ngOnInit();
+        }
+      });
+    }
+    if (this.versionData && this.versionData.length) {
+      this.enableSaveChanges = false;
+      this.versionData.map(i => {
+        if (i.action) {
+          this.enableSaveChanges = true;
+        }
+      });
+    }
+  }
+
+  editColumn(version) {
+    this.columnMetadataService.setColumnToEdit(version);
+    this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
   }
 
   validate(version) {
@@ -197,6 +260,120 @@ export class ColumnMetadataComponent implements OnInit {
       }
     }, error => {
       this.showToast('error', 'Could not validate version.');
+    });
+  }
+
+  checkForDuplicatesInArray(array) {
+    const uniq = array
+      .map((name) => {
+        return {
+          count: 1,
+          name
+        };
+      })
+      .reduce((a, b) => {
+        a[b.name] = (a[b.name] || 0) + b.count;
+        return a;
+      }, {});
+    let duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1);
+    // tslint:disable-next-line:triple-equals
+    duplicates = duplicates.filter(i => i != 'undefined');
+    return duplicates;
+  }
+
+  saveChanges() {
+    this.errors = {
+      hasError: false
+    };
+    // Check CMV Validations
+    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
+    // Check Unique Target Target Column Name
+    const targetColumnNames = colums.map(i => i.TARGET_COLUMN_NAME);
+    const checkDuplicatetTargetNames = this.checkForDuplicatesInArray(targetColumnNames);
+    if (checkDuplicatetTargetNames && checkDuplicatetTargetNames.length) {
+      this.errors.hasError = true;
+      this.errors.duplicatetTargetNames = checkDuplicatetTargetNames;
+    }
+    // Check Unique Combination of SRC_COLUMN_NAME & LOOKUP_TABLE_ALIAS
+    const srcAndTableAlias = colums.map(i => {
+      if (i.LOOKUP_TABLE_ALIAS) {
+        return `${i.SRC_COLUMN_NAME}+${i.LOOKUP_TABLE_ALIAS ? i.LOOKUP_TABLE_ALIAS : ''}`;
+      }
+    });
+    const checkSrcAndTableAlias = this.checkForDuplicatesInArray(srcAndTableAlias);
+    if (checkSrcAndTableAlias && checkSrcAndTableAlias.length) {
+      this.errors.hasError = true;
+      this.errors.checkSrcAndTableAlias = checkSrcAndTableAlias;
+    }
+    // Check IS_PARTITION_COLUMN should be only 1
+    let isPartitionColumn = colums.map(i => {
+      if (i.IS_PARTITION_COLUMN === 1 ||
+        i.IS_PARTITION_COLUMN === true || (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+        return i.SRC_COLUMN_NAME;
+      }
+    });
+    isPartitionColumn = isPartitionColumn.filter(i => i !== undefined);
+    if (isPartitionColumn && isPartitionColumn.length > 1) {
+      this.errors.hasError = true;
+      this.errors.isPartitionColumn = isPartitionColumn;
+    }
+    // Partition Column Should have TARGET_DATA_TYPE as varchar
+    let isPartitionColumn2 = colums.map(i => {
+      if (i.IS_PARTITION_COLUMN === 1 ||
+        i.IS_PARTITION_COLUMN === true || (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+        return `${i.SRC_COLUMN_NAME}+${i.TARGET_DATA_TYPE}`;
+      }
+    });
+    isPartitionColumn2 = isPartitionColumn2.filter(i => i !== undefined);
+    isPartitionColumn2 = isPartitionColumn2.map(i => {
+      const checkDataType = i.split('+')[1];
+      if (!/^int|varchar/g.test(checkDataType)) {
+        return i.split('+')[0];
+      }
+    });
+    isPartitionColumn2 = isPartitionColumn2.filter(i => i !== undefined);
+    if (isPartitionColumn2 && isPartitionColumn2.length) {
+      this.errors.hasError = true;
+      this.errors.isPartitionColumnDataType = isPartitionColumn2;
+    }
+    // Check IS_UPDATE_DATE_COLUMN should be only 1
+    let isUpdateDateColumn = colums.map(i => {
+      if (i.IS_UPDATE_DATE_COLUMN === 1 ||
+        i.IS_UPDATE_DATE_COLUMN === true || (i.IS_UPDATE_DATE_COLUMN && i.IS_UPDATE_DATE_COLUMN.data && i.IS_UPDATE_DATE_COLUMN.data[0])) {
+        return i.SRC_COLUMN_NAME;
+      }
+    });
+    isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
+    if (isUpdateDateColumn && isUpdateDateColumn.length) {
+      this.errors.hasError = true;
+      this.errors.isUpdateDateColumn = isUpdateDateColumn;
+    }
+    if (!this.errors.hasError) {
+      this.saveMasterData(localCopyOfVersion);
+    }
+  }
+
+  saveMasterData(localCopyOfVersion) {
+    this.loader.save = true;
+    const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
+    const addColumns = colums.filter(i => i.action === 'newColumn');
+    const updateColumns = colums.filter(i => i.action === 'updatedColumn');
+    const deleteColumns = colums.filter(i => i.action === 'deleted');
+    this.columnMetadataService.saveMaster({ addColumns, updateColumns, deleteColumns }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('success', 'All operations are successful.');
+      } else {
+        this.errors.saveError = true;
+        this.errors.errorMsg = resp.message;
+        this.showToast('error', 'Could not perform all operations.');
+      }
+      localStorage.removeItem('localCopyOfVersion');
+      this.ngOnInit();
+      this.loader.save = false;
+    }, error => {
+      this.showToast('error', 'Could not perform all operations.');
+      this.loader.save = false;
     });
   }
 

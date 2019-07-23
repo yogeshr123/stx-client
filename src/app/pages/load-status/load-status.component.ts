@@ -97,7 +97,9 @@ export class LoadStatusComponent implements OnInit {
         }
       });
       this.getElementInfo();
-      this.loader.gantt = false;
+      setTimeout(() => {
+        this.loader.gantt = false;
+      }, 500);
     }, 100);
   }
 

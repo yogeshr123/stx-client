@@ -23,8 +23,8 @@
             <div class="tile-title text-right">
                 <div class="row">
                     <div class="col-md-12">
-                        <button
-                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn}"
+                        <button *ngIf="!routeInfo.isViewOnly"
+                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn}"
                             class="btn btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save
@@ -47,12 +47,6 @@
                         <p-accordionTab header="Source Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">SRC COLUMN NAME</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">SRC COLUMN TYPE</label>
                                     <div class="col-md-8">
                                         <select formControlName="SRC_COLUMN_TYPE" class="form-control"
@@ -60,26 +54,38 @@
                                             <option value="MAPPED">MAPPED</option>
                                             <option value="DERIVED">DERIVED</option>
                                             <option value="PREDEFINED">PREDEFINED</option>
+                                            <option value="DIMLOOKUP">DIMLOOKUP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row">
+                                    <label class="control-label col-md-4">SRC COLUMN NAME</label>
+                                    <div class="col-md-8">
+                                        <input oninput="this.value = this.value.toLowerCase()"
+                                            formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || routeInfo.fromHeaderHash">
+                                    <label class="control-label col-md-4">SRC DATA TYPE</label>
+                                    <div class="col-md-8">
+                                        <select formControlName="SRC_DATA_TYPE" class="form-control">
+                                            <option value="string">string</option>
+                                            <option value="integer">integer</option>
+                                            <option value="long">long</option>
+                                            <option value="decimal">decimal</option>
+                                            <option value="timestamp">timestamp</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED'">
-                                    <label class="control-label col-md-4">SRC DATA TYPE</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="SRC_DATA_TYPE" class="form-control" type="text" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">SRC PRECISION</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="SRC_PRECISION" class="form-control" type="number" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">SRC SCALE</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="SRC_SCALE" class="form-control" type="number" />
+                                    *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'">
+                                    <label class="control-label col-md-4">SRC DECIMAL PRECISION</label>
+                                    <div class="row m-0 pl-3">
+                                        <input type="number" class="form-control col-3"
+                                            formControlName="SRC_LEFT_PRECISION">
+                                        <input type="number" class="form-control ml-1 col-3"
+                                            formControlName="SRC_RIGHT_PRECISION">
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -97,7 +103,8 @@
                                             type="text" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
+                                <div class="form-group col-6 row"
+                                    *ngIf="!routeInfo.fromHeaderHash && addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DIMLOOKUP'">
                                     <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
                                     <div class="col-md-8">
                                         <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
@@ -116,45 +123,47 @@
                             </div>
                         </p-accordionTab>
                         <!-- TARGET Info-->
-                        <p-accordionTab header="Target Info" class="col-12"
-                            [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
+                        <p-accordionTab header="Target Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET COLUMN NAME</label>
                                     <div class="col-md-8">
-                                        <input formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
+                                        <input oninput="this.value = this.value.toLowerCase()"
+                                            formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET DATA TYPE</label>
                                     <div class="col-md-8">
-                                        <input formControlName="TARGET_DATA_TYPE" class="form-control" type="text" />
+                                        <select formControlName="TARGET_DATA_TYPE" class="form-control">
+                                            <option value="varchar">varchar</option>
+                                            <option value="int">int</option>
+                                            <option value="bigint">bigint</option>
+                                            <option value="decimal">decimal</option>
+                                            <option value="timestamp">timestamp</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET LENGTH</label>
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'">
+                                    <label class="control-label col-md-4">IS UPDATE DATE COLUMN</label>
                                     <div class="col-md-8">
-                                        <input formControlName="TARGET_LENGTH" class="form-control" type="number" />
+                                        <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control"
+                                            type="checkbox" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET PRECISION</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="TARGET_PRECISION" class="form-control" type="number" />
+                                <div class="form-group col-6 row"
+                                    *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal' || addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'">
+                                    <label class=" control-label col-md-4">TARGET PRECISION</label>
+                                    <div class="row m-0 pl-3">
+                                        <input formControlName="TARGET_LEFT_PRECISION" type="number"
+                                            class="form-control col-3"
+                                            [ngClass]="{'col-6': addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'}">
+                                        <input formControlName="TARGET_RIGHT_PRECISION" type="number"
+                                            class="form-control ml-1 col-3"
+                                            *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal'">
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET SCALE</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="TARGET_SCALE" class="form-control" type="number" />
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET COLUMN ID</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="TARGET_COLUMN_ID" class="form-control" type="number" />
-                                    </div>
-                                </div> -->
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
                                     <div class="col-md-8">
@@ -165,8 +174,7 @@
                             </div>
                         </p-accordionTab>
                         <!-- Other Info  -->
-                        <p-accordionTab header="Other Info" class="col-12"
-                            [selected]="routeInfo.id ? routeInfo.isViewOnly || false : true">
+                        <p-accordionTab header="Other Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
 
                                 <div class="form-group col-6 row">
@@ -182,30 +190,6 @@
                                             type="checkbox" />
                                     </div>
                                 </div>
-                                <!-- <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">UPDATE DATE COLUMN</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control" type="checkbox" />
-                                    </div>
-                                </div> -->
-                                <!-- <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">DATATYPE CHANGED</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="IS_DATATYPE_CHANGED" class="form-control" type="checkbox" />
-                                    </div>
-                                </div> -->
-                                <!-- <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">RENAMED</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="IS_RENAMED" class="form-control" type="checkbox" />
-                                    </div>
-                                </div> -->
-                                <!-- <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">NEW</label>
-                                    <div class="col-md-8">
-                                        <input formControlName="IS_NEW" class="form-control" type="checkbox" />
-                                    </div>
-                                </div> -->
                             </div>
                         </p-accordionTab>
                     </p-accordion>
@@ -214,8 +198,8 @@
             <div class="tile-footer">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-3">
-                        <button
-                            [ngClass]="{'disabled': routeInfo.isViewOnly || !addEditColumnForm.valid || loader.saveColumn }"
+                        <button *ngIf="!routeInfo.isViewOnly"
+                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn }"
                             class="btn btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save

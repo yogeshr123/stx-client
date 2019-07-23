@@ -18,6 +18,31 @@ export class ColumnMetadataService {
     ) {
     }
 
+    localCopyOfVersion: any;
+    columnInfo: any;
+
+    getLocalCopyOfVersion() {
+        const localCopyOfVersion = JSON.parse(localStorage.getItem('localCopyOfVersion'));
+        if (localCopyOfVersion) {
+            return localCopyOfVersion;
+        }
+        return this.localCopyOfVersion;
+    }
+
+    setLocalCopyOfVersion(version) {
+        localStorage.setItem('localCopyOfVersion', JSON.stringify(version));
+        return true;
+    }
+
+    getColumnToEdit() {
+        return this.columnInfo;
+    }
+
+    setColumnToEdit(columnInfo) {
+        this.columnInfo = columnInfo;
+        return true;
+    }
+
     getAllTablesInVersions() {
         const url = `${environment.baseUrl}column-metadata/getAllTablesInVersions`;
         return this.http
@@ -76,6 +101,13 @@ export class ColumnMetadataService {
 
     deleteColumn(columnData) {
         const url = `${environment.baseUrl}column-metadata/deleteColumn`;
+        return this.http
+            .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    saveMaster(columnData) {
+        const url = `${environment.baseUrl}column-metadata/saveMaster`;
         return this.http
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));

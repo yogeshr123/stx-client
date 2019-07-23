@@ -81,7 +81,7 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'">
                                     <label class="control-label col-md-4">SRC DECIMAL PRECISION</label>
-                                    <div class="row m-0 pl-3">
+                                    <div class="row m-0 pl-3 col-8">
                                         <input type="number" class="form-control col-3"
                                             formControlName="SRC_LEFT_PRECISION">
                                         <input type="number" class="form-control ml-1 col-3"
@@ -155,7 +155,7 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal' || addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'">
                                     <label class=" control-label col-md-4">TARGET PRECISION</label>
-                                    <div class="row m-0 pl-3">
+                                    <div class="row m-0 pl-3 col-8">
                                         <input formControlName="TARGET_LEFT_PRECISION" type="number"
                                             class="form-control col-3"
                                             [ngClass]="{'col-6': addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'}">

@@ -145,9 +145,11 @@ export class ColumnMetadataComponent implements OnInit {
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
     this.ngOnInit();
+    this.enableSaveChanges = false;
   }
 
   viewData(version) {
+    this.versionData = [];
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
     this.selectedVersion = version;
@@ -157,7 +159,8 @@ export class ColumnMetadataComponent implements OnInit {
       columnVersion: version.METADATA_VERSION
     };
     let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    if (!localCopyOfVersion || version.STATUS !== 'NEW') {
+    const key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+    if (!localCopyOfVersion && !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -173,7 +176,6 @@ export class ColumnMetadataComponent implements OnInit {
       });
     } else {
       this.versionData = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
-      // console.log('this.versionData ', this.versionData);
       this.showMetaData = true;
       this.loader.columns = false;
     }
@@ -208,7 +210,6 @@ export class ColumnMetadataComponent implements OnInit {
         }
       });
     } else {
-
       this.confirmationService.confirm({
         message: 'Are you sure that you want to delete this column?',
         accept: () => {

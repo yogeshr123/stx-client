@@ -25,6 +25,7 @@
                 </p-dropdown>
                 <img *ngIf="loader.save" class="float-right ml-2" width="40" src="assets/images/green_loader.gif"
                     alt="Loader Image">
+                {{enableSaveChanges}}
                 <button [ngClass]="{'disabled': !enableSaveChanges}" (click)="saveChanges()"
                     class="btn btn-bg btn-primary float-right" [ngClass]="{'disabled': loader.save}">
                     Save Changes

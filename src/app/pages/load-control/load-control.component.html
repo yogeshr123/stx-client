@@ -294,7 +294,7 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
-                            {{col.field}}
+                            {{col.header}}
                             <p-sortIcon [field]="col.field"></p-sortIcon>
                         </th>
                         <th class="fixedcol rightfixedcol"></th>

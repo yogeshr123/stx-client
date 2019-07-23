@@ -113,7 +113,12 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">RAW FACTORY PATH</label>
-                    <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH" oninput="this.value = this.value.toLowerCase()">
+                    <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH" oninput="this.value = this.value.toLowerCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_PATH.errors }">
+                    <div *ngIf="submitted && f.RAW_FACTORY_PATH.errors" class="invalid-feedback">
+                      <div *ngIf="f.RAW_FACTORY_PATH.errors.required">RAW FACTORY PATH is required for TABLE SOURCE = RAW_FACTORY
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">RAW FACTORY RETENTION STRATEGY</label>
@@ -125,7 +130,12 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">RAW FACTORY RETENTION_DAYS</label>
-                    <input class="form-control" type="number" formControlName="RAW_FACTORY_RETENTION_DAYS">
+                    <input class="form-control" type="number" formControlName="RAW_FACTORY_RETENTION_DAYS"
+                      [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_RETENTION_DAYS.errors }">
+                    <div *ngIf="submitted && f.RAW_FACTORY_RETENTION_DAYS.errors" class="invalid-feedback">
+                      <div *ngIf="f.RAW_FACTORY_RETENTION_DAYS.errors.min">RAW FACTORY RETENTION DAYS should be greater than 0
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -135,27 +145,56 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">DB ID</label>
-                    <input class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()">
+                    <!-- <input class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }"> -->
+                    <select class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }">
+                      <option *ngFor="let endpoint of dbEndpoints" [value]="endpoint.DB_ID">{{endpoint.DB_ID}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.DB_ID.errors" class="invalid-feedback">
+                      <div *ngIf="f.DB_ID.errors.required">DB ID is required for TABLE SOURCE = ORACLE
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">DB SCHEMA</label>
-                    <input class="form-control" type="text" formControlName="DB_SCHEMA" oninput="this.value = this.value.toUpperCase()">
+                    <input class="form-control" type="text" formControlName="DB_SCHEMA" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_SCHEMA.errors }">
+                    <div *ngIf="submitted && f.DB_SCHEMA.errors" class="invalid-feedback">
+                      <div *ngIf="f.DB_SCHEMA.errors.required">DB SCHEMA is required for TABLE SOURCE = ORACLE
+                      </div>
+                    </div>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">DB TABLE</label>
-                    <input class="form-control" type="text" formControlName="DB_TABLE" oninput="this.value = this.value.toUpperCase()">
+                    <input class="form-control" type="text" formControlName="DB_TABLE" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE.errors }">
+                    <div *ngIf="submitted && f.DB_TABLE.errors" class="invalid-feedback">
+                      <div *ngIf="f.DB_TABLE.errors.required">DB TABLE is required for TABLE SOURCE = ORACLE
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">DB TABLE PK COLUMNS</label>
-                    <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS" oninput="this.value = this.value.toUpperCase()">
+                    <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS" oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_PK_COLUMNS.errors }">
+                    <div *ngIf="submitted && f.DB_TABLE_PK_COLUMNS.errors" class="invalid-feedback">
+                      <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors.required">DB TABLE PK COLUMNS is required for TABLE SOURCE = ORACLE
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">DB TABLE UPDATE DATE COLUMN</label>
                     <input class="form-control" type="text" formControlName="DB_TABLE_UPDATE_DATE_COLUMN"
-                      oninput="this.value = this.value.toUpperCase()">
+                      oninput="this.value = this.value.toUpperCase()" [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors }">
+                    <div *ngIf="submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors" class="invalid-feedback">
+                      <div *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors.required">DB TABLE UPDATE DATE COLUMN is required for TABLE SOURCE =
+                        ORACLE
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -206,7 +245,11 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS">
+                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS" [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
+                    <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
+                      <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION DAYS should be greater than 0
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 STATUS</label>
@@ -280,7 +323,12 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS">
+                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_T3_RETENTION_DAYS.errors }">
+                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_T3_RETENTION_DAYS.errors.min">T2_T3 RETENTION DAYS should be greater than 0
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 STATUS</label>

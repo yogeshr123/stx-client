@@ -85,7 +85,7 @@ export class LoadControlComponent implements OnInit {
         this.recordsArray = data.data;
         this.totalcols = [];
         for (var key in this.recordsArray[0]) {
-          this.totalcols.push({ field: key });
+          this.totalcols.push({ field: key, header: key.replace(/_/g, " ") });
         }
       }
     });
@@ -98,10 +98,14 @@ export class LoadControlComponent implements OnInit {
 
   initColumnState() {
     this.selectedColumns = [
-      { field: 'SCHEMA_NAME' },
-      { field: 'TABLE_NAME' },
-      { field: 'ENV_NAME' },
-      { field: 'TARGET_SCHEMA_NAME' },
+      { field: 'SCHEMA_NAME', header: 'SCHEMA NAME' },
+      { field: 'TABLE_NAME', header: 'TABLE NAME' },
+      { field: 'ENV_NAME', header: 'ENV NAME' },
+      { field: 'ETL_STATUS', header: 'ETL STATUS' },
+      { field: 'ETL_EXECUTION_STATUS', header: 'ETL EXECUTION STATUS' },
+      { field: 'T1_EXECUTION_STATUS', header: 'T1 EXECUTION STATUS' },
+      { field: 'T2_EXECUTION_STATUS', header: 'T2 EXECUTION STATUS' },
+      { field: 'DAG_SCHEDULE_INTERVAL', header: 'DAG SCHEDULE INTERVAL' },
     ];
   }
 

@@ -8,6 +8,10 @@ input[type="checkbox"].form-control {
     /* margin-left: 25px; */
 }
 
+.ng-invalid.ng-touched {
+    border-color: red;
+}
+
 .tile-body {
     position: relative;
 }

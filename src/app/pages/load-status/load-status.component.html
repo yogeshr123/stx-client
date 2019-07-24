@@ -34,8 +34,9 @@
                     </div>
                     <div class="col-3">
                         <label>Min. Average Time (Hours)</label>
-                        <input type="text" formControlName="AVG_TIME" placeholder="Min. Average Time (Hours)"
-                            class="form-control" (keyup)="onSubmit($event, true)">
+                        <input type="number" formControlName="AVG_TIME" placeholder="Min. Average Time (Hours)"
+                            (mouseup)="onSubmit($event, true)" class="form-control" (keyup)="onSubmit($event, true)"
+                            min="1" max="99">
                     </div>
                 </div>
                 <div class="col-4 row">

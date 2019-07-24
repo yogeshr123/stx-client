@@ -165,6 +165,9 @@ export class LoadStatusComponent implements OnInit {
         const getExecInSecs = this.hmsToSeconds(`${this.searchForm.value.AVG_TIME}:00:00`);
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
+      if (this.searchForm.value.ENV_NAME) {
+        this.taskData = this.taskData.filter(i => i.ENV_NAME === this.searchForm.value.ENV_NAME);
+      }
       if (this.taskData && this.taskData.length) {
         this.setFrappeGanttChart();
       }

@@ -78,7 +78,7 @@ export class AddEditColumnComponent implements OnInit {
       METADATA_VERSION: ['', Validators.required],
       SRC_COLUMN_NAME: [
         { value: '', disabled: this.routeInfo.fromHeaderHash },
-        Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)])],
+        Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9-_]+$/)])],
       SRC_COLUMN_TYPE: [
         {
           value: this.routeInfo.fromHeaderHash ? 'MAPPED' : '',
@@ -90,11 +90,11 @@ export class AddEditColumnComponent implements OnInit {
       SRC_RIGHT_PRECISION: [0],
       INTERNAL_COLUMN: [0, Validators.required],
       DERIVED_COLUMN_FORMULA: [''],
-      LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)])],
+      LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.pattern(/^[a-zA-Z0-9-_]+$/)])],
       PREDEFINED_VALUE: [''],
       TARGET_COLUMN_NAME: [
         { value: '', disabled: this.routeInfo.fromHeaderHash },
-        Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)])],
+        Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9-_]+$/)])],
       TARGET_DATA_TYPE: ['', Validators.required],
       TARGET_LEFT_PRECISION: [0],
       TARGET_RIGHT_PRECISION: [0],

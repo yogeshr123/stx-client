@@ -204,7 +204,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   discard() {
-    this.toogleButtonPeriod = 7;
+    // this.toogleButtonPeriod = 7;
     this.tasksMoved = false;
     this.getTasks();
   }

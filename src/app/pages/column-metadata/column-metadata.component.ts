@@ -121,6 +121,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   getVersions() {
+    this.isFirstNewVersion = null;
     this.showGenerateVersion = true;
     this.loader.versions = true;
     const request = { table_name: this.selectedTable.TABLE_NAME };
@@ -163,7 +164,7 @@ export class ColumnMetadataComponent implements OnInit {
     if (localCopyOfVersion) {
       key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
     }
-    if (!localCopyOfVersion && !key || version.STATUS !== 'NEW') {
+    if (!localCopyOfVersion || !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -247,9 +248,12 @@ export class ColumnMetadataComponent implements OnInit {
     }
   }
 
-  editColumn(version) {
+  editColumn(version, isView?) {
     this.columnMetadataService.setColumnToEdit(version);
-    this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
+    if (isView) {
+      return this.router.navigate(['/CMV/view-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
+    }
+    return this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
   }
 
   validate(version) {

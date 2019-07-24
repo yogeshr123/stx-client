@@ -24,6 +24,7 @@ import { MessageService } from 'primeng/api';
 import { AddLoadControlComponent } from './add-load-control/add-load-control.component';
 import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
 import { LoadControlRouting } from './load-control.routing';
+import { DBEndpointsService } from '../../services/db-endpoints.service';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { LoadControlRouting } from './load-control.routing';
     providers: [
         RecordService,
         MessageService,
-        ConfirmationService
+        ConfirmationService,
+        DBEndpointsService
     ],
     declarations: [
         LoadControlComponent,

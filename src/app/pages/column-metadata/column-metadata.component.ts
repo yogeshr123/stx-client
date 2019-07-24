@@ -348,7 +348,7 @@ export class ColumnMetadataComponent implements OnInit {
       }
     });
     isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
-    if (isUpdateDateColumn && isUpdateDateColumn.length) {
+    if (isUpdateDateColumn && isUpdateDateColumn.length && isUpdateDateColumn.length > 1) {
       this.errors.hasError = true;
       this.errors.isUpdateDateColumn = isUpdateDateColumn;
     }
@@ -371,9 +371,11 @@ export class ColumnMetadataComponent implements OnInit {
       } else {
         this.errors.saveError = true;
         this.errors.errorMsg = resp.message;
+        this.showErros();
         this.showToast('error', 'Could not perform all operations.');
       }
       localStorage.removeItem('localCopyOfVersion');
+      this.enableSaveChanges = false;
       this.ngOnInit();
       this.loader.save = false;
     }, error => {

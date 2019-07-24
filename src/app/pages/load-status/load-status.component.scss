@@ -12,6 +12,19 @@
     height: 100%;
 }
 
+::-webkit-input-placeholder {
+  font-size: 10px;
+}
+::-moz-placeholder {
+  font-size: 10px;
+}
+:-ms-input-placeholder {
+  font-size: 10px;
+}
+::placeholder {
+  font-size: 10px;
+}
+
 
 /* FOR GANTT START */
 

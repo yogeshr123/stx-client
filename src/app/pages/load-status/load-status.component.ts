@@ -162,8 +162,7 @@ export class LoadStatusComponent implements OnInit {
       }
       // Filter for Avg Time
       if (this.searchForm.value.AVG_TIME) {
-        const filterStartTime = new Date(this.searchForm.value.AVG_TIME);
-        const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
+        const getExecInSecs = this.hmsToSeconds(`${this.searchForm.value.AVG_TIME}:00:00`);
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
       }
       if (this.taskData && this.taskData.length) {

@@ -159,7 +159,10 @@ export class ColumnMetadataComponent implements OnInit {
       columnVersion: version.METADATA_VERSION
     };
     let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    const key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+    let key;
+    if (localCopyOfVersion) {
+      key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+    }
     if (!localCopyOfVersion && !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
@@ -351,6 +354,8 @@ export class ColumnMetadataComponent implements OnInit {
     }
     if (!this.errors.hasError) {
       this.saveMasterData(localCopyOfVersion);
+    } else {
+      this.showMapping(this.errors);
     }
   }
 
@@ -401,11 +406,19 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  showMapping(metadataVersion) {
+  showMapping(data) {
     const ref = this.dialogService.open(MetadataMappingComponent, {
-      header: 'Column Version Mapping',
+      header: 'Errors',
       width: '45%',
-      data: metadataVersion
+      data
+    });
+  }
+
+  showErros() {
+    const ref = this.dialogService.open(MetadataMappingComponent, {
+      header: 'Errors',
+      width: '45%',
+      data: this.errors
     });
   }
 

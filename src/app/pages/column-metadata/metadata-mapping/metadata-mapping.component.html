@@ -1,4 +1,4 @@
-<div class=" mb-5">
+<!-- <div class=" mb-5">
     <p-scrollPanel [style]="{width: '100%', height: '400px'}">
         <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '3px' }">
         </ngx-loading>
@@ -25,4 +25,62 @@
             </div>
         </div>
     </p-scrollPanel>
+</div> -->
+
+<div>
+    <div *ngIf="errors.saveError">
+        <div class="alert alert-danger m-0" role="alert">
+            <h6>
+                Following operations failed:
+            </h6>
+            <ul *ngFor="let item of errors.errorMsg | keyvalue">
+                <li *ngIf="item.value.indexOf('Successfully') < 0">
+                    <span>
+                        {{ item.value.toString() }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div *ngIf="errors.hasError">
+        <div class="alert alert-danger m-0" role="alert">
+            <h6>
+                Please fix following Erros:
+            </h6>
+            <div class="ml-4" *ngIf="errors.duplicatetTargetNames">
+                <span class="mb-2"><b>Duplicate Target Column Names</b> are not allowed:</span>
+                <ul>
+                    <li *ngFor="let item of errors.duplicatetTargetNames"> {{ item }} </li>
+                </ul>
+            </div>
+            <div class="ml-4 mt-3" *ngIf="errors.checkSrcAndTableAlias">
+                <b>Duplicate Source Column Name & Lookup Table Alias Combination</b> are not allowed:
+                <ul *ngFor="let item of errors.checkSrcAndTableAlias">
+                    <li>
+                        Source Column Name: {{ item.split('+')[0] }} And Lookup Table Alias:
+                        {{ item.split('+')[1] }}
+                    </li>
+                </ul>
+            </div>
+            <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumn">
+                There can <b>only be 1 IS_PARTITION_COLUMN</b>:
+                <ul *ngFor="let item of errors.isPartitionColumn">
+                    <li> Source Column Name: {{ item }} </li>
+                </ul>
+            </div>
+            <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumnDataType">
+                <b>IS_PARTITION_COLUMN</b> should have <b>TARGET_DATA_TYPE int or varchar</b>:
+                <ul *ngFor="let item of errors.isPartitionColumnDataType">
+                    <li> Source Column Name: {{ item }} </li>
+                </ul>
+            </div>
+            <div class="ml-4 mt-3" *ngIf="errors.isUpdateDateColumn">
+                There can <b>only be 1 IS_UPDATE_DATE_COLUMN</b>:
+                <ul *ngFor="let item of errors.isUpdateDateColumn">
+                    <li> Source Column Name: {{ item }} </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

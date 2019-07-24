@@ -12,6 +12,7 @@ export class MetadataMappingComponent implements OnInit {
   selectedVersion: any;
   loader = false;
   columnsData = {};
+  errors: any;
 
   constructor(
     private columnMetadataService: ColumnMetadataService,
@@ -19,9 +20,10 @@ export class MetadataMappingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedVersion = this.config.data;
-    this.getColumnMapping(this.selectedVersion);
-    this.getColumnMapping(this.selectedVersion - 1);
+    this.errors = this.config.data;
+    // this.selectedVersion = this.config.data;
+    // this.getColumnMapping(this.selectedVersion);
+    // this.getColumnMapping(this.selectedVersion - 1);
   }
 
   getColumnMapping(version) {

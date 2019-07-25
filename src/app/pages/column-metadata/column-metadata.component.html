@@ -99,8 +99,10 @@
                                     defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                             </div>
                             <div class="globalSearch">
-                                <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
-                                <button class="btn btn-sm btn-primary" type="button" (click)="search()">
+                                <input type="text" placeholder="Global Filter" #globalQuery
+                                    (keyup.enter)="search(globalQuery.value)">
+                                <button class="btn btn-sm btn-primary" type="button"
+                                    (click)="search(globalQuery.value)">
                                     <i class="fa fa-lg fa-fw fa-search"></i>
                                 </button>
                             </div>

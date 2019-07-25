@@ -296,6 +296,11 @@ export class ColumnMetadataComponent implements OnInit {
     return duplicates;
   }
 
+  search(globalQuery) {
+    console.log('globalQuery ', globalQuery);
+    // this.viewData(this.selectedTable);
+  }
+
   saveChanges() {
     this.errors = {
       hasError: false

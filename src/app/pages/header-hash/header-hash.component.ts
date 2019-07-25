@@ -103,8 +103,15 @@ export class HeaderHashComponent implements OnInit {
     });
   }
 
-  getHeaders() {
-    const request = { table_name: this.selectedTable.TABLE_NAME };
+  search(globalQuery) {
+    this.getHeaders(globalQuery);
+  }
+
+  getHeaders(globalQuery?) {
+    const request = { table_name: this.selectedTable.TABLE_NAME, globalQuery };
+    if (globalQuery) {
+      request.globalQuery = globalQuery;
+    }
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
       this.headers = res.data;
     }, error => {

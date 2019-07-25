@@ -112,11 +112,15 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label">RAW FACTORY PATH</label>
+                    <label class="control-label">RAW FACTORY PATH
+                    </label>
+                    <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('RAW_FACTORY_PATH')">Auto Generate</div>
                     <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH" oninput="this.value = this.value.toLowerCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_PATH.errors }">
                     <div *ngIf="submitted && f.RAW_FACTORY_PATH.errors" class="invalid-feedback">
                       <div *ngIf="f.RAW_FACTORY_PATH.errors.required">RAW FACTORY PATH is required for TABLE SOURCE = RAW_FACTORY
+                      </div>
+                      <div *ngIf="f.RAW_FACTORY_PATH.errors?.pattern">S3 URL is not valid
                       </div>
                     </div>
                   </div>
@@ -233,7 +237,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 PATH</label>
-                    <input class="form-control" type="text" formControlName="T1_PATH" oninput="this.value = this.value.toLowerCase()">
+                    <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('T1_PATH')">Auto Generate</div>
+                    <input class="form-control" type="text" formControlName="T1_PATH" oninput="this.value = this.value.toLowerCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_PATH.errors }">
+                    <div *ngIf="submitted && f.T1_PATH.errors" class="invalid-feedback">
+                      <div *ngIf="f.T1_PATH.errors?.pattern">S3 URL is not valid
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION STRATEGY</label>

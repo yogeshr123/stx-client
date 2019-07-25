@@ -185,15 +185,22 @@ export class LoadControlComponent implements OnInit {
   }
 
   search() {
-    // if (undefined != this.globalQuery && null != this.globalQuery && this.globalQuery != "") {
-    //   const body = {
-    //     query: this.globalQuery
-    //   };
-    //   this.fetchData(body);
-    // }
-    // else {
-    //   this.loadAllRecords();
-    // }
+    if (undefined != this.globalQuery && null != this.globalQuery && this.globalQuery != "") {
+      const body = {
+        query: this.globalQuery
+      };
+      this.loadControlService.getSearchQueryResult(body).subscribe((data: any) => {
+        if (data.data && data.data.length > 0) {
+          this.recordsArray = data.data;
+        }
+      });
+    }
+  }
+
+  globalQueryEmpty() {
+    if (undefined == this.globalQuery || null == this.globalQuery || this.globalQuery == "") {
+      this.loadAllRecords();
+    }
   }
 
   confirmAction(message: string, functionName: string, action: string) {

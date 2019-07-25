@@ -48,6 +48,13 @@ export class LoadControlService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getSearchQueryResult(body: any) {
+        const url = `${environment.baseUrl}table_load_control/searchQuery`;
+        return this.http
+            .post(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     resetExecutionStatus(body: any) {
         const url = `${environment.baseUrl}table_load_control/resetExecutionStatus`;
         return this.http
@@ -59,6 +66,13 @@ export class LoadControlService {
         const url = `${environment.baseUrl}table_load_control/scheduledag`;
         return this.http
             .put(url, body)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getColumnDataType() {
+        const url = `${environment.baseUrl}table_load_control/columnDataType`;
+        return this.http
+            .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
 }

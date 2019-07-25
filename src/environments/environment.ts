@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3000/api/v1/'
+  baseUrl: 'http://localhost:3000/api/v1/',
+  RAW_FACTORY_PATH_DEFAULT_SETTING: 'stx-usw2-ehc-prd-data-factory',
+  T1_PATH_DEFAULT_SETTING: 'stx-usw2-ehc-prd-data-t1'
 };
 
 /*

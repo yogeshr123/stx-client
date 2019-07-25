@@ -30,8 +30,8 @@
                     Save Changes
                 </button>
                 <button *ngIf="errors.hasError" (click)="showErros()" title="Show Errors"
-                    class="btn btn-danger float-right"><i class="fa fa-exclamation-triangle"
-                        aria-hidden="true"></i></button>
+                    class="btn btn-danger float-right"><i class="fa fa-exclamation-triangle mr-1"
+                        aria-hidden="true"></i>Errors</button>
             </div>
 
             <div class="mt-3">
@@ -99,7 +99,7 @@
                                     defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                             </div>
                             <div class="globalSearch">
-                                <input type="text" placeholder="Global Search" [(ngModel)]="globalQuery">
+                                <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
                                 <button class="btn btn-sm btn-primary" type="button" (click)="search()">
                                     <i class="fa fa-lg fa-fw fa-search"></i>
                                 </button>

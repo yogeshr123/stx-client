@@ -30,70 +30,70 @@ const ENV_NAME = [
 
 const columnTableColumns = [
     {
-        header: 'TARGET COLUMN ID',
+        header: 'TARGET_COLUMN_ID',
         field: 'TARGET_COLUMN_ID'
     },
     {
-        header: 'SRC COLUMN NAME',
+        header: 'SRC_COLUMN_NAME',
         field: 'SRC_COLUMN_NAME'
     },
     {
-        header: 'SRC COLUMN TYPE',
+        header: 'SRC_COLUMN_TYPE',
         field: 'SRC_COLUMN_TYPE'
     },
     {
-        header: 'SRC DATA TYPE',
+        header: 'SRC_DATA_TYPE',
         field: 'SRC_DATA_TYPE'
     },
     {
-        header: 'TARGET COLUMN NAME',
+        header: 'TARGET_COLUMN_NAME',
         field: 'TARGET_COLUMN_NAME'
     },
     {
-        header: 'TARGET DATA TYPE',
+        header: 'TARGET_DATA_TYPE',
         field: 'TARGET_DATA_TYPE'
     },
     {
-        header: 'PRIMARY KEY',
+        header: 'IS_PKEY_COLUMN',
         field: 'IS_PKEY_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'DATE UPDATED',
+        header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date'
     },
     {
-        header: 'INTERNAL COLUMN',
+        header: 'INTERNAL_COLUMN',
         field: 'INTERNAL_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'PREDEFINED VALUE',
+        header: 'PREDEFINED_VALUE',
         field: 'PREDEFINED_VALUE'
     },
     {
-        header: 'IS PARTITION COLUMN',
+        header: 'IS_PARTITION_COLUMN',
         field: 'IS_PARTITION_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'IS UPDATE_DATE COLUMN',
+        header: 'IS_UPDATE_DATE_COLUMN',
         field: 'IS_UPDATE_DATE_COLUMN',
         type: 'boolean'
     },
     {
-        header: 'IS DATATYPE CHANGED',
+        header: 'IS_DATATYPE_CHANGED',
         field: 'IS_DATATYPE_CHANGED',
         type: 'boolean'
     },
     {
-        header: 'IS RENAMED',
+        header: 'IS_RENAMED',
         field: 'IS_RENAMED',
         type: 'boolean'
     },
     {
-        header: 'IS NEW',
+        header: 'IS_NEW',
         field: 'IS_NEW',
         type: 'boolean'
     }

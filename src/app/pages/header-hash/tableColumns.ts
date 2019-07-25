@@ -1,14 +1,14 @@
 const columnTableColumns = [
     {
-        header: 'SCHEMA NAME',
+        header: 'SCHEMA_NAME',
         field: 'SCHEMA_NAME'
     },
     {
-        header: 'TABLE NAME',
+        header: 'TABLE_NAME',
         field: 'TABLE_NAME'
     },
     {
-        header: 'HEADER HASH',
+        header: 'HEADER_HASH',
         field: 'HEADER_HASH'
     },
     {
@@ -16,16 +16,16 @@ const columnTableColumns = [
         field: 'STATUS'
     },
     {
-        header: 'HEADER COLUMNS',
+        header: 'HEADER_COLUMNS',
         field: 'HEADER_COLUMNS'
     },
     {
-        header: 'UPDATE DATE',
+        header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date'
     },
     {
-        header: 'INSERT DATE',
+        header: 'INSERT_DATE',
         field: 'INSERT_DATE',
         type: 'date'
     }

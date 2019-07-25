@@ -42,6 +42,7 @@ export class ColumnMetadataComponent implements OnInit {
     hasError: false
   };
   enableSaveChanges = false;
+  tableLoadStrategy: any;
 
   constructor(
     private router: Router,
@@ -121,6 +122,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   getVersions() {
+    this.isFirstNewVersion = null;
     this.showGenerateVersion = true;
     this.loader.versions = true;
     const request = { table_name: this.selectedTable.TABLE_NAME };
@@ -139,9 +141,16 @@ export class ColumnMetadataComponent implements OnInit {
     }, error => {
       this.loader.versions = false;
     });
+
+    this.columnMetadataService.getTableInfoFromLoadControl({ table: this.selectedTable }).subscribe((resp: any) => {
+      if (!resp.error && resp.data && resp.data.length) {
+        this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
+      }
+    });
   }
 
   changeTable() {
+    this.errors.hasError = false;
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
     this.ngOnInit();
@@ -159,8 +168,11 @@ export class ColumnMetadataComponent implements OnInit {
       columnVersion: version.METADATA_VERSION
     };
     let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    const key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
-    if (!localCopyOfVersion && !key || version.STATUS !== 'NEW') {
+    let key;
+    if (localCopyOfVersion) {
+      key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
+    }
+    if (!localCopyOfVersion || !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -244,9 +256,12 @@ export class ColumnMetadataComponent implements OnInit {
     }
   }
 
-  editColumn(version) {
+  editColumn(version, isView?) {
     this.columnMetadataService.setColumnToEdit(version);
-    this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
+    if (isView) {
+      return this.router.navigate(['/CMV/view-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
+    }
+    return this.router.navigate(['/CMV/edit-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
   }
 
   validate(version) {
@@ -345,12 +360,74 @@ export class ColumnMetadataComponent implements OnInit {
       }
     });
     isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
-    if (isUpdateDateColumn && isUpdateDateColumn.length) {
+    if (isUpdateDateColumn && isUpdateDateColumn.length && isUpdateDateColumn.length > 1) {
       this.errors.hasError = true;
       this.errors.isUpdateDateColumn = isUpdateDateColumn;
     }
+    // Check Load Strategy Validations
+    const hasPartition = [];
+    const hadUpdateDate = [];
+    const hasPrimaryKey = [];
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'sampled') {
+      colums.map(i => {
+        if (i.IS_UPDATE_DATE_COLUMN === 1 ||
+          i.IS_UPDATE_DATE_COLUMN === true ||
+          (i.IS_UPDATE_DATE_COLUMN && i.IS_UPDATE_DATE_COLUMN.data && i.IS_UPDATE_DATE_COLUMN.data[0])) {
+          hadUpdateDate.push(i);
+        }
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        if (i.IS_PKEY_COLUMN === 1 ||
+          i.IS_PKEY_COLUMN === true ||
+          (i.IS_PKEY_COLUMN && i.IS_PKEY_COLUMN.data && i.IS_PKEY_COLUMN.data[0])) {
+          hasPrimaryKey.push(i);
+        }
+        return i;
+      });
+      if (!hasPartition.length || !hadUpdateDate.length || !hasPrimaryKey.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy SAMPLED table: there must be atleast 1 IS_PARTITION_COLUMN, IS_PKEY_COLUMN & IS_UPDATE_DATE_COLUMN.';
+      }
+    }
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'insert') {
+      colums.map(i => {
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        return i;
+      });
+      if (!hasPartition.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy INSERT table: there must be atleast 1 IS_PARTITION_COLUMN.';
+      }
+    }
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'refresh') {
+      colums.map(i => {
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        return i;
+      });
+      if (hasPartition.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy REFRESH table: there should not be IS_PARTITION_COLUMN.';
+      }
+    }
+
     if (!this.errors.hasError) {
       this.saveMasterData(localCopyOfVersion);
+    } else {
+      this.showMapping(this.errors);
     }
   }
 
@@ -366,9 +443,11 @@ export class ColumnMetadataComponent implements OnInit {
       } else {
         this.errors.saveError = true;
         this.errors.errorMsg = resp.message;
+        this.showErros();
         this.showToast('error', 'Could not perform all operations.');
       }
       localStorage.removeItem('localCopyOfVersion');
+      this.enableSaveChanges = false;
       this.ngOnInit();
       this.loader.save = false;
     }, error => {
@@ -401,11 +480,19 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  showMapping(metadataVersion) {
+  showMapping(data) {
     const ref = this.dialogService.open(MetadataMappingComponent, {
-      header: 'Column Version Mapping',
+      header: 'Errors',
       width: '45%',
-      data: metadataVersion
+      data
+    });
+  }
+
+  showErros() {
+    const ref = this.dialogService.open(MetadataMappingComponent, {
+      header: 'Errors',
+      width: '45%',
+      data: this.errors
     });
   }
 

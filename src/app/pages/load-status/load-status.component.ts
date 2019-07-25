@@ -162,9 +162,11 @@ export class LoadStatusComponent implements OnInit {
       }
       // Filter for Avg Time
       if (this.searchForm.value.AVG_TIME) {
-        const filterStartTime = new Date(this.searchForm.value.AVG_TIME);
-        const getExecInSecs = this.hmsToSeconds(`${filterStartTime.getHours()}:${filterStartTime.getMinutes()}:00`);
+        const getExecInSecs = this.hmsToSeconds(`${this.searchForm.value.AVG_TIME}:00:00`);
         this.taskData = this.taskData.filter(i => i.EXEC_TIME >= getExecInSecs);
+      }
+      if (this.searchForm.value.ENV_NAME) {
+        this.taskData = this.taskData.filter(i => i.ENV_NAME === this.searchForm.value.ENV_NAME);
       }
       if (this.taskData && this.taskData.length) {
         this.setFrappeGanttChart();
@@ -205,7 +207,7 @@ export class LoadStatusComponent implements OnInit {
   }
 
   discard() {
-    this.toogleButtonPeriod = 7;
+    // this.toogleButtonPeriod = 7;
     this.tasksMoved = false;
     this.getTasks();
   }

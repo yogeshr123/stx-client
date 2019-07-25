@@ -15,29 +15,34 @@
                 <div class="col-8 row">
                     <h6 class="col-12">Filter by</h6>
                     <div class="col-3">
+                        <label>Schema Name</label>
                         <p-autoComplete formControlName="SCHEMA_NAME" placeholder="Schema Name"
                             [suggestions]="autocomplete.SCHEMA_NAME" (completeMethod)="search($event, 'SCHEMA_NAME')"
                             (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
                     <div class="col-3">
+                        <label>Table Name</label>
                         <p-autoComplete formControlName="TABLE_NAME" placeholder="Table Name"
                             [suggestions]="autocomplete.TABLE_NAME" (completeMethod)="search($event, 'TABLE_NAME')"
                             (onSelect)="onSubmit($event, true)" (keyup)="onSubmit($event)"></p-autoComplete>
                     </div>
                     <div class="col-3">
+                        <label>Dag Start Time</label>
                         <p-calendar (onSelect)="onSubmit($event, true)" formControlName="START_TIME"
                             placeholder="Dag Start Time" timeOnly="true" showTime="true" name="StartTime"
                             hourFormat="24"></p-calendar>
                     </div>
                     <div class="col-3">
-                        <p-calendar [defaultDate]="defaultDate" (onSelect)="onSubmit($event, true)"
-                            formControlName="AVG_TIME" placeholder="Min. Average Time" timeOnly="true" showTime="true"
-                            name="AverageTime" hourFormat="24"></p-calendar>
+                        <label>Min. Average Time (Hours)</label>
+                        <input type="number" formControlName="AVG_TIME" placeholder="Min. Average Time (Hours)"
+                            (mouseup)="onSubmit($event, true)" class="form-control" (keyup)="onSubmit($event, true)"
+                            min="1" max="99">
                     </div>
                 </div>
                 <div class="col-4 row">
-                    <h6 class="col-12">Time Period</h6>
+                    <h6 class="col-12">&nbsp;</h6>
                     <div class="col-6">
+                        <label>Time Period</label>
                         <div class="btn-group btn-group-toggle">
                             <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-sm btn-primary"
                                 title="Last 7 Days">
@@ -57,11 +62,13 @@
                         </div>
                     </div>
                     <div class="col-6">
+                        <h6 class="col-12">&nbsp;</h6>
                         <div class="row">
                             <select (change)="onSubmit(null, true)" class="form-control col-6 ml-2"
                                 formControlName="ENV_NAME">
                                 <option value="PRD">PRD</option>
                                 <option value="DEV">DEV</option>
+                                <option value="QA">QA</option>
                             </select>
                             <i (click)="reset()" class="fa fa-refresh btn btn-sm btn-dark col-3 ml-2" aria-hidden="true"
                                 title="Reset Form"></i>

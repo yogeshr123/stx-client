@@ -42,6 +42,7 @@ export class ColumnMetadataComponent implements OnInit {
     hasError: false
   };
   enableSaveChanges = false;
+  tableLoadStrategy: any;
 
   constructor(
     private router: Router,
@@ -140,9 +141,16 @@ export class ColumnMetadataComponent implements OnInit {
     }, error => {
       this.loader.versions = false;
     });
+
+    this.columnMetadataService.getTableInfoFromLoadControl({ table: this.selectedTable }).subscribe((resp: any) => {
+      if (!resp.error && resp.data && resp.data.length) {
+        this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
+      }
+    });
   }
 
   changeTable() {
+    this.errors.hasError = false;
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
     this.ngOnInit();
@@ -356,6 +364,66 @@ export class ColumnMetadataComponent implements OnInit {
       this.errors.hasError = true;
       this.errors.isUpdateDateColumn = isUpdateDateColumn;
     }
+    // Check Load Strategy Validations
+    const hasPartition = [];
+    const hadUpdateDate = [];
+    const hasPrimaryKey = [];
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'sampled') {
+      colums.map(i => {
+        if (i.IS_UPDATE_DATE_COLUMN === 1 ||
+          i.IS_UPDATE_DATE_COLUMN === true ||
+          (i.IS_UPDATE_DATE_COLUMN && i.IS_UPDATE_DATE_COLUMN.data && i.IS_UPDATE_DATE_COLUMN.data[0])) {
+          hadUpdateDate.push(i);
+        }
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        if (i.IS_PKEY_COLUMN === 1 ||
+          i.IS_PKEY_COLUMN === true ||
+          (i.IS_PKEY_COLUMN && i.IS_PKEY_COLUMN.data && i.IS_PKEY_COLUMN.data[0])) {
+          hasPrimaryKey.push(i);
+        }
+        return i;
+      });
+      if (!hasPartition.length || !hadUpdateDate.length || !hasPrimaryKey.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy SAMPLED table: there must be atleast 1 IS_PARTITION_COLUMN, IS_PKEY_COLUMN & IS_UPDATE_DATE_COLUMN.';
+      }
+    }
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'insert') {
+      colums.map(i => {
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        return i;
+      });
+      if (!hasPartition.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy INSERT table: there must be atleast 1 IS_PARTITION_COLUMN.';
+      }
+    }
+    if (this.tableLoadStrategy && this.tableLoadStrategy.toLowerCase() === 'refresh') {
+      colums.map(i => {
+        if (i.IS_PARTITION_COLUMN === 1 ||
+          i.IS_PARTITION_COLUMN === true ||
+          (i.IS_PARTITION_COLUMN && i.IS_PARTITION_COLUMN.data && i.IS_PARTITION_COLUMN.data[0])) {
+          hasPartition.push(i);
+        }
+        return i;
+      });
+      if (hasPartition.length) {
+        this.errors.hasError = true;
+        this.errors.loadStrategyErrorMsg =
+          '- For Load Strategy REFRESH table: there should not be IS_PARTITION_COLUMN.';
+      }
+    }
+
     if (!this.errors.hasError) {
       this.saveMasterData(localCopyOfVersion);
     } else {

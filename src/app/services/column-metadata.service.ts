@@ -112,4 +112,11 @@ export class ColumnMetadataService {
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    getTableInfoFromLoadControl(table) {
+        const url = `${environment.baseUrl}column-metadata/getTableInfoFromLoadControl`;
+        return this.http
+            .post(url, table)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

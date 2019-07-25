@@ -81,6 +81,9 @@
                     <li> Source Column Name: {{ item }} </li>
                 </ul>
             </div>
+            <div class="ml-4 mt-3" *ngIf="errors.loadStrategyErrorMsg">
+                <b>{{errors.loadStrategyErrorMsg}}</b>
+            </div>
         </div>
     </div>
 </div>

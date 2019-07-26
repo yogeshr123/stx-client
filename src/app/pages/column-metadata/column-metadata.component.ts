@@ -157,6 +157,12 @@ export class ColumnMetadataComponent implements OnInit {
     this.enableSaveChanges = false;
   }
 
+  reOrderByUpdateDate() {
+    this.versionData = this.versionData.sort((a, b) => {
+      return +new Date(b.UPDATE_DATE) - +new Date(a.UPDATE_DATE);
+    });
+  }
+
   viewData(version) {
     this.versionData = [];
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
@@ -199,6 +205,7 @@ export class ColumnMetadataComponent implements OnInit {
         }
       });
     }
+    this.reOrderByUpdateDate();
   }
 
   deleteColumn(version) {
@@ -212,6 +219,7 @@ export class ColumnMetadataComponent implements OnInit {
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
               .map(i => {
                 if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  i.UPDATE_DATE = i.oldUpdateDate;
                   delete i.action;
                 }
                 return i;
@@ -233,6 +241,8 @@ export class ColumnMetadataComponent implements OnInit {
                 if (!i.TARGET_COLUMN_ID && version.action === 'newColumn') {
                   return undefined;
                 } else if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                  i.oldUpdateDate = i.UPDATE_DATE;
+                  i.UPDATE_DATE = new Date();
                   i.action = 'deleted';
                 }
                 return i;

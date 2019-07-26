@@ -22,6 +22,15 @@ export class HeaderHashComponent implements OnInit {
   columnTableColumns = columnTableColumns;
   state: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
+  globalQuery: any;
+  showDropDown = false;
+  columnNames = [
+    'SCHEMA_NAME', 'TABLE_NAME', 'HEADER_HASH', 'COLUMN_STATUS', 'STATUS'
+  ];
+  operators = ['= " "', '!= " "', 'LIKE " "', 'in " "'];
+  seperators = ['AND', 'OR', 'ORDER BY'];
+  dropDownValues = this.columnNames;
+  globalFilterState = 1;
 
   constructor(
     private commonService: CommonService,
@@ -105,6 +114,70 @@ export class HeaderHashComponent implements OnInit {
 
   search(globalQuery) {
     this.getHeaders(globalQuery);
+  }
+
+  inputFocusOut() {
+    setTimeout(() => {
+      this.showDropDown = false;
+    }, 500);
+  }
+
+  inputFocussed() {
+    if (this.globalFilterState === 1) {
+      this.showDropDown = true;
+    }
+  }
+
+  checkInput(event) {
+    if (!this.globalQuery) {
+      this.dropDownValues = this.columnNames;
+      this.showDropDown = true;
+      this.globalFilterState = 1;
+    }
+    if (event.keyCode === 13) {
+      return this.search(this.globalQuery);
+    }
+    if (event.keyCode === 32) {
+      this.showDropDown = true;
+    }
+
+  }
+
+  filterSelection(item) {
+    if (this.globalFilterState === 1) {
+      if (this.globalQuery) {
+        this.globalQuery = this.globalQuery += item;
+      } else {
+        this.globalQuery = item;
+      }
+      this.dropDownValues = this.operators;
+    }
+    if (this.globalFilterState === 2) {
+      if (this.globalQuery) {
+        this.globalQuery = this.globalQuery += item;
+      } else {
+        this.globalQuery = item;
+      }
+      this.dropDownValues = this.seperators;
+    }
+    if (this.globalFilterState === 3) {
+      if (this.globalQuery) {
+        this.globalQuery = this.globalQuery += item;
+      } else {
+        this.globalQuery = item;
+      }
+      this.dropDownValues = this.columnNames;
+    }
+    this.showDropDown = false;
+    if (this.columnNames.indexOf(item) > -1) {
+      this.globalFilterState = 2;
+    }
+    if (this.operators.indexOf(item) > -1) {
+      this.globalFilterState = 3;
+    }
+    if (this.seperators.indexOf(item) > -1) {
+      this.globalFilterState = 1;
+    }
   }
 
   getHeaders(globalQuery?) {

@@ -29,12 +29,18 @@
                                     defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
                             </div>
                             <div class="globalSearch">
-                                <input type="text" placeholder="Global Filter" #globalQuery
-                                    (keyup.enter)="search(globalQuery.value)">
-                                <button class="btn btn-sm btn-primary" type="button"
-                                    (click)="search(globalQuery.value)">
+                                <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"
+                                    (focus)="inputFocussed()" (focusout)="inputFocusOut()" (keyup)="checkInput($event)">
+                                <button class="btn btn-sm btn-primary" type="button" (click)="search(globalQuery)">
                                     <i class="fa fa-lg fa-fw fa-search"></i>
                                 </button>
+                                <div class="customDropDown" *ngIf="showDropDown">
+                                    <ul>
+                                        <li *ngFor="let item of dropDownValues">
+                                            <a (click)="filterSelection(item)">{{item}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header" let-columns>

@@ -1,45 +1,80 @@
 .goBack {
-    text-decoration: underline !important;
+  text-decoration: underline !important;
 }
 
 .goBack:hover {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 /deep/ .scroll-table-fhh {
-    &.mismatch {
-        .ui-table-wrapper {
-            margin-right: 0;
-        }
-    }
+  &.mismatch {
     .ui-table-wrapper {
-        overflow-y: scroll;
-        overflow-x: auto;
-        overflow-y: visible;
-        margin-right: 60px;
-        th,
-        td {
-            height: 40px;
-            white-space: nowrap;
-        }
-        .fixedcol {
-            position: absolute;
-            width: 60px;
-            height: 41px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .rightfixedcol {
-            right: 0;
-        }
-        .ui-table-tbody>tr.ui-state-highlight {
-            background-color: #ffffff !important;
-            color: #333333 !important;
-        }
-        .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
-            background-color: #f9f9f9 !important;
-        }
+      margin-right: 0;
     }
+  }
+  .ui-table-wrapper {
+    overflow-y: scroll;
+    overflow-x: auto;
+    overflow-y: visible;
+    margin-right: 60px;
+    th,
+    td {
+      height: 40px;
+      white-space: nowrap;
+    }
+    .fixedcol {
+      position: absolute;
+      width: 60px;
+      height: 41px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .rightfixedcol {
+      right: 0;
+    }
+    .ui-table-tbody > tr.ui-state-highlight {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
+      background-color: #f9f9f9 !important;
+    }
+  }
+}
+
+.globalSearch {
+  position: relative;
+
+  .customDropDown {
+    position: absolute;
+    max-height: 200px;
+    z-index: 1006;
+    top: 30px;
+    left: 0px;
+    transform: translateY(0px);
+    // opacity: 1;
+    padding: 0;
+    border: 1px solid #c8c8c8;
+    background-color: #ffffff;
+
+    ul {
+      list-style: none;
+      padding: 0px;
+      margin: 0;
+      text-align: left;
+
+      li a {
+        display: block;
+        padding: 5px 10px;
+        cursor: pointer;
+        min-width: 200px;
+
+        &:hover {
+          background-color: #6ebe49;
+        }
+      }
+    }
+  }
 }

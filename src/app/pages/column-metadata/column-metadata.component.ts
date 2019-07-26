@@ -25,7 +25,6 @@ export class ColumnMetadataComponent implements OnInit {
   loader = {
     columns: false,
     versions: false,
-    delete: false,
     save: false
   };
   state: any;
@@ -219,7 +218,6 @@ export class ColumnMetadataComponent implements OnInit {
       this.confirmationService.confirm({
         message: 'Would you like to undo delete?',
         accept: () => {
-          this.loader.delete = true;
           const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
           localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
@@ -231,7 +229,6 @@ export class ColumnMetadataComponent implements OnInit {
                 return i;
               });
           this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-          this.loader.delete = false;
           this.ngOnInit();
         }
       });
@@ -239,7 +236,6 @@ export class ColumnMetadataComponent implements OnInit {
       this.confirmationService.confirm({
         message: 'Are you sure that you want to delete this column?',
         accept: () => {
-          this.loader.delete = true;
           const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
           localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
@@ -257,7 +253,6 @@ export class ColumnMetadataComponent implements OnInit {
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
               .filter(i => i !== undefined);
           this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-          this.loader.delete = false;
           this.ngOnInit();
         }
       });

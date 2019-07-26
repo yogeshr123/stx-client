@@ -164,6 +164,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   search(globalQuery) {
+    // Search CM With Query
     this.viewData(this.selectedTable, globalQuery);
   }
 
@@ -183,7 +184,8 @@ export class ColumnMetadataComponent implements OnInit {
     if (localCopyOfVersion) {
       key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
     }
-    if (globalQuery !== undefined || !localCopyOfVersion || !key || version.STATUS !== 'NEW') {
+    // If query is not undefined or blank || no local storage data || status !== new then only get from API
+    if ((globalQuery !== undefined && globalQuery !== '') || !localCopyOfVersion || !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -192,7 +194,10 @@ export class ColumnMetadataComponent implements OnInit {
           localCopyOfVersion = {
             [`${version.METADATA_VERSION}_${version.TABLE_NAME}`]: this.versionData
           };
-          this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+          // Only Save CM in Local Storage if not query data
+          if (!globalQuery) {
+            this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+          }
         }
       }, error => {
         this.loader.columns = false;

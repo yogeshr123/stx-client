@@ -43,6 +43,7 @@ export class ColumnMetadataComponent implements OnInit {
   };
   enableSaveChanges = false;
   tableLoadStrategy: any;
+  globalQuery: any;
 
   constructor(
     private router: Router,
@@ -163,7 +164,11 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  viewData(version) {
+  search(globalQuery) {
+    this.viewData(this.selectedTable, globalQuery);
+  }
+
+  viewData(version, globalQuery?) {
     this.versionData = [];
     this.state.CMV = { ...this.state.CMV, selectedTable: version };
     this.commonService.setState(this.state);
@@ -171,14 +176,15 @@ export class ColumnMetadataComponent implements OnInit {
     this.loader.columns = true;
     const request = {
       table_name: this.selectedTable.TABLE_NAME,
-      columnVersion: version.METADATA_VERSION
+      columnVersion: version.METADATA_VERSION,
+      globalQuery
     };
     let localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
     let key;
     if (localCopyOfVersion) {
       key = localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`];
     }
-    if (!localCopyOfVersion || !key || version.STATUS !== 'NEW') {
+    if (globalQuery !== undefined || !localCopyOfVersion || !key || version.STATUS !== 'NEW') {
       this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
         this.versionData = resp.data;
         this.loader.columns = false;
@@ -304,11 +310,6 @@ export class ColumnMetadataComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     duplicates = duplicates.filter(i => i != 'undefined');
     return duplicates;
-  }
-
-  search(globalQuery) {
-    console.log('globalQuery ', globalQuery);
-    // this.viewData(this.selectedTable);
   }
 
   saveChanges(isValidate?, version?) {

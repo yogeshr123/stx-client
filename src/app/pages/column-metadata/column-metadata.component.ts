@@ -311,7 +311,7 @@ export class ColumnMetadataComponent implements OnInit {
     // this.viewData(this.selectedTable);
   }
 
-  saveChanges() {
+  saveChanges(isValidate?, version?) {
     this.errors = {
       hasError: false
     };
@@ -440,7 +440,11 @@ export class ColumnMetadataComponent implements OnInit {
     }
 
     if (!this.errors.hasError) {
-      this.saveMasterData(localCopyOfVersion);
+      if (isValidate) {
+        this.validate(version);
+      } else {
+        this.saveMasterData(localCopyOfVersion);
+      }
     } else {
       this.showMapping(this.errors);
     }

@@ -27,6 +27,7 @@ export class HeaderHashComponent implements OnInit {
   columnNames = [
     'SCHEMA_NAME', 'TABLE_NAME', 'HEADER_HASH', 'COLUMN_STATUS', 'STATUS'
   ];
+  usedColumns = [];
   operators = ['= " "', '!= " "', 'LIKE " "', 'in " "'];
   seperators = ['AND', 'OR', 'ORDER BY'];
   dropDownValues = this.columnNames;
@@ -123,7 +124,7 @@ export class HeaderHashComponent implements OnInit {
   }
 
   inputFocussed() {
-    if (this.globalFilterState === 1) {
+    if (this.globalFilterState === 1 && !this.globalQuery) {
       this.showDropDown = true;
     }
   }
@@ -145,6 +146,7 @@ export class HeaderHashComponent implements OnInit {
 
   filterSelection(item) {
     if (this.globalFilterState === 1) {
+      this.usedColumns = item;
       if (this.globalQuery) {
         this.globalQuery = this.globalQuery += item;
       } else {

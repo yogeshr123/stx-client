@@ -19,9 +19,10 @@ import { ColumnMetadataComponent } from './column-metadata.component';
 import { MetadataMappingComponent } from './metadata-mapping/metadata-mapping.component';
 import { AddEditColumnComponent } from './add-edit-column/add-edit-column.component';
 import { AllVersionsComponent } from './all-versions/all-versions.component';
+import { DimLookupComponent } from './dim-lookup/dim-lookup.component';
 
 @NgModule({
-  declarations: [ColumnMetadataComponent, MetadataMappingComponent, AddEditColumnComponent, AllVersionsComponent],
+  declarations: [ColumnMetadataComponent, MetadataMappingComponent, AddEditColumnComponent, AllVersionsComponent, DimLookupComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -39,6 +40,6 @@ import { AllVersionsComponent } from './all-versions/all-versions.component';
     ConfirmDialogModule
   ],
   providers: [MessageService],
-  entryComponents: [MetadataMappingComponent]
+  entryComponents: [MetadataMappingComponent, DimLookupComponent]
 })
 export class ColumnMetadataModule { }

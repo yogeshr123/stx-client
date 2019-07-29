@@ -125,6 +125,10 @@ const lookUpColumns = [
         field: 'LOOKUP_JOIN_KEYS'
     },
     {
+        header: 'METADATA_VERSION',
+        field: 'METADATA_VERSION'
+    },
+    {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date'

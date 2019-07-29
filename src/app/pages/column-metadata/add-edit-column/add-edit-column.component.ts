@@ -253,8 +253,4 @@ export class AddEditColumnComponent implements OnInit {
     this.location.back();
   }
 
-  showToast(severity, summary) {
-    this.messageService.add({ severity, summary, life: 3000 });
-  }
-
 }

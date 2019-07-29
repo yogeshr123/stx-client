@@ -1,0 +1,49 @@
+<div class="row" *ngIf="selectedTable">
+  <div class="col-6">
+    Schema Name: <span class="font-weight-bold">{{ selectedTable.SCHEMA_NAME }}</span>
+  </div>
+  <div class="col-6">
+    Table Name: <span class="font-weight-bold">{{ selectedTable.TABLE_NAME }}</span>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6>
+
+  <div class="form-group col-6 row">
+    <label class="pr-0 col-4">SCHEMA Name</label>
+    <div class="col-8 row">
+      <p-dropdown class="col-12" appendTo="body" [options]="schemaNames" [filter]="true">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="col-6 row">
+    <label class="pr-0 col-4">TABLE Name</label>
+    <div class="col-8 row">
+      <p-dropdown class="col-12" appendTo="body" [options]="schemaTables" [filter]="true">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-group col-6 row">
+    <label class="pr-0 col-4">TABLE ALIAS</label>
+    <div class="col-8">
+      <input type="TEXT" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group col-6 row">
+    <label class="pr-0 col-4">Join Keys</label>
+    <div class="col-8">
+      <input type="TEXT" class="form-control">
+    </div>
+  </div>
+
+  <div class="form-group col-6">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+  </div>
+
+
+</div>

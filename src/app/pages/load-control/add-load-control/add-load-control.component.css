@@ -1,0 +1,4 @@
+p-calendar.is-invalid input,
+.was-validated .form-control:invalid {
+  border-color: #dc3545;
+}

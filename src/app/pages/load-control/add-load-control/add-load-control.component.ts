@@ -13,6 +13,7 @@ declare var $: any;
   selector: 'app-add-load-control',
   templateUrl: './add-load-control.component.html',
   styleUrls: ['./add-load-control.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddLoadControlComponent implements OnInit {
   addLoadControlForm: FormGroup;
@@ -72,20 +73,20 @@ export class AddLoadControlComponent implements OnInit {
       T1_RETENTION_DAYS: [0],
       T1_STATUS: [''],
       T1_BATCH_IN_DAYS: ['', Validators.required],
-      T1_MAX_LOAD_END_DATE: [''],
+      T1_MAX_LOAD_END_DATE: [null, Validators.required],
       T1_EXECUTION_STATUS: ['TODO'],
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
       T2_STATUS: [''],
       T2_INSERT_DIR_BATCH_SIZE: [0, Validators.required],
       T2_PARTITION_JOB_TYPE: ['SINGLE', Validators.required],
-      T2_MAX_LOAD_END_DATE: [''],
+      T2_MAX_LOAD_END_DATE: [null],
       T2_EXECUTION_STATUS: ['TODO'],
       ANALYZE_STATUS: [''],
       ANALYZE_EXECUTION_DAYS: [0, Validators.required],
-      ANALYZE_LAST_SUCCESS_DATE: [''],
+      ANALYZE_LAST_SUCCESS_DATE: [null],
       ANALYZE_EXECUTION_STATUS: ['TODO'],
-      UPDATE_DATE: ['', Validators.required],
+      UPDATE_DATE: [{ value: null, disabled: true }, Validators.required],
       UPDATED_BY: ['', Validators.required]
     });
   }
@@ -209,11 +210,23 @@ export class AddLoadControlComponent implements OnInit {
       return;
     }
 
+    let formValues = Object.assign({}, this.addLoadControlForm.value);
+    formValues.UPDATE_DATE = new Date();
+    for (const key in formValues) {
+      const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
+      const dataType = this.recordMeta[index].DATA_TYPE;
+      if (formValues[key]) {
+        if (dataType == "timestamp") {
+          formValues[key] = `${formValues[key]}`;
+        }
+      }
+    }
+
     const body = {
-      record: this.addLoadControlForm.value
+      record: formValues
     };
     this.loadControlService.addRecord(body).subscribe((data: any) => {
-      this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+      this.messageService.add({ severity: 'success', summary: 'record saved', life: 3000 });
       this.router.navigate(['/loadcontrol']);
     });
   }

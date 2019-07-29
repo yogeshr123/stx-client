@@ -60,9 +60,9 @@
                     <td *ngIf="formValues.dataType === 'decimal'">
                         <div>
                             <input (keyup)="checkFormValidation()" type="number" [(ngModel)]="formValues.precisionLeft"
-                                class="form-control d-inline-block col-4">
+                                class="form-control d-inline-block col-4" min="0" max="99">
                             <input (keyup)="checkFormValidation()" type="number" [(ngModel)]="formValues.precisionRight"
-                                class="form-control d-inline-block col-4 ml-2">
+                                class="form-control d-inline-block col-4 ml-2" min="0" max="99">
                         </div>
                     </td>
                 </tr>

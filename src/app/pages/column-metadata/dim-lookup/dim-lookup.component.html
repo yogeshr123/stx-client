@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="app-title">
   <div>
     <h1>
@@ -21,8 +23,8 @@
       </div>
 
       <div class="mt-3 table-responsive" *ngIf="lookUps">
-        <!-- <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
-        </ngx-loading> -->
+        <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
         <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
           [tableStyle]="{'table-layout':'auto'}">
           <ng-template pTemplate="header" let-columns>

@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { lookUpColumns } from '../tableColumns';
 import { AddComponent } from './add/add.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dim-lookup',
@@ -19,8 +20,12 @@ export class DimLookupComponent implements OnInit {
   selectedTableName: any;
   lookUps: any;
   tableColumns = lookUpColumns;
+  loader = {
+    lookUps: false
+  };
 
   constructor(
+    private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
     public dialogService: DialogService
@@ -40,7 +45,6 @@ export class DimLookupComponent implements OnInit {
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
         if (!this.state.CMV || !this.state.CMV.selectedTable) {
           this.selectedTable = this.uniqueTables[0];
-          // this.viewData(this.selectedTable);
           this.getLookUps();
         } else {
           const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
@@ -54,9 +58,14 @@ export class DimLookupComponent implements OnInit {
   }
 
   getLookUps() {
+    this.loader.lookUps = true;
     const request = { table_name: this.selectedTable.TABLE_NAME };
     this.columnMetadataService.getTableLookUps(request).subscribe((resp: any) => {
       this.lookUps = resp.data;
+      this.loader.lookUps = false;
+    }, error => {
+      this.showToast('error', 'Could not get lookup info.');
+      this.loader.lookUps = false;
     });
   }
 
@@ -78,6 +87,10 @@ export class DimLookupComponent implements OnInit {
       width: '55%',
       data: this.selectedTable
     });
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

@@ -113,6 +113,10 @@ const lookUpColumns = [
         field: 'LOOKUP_SCHEMA_NAME'
     },
     {
+        header: 'LOOKUP_TABLE_NAME',
+        field: 'LOOKUP_TABLE_NAME'
+    },
+    {
         header: 'LOOKUP_TABLE_ALIAS',
         field: 'LOOKUP_TABLE_ALIAS'
     },
@@ -122,7 +126,8 @@ const lookUpColumns = [
     },
     {
         header: 'UPDATE_DATE',
-        field: 'UPDATE_DATE'
+        field: 'UPDATE_DATE',
+        type: 'date'
     },
 ];
 

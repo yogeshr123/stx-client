@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/api';
+import { DialogService } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { lookUpColumns } from '../tableColumns';
+import { AddComponent } from './add/add.component';
 
 @Component({
   selector: 'app-dim-lookup',
   templateUrl: './dim-lookup.component.html',
   styleUrls: ['./dim-lookup.component.scss'],
-  providers: [DynamicDialogConfig]
+  providers: [DialogService]
 })
 export class DimLookupComponent implements OnInit {
 
   selectedTable: any;
-  schemaNames = [{ label: 'DIM 1' }, { label: 'DIM 2' }, { label: 'DIM 3' }, { label: 'DIM 4' }];
-  schemaTables = [{ label: 'SBR_DIM' }, { label: 'DATE_DIM' }, { label: 'PRODUCT_DIM' }, { label: 'LOCATION_DIM' }];
   state: any;
   uniqueTables: any;
   selectedTableName: any;
@@ -24,7 +23,7 @@ export class DimLookupComponent implements OnInit {
   constructor(
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
-    public config: DynamicDialogConfig
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -70,6 +69,14 @@ export class DimLookupComponent implements OnInit {
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+  }
+
+  addNew() {
+    const ref = this.dialogService.open(AddComponent, {
+      header: 'DIM Look Up',
+      width: '55%',
+      data: this.selectedTable
     });
   }
 

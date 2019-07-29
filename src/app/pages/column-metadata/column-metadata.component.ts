@@ -518,11 +518,6 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   dimLookUp() {
-    // const ref = this.dialogService.open(DimLookupComponent, {
-    //   header: 'DIM Look Up',
-    //   width: '65%',
-    //   data: this.selectedTable
-    // });
     return this.router.navigate(['/CMV/lookup']);
   }
 

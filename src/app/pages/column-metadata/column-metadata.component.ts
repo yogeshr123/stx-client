@@ -139,6 +139,7 @@ export class ColumnMetadataComponent implements OnInit {
         }
       });
     }, error => {
+      this.showToast('error', 'Could not get table versions.');
       this.loader.versions = false;
     });
 
@@ -200,6 +201,7 @@ export class ColumnMetadataComponent implements OnInit {
           }
         }
       }, error => {
+        this.showToast('error', 'Could not get data.');
         this.loader.columns = false;
       });
     } else {

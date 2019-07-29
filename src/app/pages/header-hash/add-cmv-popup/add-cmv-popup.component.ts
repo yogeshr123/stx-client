@@ -14,8 +14,8 @@ export class AddCmvPopupComponent implements OnInit {
   saveLoader = false;
   formValues = {
     dataType: '',
-    precisionLeft: '',
-    precisionRight: ''
+    precisionLeft: 0,
+    precisionRight: 0
   };
   isValid = true;
 

@@ -1,6 +1,105 @@
-<div class="col-6">
-  Schema Name: {{ selectedTable.SCHEMA_NAME }}
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-compress"></i> CM - DIM Look Up
+    </h1>
+  </div>
 </div>
-<div class="col-6">
-  Table Name: {{ selectedTable.TABLE_NAME }}
+
+<div class="row">
+  <div class="col-12">
+    <div class="tile">
+
+      <div *ngIf="uniqueTables?.length">
+        Table Name:
+        <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
+          optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
+        </p-dropdown>
+      </div>
+
+      <div class="mt-3 table-responsive" *ngIf="lookUps">
+        <!-- <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading> -->
+        <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
+          [tableStyle]="{'table-layout':'auto'}">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-lookUp let-columns="columns" let-i="rowIndex">
+            <tr [pSelectableRow]="lookUp">
+              <td *ngFor="let col of columns">
+                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                  <span> {{ lookUp[col.field] | date: 'short' }} </span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <span> {{ lookUp[col.field] }} </span>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div colspan="10" class="text-center p-2 border" *ngIf="!lookUps || !lookUps.length">
+          <h6>No Data Available!</h6>
+        </div>
+      </div>
+
+      <!-- <div class="row" *ngIf="selectedTable">
+        <div class="col-4">
+          Schema Name: <span class="font-weight-bold">{{ selectedTable.SCHEMA_NAME }}</span>
+        </div>
+        <div class="col-8">
+          Table Name: <span class="font-weight-bold">{{ selectedTable.TABLE_NAME }}</span>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6>
+
+        <div class="form-group col-6 row">
+          <label class="pr-0 col-4">SCHEMA Name</label>
+          <div class="col-8 row">
+            <p-dropdown class="col-12" appendTo="body" [options]="schemaNames" [filter]="true">
+            </p-dropdown>
+          </div>
+        </div>
+
+        <div class="col-6 row">
+          <label class="pr-0 col-4">TABLE Name</label>
+          <div class="col-8 row">
+            <p-dropdown class="col-12" appendTo="body" [options]="schemaTables" [filter]="true">
+            </p-dropdown>
+          </div>
+        </div>
+
+        <div class="form-group col-6 row">
+          <label class="pr-0 col-4">TABLE ALIAS</label>
+          <div class="col-8">
+            <input type="TEXT" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group col-6 row">
+          <label class="pr-0 col-4">Join Keys</label>
+          <div class="col-8">
+            <input type="TEXT" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group col-6">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+        </div>
+
+
+      </div> -->
+    </div>
+  </div>
 </div>

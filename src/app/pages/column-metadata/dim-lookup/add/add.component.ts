@@ -17,6 +17,12 @@ export class AddComponent implements OnInit {
   errors = {
     noValidatedVersion: ''
   };
+  formValues = {
+    dimTable: '',
+    tableAlias: '',
+    dimColumn: '',
+    selectedColumn: ''
+  };
 
   constructor(
     private columnMetadataService: ColumnMetadataService,

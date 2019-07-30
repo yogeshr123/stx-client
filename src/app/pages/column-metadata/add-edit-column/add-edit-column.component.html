@@ -47,7 +47,8 @@
                         <p-accordionTab header="Source Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">SRC COLUMN TYPE</label>
+                                    <label class="control-label col-md-4">SRC COLUMN TYPE <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <select formControlName="SRC_COLUMN_TYPE" class="form-control"
                                             (change)="updateValidation()">
@@ -59,7 +60,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">SRC COLUMN NAME</label>
+                                    <label class="control-label col-md-4">SRC COLUMN NAME <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <input oninput="this.value = this.value.toLowerCase()"
                                             formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
@@ -67,7 +69,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || routeInfo.fromHeaderHash">
-                                    <label class="control-label col-md-4">SRC DATA TYPE</label>
+                                    <label class="control-label col-md-4">SRC DATA TYPE <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <select formControlName="SRC_DATA_TYPE" class="form-control">
                                             <option value="string">string</option>
@@ -80,7 +83,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'">
-                                    <label class="control-label col-md-4">SRC DECIMAL PRECISION</label>
+                                    <label class="control-label col-md-4">SRC DECIMAL PRECISION <span
+                                            class="required">*</span></label>
                                     <div class="row m-0 pl-3 col-8">
                                         <input type="number" class="form-control col-3"
                                             formControlName="SRC_LEFT_PRECISION" min="0" max="99">
@@ -97,7 +101,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
-                                    <label class="control-label col-md-4">DERIVED COLUMN FORMULA</label>
+                                    <label class="control-label col-md-4">DERIVED COLUMN FORMULA <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control"
                                             type="text" />
@@ -112,7 +117,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
-                                    <label class="control-label col-md-4">PREDEFINED VALUE</label>
+                                    <label class="control-label col-md-4">PREDEFINED VALUE <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <select formControlName="PREDEFINED_VALUE" class="form-control">
                                             <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
@@ -126,14 +132,16 @@
                         <p-accordionTab header="Target Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET COLUMN NAME</label>
+                                    <label class="control-label col-md-4">TARGET COLUMN NAME <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <input oninput="this.value = this.value.toLowerCase()"
                                             formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET DATA TYPE</label>
+                                    <label class="control-label col-md-4">TARGET DATA TYPE <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <select formControlName="TARGET_DATA_TYPE" class="form-control">
                                             <option value="varchar">varchar</option>
@@ -146,7 +154,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'">
-                                    <label class="control-label col-md-4">IS UPDATE DATE COLUMN</label>
+                                    <label class="control-label col-md-4">IS UPDATE DATE COLUMN <span
+                                            class="required">*</span></label>
                                     <div class="col-md-8">
                                         <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control"
                                             type="checkbox" />
@@ -154,7 +163,8 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal' || addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'">
-                                    <label class=" control-label col-md-4">TARGET PRECISION</label>
+                                    <label class=" control-label col-md-4">TARGET PRECISION <span
+                                            class="required">*</span></label>
                                     <div class="row m-0 pl-3 col-8">
                                         <input formControlName="TARGET_LEFT_PRECISION" type="number"
                                             class="form-control col-3"

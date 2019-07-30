@@ -7,6 +7,7 @@ import { LoadControlService } from '../../../services/load-control.service';
 import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
+import { CommonService } from 'src/app/services/common.service';
 declare var $: any;
 
 @Component({
@@ -24,13 +25,15 @@ export class EditLoadControlComponent implements OnInit {
   recordMeta: any;
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   dbEndpoints: any[];
+  state: any;
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
     private router: Router,
     private loadControlService: LoadControlService,
     private dbEndpointsService: DBEndpointsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private commonService: CommonService
   ) {
     this.loadControl = LoadControl;
   }
@@ -39,9 +42,10 @@ export class EditLoadControlComponent implements OnInit {
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
-
-    this.recordService.currentRecord.subscribe(record => this.record = record);
-    if (this.record) {
+    this.state = this.commonService.getState();
+    // this.recordService.currentRecord.subscribe(record => this.record = record);
+    if (this.state.selectedRecord) {
+      this.record = this.state.selectedRecord;
       this.getColumnDataType();
     }
     else {
@@ -152,13 +156,11 @@ export class EditLoadControlComponent implements OnInit {
       record: formValues
     };
     this.loadControlService.updateRecord(body).subscribe((data: any) => {
-      this.messageService.add({ severity: 'success', summary: 'record updated', life: 3000 });
+      this.showToast('success', 'record updated.');
       this.router.navigate(['/loadcontrol']);
+    }, error => {
+      this.showToast('error', 'Could not update record.');
     });
-  }
-
-  ngOnDestroy() {
-    // this.record = null;
   }
 
   getColumnDataType() {
@@ -180,6 +182,8 @@ export class EditLoadControlComponent implements OnInit {
           }
         }
       }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
   }
 
@@ -295,6 +299,8 @@ export class EditLoadControlComponent implements OnInit {
       if (data.data && data.data.length > 0) {
         this.dbEndpoints = data.data;
       }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
   }
 
@@ -314,7 +320,7 @@ export class EditLoadControlComponent implements OnInit {
         RAW_FACTORY_PATH.setValue(url);
       }
       else {
-        this.messageService.add({ severity: 'error', summary: 'Please provide TABLE_NAME', life: 3000 });
+        this.showToast('error', 'Please provide TABLE_NAME');
       }
     }
     else if (type === "T1_PATH") {
@@ -332,8 +338,12 @@ export class EditLoadControlComponent implements OnInit {
         T1_PATH.setValue(url);
       }
       else {
-        this.messageService.add({ severity: 'error', summary: 'Please provide TABLE_NAME and SCHEMA_NAME', life: 3000 });
+        this.showToast('error', 'Please provide TABLE_NAME and SCHEMA_NAME');
       }
     }
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 }

@@ -226,8 +226,10 @@ export class AddLoadControlComponent implements OnInit {
       record: formValues
     };
     this.loadControlService.addRecord(body).subscribe((data: any) => {
-      this.messageService.add({ severity: 'success', summary: 'record saved', life: 3000 });
+      this.showToast('success', 'record saved.');
       this.router.navigate(['/loadcontrol']);
+    }, error => {
+      this.showToast('error', 'Could not save record.');
     });
   }
 
@@ -236,6 +238,8 @@ export class AddLoadControlComponent implements OnInit {
       if (data.data && data.data.length > 0) {
         this.dbEndpoints = data.data;
       }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
   }
 
@@ -255,7 +259,7 @@ export class AddLoadControlComponent implements OnInit {
         RAW_FACTORY_PATH.setValue(url);
       }
       else {
-        this.messageService.add({ severity: 'error', summary: 'Please provide TABLE_NAME', life: 3000 });
+        this.showToast('error', 'Please provide TABLE_NAME.');
       }
     }
     else if (type === "T1_PATH") {
@@ -273,7 +277,7 @@ export class AddLoadControlComponent implements OnInit {
         T1_PATH.setValue(url);
       }
       else {
-        this.messageService.add({ severity: 'error', summary: 'Please provide TABLE_NAME and SCHEMA_NAME', life: 3000 });
+        this.showToast('error', 'Please provide TABLE_NAME and SCHEMA_NAME.');
       }
     }
   }
@@ -283,6 +287,12 @@ export class AddLoadControlComponent implements OnInit {
       if (data.data && data.data.length > 0) {
         this.recordMeta = data.data;
       }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 }

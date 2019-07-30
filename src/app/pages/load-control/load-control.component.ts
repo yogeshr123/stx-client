@@ -5,6 +5,7 @@ import { RecordService } from '../../services/record.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-loadcontrol',
@@ -24,7 +25,13 @@ export class LoadControlComponent implements OnInit {
   selectedColumns: any[];
   globalQuery: string;
   schedulerDisplay: boolean = false;
+  changeStatusDisplay: boolean = false;
   recurrencePatterIndex: number = 0;
+  recordMeta: any;
+  appState: any;
+  statusType: string;
+  statusValue: string;
+  statusValueReason: string;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -33,15 +40,14 @@ export class LoadControlComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private commonService: CommonService
   ) {
   }
 
-  addSingle() {
-    this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService', sticky: true });
-  }
-
-  ngOnInit() {
+  async ngOnInit() {
+    this.formInit();
+    await this.getColumnDataType();
     this.loadAllRecords();
 
     this.ENV_NAME = [
@@ -55,8 +61,6 @@ export class LoadControlComponent implements OnInit {
       // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
     }
-
-    this.formInit();
   }
 
   formInit() {
@@ -85,10 +89,62 @@ export class LoadControlComponent implements OnInit {
         this.recordsArray = data.data;
         this.totalcols = [];
         for (var key in this.recordsArray[0]) {
-          this.totalcols.push({ field: key, header: key.replace(/_/g, " ") });
+          if (this.checkIfURL(key) === true)
+            this.totalcols.push({ field: key, header: key.replace(/_/g, " "), type: 'link' });
+          else if (this.checkIfDate(key) === true)
+            this.totalcols.push({ field: key, header: key.replace(/_/g, " "), type: 'date' });
+          else
+            this.totalcols.push({ field: key, header: key.replace(/_/g, " ") });
+
         }
       }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
+  }
+
+  checkIfURL(key) {
+    let returnVal;
+    switch (key) {
+      case "ETL_DAG_RUN_URL": {
+        returnVal = true;
+        break;
+      }
+      case "T1_SPARK_UI_URL": {
+        returnVal = true;
+        break;
+      }
+      case "T1_SPARK_LOG_URL": {
+        returnVal = true;
+        break;
+      }
+      case "T2_SPARK_UI_URL": {
+        returnVal = true;
+        break;
+      }
+      case "T2_SPARK_LOG_URL": {
+        returnVal = true;
+        break;
+      }
+      default: {
+        returnVal = false;
+        break;
+      }
+    }
+    return returnVal;
+  }
+
+  checkIfDate(key) {
+    if (this.recordMeta) {
+      const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
+      const dataType = this.recordMeta[index].DATA_TYPE;
+      if (dataType == "timestamp") {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
   }
 
   saveColumnState() {
@@ -131,7 +187,9 @@ export class LoadControlComponent implements OnInit {
   }
 
   onRowEdit(row: any) {
-    this.recordService.changeActiveRecord(row);
+    // this.recordService.changeActiveRecord(row);
+    this.appState = { ...this.appState, selectedRecord: row };
+    this.commonService.setState(this.appState);
     this.router.navigate(['/loadcontrol/edit']);
   }
 
@@ -159,9 +217,36 @@ export class LoadControlComponent implements OnInit {
     //     this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
     //   });
     // }
-    this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
   }
 
+  changeStatus() {
+    if (this.selectedRecords.length > 0) {
+      let records = [];
+      for (var _i = 0; _i < this.selectedRecords.length; _i++) {
+        records.push({
+          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+        })
+      }
+      const body: any = {
+        records: records,
+        statusType: this.statusType,
+        statusValue: this.statusValue
+      };
+      if (this.statusType === "ETL") {
+        body.statusValueReason = this.statusValueReason;
+      }
+
+      this.loadControlService.changeStatus(body).subscribe((data: any) => {
+        this.loadAllRecords();
+        this.showToast('success', `${this.statusType} status changed`);
+        this.changeStatusDisplay = false;
+      }, error => {
+        this.showToast('error', 'Could not update status.');
+      });
+    }
+  }
   resetExecutionStatus(status: string) {
     if (this.selectedRecords.length > 0) {
       let records = [];
@@ -179,7 +264,9 @@ export class LoadControlComponent implements OnInit {
 
       this.loadControlService.resetExecutionStatus(body).subscribe((data: any) => {
         this.loadAllRecords();
-        this.messageService.add({ severity: 'success', summary: `${status} Execution status changed`, life: 3000 });
+        this.showToast('success', `${status} Execution status changed`);
+      }, error => {
+        this.showToast('error', 'Could not update execution status.');
       });
     }
   }
@@ -193,6 +280,8 @@ export class LoadControlComponent implements OnInit {
         if (data.data && data.data.length > 0) {
           this.recordsArray = data.data;
         }
+      }, error => {
+        this.showToast('error', 'Error while fetching data');
       });
     }
   }
@@ -216,13 +305,16 @@ export class LoadControlComponent implements OnInit {
           else if (functionName == 'resetExecutionStatus') {
             this.resetExecutionStatus(action);
           }
+          else if (functionName == 'changeStatus') {
+            this.changeStatus();
+          }
         },
         reject: () => {
         }
       });
     }
     else {
-      this.messageService.add({ severity: 'info', summary: 'Please select records first', life: 3000 });
+      this.showToast('info', 'Please select records first');
     }
   }
 
@@ -245,7 +337,7 @@ export class LoadControlComponent implements OnInit {
         alert(`Generated cronexpression is ${cronExpression}`);
       }
       else {
-        this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+        this.showToast('warn', 'Recurrence pattern is not valid');
       }
     }
     else if (this.recurrencePatterIndex == 2) {
@@ -261,7 +353,7 @@ export class LoadControlComponent implements OnInit {
           alert(`Generated cronexpression is ${cronExpression}`);
         }
         else {
-          this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+          this.showToast('warn', 'Recurrence pattern is not valid');
         }
       }
       else if (this.schedulerForm.controls.dailyRecurrencePattern.value == "everyweekday") {
@@ -284,7 +376,7 @@ export class LoadControlComponent implements OnInit {
         //   // 0 10 * * MON,TUE
       }
       else {
-        this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+        this.showToast('warn', 'Recurrence pattern is not valid');
       }
 
     }
@@ -302,7 +394,7 @@ export class LoadControlComponent implements OnInit {
           //0 10 10 1/5 *  
         }
         else {
-          this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+          this.showToast('warn', 'Recurrence pattern is not valid');
         }
       }
       else if (this.schedulerForm.controls.monthlyRecurrencePattern.value == "selectedmonthformat") {
@@ -315,7 +407,7 @@ export class LoadControlComponent implements OnInit {
           //0 12 * 1/2 MON#3
         }
         else {
-          this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+          this.showToast('warn', 'Recurrence pattern is not valid');
         }
       }
     }
@@ -335,7 +427,7 @@ export class LoadControlComponent implements OnInit {
 
         }
         else {
-          this.messageService.add({ severity: 'warn', summary: 'Recurrence pattern is not valid', life: 3000 });
+          this.showToast('warn', 'Recurrence pattern is not valid');
         }
       }
       else if (this.schedulerForm.controls.yearlyRecurrencePattern.value == "selectedyearformat") {
@@ -365,12 +457,34 @@ export class LoadControlComponent implements OnInit {
 
       this.loadControlService.setSchedulerInterval(body).subscribe((data: any) => {
         this.loadAllRecords();
-        this.messageService.add({ severity: 'success', summary: `Schduler interval saved`, life: 3000 });
+        this.schedulerDisplay = false;
+        this.showToast('success', 'Scheduler interval saved');
+      }, error => {
+        this.showToast('error', 'Could not save Scheduler interval.');
       });
     }
     else {
-      this.messageService.add({ severity: 'info', summary: 'Please select records first', life: 3000 });
+      this.showToast('info', 'Please select records first');
     }
+  }
+
+  getColumnDataType() {
+    this.loadControlService.getColumnDataType().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.recordMeta = data.data;
+      }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  showStatusDialog(status: string) {
+    this.changeStatusDisplay = true;
+    this.statusType = status;
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 }
 

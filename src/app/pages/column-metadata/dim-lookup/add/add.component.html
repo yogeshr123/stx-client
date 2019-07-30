@@ -31,31 +31,40 @@
     </div>
   </div>
 
-  <hr class="col-12">
-
   <div class="form-group col-6 row">
-    <label class="pr-0 col-5">{{ selectedTable.TABLE_NAME }} Column <span class="required">*</span></label>
+    <label class="pr-0 col-5">{{ selectedTable.TABLE_NAME }} Join Key <span class="required">*</span></label>
     <div class="col-7 row">
       <p-dropdown class="" appendTo="body" [options]="tableColumns" [filter]="true" optionLabel="TARGET_COLUMN_NAME"
-        [(ngModel)]="formValues.selectedColumn" placeholder="Select {{ selectedTable.TABLE_NAME }} Column">
+        [(ngModel)]="formValues.selectedTableColumn" placeholder="Select {{ selectedTable.TABLE_NAME }} Join Key">
       </p-dropdown>
     </div>
   </div>
 
   <div class="form-group col-6 row">
-    <label class="pr-0 col-5">Dimension Column <span class="required">*</span></label>
+    <label class="pr-0 col-5">Dimension Join Key <span class="required">*</span></label>
     <div class="col-7 row">
       <p-dropdown class="" appendTo="body" [options]="dimensionTableColumns" [filter]="true"
-        [(ngModel)]="formValues.dimColumn" optionLabel="TARGET_COLUMN_NAME" placeholder="Select Dimension Column">
+        [(ngModel)]="formValues.dimColumn" optionLabel="TARGET_COLUMN_NAME" placeholder="Select Dimension Join Key">
       </p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-group col-12 row" *ngIf="formValues.dimTable">
+    <label class="pr-0 col-5">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
+        class="required">*</span></label>
+    <div class="col-6 row">
+      <p-multiSelect [options]="dimensionTableColumns" optionLabel="TARGET_COLUMN_NAME"
+        defaultLabel="Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }}" styleClass="columnsToAdd"
+        [(ngModel)]="formValues.selectedColumns">
+      </p-multiSelect>
     </div>
   </div>
 
   <div class="form-group col-6">
     <button
-      [ngClass]="{ 'disabled': !formValues.dimTable || !formValues.tableAlias || !formValues.dimColumn || !formValues.selectedColumn  }"
+      [ngClass]="{ 'disabled': !formValues.dimTable || !formValues.tableAlias || !formValues.dimColumn || !formValues.selectedTableColumn || !formValues.selectedColumns  }"
       type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
-    <button type="reset" class="btn btn-secondary ml-2">Reset</button>
+    <button type="reset" class="btn btn-secondary ml-2" (click)="reset()">Reset</button>
   </div>
 
 </div>

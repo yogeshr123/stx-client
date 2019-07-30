@@ -2,3 +2,7 @@
 .required {
   color: red;
 }
+
+/deep/ .columnsToAdd {
+  min-width: 300px;
+}

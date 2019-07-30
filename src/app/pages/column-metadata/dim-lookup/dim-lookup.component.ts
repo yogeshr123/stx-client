@@ -5,6 +5,7 @@ import { ColumnMetadataService } from 'src/app/services/column-metadata.service'
 import { lookUpColumns } from '../tableColumns';
 import { AddComponent } from './add/add.component';
 import { MessageService } from 'primeng/api';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-dim-lookup',
@@ -27,6 +28,7 @@ export class DimLookupComponent implements OnInit {
   allColumns = [];
 
   constructor(
+    private location: Location,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private commonService: CommonService,
@@ -119,6 +121,10 @@ export class DimLookupComponent implements OnInit {
 
   showToast(severity, summary) {
     this.messageService.add({ severity, summary, life: 3000 });
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

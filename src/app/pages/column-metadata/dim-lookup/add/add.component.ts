@@ -21,7 +21,8 @@ export class AddComponent implements OnInit {
     dimTable: '',
     tableAlias: '',
     dimColumn: '',
-    selectedColumn: ''
+    selectedTableColumn: '',
+    selectedColumns: ''
   };
 
   constructor(
@@ -82,6 +83,14 @@ export class AddComponent implements OnInit {
 
   submit() {
     console.log('formValues ', this.formValues);
+  }
+
+  reset() {
+    this.formValues.dimColumn = null;
+    this.formValues.dimTable = null;
+    this.formValues.selectedColumns = null;
+    this.formValues.selectedTableColumn = null;
+    this.formValues.tableAlias = null;
   }
 
 }

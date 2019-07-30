@@ -29,18 +29,18 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">SCHEMA NAME</label>
-                    <input class="form-control" type="text" formControlName="SCHEMA_NAME" oninput="this.value = this.value.toUpperCase()"
-                      [ngClass]="{ 'is-invalid': submitted && f.SCHEMA_NAME.errors }"
-                    />
+                    <input class="form-control" type="text" formControlName="SCHEMA_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.SCHEMA_NAME.errors }" />
                     <div *ngIf="submitted && f.SCHEMA_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">TABLE NAME</label>
-                    <input class="form-control" type="text" formControlName="TABLE_NAME" oninput="this.value = this.value.toUpperCase()"
-                      [ngClass]="{ 'is-invalid': submitted && f.TABLE_NAME.errors }"
-                    />
+                    <input class="form-control" type="text" formControlName="TABLE_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.TABLE_NAME.errors }" />
                     <div *ngIf="submitted && f.TABLE_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is required</div>
                     </div>
@@ -49,7 +49,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ENV NAME</label>
-                    <select formControlName="ENV_NAME" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ENV_NAME.errors }">
+                    <select formControlName="ENV_NAME" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.ENV_NAME.errors }">
                       <option value="PRD">PRD</option>
                       <option value="DEV">DEV</option>
                       <option value="QA">QA</option>
@@ -63,7 +64,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">TARGET SCHEMA NAME</label>
-                    <input class="form-control" type="text" formControlName="TARGET_SCHEMA_NAME" oninput="this.value = this.value.toUpperCase()"
+                    <input class="form-control" type="text" formControlName="TARGET_SCHEMA_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.TARGET_SCHEMA_NAME.errors }">
                     <div *ngIf="submitted && f.TARGET_SCHEMA_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.TARGET_SCHEMA_NAME.errors.required">TARGET SCHEMA NAME is required</div>
@@ -71,7 +73,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">TARGET TABLE NAME</label>
-                    <input class="form-control" type="text" formControlName="TARGET_TABLE_NAME" oninput="this.value = this.value.toUpperCase()"
+                    <input class="form-control" type="text" formControlName="TARGET_TABLE_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.TARGET_TABLE_NAME.errors }">
                     <div *ngIf="submitted && f.TARGET_TABLE_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.TARGET_TABLE_NAME.errors.required">TARGET TABLE NAME is required</div>
@@ -79,7 +82,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">EMAIL ALERTS</label>
-                    <select formControlName="EMAIL_ALERTS" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ALERTS.errors }">
+                    <select formControlName="EMAIL_ALERTS" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ALERTS.errors }">
                       <option value="Y">Yes</option>
                       <option value="N">No</option>
                     </select>
@@ -89,7 +93,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">TABLE SOURCE</label>
-                    <select formControlName="TABLE_SOURCE" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TABLE_SOURCE.errors }">
+                    <select formControlName="TABLE_SOURCE" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.TABLE_SOURCE.errors }">
                       <option value="RAW_FACTORY">RAW_FACTORY</option>
                       <option value="ORACLE">ORACLE</option>
                     </select>
@@ -101,7 +106,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">LOAD STRATEGY</label>
-                    <select formControlName="LOAD_STRATEGY" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
+                    <select formControlName="LOAD_STRATEGY" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
                       <option value="INSERT">INSERT</option>
                       <option value="UPDATE">UPDATE</option>
                       <option value="REFRESH">REFRESH</option>
@@ -114,11 +120,14 @@
                   <div class="form-group">
                     <label class="control-label">RAW FACTORY PATH
                     </label>
-                    <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('RAW_FACTORY_PATH')">Auto Generate</div>
-                    <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH" oninput="this.value = this.value.toLowerCase()"
+                    <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('RAW_FACTORY_PATH')">Auto
+                      Generate</div>
+                    <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH"
+                      oninput="this.value = this.value.toLowerCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_PATH.errors }">
                     <div *ngIf="submitted && f.RAW_FACTORY_PATH.errors" class="invalid-feedback">
-                      <div *ngIf="f.RAW_FACTORY_PATH.errors.required">RAW FACTORY PATH is required for TABLE SOURCE = RAW_FACTORY
+                      <div *ngIf="f.RAW_FACTORY_PATH.errors.required">RAW FACTORY PATH is required for TABLE SOURCE =
+                        RAW_FACTORY
                       </div>
                       <div *ngIf="f.RAW_FACTORY_PATH.errors?.pattern">S3 URL is not valid
                       </div>
@@ -137,7 +146,8 @@
                     <input class="form-control" type="number" formControlName="RAW_FACTORY_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_RETENTION_DAYS.errors }">
                     <div *ngIf="submitted && f.RAW_FACTORY_RETENTION_DAYS.errors" class="invalid-feedback">
-                      <div *ngIf="f.RAW_FACTORY_RETENTION_DAYS.errors.min">RAW FACTORY RETENTION DAYS should be greater than 0
+                      <div *ngIf="f.RAW_FACTORY_RETENTION_DAYS.errors.min">RAW FACTORY RETENTION DAYS should be greater
+                        than 0
                       </div>
                     </div>
                   </div>
@@ -151,7 +161,8 @@
                     <label class="control-label">DB ID</label>
                     <!-- <input class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }"> -->
-                    <select class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()"
+                    <select class="form-control" type="text" formControlName="DB_ID"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }">
                       <option *ngFor="let endpoint of dbEndpoints" [value]="endpoint.DB_ID">{{endpoint.DB_ID}}</option>
                     </select>
@@ -162,7 +173,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">DB SCHEMA</label>
-                    <input class="form-control" type="text" formControlName="DB_SCHEMA" oninput="this.value = this.value.toUpperCase()"
+                    <input class="form-control" type="text" formControlName="DB_SCHEMA"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_SCHEMA.errors }">
                     <div *ngIf="submitted && f.DB_SCHEMA.errors" class="invalid-feedback">
                       <div *ngIf="f.DB_SCHEMA.errors.required">DB SCHEMA is required for TABLE SOURCE = ORACLE
@@ -172,7 +184,8 @@
 
                   <div class="form-group">
                     <label class="control-label">DB TABLE</label>
-                    <input class="form-control" type="text" formControlName="DB_TABLE" oninput="this.value = this.value.toUpperCase()"
+                    <input class="form-control" type="text" formControlName="DB_TABLE"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE.errors }">
                     <div *ngIf="submitted && f.DB_TABLE.errors" class="invalid-feedback">
                       <div *ngIf="f.DB_TABLE.errors.required">DB TABLE is required for TABLE SOURCE = ORACLE
@@ -183,20 +196,23 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">DB TABLE PK COLUMNS</label>
-                    <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS" oninput="this.value = this.value.toUpperCase()"
+                    <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS"
+                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_PK_COLUMNS.errors }">
                     <div *ngIf="submitted && f.DB_TABLE_PK_COLUMNS.errors" class="invalid-feedback">
-                      <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors.required">DB TABLE PK COLUMNS is required for TABLE SOURCE = ORACLE
+                      <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors.required">DB TABLE PK COLUMNS is required for TABLE
+                        SOURCE = ORACLE
                       </div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">DB TABLE UPDATE DATE COLUMN</label>
                     <input class="form-control" type="text" formControlName="DB_TABLE_UPDATE_DATE_COLUMN"
-                      oninput="this.value = this.value.toUpperCase()" [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors }">
+                      oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors }">
                     <div *ngIf="submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors" class="invalid-feedback">
-                      <div *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors.required">DB TABLE UPDATE DATE COLUMN is required for TABLE SOURCE =
-                        ORACLE
+                      <div *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors.required">DB TABLE UPDATE DATE COLUMN is required
+                        for TABLE SOURCE = ORACLE
                       </div>
                     </div>
                   </div>
@@ -238,7 +254,8 @@
                   <div class="form-group">
                     <label class="control-label">T1 PATH</label>
                     <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('T1_PATH')">Auto Generate</div>
-                    <input class="form-control" type="text" formControlName="T1_PATH" oninput="this.value = this.value.toLowerCase()"
+                    <input class="form-control" type="text" formControlName="T1_PATH"
+                      oninput="this.value = this.value.toLowerCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_PATH.errors }">
                     <div *ngIf="submitted && f.T1_PATH.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_PATH.errors?.pattern">S3 URL is not valid
@@ -255,7 +272,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS" [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
+                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
                     <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION DAYS should be greater than 0
                       </div>
@@ -272,7 +290,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 BATCH IN DAYS</label>
-                    <select formControlName="T1_BATCH_IN_DAYS" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.T1_BATCH_IN_DAYS.errors }">
+                    <select formControlName="T1_BATCH_IN_DAYS" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_BATCH_IN_DAYS.errors }">
                       <option value="0.1">0.1</option>
                       <option value="0.15">0.15</option>
                       <option value="0.25">0.25</option>
@@ -300,9 +319,13 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 MAX LOAD END DATE</label>
-                    <br/>
+                    <br />
                     <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="T1_MAX_LOAD_END_DATE"></p-calendar>
+                      formControlName="T1_MAX_LOAD_END_DATE"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_MAX_LOAD_END_DATE.errors }"></p-calendar>
+                    <div *ngIf="submitted && f.T1_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T1_MAX_LOAD_END_DATE.errors.required">T1 MAX LOAD END DATE is required</div>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 EXECUTION STATUS</label>
@@ -359,7 +382,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T2 PARTITION JOB TYPE</label>
-                    <select formControlName="T2_PARTITION_JOB_TYPE" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.T2_PARTITION_JOB_TYPE.errors }">
+                    <select formControlName="T2_PARTITION_JOB_TYPE" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_PARTITION_JOB_TYPE.errors }">
                       <option value="SINGLE">SINGLE</option>
                       <option value="MULTIPLE">MULTIPLE</option>
                     </select>
@@ -369,7 +393,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 MAX LOAD END DATE</label>
-                    <br/>
+                    <br />
                     <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T2_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
@@ -411,7 +435,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ANALYZE LAST SUCCESS DATE</label>
-                    <br/>
+                    <br />
                     <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_LAST_SUCCESS_DATE"></p-calendar>
                   </div>
@@ -431,7 +455,8 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label">UPDATED BY</label>
-                  <input class="form-control" type="text" formControlName="UPDATED_BY" [ngClass]="{ 'is-invalid': submitted && f.UPDATED_BY.errors }">
+                  <input class="form-control" type="text" formControlName="UPDATED_BY"
+                    [ngClass]="{ 'is-invalid': submitted && f.UPDATED_BY.errors }">
                   <div *ngIf="submitted && f.UPDATED_BY.errors" class="invalid-feedback">
                     <div *ngIf="f.UPDATED_BY.errors.required">UPDATED BY is required</div>
                   </div>
@@ -440,12 +465,9 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label">UPDATE DATE</label>
-                  <br/>
+                  <br />
                   <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                    required="true" formControlName="UPDATE_DATE" [ngClass]="{ 'is-invalid': submitted && f.UPDATE_DATE.errors }"></p-calendar>
-                  <div *ngIf="submitted && f.UPDATE_DATE.errors" class="invalid-feedback">
-                    <div *ngIf="f.UPDATE_DATE.errors.required">UPDATE DATE is required</div>
-                  </div>
+                    required="true" formControlName="UPDATE_DATE"></p-calendar>
                 </div>
               </div>
             </div>

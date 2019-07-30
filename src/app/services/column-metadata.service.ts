@@ -64,6 +64,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getRefreshTables() {
+        const url = `${environment.baseUrl}column-metadata/getRefreshTables`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     validateVersion(version) {
         const url = `${environment.baseUrl}column-metadata/validateVersion`;
         return this.http

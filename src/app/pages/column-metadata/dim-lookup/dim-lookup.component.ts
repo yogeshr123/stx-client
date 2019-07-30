@@ -23,6 +23,8 @@ export class DimLookupComponent implements OnInit {
   loader = {
     lookUps: false
   };
+  dimensionTables = [];
+  allColumns = [];
 
   constructor(
     private messageService: MessageService,
@@ -37,6 +39,8 @@ export class DimLookupComponent implements OnInit {
     if (this.state.CMV && this.state.CMV.selectedTable) {
       this.selectedTable = this.state.CMV.selectedTable;
     }
+    this.getRefreshTables();
+    this.getAllColumns();
   }
 
   getAllTables() {
@@ -69,6 +73,26 @@ export class DimLookupComponent implements OnInit {
     });
   }
 
+  getRefreshTables() {
+    this.columnMetadataService.getRefreshTables().subscribe((resp: any) => {
+      this.dimensionTables = resp.data;
+    }, error => {
+      this.showToast('error', 'Could not get dimension tables.');
+    });
+  }
+
+  getAllColumns() {
+    const request = {
+      table_name: this.selectedTable.TABLE_NAME,
+      columnVersion: this.selectedTable.METADATA_VERSION
+    };
+    this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+      this.allColumns = resp.data;
+    }, error => {
+      this.showToast('error', 'Could not get dimension tables.');
+    });
+  }
+
   changeTable() {
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
@@ -85,7 +109,11 @@ export class DimLookupComponent implements OnInit {
     const ref = this.dialogService.open(AddComponent, {
       header: 'DIM Look Up',
       width: '55%',
-      data: this.selectedTable
+      data: {
+        selectedTable: this.selectedTable,
+        dimensionTables: this.dimensionTables,
+        allColumns: this.allColumns
+      }
     });
   }
 

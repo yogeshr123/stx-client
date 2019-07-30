@@ -12,11 +12,12 @@
   <div class="col-12">
     <div class="tile">
 
-      <div *ngIf="uniqueTables?.length">
+      <div *ngIf="uniqueTables?.length" class="clearfix">
         Table Name:
-        <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
+        {{ selectedTableName.TABLE_NAME }}
+        <!-- <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
           optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
-        </p-dropdown>
+        </p-dropdown> -->
         <button (click)="addNew()" class="float-right btn btn-primary btn-sm">
           Add New
         </button>
@@ -36,7 +37,7 @@
                   ariaLabelAsc="Activate to sort in ascending order">
                 </p-sortIcon>
               </th>
-              <th>Action</th>
+              <!-- <th>Action</th> -->
             </tr>
             <tr>
               <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
@@ -48,7 +49,7 @@
                   (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                   [value]="dt.filters[col.field]?.value">
               </th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-lookUp let-columns="columns" let-i="rowIndex">
@@ -61,11 +62,11 @@
                   <span> {{ lookUp[col.field] }} </span>
                 </ng-template>
               </td>
-              <td>
+              <!-- <td>
                 <button title="Delete" class="btn btn-danger btn-sm ml-1">
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
-              </td>
+              </td> -->
             </tr>
           </ng-template>
         </p-table>

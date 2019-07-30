@@ -11,32 +11,43 @@
   <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6>
 
   <div class="form-group col-6 row">
-    <label class="pr-0 col-4">SCHEMA Name</label>
+    <label class="pr-0 col-4">Choose Table Name <span class="required">*</span></label>
     <div class="col-8 row">
-      <p-dropdown class="col-12" appendTo="body" [options]="schemaNames" [filter]="true">
+      <p-dropdown class="col-12" appendTo="body" [options]="dimensionTables" [filter]="true"
+        placeholder="Select a Table" optionLabel="TABLE_NAME" (onChange)="tableSelected($event)">
       </p-dropdown>
     </div>
-  </div>
-
-  <div class="col-6 row">
-    <label class="pr-0 col-4">TABLE Name</label>
-    <div class="col-8 row">
-      <p-dropdown class="col-12" appendTo="body" [options]="schemaTables" [filter]="true">
-      </p-dropdown>
+    <div class="col-12 mt-1" *ngIf="errors.noValidatedVersion">
+      <p class="error">
+        {{errors.noValidatedVersion}}
+      </p>
     </div>
   </div>
 
   <div class="form-group col-6 row">
-    <label class="pr-0 col-4">TABLE ALIAS</label>
+    <label class="pr-0 col-4">TABLE ALIAS <span class="required">*</span></label>
     <div class="col-8">
       <input type="TEXT" class="form-control">
     </div>
   </div>
 
+  <hr class="col-12">
+
   <div class="form-group col-6 row">
-    <label class="pr-0 col-4">Join Keys</label>
-    <div class="col-8">
-      <input type="TEXT" class="form-control">
+    <label class="pr-0 col-4">{{ selectedTable.TABLE_NAME }} Column <span class="required">*</span></label>
+    <div class="col-8 row">
+      <p-dropdown class="col-12" appendTo="body" [options]="tableColumns" [filter]="true"
+        optionLabel="TARGET_COLUMN_NAME">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-group col-6 row">
+    <label class="pr-0 col-4">Dimension Column <span class="required">*</span></label>
+    <div class="col-8 row">
+      <p-dropdown class="col-12" appendTo="body" [options]="dimensionTableColumns" [filter]="true"
+        optionLabel="TARGET_COLUMN_NAME">
+      </p-dropdown>
     </div>
   </div>
 

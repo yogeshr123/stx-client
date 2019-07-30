@@ -42,7 +42,7 @@
                 <div class="col-4 row">
                     <h6 class="col-12">&nbsp;</h6>
                     <div class="col-6">
-                        <label>Time Period</label>
+                        <label class="d-block">Time Period</label>
                         <div class="btn-group btn-group-toggle">
                             <label [ngClass]="{'active': toogleButtonPeriod === 7}" class="btn btn-sm btn-primary"
                                 title="Last 7 Days">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <h6 class="col-12">&nbsp;</h6>
+                        <label class="d-block">Environment</label>
                         <div class="row">
                             <select (change)="onSubmit(null, true)" class="form-control col-6 ml-2"
                                 formControlName="ENV_NAME">

@@ -232,7 +232,7 @@ export class LoadStatusComponent implements OnInit {
       this.loader.saveTasks = false;
       this.tasksMoved = false;
     }, error => {
-      this.showToast('error', 'Could not save details.');
+      this.showToast('error', 'Could not update details.');
       this.loader.saveTasks = false;
     });
   }

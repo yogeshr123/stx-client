@@ -32,6 +32,10 @@ export class AddComponent implements OnInit {
   ngOnInit() {
     this.selectedTable = this.config.data.selectedTable;
     this.dimensionTables = this.config.data.dimensionTables;
+    this.dimensionTables = this.dimensionTables.map(i => {
+      i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
+      return i;
+    });
     this.tableColumns = this.config.data.allColumns;
   }
 
@@ -74,6 +78,10 @@ export class AddComponent implements OnInit {
     }, error => {
       // this.showToast('error', 'Could not get dimension tables.');
     });
+  }
+
+  submit() {
+    console.log('formValues ', this.formValues);
   }
 
 }

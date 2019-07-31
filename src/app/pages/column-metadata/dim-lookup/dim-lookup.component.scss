@@ -1,0 +1,13 @@
+th,
+td {
+  height: 40px;
+  white-space: nowrap;
+}
+
+.go-back {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

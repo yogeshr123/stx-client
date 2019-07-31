@@ -85,8 +85,10 @@
                 <h6>
                     Version - {{selectedVersion.METADATA_VERSION}}
                     <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
-                    <button [routerLink]="[ './add-column']" class="mb-2 btn btn-sm btn-secondary float-right"
+                    <button [routerLink]="[ './add-column']" class="mb-2 ml-2 btn btn-sm btn-secondary float-right"
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
+                    <button *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'"
+                        class="mb-2 btn btn-sm btn-info float-right" (click)="dimLookUp()">DIM LookUp</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}"

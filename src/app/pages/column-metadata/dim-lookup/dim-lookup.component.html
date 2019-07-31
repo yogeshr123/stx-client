@@ -1,0 +1,80 @@
+<p-toast></p-toast>
+
+<div class="app-title">
+  <!-- <div> -->
+  <h1>
+    <i class="fa fa-compress"></i> CM - DIM Look Up
+  </h1>
+  <button class="btn btn-link float-right go-back" (click)="goBack()">Go back</button>
+  <!-- </div> -->
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="tile">
+
+      <div *ngIf="uniqueTables?.length" class="clearfix">
+        Table Name:
+        {{ selectedTableName.TABLE_NAME }}
+        <!-- <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
+          optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
+        </p-dropdown> -->
+        <button (click)="addNew()" class="float-right btn btn-primary btn-sm">
+          Add New
+        </button>
+      </div>
+
+      <div class="mt-3 table-responsive" *ngIf="lookUps">
+        <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
+        <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
+          [tableStyle]="{'table-layout':'auto'}">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+              <!-- <th>Action</th> -->
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
+                <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
+                  (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
+                <input pInputText *ngSwitchDefault type="text"
+                  (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  [value]="dt.filters[col.field]?.value">
+              </th>
+              <!-- <th></th> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-lookUp let-columns="columns" let-i="rowIndex">
+            <tr [pSelectableRow]="lookUp">
+              <td *ngFor="let col of columns">
+                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                  <span> {{ lookUp[col.field] | date: 'short' }} </span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <span> {{ lookUp[col.field] }} </span>
+                </ng-template>
+              </td>
+              <!-- <td>
+                <button title="Delete" class="btn btn-danger btn-sm ml-1">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </td> -->
+            </tr>
+          </ng-template>
+        </p-table>
+        <div colspan="10" class="text-center p-2 border" *ngIf="!lookUps || !lookUps.length">
+          <h6>No Data Available!</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

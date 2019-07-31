@@ -8,6 +8,7 @@ import { ColumnMetadataService } from 'src/app/services/column-metadata.service'
 import { CommonService } from 'src/app/services/common.service';
 import { columnTableColumns, versionTableColumns } from './tableColumns';
 import { Router } from '@angular/router';
+import { DimLookupComponent } from './dim-lookup/dim-lookup.component';
 
 
 @Component({
@@ -516,6 +517,10 @@ export class ColumnMetadataComponent implements OnInit {
       width: '45%',
       data: this.errors
     });
+  }
+
+  dimLookUp() {
+    return this.router.navigate(['/CMV/lookup']);
   }
 
   showToast(severity, summary) {

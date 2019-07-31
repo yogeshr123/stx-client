@@ -113,6 +113,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    addLookUp(lookUpData) {
+        const url = `${environment.baseUrl}column-metadata/addLookups`;
+        return this.http
+            .post(url, lookUpData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     deleteColumn(columnData) {
         const url = `${environment.baseUrl}column-metadata/deleteColumn`;
         return this.http

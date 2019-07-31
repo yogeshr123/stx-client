@@ -3,6 +3,10 @@
   color: red;
 }
 
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
 /deep/ .columnsToAdd {
   min-width: 300px !important;
 

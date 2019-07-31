@@ -117,6 +117,12 @@ export class DimLookupComponent implements OnInit {
         allColumns: this.allColumns
       }
     });
+
+    ref.onClose.subscribe((reason) => {
+      if (reason) {
+        this.ngOnInit();
+      }
+    });
   }
 
   showToast(severity, summary) {

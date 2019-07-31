@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="row" *ngIf="selectedTable">
   <div class="col-6">
     Schema Name: <span class="font-weight-bold">{{ selectedTable.SCHEMA_NAME }}</span>
@@ -7,63 +9,64 @@
   </div>
 </div>
 
-<div class="mt-3 row p-0">
+<div class="mt-3 p-0">
   <!-- <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6> -->
 
-  <div class="form-group col-6 row">
-    <label class="pr-0 col-5">Choose Table <span class="required">*</span></label>
-    <div class="col-7 row">
-      <p-dropdown class="" appendTo="body" [options]="dimensionTables" [filter]="true" placeholder="Select a Table"
-        [(ngModel)]="formValues.dimTable" optionLabel="schemaTableName" (onChange)="tableSelected($event)">
-      </p-dropdown>
+  <form class="row p-0" [formGroup]="addForm">
+    <div class="form-group col-6 row">
+      <label class="pr-0 col-5">Choose Table <span class="required">*</span></label>
+      <div class="col-7 row">
+        <p-dropdown class="" appendTo="body" [options]="dimensionTables" [filter]="true" placeholder="Select a Table"
+          formControlName="LOOKUP_TABLE_NAME" optionLabel="schemaTableName" (onChange)="tableSelected($event)">
+        </p-dropdown>
+      </div>
+      <div class="col-12 mt-1" *ngIf="errors.noValidatedVersion">
+        <p class="error">
+          {{errors.noValidatedVersion}}
+        </p>
+      </div>
     </div>
-    <div class="col-12 mt-1" *ngIf="errors.noValidatedVersion">
-      <p class="error">
-        {{errors.noValidatedVersion}}
-      </p>
-    </div>
-  </div>
 
-  <div class="form-group col-6 row">
-    <label class="pr-0 col-5">Table Alias <span class="required">*</span></label>
-    <div class="col-5 row">
-      <input type="text" class="form-control" [(ngModel)]="formValues.tableAlias" placeholder="Table Alias">
+    <div class="form-group col-6 row">
+      <label class="pr-0 col-5">Table Alias <span class="required">*</span></label>
+      <div class="col-5 row">
+        <input type="text" class="form-control" formControlName="LOOKUP_TABLE_ALIAS" placeholder="Table Alias">
+      </div>
     </div>
-  </div>
 
-  <div class="form-group col-6 row">
-    <label class="pr-0 col-5">{{ selectedTable.TABLE_NAME }} Join Key <span class="required">*</span></label>
-    <div class="col-7 row">
-      <p-dropdown class="" appendTo="body" [options]="tableColumns" [filter]="true" optionLabel="TARGET_COLUMN_NAME"
-        [(ngModel)]="formValues.selectedTableColumn" placeholder="Select {{ selectedTable.TABLE_NAME }} Join Key">
-      </p-dropdown>
+    <div class="form-group col-6 row">
+      <label class="pr-0 col-5">{{ selectedTable.TABLE_NAME }} Join Key <span class="required">*</span></label>
+      <div class="col-7 row">
+        <p-dropdown class="" appendTo="body" [options]="tableColumns" [filter]="true" optionLabel="TARGET_COLUMN_NAME"
+          formControlName="LOOKUP_JOIN_KEYS1" placeholder="Select {{ selectedTable.TABLE_NAME }} Join Key">
+        </p-dropdown>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group col-6 row">
-    <label class="pr-0 col-5">Dimension Join Key <span class="required">*</span></label>
-    <div class="col-7 row">
-      <p-dropdown class="" appendTo="body" [options]="dimensionTableColumns" [filter]="true"
-        [(ngModel)]="formValues.dimColumn" optionLabel="TARGET_COLUMN_NAME" placeholder="Select Dimension Join Key">
-      </p-dropdown>
+    <div class="form-group col-6 row">
+      <label class="pr-0 col-5">Dimension Join Key <span class="required">*</span></label>
+      <div class="col-7 row">
+        <p-dropdown class="" appendTo="body" [options]="dimensionTableColumns" [filter]="true"
+          formControlName="LOOKUP_JOIN_KEYS2" optionLabel="TARGET_COLUMN_NAME" placeholder="Select Dimension Join Key">
+        </p-dropdown>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group col-12 row" *ngIf="formValues.dimTable">
-    <label class="pr-0 col-5">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
-        class="required">*</span></label>
-    <div class="col-6 row">
-      <p-listbox [options]="dimensionTableColumns" [(ngModel)]="formValues.selectedColumns"
-        optionLabel="TARGET_COLUMN_NAME" filter="filter" multiple="true" checkbox="true" styleClass="columnsToAdd">
-      </p-listbox>
+    <div class="form-group col-12 row" *ngIf="addForm.value.LOOKUP_TABLE_NAME">
+      <label class="pr-0 col-5">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
+          class="required">*</span></label>
+      <div class="col-6 row">
+        <p-listbox [options]="dimensionTableColumns" formControlName="LOOKUP_COLUMNS" optionLabel="TARGET_COLUMN_NAME"
+          filter="filter" multiple="true" checkbox="true" styleClass="columnsToAdd">
+        </p-listbox>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group col-6">
-    <button
-      [ngClass]="{ 'disabled': !formValues.dimTable || !formValues.tableAlias || !formValues.dimColumn || !formValues.selectedTableColumn || (!formValues.selectedColumns || !formValues.selectedColumns.length)  }"
-      type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
-    <button type="reset" class="btn btn-secondary ml-2" (click)="reset()">Reset</button>
-  </div>
+    <div class="form-group col-6">
+      <button [ngClass]="{ 'disabled': !addForm.valid  }" type="submit" class="btn btn-primary"
+        (click)="submit()">Submit</button>
+      <button type="reset" class="btn btn-secondary ml-2" (click)="reset()">Reset</button>
+    </div>
+  </form>
 
 </div>

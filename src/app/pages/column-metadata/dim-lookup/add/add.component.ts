@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogConfig, MessageService, DynamicDialogRef } from 'primeng/api';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add',
@@ -9,6 +10,7 @@ import { ColumnMetadataService } from 'src/app/services/column-metadata.service'
 })
 export class AddComponent implements OnInit {
 
+  addForm: FormGroup;
   selectedTable: any;
   dimensionTables: any;
   dimensionTableColumns: any;
@@ -17,15 +19,11 @@ export class AddComponent implements OnInit {
   errors = {
     noValidatedVersion: ''
   };
-  formValues = {
-    dimTable: '',
-    tableAlias: '',
-    dimColumn: '',
-    selectedTableColumn: '',
-    selectedColumns: ''
-  };
 
   constructor(
+    public ref: DynamicDialogRef,
+    private messageService: MessageService,
+    private formBuilder: FormBuilder,
     private columnMetadataService: ColumnMetadataService,
     public config: DynamicDialogConfig
   ) { }
@@ -38,12 +36,30 @@ export class AddComponent implements OnInit {
       return i;
     });
     this.tableColumns = this.config.data.allColumns;
+    this.formInit();
+  }
+
+  formInit() {
+    this.addForm = this.formBuilder.group({
+      SCHEMA_NAME: [this.selectedTable.SCHEMA_NAME, Validators.required],
+      TABLE_NAME: [this.selectedTable.TABLE_NAME, Validators.required],
+      METADATA_VERSION: [this.selectedTable.METADATA_VERSION, Validators.required],
+      LOOKUP_TABLE_NAME: ['', Validators.required],
+      LOOKUP_TABLE_ALIAS: ['', Validators.required],
+      LOOKUP_JOIN_KEYS1: ['', Validators.required],
+      LOOKUP_JOIN_KEYS2: ['', Validators.required],
+      LOOKUP_COLUMNS: [[], Validators.required],
+      UPDATED_BY: ['User'],
+      UPDATE_DATE: [new Date()],
+    });
   }
 
   tableSelected(event) {
     this.errors.noValidatedVersion = null;
     this.dimensionTableColumns = [];
     this.getTableVersions(event.value.TABLE_NAME);
+    this.addForm.controls.LOOKUP_JOIN_KEYS2.patchValue('');
+    this.addForm.controls.LOOKUP_COLUMNS.patchValue([]);
   }
 
   getTableVersions(tableName) {
@@ -82,15 +98,38 @@ export class AddComponent implements OnInit {
   }
 
   submit() {
-    console.log('formValues ', this.formValues);
+    const lookUpObject = Object.assign(this.addForm.value, {});
+    lookUpObject.LOOKUP_SCHEMA_NAME = lookUpObject.LOOKUP_TABLE_NAME.SCHEMA_NAME;
+    lookUpObject.LOOKUP_TABLE_NAME = lookUpObject.LOOKUP_TABLE_NAME.TABLE_NAME;
+    lookUpObject.UPDATE_DATE = `${lookUpObject.UPDATE_DATE}`;
+    lookUpObject.LOOKUP_JOIN_KEYS =
+      // tslint:disable-next-line:max-line-length
+      `fact.${lookUpObject.LOOKUP_JOIN_KEYS1.TARGET_COLUMN_NAME}=${lookUpObject.LOOKUP_TABLE_ALIAS}.${lookUpObject.LOOKUP_JOIN_KEYS2.TARGET_COLUMN_NAME}`;
+    delete lookUpObject.LOOKUP_COLUMNS;
+    delete lookUpObject.LOOKUP_JOIN_KEYS1;
+    delete lookUpObject.LOOKUP_JOIN_KEYS2;
+    this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('success', 'Successfully saved lookup!');
+        this.closePopUp(true);
+      } else {
+        this.showToast('error', 'Could not save lookup info.');
+      }
+    }, error => {
+      this.showToast('error', 'Could not save lookup info.');
+    });
   }
 
   reset() {
-    this.formValues.dimColumn = null;
-    this.formValues.dimTable = null;
-    this.formValues.selectedColumns = null;
-    this.formValues.selectedTableColumn = null;
-    this.formValues.tableAlias = null;
+    this.formInit();
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
+  }
+
+  closePopUp(status) {
+    this.ref.close(status);
   }
 
 }

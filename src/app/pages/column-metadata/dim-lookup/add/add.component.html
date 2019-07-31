@@ -8,7 +8,7 @@
 </div>
 
 <div class="mt-3 row p-0">
-  <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6>
+  <!-- <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6> -->
 
   <div class="form-group col-6 row">
     <label class="pr-0 col-5">Choose Table <span class="required">*</span></label>
@@ -53,10 +53,9 @@
     <label class="pr-0 col-5">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
         class="required">*</span></label>
     <div class="col-6 row">
-      <p-multiSelect [options]="dimensionTableColumns" optionLabel="TARGET_COLUMN_NAME"
-        defaultLabel="Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }}" styleClass="columnsToAdd"
-        [(ngModel)]="formValues.selectedColumns">
-      </p-multiSelect>
+      <p-listbox [options]="dimensionTableColumns" [(ngModel)]="formValues.selectedColumns"
+        optionLabel="TARGET_COLUMN_NAME" filter="filter" multiple="true" checkbox="true" styleClass="columnsToAdd">
+      </p-listbox>
     </div>
   </div>
 

@@ -114,6 +114,7 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_COLUMNS;
     this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
       if (!resp.error) {
+        this.counter = this.counter + 1;
         if (this.counter === columnsToAdd.length + 1) {
           this.showToast('success', 'Successfully saved lookup!');
           this.closePopUp(true);

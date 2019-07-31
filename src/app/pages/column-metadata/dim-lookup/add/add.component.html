@@ -61,7 +61,7 @@
 
   <div class="form-group col-6">
     <button
-      [ngClass]="{ 'disabled': !formValues.dimTable || !formValues.tableAlias || !formValues.dimColumn || !formValues.selectedTableColumn || !formValues.selectedColumns  }"
+      [ngClass]="{ 'disabled': !formValues.dimTable || !formValues.tableAlias || !formValues.dimColumn || !formValues.selectedTableColumn || (!formValues.selectedColumns || !formValues.selectedColumns.length)  }"
       type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
     <button type="reset" class="btn btn-secondary ml-2" (click)="reset()">Reset</button>
   </div>

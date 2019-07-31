@@ -20,6 +20,7 @@ export class AddComponent implements OnInit {
     noValidatedVersion: ''
   };
   saveLookUpLoader = false;
+  counter = 0;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -99,6 +100,7 @@ export class AddComponent implements OnInit {
   }
 
   submit() {
+    // Save in lookUp Table
     this.saveLookUpLoader = true;
     const lookUpObject = Object.assign({}, this.addForm.value);
     lookUpObject.LOOKUP_SCHEMA_NAME = lookUpObject.LOOKUP_TABLE_NAME.SCHEMA_NAME;
@@ -107,19 +109,61 @@ export class AddComponent implements OnInit {
     lookUpObject.LOOKUP_JOIN_KEYS =
       // tslint:disable-next-line:max-line-length
       `fact.${lookUpObject.LOOKUP_JOIN_KEYS1.TARGET_COLUMN_NAME}=${lookUpObject.LOOKUP_TABLE_ALIAS}.${lookUpObject.LOOKUP_JOIN_KEYS2.TARGET_COLUMN_NAME}`;
-    delete lookUpObject.LOOKUP_COLUMNS;
     delete lookUpObject.LOOKUP_JOIN_KEYS1;
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
+    delete lookUpObject.LOOKUP_COLUMNS;
     this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
       if (!resp.error) {
-        this.showToast('success', 'Successfully saved lookup!');
-        this.closePopUp(true);
+        if (this.counter === columnsToAdd.length + 1) {
+          this.showToast('success', 'Successfully saved lookup!');
+          this.closePopUp(true);
+        }
       } else {
         this.showToast('error', 'Could not save lookup info.');
       }
       this.saveLookUpLoader = false;
     }, error => {
       this.showToast('error', 'Could not save lookup info.');
+      this.saveLookUpLoader = false;
+    });
+    let columnsToAdd = Object.assign({}, this.addForm.value);
+    columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
+      i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
+      i.LOOKUP_TABLE_ALIAS = i.LOOKUP_TABLE_ALIAS;
+      i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
+      i.IS_DATATYPE_CHANGED =
+        i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
+      i.IS_NEW = 1;
+      i.IS_PARTITION_COLUMN =
+        i.IS_PARTITION_COLUMN.data ? i.IS_PARTITION_COLUMN.data[0] : i.IS_PARTITION_COLUMN;
+      i.IS_PKEY_COLUMN =
+        i.IS_PKEY_COLUMN.data ? i.IS_PKEY_COLUMN.data[0] : i.IS_PKEY_COLUMN;
+      i.IS_RENAMED =
+        i.IS_RENAMED.data ? i.IS_RENAMED.data[0] : i.IS_RENAMED;
+      i.IS_UPDATE_DATE_COLUMN =
+        i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
+      i.SRC_COLUMN_TYPE = 'DIMLOOKUP';
+      i.TABLE_NAME = this.selectedTable.TABLE_NAME;
+      i.TARGET_COLUMN_NAME = `${columnsToAdd.LOOKUP_TABLE_ALIAS}_${i.TARGET_COLUMN_NAME}`;
+      i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
+      i.UPDATE_DATE = `${new Date()}`;
+      return i;
+    });
+    for (const iterator of columnsToAdd) {
+      this.addNewColumns(iterator, columnsToAdd);
+    }
+
+  }
+
+  addNewColumns(column, columnsToAdd) {
+    return this.columnMetadataService.addColumn({ data: column }).subscribe((resp: any) => {
+      this.counter = this.counter + 1;
+      if (this.counter === columnsToAdd.length + 1) {
+        this.showToast('success', 'Successfully saved lookup!');
+        this.closePopUp(true);
+      }
+    }, error => {
+      this.showToast('error', 'Could not save column info.');
       this.saveLookUpLoader = false;
     });
   }

@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<!-- <p-toast></p-toast> -->
 
 <div class="row" *ngIf="selectedTable">
   <div class="col-6">
@@ -65,6 +65,7 @@
     <div class="form-group col-6">
       <button [ngClass]="{ 'disabled': !addForm.valid  }" type="submit" class="btn btn-primary"
         (click)="submit()">Submit</button>
+      <img *ngIf="saveLookUpLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
       <button type="reset" class="btn btn-secondary ml-2" (click)="reset()">Reset</button>
     </div>
   </form>

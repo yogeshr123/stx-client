@@ -19,6 +19,7 @@ export class AddComponent implements OnInit {
   errors = {
     noValidatedVersion: ''
   };
+  saveLookUpLoader = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -98,7 +99,8 @@ export class AddComponent implements OnInit {
   }
 
   submit() {
-    const lookUpObject = Object.assign(this.addForm.value, {});
+    this.saveLookUpLoader = true;
+    const lookUpObject = Object.assign({}, this.addForm.value);
     lookUpObject.LOOKUP_SCHEMA_NAME = lookUpObject.LOOKUP_TABLE_NAME.SCHEMA_NAME;
     lookUpObject.LOOKUP_TABLE_NAME = lookUpObject.LOOKUP_TABLE_NAME.TABLE_NAME;
     lookUpObject.UPDATE_DATE = `${lookUpObject.UPDATE_DATE}`;
@@ -115,8 +117,10 @@ export class AddComponent implements OnInit {
       } else {
         this.showToast('error', 'Could not save lookup info.');
       }
+      this.saveLookUpLoader = false;
     }, error => {
       this.showToast('error', 'Could not save lookup info.');
+      this.saveLookUpLoader = false;
     });
   }
 

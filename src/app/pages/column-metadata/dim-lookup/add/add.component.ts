@@ -98,22 +98,30 @@ export class AddComponent implements OnInit {
         this.addForm.controls.LOOKUP_JOIN_KEYS2.patchValue(selectedJoinKey[0]);
       }
     }
-    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    let cols = localCopyOfVersion[`${this.selectedTable.METADATA_VERSION}_${this.selectedTable.TABLE_NAME}`];
-    cols = cols.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
-    if (cols && cols.length) {
-      const getLookUpTable = this.dimensionTables.filter(i => i.TABLE_NAME === this.lookUp.LOOKUP_TABLE_NAME);
-      if (getLookUpTable && getLookUpTable.length) {
-        // this.addForm.controls.LOOKUP_TABLE_NAME.patchValue(getLookUpTable[0]);
-        // this.tableSelected(getLookUpTable[0].TABLE_NAME);
-        cols = cols.map(i => {
-          i.SCHEMA_NAME = getLookUpTable[0].SCHEMA_NAME;
-          i.TABLE_NAME = getLookUpTable[0].TABLE_NAME;
-          return i;
+  }
+
+  getColumns() {
+    const request = {
+      table_name: this.lookUp.TABLE_NAME,
+      columnVersion: this.lookUp.METADATA_VERSION
+    };
+    this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+      if (!resp.error && resp.data && resp.data.length) {
+        const selectedColumns = resp.data.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
+        const someArray = [];
+        selectedColumns.forEach(e1 => {
+          this.dimensionTableColumns.forEach(e2 => {
+            if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
+              someArray.push(e2);
+            }
+          });
         });
+        this.addForm.controls.LOOKUP_COLUMNS.patchValue(someArray);
+        this.LOOKUP_COLUMNS = someArray;
       }
-      this.addForm.controls.LOOKUP_COLUMNS.patchValue(cols);
-    }
+    }, error => {
+      this.showToast('error', 'Could not get columns added');
+    });
   }
 
   tableSelected(tableName) {
@@ -155,9 +163,10 @@ export class AddComponent implements OnInit {
       this.dimensionTableColumns = resp.data;
       if (this.action === 'view' || this.action === 'edit') {
         this.setDimensionJoinKey();
+        this.getColumns();
       }
     }, error => {
-      // this.showToast('error', 'Could not get dimension tables.');
+      this.showToast('error', 'Could not get dimension tables columns.');
     });
   }
 

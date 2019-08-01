@@ -35,6 +35,15 @@
     </div>
 
     <div class="form-group col-6 row">
+      <label class="pr-0 col-5">Column Name Prefix <span class="required">*</span></label>
+      <div class="col-5 row">
+        <input oninput="this.value = this.value.toLowerCase()" type="text" class="form-control" formControlName="PREFIX"
+          placeholder="Column Name Prefix">
+      </div>
+    </div>
+    <div class="col-12"></div>
+
+    <div class="form-group col-6 row">
       <label class="pr-0 col-5">{{ selectedTable.TABLE_NAME }} Join Key <span class="required">*</span></label>
       <div class="col-7 row">
         <p-dropdown class="" appendTo="body" [options]="tableColumns" [filter]="true" optionLabel="TARGET_COLUMN_NAME"

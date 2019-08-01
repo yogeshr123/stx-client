@@ -51,6 +51,7 @@ export class AddComponent implements OnInit {
       LOOKUP_JOIN_KEYS1: ['', Validators.required],
       LOOKUP_JOIN_KEYS2: ['', Validators.required],
       LOOKUP_COLUMNS: [[], Validators.required],
+      PREFIX: ['', Validators.required],
       UPDATED_BY: ['User'],
       UPDATE_DATE: [new Date()],
     });
@@ -112,6 +113,7 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS1;
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
+    delete lookUpObject.PREFIX;
     this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
       if (!resp.error) {
         this.counter = this.counter + 1;
@@ -145,7 +147,7 @@ export class AddComponent implements OnInit {
         i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
       i.SRC_COLUMN_TYPE = 'DIMLOOKUP';
       i.TABLE_NAME = this.selectedTable.TABLE_NAME;
-      i.TARGET_COLUMN_NAME = `${columnsToAdd.LOOKUP_TABLE_ALIAS}_${i.TARGET_COLUMN_NAME}`;
+      i.TARGET_COLUMN_NAME = `${columnsToAdd.PREFIX}_${i.TARGET_COLUMN_NAME}`;
       i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
       i.UPDATE_DATE = `${new Date()}`;
       return i;

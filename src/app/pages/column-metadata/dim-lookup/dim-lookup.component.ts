@@ -151,7 +151,7 @@ export class DimLookupComponent implements OnInit {
 
   addNew(action, lookUp?) {
     const ref = this.dialogService.open(AddComponent, {
-      header: 'Add DIM Look Up',
+      header: `Add DIM Look Up`,
       width: '55%',
       data: {
         selectedTable: this.selectedTable,

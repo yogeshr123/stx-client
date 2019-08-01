@@ -249,6 +249,7 @@ export class AddComponent implements OnInit {
 
   reset() {
     this.formInit();
+    this.LOOKUP_COLUMNS = [];
   }
 
   showToast(severity, summary) {

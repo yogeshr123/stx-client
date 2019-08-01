@@ -35,4 +35,26 @@
   .button-bar {
     display: none;
   }
+
+  .listbox {
+    button {
+      padding: 2px;
+    }
+  }
+
+  .filter {
+    input {
+      height: 25px;
+    }
+
+    &::after {
+      top: -30px !important;
+    }
+  }
+
+  .record-picker {
+    label {
+      font-size: 11px !important;
+    }
+  }
 }

@@ -55,11 +55,11 @@ export class AddComponent implements OnInit {
       TABLE_NAME: [this.selectedTable.TABLE_NAME, Validators.required],
       METADATA_VERSION: [this.selectedTable.METADATA_VERSION, Validators.required],
       LOOKUP_TABLE_NAME: ['', Validators.required],
-      LOOKUP_TABLE_ALIAS: ['', Validators.required],
+      LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9]+$/)])],
       LOOKUP_JOIN_KEYS1: ['', Validators.required],
       LOOKUP_JOIN_KEYS2: ['', Validators.required],
       LOOKUP_COLUMNS: [[], Validators.required],
-      PREFIX: ['', Validators.required],
+      COLUMN_NAME_PREFIX: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9]+$/)])],
       UPDATED_BY: ['User'],
       UPDATE_DATE: [new Date()],
     });
@@ -74,6 +74,7 @@ export class AddComponent implements OnInit {
     this.addForm.controls.TABLE_NAME.patchValue(this.lookUp.TABLE_NAME);
     this.addForm.controls.METADATA_VERSION.patchValue(this.lookUp.METADATA_VERSION);
     this.addForm.controls.LOOKUP_TABLE_ALIAS.patchValue(this.lookUp.LOOKUP_TABLE_ALIAS);
+    this.addForm.controls.COLUMN_NAME_PREFIX.patchValue(this.lookUp.COLUMN_NAME_PREFIX);
     const getLookUpTable = this.dimensionTables.filter(i => i.TABLE_NAME === this.lookUp.LOOKUP_TABLE_NAME);
     if (getLookUpTable && getLookUpTable.length) {
       this.addForm.controls.LOOKUP_TABLE_NAME.patchValue(getLookUpTable[0]);
@@ -183,7 +184,6 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS1;
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
-    delete lookUpObject.PREFIX;
     this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
       if (!resp.error) {
         this.counter = this.counter + 1;
@@ -217,7 +217,7 @@ export class AddComponent implements OnInit {
         i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
       i.SRC_COLUMN_TYPE = 'DIMLOOKUP';
       i.TABLE_NAME = this.selectedTable.TABLE_NAME;
-      i.TARGET_COLUMN_NAME = `${columnsToAdd.PREFIX}_${i.TARGET_COLUMN_NAME}`;
+      i.TARGET_COLUMN_NAME = `${columnsToAdd.COLUMN_NAME_PREFIX}_${i.TARGET_COLUMN_NAME}`;
       i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
       i.UPDATE_DATE = `${new Date()}`;
       delete i.TARGET_COLUMN_ID;
@@ -248,8 +248,10 @@ export class AddComponent implements OnInit {
   }
 
   reset() {
-    this.formInit();
-    this.LOOKUP_COLUMNS = [];
+    if (this.action === 'new') {
+      this.LOOKUP_COLUMNS = [];
+      this.formInit();
+    }
   }
 
   showToast(severity, summary) {

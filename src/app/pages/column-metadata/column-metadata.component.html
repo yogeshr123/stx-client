@@ -150,14 +150,14 @@
                                 </td>
                                 <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                                     <div>
+                                        <button (click)="editColumn(version, true)" title="view"
+                                            class="btn btn-sm btn-info">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
                                         <button (click)="editColumn(version)" title="Edit"
                                             *ngIf="selectedVersion.STATUS === 'NEW' && version?.action !== 'deleted'"
-                                            class="btn btn-sm btn-primary">
+                                            class="btn btn-sm btn-primary ml-1">
                                             <i class="fa fa-pencil"></i>
-                                        </button>
-                                        <button (click)="editColumn(version, true)" title="view"
-                                            class="btn btn-sm btn-info ml-1">
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
                                         </button>
                                         <button (click)="deleteColumn(version)" title="Delete"
                                             class="btn btn-danger btn-sm ml-1"

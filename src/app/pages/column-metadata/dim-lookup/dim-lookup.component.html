@@ -19,7 +19,7 @@
         <!-- <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
           optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
         </p-dropdown> -->
-        <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew()"
+        <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew('new')"
           class="float-right btn btn-primary btn-sm">
           Add New
         </button>
@@ -29,7 +29,7 @@
         <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
         </ngx-loading>
         <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
-          [tableStyle]="{'table-layout':'auto'}">
+          [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-fhh">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -39,7 +39,7 @@
                   ariaLabelAsc="Activate to sort in ascending order">
                 </p-sortIcon>
               </th>
-              <!-- <th>Action</th> -->
+              <th class="fixedcol rightfixedcol">Action</th>
             </tr>
             <tr>
               <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
@@ -51,7 +51,7 @@
                   (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                   [value]="dt.filters[col.field]?.value">
               </th>
-              <!-- <th></th> -->
+              <th class="fixedcol rightfixedcol"></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-lookUp let-columns="columns" let-i="rowIndex">
@@ -64,11 +64,17 @@
                   <span> {{ lookUp[col.field] }} </span>
                 </ng-template>
               </td>
-              <!-- <td>
-                <button title="Delete" class="btn btn-danger btn-sm ml-1">
+              <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
+                <!-- <button title="Delete" class="btn btn-danger btn-sm ml-1">
                   <i class="fa fa-trash" aria-hidden="true"></i>
+                </button> -->
+                <button (click)="addNew('view', lookUp)" title="view" class="btn btn-sm btn-info">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
-              </td> -->
+                <button (click)="addNew('edit', lookUp)" title="Edit" class="btn btn-sm btn-primary ml-1">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </td>
             </tr>
           </ng-template>
         </p-table>

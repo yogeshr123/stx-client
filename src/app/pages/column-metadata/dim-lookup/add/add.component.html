@@ -11,13 +11,14 @@
 
 <div class="mt-3 p-0">
   <!-- <h6 class="col-12 text-center mb-3">LOOKUP Table Info:</h6> -->
-
+  <div *ngIf="action === 'view'" class="form-overlay"></div>
   <form class="row p-0" [formGroup]="addForm">
     <div class="form-group col-6 row">
       <label class="pr-0 col-5">Choose Table <span class="required">*</span></label>
       <div class="col-7 row">
         <p-dropdown class="" appendTo="body" [options]="dimensionTables" [filter]="true" placeholder="Select a Table"
-          formControlName="LOOKUP_TABLE_NAME" optionLabel="schemaTableName" (onChange)="tableSelected($event)">
+          formControlName="LOOKUP_TABLE_NAME" optionLabel="schemaTableName"
+          (onChange)="tableSelected($event.value.TABLE_NAME)">
         </p-dropdown>
       </div>
       <div class="col-12 mt-1" *ngIf="errors.noValidatedVersion">

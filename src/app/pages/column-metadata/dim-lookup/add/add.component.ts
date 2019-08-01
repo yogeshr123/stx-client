@@ -16,6 +16,8 @@ export class AddComponent implements OnInit {
   dimensionTableColumns: any;
   tableColumns: any;
   dimensionColumns: any;
+  action: any;
+  lookUp: any;
   errors = {
     noValidatedVersion: ''
   };
@@ -33,12 +35,17 @@ export class AddComponent implements OnInit {
   ngOnInit() {
     this.selectedTable = this.config.data.selectedTable;
     this.dimensionTables = this.config.data.dimensionTables;
+    this.action = this.config.data.action;
+    this.lookUp = this.config.data.lookUp;
     this.dimensionTables = this.dimensionTables.map(i => {
       i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
       return i;
     });
     this.tableColumns = this.config.data.allColumns;
     this.formInit();
+    if (this.action === 'view' || this.action === 'edit') {
+      this.setValuesInViewEdit();
+    }
   }
 
   formInit() {
@@ -57,10 +64,41 @@ export class AddComponent implements OnInit {
     });
   }
 
-  tableSelected(event) {
+  setValuesInViewEdit() {
+    this.addForm.controls.SCHEMA_NAME.patchValue(this.lookUp.SCHEMA_NAME);
+    this.addForm.controls.TABLE_NAME.patchValue(this.lookUp.TABLE_NAME);
+    this.addForm.controls.METADATA_VERSION.patchValue(this.lookUp.METADATA_VERSION);
+    this.addForm.controls.LOOKUP_TABLE_ALIAS.patchValue(this.lookUp.LOOKUP_TABLE_ALIAS);
+    const getLookUpTable = this.dimensionTables.filter(i => i.TABLE_NAME === this.lookUp.LOOKUP_TABLE_NAME);
+    if (getLookUpTable && getLookUpTable.length) {
+      this.addForm.controls.LOOKUP_TABLE_NAME.patchValue(getLookUpTable[0]);
+      this.tableSelected(getLookUpTable[0].TABLE_NAME);
+    }
+    const joinKeys = this.lookUp.LOOKUP_JOIN_KEYS.split('=');
+    const lookJoinKey1 = joinKeys[0].split('.')[1];
+    if (lookJoinKey1) {
+      const selectedJoinKey = this.tableColumns.filter(i => i.TARGET_COLUMN_NAME === lookJoinKey1);
+      if (selectedJoinKey && selectedJoinKey.length) {
+        this.addForm.controls.LOOKUP_JOIN_KEYS1.patchValue(selectedJoinKey[0]);
+      }
+    }
+  }
+
+  setDimensionJoinKey() {
+    const joinKeys = this.lookUp.LOOKUP_JOIN_KEYS.split('=');
+    const lookJoinKey2 = joinKeys[1].split('.')[1];
+    if (lookJoinKey2) {
+      const selectedJoinKey = this.dimensionTableColumns.filter(i => i.TARGET_COLUMN_NAME === lookJoinKey2);
+      if (selectedJoinKey && selectedJoinKey.length) {
+        this.addForm.controls.LOOKUP_JOIN_KEYS2.patchValue(selectedJoinKey[0]);
+      }
+    }
+  }
+
+  tableSelected(tableName) {
     this.errors.noValidatedVersion = null;
     this.dimensionTableColumns = [];
-    this.getTableVersions(event.value.TABLE_NAME);
+    this.getTableVersions(tableName);
     this.addForm.controls.LOOKUP_JOIN_KEYS2.patchValue('');
     this.addForm.controls.LOOKUP_COLUMNS.patchValue([]);
   }
@@ -70,7 +108,6 @@ export class AddComponent implements OnInit {
       table_name: tableName
     };
     this.columnMetadataService.getTableVersions(request).subscribe((resp: any) => {
-      // console.log("resp ", resp);
       if (resp.data && resp.data.length) {
         let validatedVersions = resp.data.map(i => {
           if (i.STATUS === 'VALIDATED') {
@@ -95,6 +132,9 @@ export class AddComponent implements OnInit {
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       this.dimensionTableColumns = resp.data;
+      if (this.action === 'view' || this.action === 'edit') {
+        this.setDimensionJoinKey();
+      }
     }, error => {
       // this.showToast('error', 'Could not get dimension tables.');
     });

@@ -54,6 +54,10 @@ const columnTableColumns = [
         field: 'TARGET_DATA_TYPE'
     },
     {
+        header: 'LOOKUP_TABLE_ALIAS',
+        field: 'LOOKUP_TABLE_ALIAS'
+    },
+    {
         header: 'IS_PKEY_COLUMN',
         field: 'IS_PKEY_COLUMN',
         type: 'boolean'

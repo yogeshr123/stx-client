@@ -71,7 +71,8 @@
                 <button (click)="addNew('view', lookUp)" title="view" class="btn btn-sm btn-info">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
-                <button (click)="addNew('edit', lookUp)" title="Edit" class="btn btn-sm btn-primary ml-1">
+                <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew('edit', lookUp)"
+                  title="Edit" class="btn btn-sm btn-primary ml-1">
                   <i class="fa fa-pencil"></i>
                 </button>
               </td>

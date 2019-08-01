@@ -65,7 +65,10 @@ export class DimLookupComponent implements OnInit {
 
   getLookUps() {
     this.loader.lookUps = true;
-    const request = { table_name: this.selectedTable.TABLE_NAME };
+    const request = {
+      table_name: this.selectedTable.TABLE_NAME,
+      columnVersion: this.selectedTable.METADATA_VERSION
+    };
     this.columnMetadataService.getTableLookUps(request).subscribe((resp: any) => {
       this.lookUps = resp.data;
       this.loader.lookUps = false;

@@ -14,6 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ListboxModule } from 'primeng/listbox';
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -46,7 +47,8 @@ import { AddComponent } from './dim-lookup/add/add.component';
     MultiSelectModule,
     ToastModule,
     ConfirmDialogModule,
-    ListboxModule
+    ListboxModule,
+    AngularDualListBoxModule
   ],
   providers: [MessageService],
   entryComponents: [MetadataMappingComponent, AddComponent]

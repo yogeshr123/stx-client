@@ -63,12 +63,15 @@
     <div class="col-12"></div>
 
     <div class="form-group col-12 row" *ngIf="addForm.value.LOOKUP_TABLE_NAME">
-      <label class="pr-0 col-5">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
+      <label class="pr-0 col-12">Select Dimension Table Columns to add to {{ selectedTable.TABLE_NAME }} <span
           class="required">*</span></label>
-      <div class="col-6 row">
-        <p-listbox [options]="dimensionTableColumns" formControlName="LOOKUP_COLUMNS" optionLabel="TARGET_COLUMN_NAME"
+      <div class="col-12 row dualList">
+        <!-- <p-listbox [options]="dimensionTableColumns" formControlName="LOOKUP_COLUMNS" optionLabel="TARGET_COLUMN_NAME"
           filter="filter" multiple="true" checkbox="true" styleClass="columnsToAdd">
-        </p-listbox>
+        </p-listbox> -->
+        <dual-list key="TARGET_COLUMN_NAME" display="TARGET_COLUMN_NAME" [source]="dimensionTableColumns"
+          [(destination)]="LOOKUP_COLUMNS" filter="true" class="col-12" (destinationChange)="destinationChange()">
+        </dual-list>
       </div>
     </div>
 

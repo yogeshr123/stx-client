@@ -23,6 +23,7 @@ export class AddComponent implements OnInit {
   };
   saveLookUpLoader = false;
   counter = 0;
+  LOOKUP_COLUMNS = [];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -62,6 +63,10 @@ export class AddComponent implements OnInit {
       UPDATED_BY: ['User'],
       UPDATE_DATE: [new Date()],
     });
+  }
+
+  destinationChange() {
+    this.addForm.controls.LOOKUP_COLUMNS.patchValue(this.LOOKUP_COLUMNS);
   }
 
   setValuesInViewEdit() {

@@ -82,13 +82,6 @@ export class AddComponent implements OnInit {
         this.addForm.controls.LOOKUP_JOIN_KEYS1.patchValue(selectedJoinKey[0]);
       }
     }
-
-    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    let cols = localCopyOfVersion[`${this.selectedTable.METADATA_VERSION}_${this.selectedTable.TABLE_NAME}`];
-    cols = cols.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
-    if (cols && cols.length) {
-      this.addForm.controls.LOOKUP_COLUMNS.patchValue(cols);
-    }
   }
 
   setDimensionJoinKey() {
@@ -99,6 +92,22 @@ export class AddComponent implements OnInit {
       if (selectedJoinKey && selectedJoinKey.length) {
         this.addForm.controls.LOOKUP_JOIN_KEYS2.patchValue(selectedJoinKey[0]);
       }
+    }
+    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+    let cols = localCopyOfVersion[`${this.selectedTable.METADATA_VERSION}_${this.selectedTable.TABLE_NAME}`];
+    cols = cols.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
+    if (cols && cols.length) {
+      const getLookUpTable = this.dimensionTables.filter(i => i.TABLE_NAME === this.lookUp.LOOKUP_TABLE_NAME);
+      if (getLookUpTable && getLookUpTable.length) {
+        // this.addForm.controls.LOOKUP_TABLE_NAME.patchValue(getLookUpTable[0]);
+        // this.tableSelected(getLookUpTable[0].TABLE_NAME);
+        cols = cols.map(i => {
+          i.SCHEMA_NAME = getLookUpTable[0].SCHEMA_NAME;
+          i.TABLE_NAME = getLookUpTable[0].TABLE_NAME;
+          return i;
+        });
+      }
+      this.addForm.controls.LOOKUP_COLUMNS.patchValue(cols);
     }
   }
 
@@ -161,25 +170,25 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
     delete lookUpObject.PREFIX;
-    // this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
-    //   if (!resp.error) {
-    //     this.counter = this.counter + 1;
-    //     if (this.counter === columnsToAdd.length + 1) {
-    //       this.showToast('success', 'Successfully saved lookup!');
-    //       this.closePopUp(true);
-    //     }
-    //   } else {
-    //     this.showToast('error', 'Could not save lookup info.');
-    //   }
-    //   this.saveLookUpLoader = false;
-    // }, error => {
-    //   this.showToast('error', 'Could not save lookup info.');
-    //   this.saveLookUpLoader = false;
-    // });
+    this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.counter = this.counter + 1;
+        if (this.counter === columnsToAdd.length + 1) {
+          this.showToast('success', 'Successfully saved lookup!');
+          this.closePopUp(true);
+        }
+      } else {
+        this.showToast('error', 'Could not save lookup info.');
+      }
+      this.saveLookUpLoader = false;
+    }, error => {
+      this.showToast('error', 'Could not save lookup info.');
+      this.saveLookUpLoader = false;
+    });
     let columnsToAdd = Object.assign({}, this.addForm.value);
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
-      i.LOOKUP_TABLE_ALIAS = i.LOOKUP_TABLE_ALIAS;
+      i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
         i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
@@ -197,6 +206,7 @@ export class AddComponent implements OnInit {
       i.TARGET_COLUMN_NAME = `${columnsToAdd.PREFIX}_${i.TARGET_COLUMN_NAME}`;
       i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
       i.UPDATE_DATE = `${new Date()}`;
+      delete i.TARGET_COLUMN_ID;
       return i;
     });
     for (const iterator of columnsToAdd) {
@@ -206,23 +216,21 @@ export class AddComponent implements OnInit {
   }
 
   addNewColumns(column, columnsToAdd) {
-    console.log("column ", column);
-    // return this.columnMetadataService.addColumn({ data: column }).subscribe((resp: any) => {
-    this.counter = this.counter + 1;
-    if (this.counter === columnsToAdd.length + 1) {
-      //     if (!resp.error && resp.data) {
-      column.action = 'newColumn';
-      const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-      localCopyOfVersion[`${column.METADATA_VERSION}_${column.TABLE_NAME}`].unshift(column);
-      this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-      //     }
-      this.showToast('success', 'Successfully saved lookup!');
-      this.closePopUp(true);
-    }
-    // }, error => {
-    //   this.showToast('error', 'Could not save column info.');
-    //   this.saveLookUpLoader = false;
-    // });
+    return this.columnMetadataService.addColumn({ data: column }).subscribe((resp: any) => {
+      if (!resp.error && resp.data) {
+        const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+        localCopyOfVersion[`${column.METADATA_VERSION}_${column.TABLE_NAME}`].unshift(resp.data);
+        this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+        this.counter = this.counter + 1;
+        if (this.counter === columnsToAdd.length + 1) {
+          this.showToast('success', 'Successfully saved lookup!');
+          this.closePopUp(true);
+        }
+      }
+    }, error => {
+      this.showToast('error', 'Could not save column info.');
+      this.saveLookUpLoader = false;
+    });
   }
 
   reset() {

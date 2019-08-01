@@ -4,6 +4,10 @@ td {
   white-space: nowrap;
 }
 
+.error {
+  color: #f00;
+}
+
 .go-back {
   text-decoration: underline;
 
@@ -22,7 +26,7 @@ td {
     overflow-y: scroll;
     overflow-x: auto;
     overflow-y: visible;
-    margin-right: 100px;
+    margin-right: 120px;
     th,
     td {
       height: 40px;
@@ -30,7 +34,7 @@ td {
     }
     .fixedcol {
       position: absolute;
-      width: 100px;
+      width: 120px;
       height: 41px;
       display: flex;
       align-items: center;

@@ -85,6 +85,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    deleteLookups(lookupData) {
+        const url = `${environment.baseUrl}column-metadata/deleteLookups`;
+        return this.http
+            .post(url, lookupData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getSingleColumn(tableData) {
         const url = `${environment.baseUrl}column-metadata/getSingleColumns`;
         return this.http

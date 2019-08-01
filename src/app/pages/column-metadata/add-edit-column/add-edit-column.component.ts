@@ -141,7 +141,31 @@ export class AddEditColumnComponent implements OnInit {
           }
         }
       }
-      this.addEditColumnForm.controls.UPDATE_DATE.patchValue(new Date());
+      // For Decimal & Varchar Precision
+      if (this.columnData.TARGET_DATA_TYPE.indexOf('decimal') > -1) {
+        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+        formControls.TARGET_DATA_TYPE.patchValue('decimal');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+        formControls.TARGET_RIGHT_PRECISION.patchValue(items[1]);
+      }
+      if (this.columnData.TARGET_DATA_TYPE.indexOf('varchar') > -1) {
+        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+        formControls.TARGET_DATA_TYPE.patchValue('varchar');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+      }
+      if (this.columnData.SRC_DATA_TYPE.indexOf('decimal') > -1) {
+        const splitDataType = this.columnData.SRC_DATA_TYPE.split('(');
+        formControls.SRC_DATA_TYPE.patchValue('decimal');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.SRC_LEFT_PRECISION.patchValue(items[0]);
+        formControls.SRC_RIGHT_PRECISION.patchValue(items[1]);
+      }
+      formControls.UPDATE_DATE.patchValue(new Date());
     }
     this.loader.formData = false;
   }

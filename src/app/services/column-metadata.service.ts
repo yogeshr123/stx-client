@@ -57,6 +57,20 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getTableLookUps(tableData) {
+        const url = `${environment.baseUrl}column-metadata/lookups`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getRefreshTables() {
+        const url = `${environment.baseUrl}column-metadata/getRefreshTables`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     validateVersion(version) {
         const url = `${environment.baseUrl}column-metadata/validateVersion`;
         return this.http
@@ -96,6 +110,13 @@ export class ColumnMetadataService {
         const url = `${environment.baseUrl}column-metadata/addColumn`;
         return this.http
             .post(url, columnData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    addLookUp(lookUpData) {
+        const url = `${environment.baseUrl}column-metadata/addLookups`;
+        return this.http
+            .post(url, lookUpData)
             .pipe(catchError(this.commonService.handleError));
     }
 

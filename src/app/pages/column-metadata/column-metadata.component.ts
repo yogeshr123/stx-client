@@ -518,6 +518,10 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
+  dimLookUp() {
+    return this.router.navigate(['/CMV/lookup']);
+  }
+
   showToast(severity, summary) {
     this.messageService.add({ severity, summary, life: 3000 });
   }

@@ -1,0 +1,22 @@
+.error,
+.required {
+  color: red;
+}
+
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+/deep/ .columnsToAdd {
+  min-width: 300px !important;
+
+  .ui-listbox-filter-container {
+    float: right;
+    width: 90% !important;
+  }
+
+  .ui-listbox-list-wrapper {
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+}

@@ -99,4 +99,40 @@ const columnTableColumns = [
     }
 ];
 
-export { versionTableColumns, ENV_NAME, columnTableColumns };
+const lookUpColumns = [
+    {
+        header: 'SCHEMA_NAME',
+        field: 'SCHEMA_NAME'
+    },
+    {
+        header: 'TABLE_NAME',
+        field: 'TABLE_NAME'
+    },
+    {
+        header: 'LOOKUP_SCHEMA_NAME',
+        field: 'LOOKUP_SCHEMA_NAME'
+    },
+    {
+        header: 'LOOKUP_TABLE_NAME',
+        field: 'LOOKUP_TABLE_NAME'
+    },
+    {
+        header: 'LOOKUP_TABLE_ALIAS',
+        field: 'LOOKUP_TABLE_ALIAS'
+    },
+    {
+        header: 'LOOKUP_JOIN_KEYS',
+        field: 'LOOKUP_JOIN_KEYS'
+    },
+    {
+        header: 'METADATA_VERSION',
+        field: 'METADATA_VERSION'
+    },
+    {
+        header: 'UPDATE_DATE',
+        field: 'UPDATE_DATE',
+        type: 'date'
+    },
+];
+
+export { versionTableColumns, ENV_NAME, columnTableColumns, lookUpColumns };

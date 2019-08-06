@@ -124,7 +124,11 @@ export class AddComponent implements OnInit {
         });
         this.addForm.controls.LOOKUP_COLUMNS.patchValue(dimColumnArray);
         dimColumnArray = dimColumnArray.filter(i => {
-          if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === 0 && i.IS_NEW.data[0] !== 0) {
+          if (this.oldVersionColumns && this.oldVersionColumns.length) {
+            if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === -1 && (i.IS_NEW && i.IS_NEW.data && i.IS_NEW.data[0] !== 0)) {
+              return i;
+            }
+          } else {
             return i;
           }
         });

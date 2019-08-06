@@ -1,0 +1,21 @@
+<div class="factColumns">
+  <!-- <form> -->
+  <div class="form-group">
+    Select Table Name:
+    <p-dropdown appendTo="body" class="ml-2 col-4" [options]="tables" [(ngModel)]="selectedTable"
+      optionLabel="schemaTableName" [filter]="true" filterBy="value.schemaTableName" (onChange)="tableSelected()">
+    </p-dropdown>
+    <div class="col-12 mt-1" *ngIf="errors">
+      <p class="error">
+        {{ errors }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-6 mb-1" *ngFor="let item of columns">
+      <div><input type="checkbox" [checked]="item.checked"> {{ item.TARGET_COLUMN_NAME }}</div>
+    </div>
+  </div>
+  <!-- </form> -->
+</div>

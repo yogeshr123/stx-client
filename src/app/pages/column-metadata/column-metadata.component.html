@@ -92,7 +92,7 @@
                         class="mb-2 btn btn-sm btn-info float-right ml-2" (click)="dimLookUp()">DIM LookUp</button>
                     <button
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
-                        class="mb-2 btn btn-sm btn-warning float-right" (click)="dimLookUp()">Fact Column</button>
+                        class="mb-2 btn btn-sm btn-warning float-right" (click)="showFactColumns()">Fact Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}"

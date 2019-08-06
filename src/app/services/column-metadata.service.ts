@@ -50,6 +50,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getAllLoadControlTables() {
+        const url = `${environment.baseUrl}column-metadata/getAllLoadControlTables`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getTableVersions(tableData) {
         const url = `${environment.baseUrl}column-metadata/version`;
         return this.http

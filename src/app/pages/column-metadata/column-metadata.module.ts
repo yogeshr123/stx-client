@@ -23,6 +23,7 @@ import { AddEditColumnComponent } from './add-edit-column/add-edit-column.compon
 import { AllVersionsComponent } from './all-versions/all-versions.component';
 import { DimLookupComponent } from './dim-lookup/dim-lookup.component';
 import { AddComponent } from './dim-lookup/add/add.component';
+import { FactColumnComponent } from './fact-column/fact-column.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AddComponent } from './dim-lookup/add/add.component';
     AddEditColumnComponent,
     AllVersionsComponent,
     DimLookupComponent,
-    AddComponent],
+    AddComponent,
+    FactColumnComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -51,6 +53,6 @@ import { AddComponent } from './dim-lookup/add/add.component';
     AngularDualListBoxModule
   ],
   providers: [MessageService],
-  entryComponents: [MetadataMappingComponent, AddComponent]
+  entryComponents: [MetadataMappingComponent, AddComponent, FactColumnComponent]
 })
 export class ColumnMetadataModule { }

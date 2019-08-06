@@ -21,9 +21,6 @@
       <div *ngIf="uniqueTables?.length" class="clearfix">
         Table Name:
         {{ selectedTableName.TABLE_NAME }}
-        <!-- <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
-          optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
-        </p-dropdown> -->
         <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew('new')"
           class="float-right btn btn-primary btn-sm">
           Add New

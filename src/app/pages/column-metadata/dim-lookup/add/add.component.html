@@ -61,6 +61,16 @@
           formControlName="COLUMN_NAME_PREFIX" placeholder="Column Name Prefix">
       </div>
     </div>
+
+    <div class="form-group col-6 row oldVersionColumns"
+      *ngIf="addForm.value.LOOKUP_TABLE_NAME && oldVersionColumns && oldVersionColumns.length">
+      <label class="pr-0 col-5">Columns from previous version - </label>
+      <div class="col-7 row">
+        <div *ngFor="let item of oldVersionColumns; last as last;">
+          <div>{{ item.TARGET_COLUMN_NAME }}<span *ngIf="!last">,</span></div>
+        </div>
+      </div>
+    </div>
     <div class="col-12"></div>
 
     <div class="form-group col-12 row" *ngIf="addForm.value.LOOKUP_TABLE_NAME">

@@ -7,6 +7,11 @@
   border-color: red;
 }
 
+.oldVersionColumns {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
 /deep/ .columnsToAdd {
   min-width: 300px !important;
 

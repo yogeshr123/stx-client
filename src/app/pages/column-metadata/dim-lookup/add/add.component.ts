@@ -23,6 +23,7 @@ export class AddComponent implements OnInit {
   };
   saveLookUpLoader = false;
   LOOKUP_COLUMNS = [];
+  oldVersionColumns = [];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -108,7 +109,8 @@ export class AddComponent implements OnInit {
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       if (!resp.error && resp.data && resp.data.length) {
         const selectedColumns = resp.data.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
-        const someArray = [];
+        let someArray = [];
+        this.oldVersionColumns = [];
         selectedColumns.forEach(e1 => {
           this.dimensionTableColumns.forEach(e2 => {
             if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
@@ -117,7 +119,20 @@ export class AddComponent implements OnInit {
           });
         });
         this.addForm.controls.LOOKUP_COLUMNS.patchValue(someArray);
+        someArray.forEach((i) => {
+          if (i.IS_NEW.data[0] === 0) {
+            this.oldVersionColumns.push(i);
+          }
+        });
+        someArray = someArray.filter(i => i.IS_NEW.data[0] === 1);
         this.LOOKUP_COLUMNS = someArray;
+        // remove from left side list previous version
+        const previousVersion = this.oldVersionColumns.map(i => i.TARGET_COLUMN_NAME);
+        this.dimensionTableColumns = this.dimensionTableColumns.filter(i => {
+          if (previousVersion.indexOf(i.TARGET_COLUMN_NAME) < 0) {
+            return i;
+          }
+        });
       }
     }, error => {
       this.showToast('error', 'Could not get columns added');
@@ -183,6 +198,7 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS1;
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
+
     let columnsToAdd = Object.assign({}, this.addForm.value);
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
@@ -190,7 +206,9 @@ export class AddComponent implements OnInit {
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
         i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
-      i.IS_NEW = 1;
+      if (i.IS_NEW === 1 || (i.IS_NEW.data && i.IS_NEW.data[0] === 1)) {
+        i.IS_NEW = 1;
+      }
       i.IS_PARTITION_COLUMN =
         i.IS_PARTITION_COLUMN.data ? i.IS_PARTITION_COLUMN.data[0] : i.IS_PARTITION_COLUMN;
       i.IS_PKEY_COLUMN =

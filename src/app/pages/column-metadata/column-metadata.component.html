@@ -87,8 +87,12 @@
                     <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
                     <button [routerLink]="[ './add-column']" class="mb-2 ml-2 btn btn-sm btn-secondary float-right"
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
-                    <button *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'"
-                        class="mb-2 btn btn-sm btn-info float-right" (click)="dimLookUp()">DIM LookUp</button>
+                    <button
+                        *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
+                        class="mb-2 btn btn-sm btn-info float-right ml-2" (click)="dimLookUp()">DIM LookUp</button>
+                    <button
+                        *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
+                        class="mb-2 btn btn-sm btn-warning float-right" (click)="dimLookUp()">Fact Column</button>
                 </h6>
                 <div class="table-responsive" *ngIf="!loader.columns">
                     <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}"

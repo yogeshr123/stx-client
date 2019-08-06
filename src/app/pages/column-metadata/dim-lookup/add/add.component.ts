@@ -22,7 +22,6 @@ export class AddComponent implements OnInit {
     noValidatedVersion: ''
   };
   saveLookUpLoader = false;
-  counter = 0;
   LOOKUP_COLUMNS = [];
 
   constructor(
@@ -184,21 +183,6 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS1;
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
-    this.columnMetadataService.addLookUp({ data: lookUpObject }).subscribe((resp: any) => {
-      if (!resp.error) {
-        this.counter = this.counter + 1;
-        if (this.counter === columnsToAdd.length + 1) {
-          this.showToast('success', 'Successfully saved lookup!');
-          this.closePopUp(true);
-        }
-      } else {
-        this.showToast('error', 'Could not save lookup info.');
-      }
-      this.saveLookUpLoader = false;
-    }, error => {
-      this.showToast('error', 'Could not save lookup info.');
-      this.saveLookUpLoader = false;
-    });
     let columnsToAdd = Object.assign({}, this.addForm.value);
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
@@ -223,26 +207,23 @@ export class AddComponent implements OnInit {
       delete i.TARGET_COLUMN_ID;
       return i;
     });
-    for (const iterator of columnsToAdd) {
-      this.addNewColumns(iterator, columnsToAdd);
-    }
-
-  }
-
-  addNewColumns(column, columnsToAdd) {
-    return this.columnMetadataService.addColumn({ data: column }).subscribe((resp: any) => {
-      if (!resp.error && resp.data) {
-        const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-        localCopyOfVersion[`${column.METADATA_VERSION}_${column.TABLE_NAME}`].unshift(resp.data);
-        this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-        this.counter = this.counter + 1;
-        if (this.counter === columnsToAdd.length + 1) {
-          this.showToast('success', 'Successfully saved lookup!');
-          this.closePopUp(true);
+    this.columnMetadataService.addLookUp({ data: lookUpObject, isEdit: this.action === 'edit', columnsToAdd }).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('success', 'Successfully saved lookup!');
+        this.closePopUp(true);
+        if (resp.data && resp.data.columnsToAdd && resp.data.columnsToAdd.length) {
+          for (const iterator of resp.data.columnsToAdd) {
+            const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+            localCopyOfVersion[`${iterator.METADATA_VERSION}_${iterator.TABLE_NAME}`].unshift(iterator);
+            this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+          }
         }
+      } else {
+        this.showToast('error', 'Could not save lookup info.');
       }
+      this.saveLookUpLoader = false;
     }, error => {
-      this.showToast('error', 'Could not save column info.');
+      this.showToast('error', 'Could not save lookup info.');
       this.saveLookUpLoader = false;
     });
   }

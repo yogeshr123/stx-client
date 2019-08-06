@@ -13558,7 +13558,7 @@ be a descendant of the grid when it is being dragged.
   display: -ms-flexbox;
   display: flex;
   background-color: #6ebe49;
-  z-index: 1030;
+  z-index: 1000;
   padding-right: 15px;
   height: 40px;
 }

@@ -64,11 +64,9 @@
 
     <div class="form-group col-6 row oldVersionColumns"
       *ngIf="addForm.value.LOOKUP_TABLE_NAME && oldVersionColumns && oldVersionColumns.length">
-      <label class="pr-0 col-5">Columns from previous version - </label>
+      <label class="pr-0 col-5">Existing Columns - </label>
       <div class="col-7 row">
-        <div *ngFor="let item of oldVersionColumns; last as last;">
-          <div>{{ item.TARGET_COLUMN_NAME }}<span *ngIf="!last">,</span></div>
-        </div>
+        <input class="form-control" type="text" value="{{oldVersionColumns}}">
       </div>
     </div>
     <div class="col-12"></div>
@@ -83,9 +81,9 @@
       </div>
     </div>
 
-    <div *ngIf="action !== 'view'" class="form-group col-6">
-      <button [ngClass]="{ 'disabled': !addForm.valid  }" type="submit" class="btn btn-primary btn-sm"
-        (click)="submit()">Submit</button>
+    <div *ngIf="action !== 'view'" class="form-group col-6 m-0">
+      <button [ngClass]="{ 'disabled': !addForm.valid || saveLookUpLoader  }" type="submit"
+        class="btn btn-primary btn-sm" (click)="submit()">Submit</button>
       <img *ngIf="saveLookUpLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
       <button *ngIf="action === 'new'" type="reset" class="btn btn-secondary ml-2 btn-sm"
         (click)="reset()">Reset</button>

@@ -109,30 +109,34 @@ export class AddComponent implements OnInit {
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       if (!resp.error && resp.data && resp.data.length) {
         const selectedColumns = resp.data.filter(i => i.LOOKUP_TABLE_ALIAS === this.lookUp.LOOKUP_TABLE_ALIAS);
-        let someArray = [];
+        let dimColumnArray = [];
         this.oldVersionColumns = [];
         selectedColumns.forEach(e1 => {
+          if (e1.IS_NEW.data[0] === 0) {
+            this.oldVersionColumns.push(e1.TARGET_COLUMN_NAME);
+          }
           this.dimensionTableColumns.forEach(e2 => {
             if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
-              someArray.push(e2);
+              e2.IS_NEW = e1.IS_NEW.data[0];
+              dimColumnArray.push(e2);
             }
           });
         });
-        this.addForm.controls.LOOKUP_COLUMNS.patchValue(someArray);
-        someArray.forEach((i) => {
-          if (i.IS_NEW.data[0] === 0) {
-            this.oldVersionColumns.push(i);
-          }
-        });
-        someArray = someArray.filter(i => i.IS_NEW.data[0] === 1);
-        this.LOOKUP_COLUMNS = someArray;
-        // remove from left side list previous version
-        const previousVersion = this.oldVersionColumns.map(i => i.TARGET_COLUMN_NAME);
-        this.dimensionTableColumns = this.dimensionTableColumns.filter(i => {
-          if (previousVersion.indexOf(i.TARGET_COLUMN_NAME) < 0) {
+        this.addForm.controls.LOOKUP_COLUMNS.patchValue(dimColumnArray);
+        dimColumnArray = dimColumnArray.filter(i => {
+          if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === 0 && i.IS_NEW.data[0] !== 0) {
             return i;
           }
         });
+        // remove from right side list previous version
+        this.LOOKUP_COLUMNS = dimColumnArray;
+        // remove from left side list previous version
+        this.dimensionTableColumns = this.dimensionTableColumns.filter(i => {
+          if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === -1) {
+            return i;
+          }
+        });
+
       }
     }, error => {
       this.showToast('error', 'Could not get columns added');
@@ -200,15 +204,13 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_COLUMNS;
 
     let columnsToAdd = Object.assign({}, this.addForm.value);
+    columnsToAdd.LOOKUP_COLUMNS = this.LOOKUP_COLUMNS;
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
       i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
         i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
-      if (i.IS_NEW === 1 || (i.IS_NEW.data && i.IS_NEW.data[0] === 1)) {
-        i.IS_NEW = 1;
-      }
       i.IS_PARTITION_COLUMN =
         i.IS_PARTITION_COLUMN.data ? i.IS_PARTITION_COLUMN.data[0] : i.IS_PARTITION_COLUMN;
       i.IS_PKEY_COLUMN =
@@ -219,23 +221,18 @@ export class AddComponent implements OnInit {
         i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
       i.SRC_COLUMN_TYPE = 'DIMLOOKUP';
       i.TABLE_NAME = this.selectedTable.TABLE_NAME;
-      i.TARGET_COLUMN_NAME = `${columnsToAdd.COLUMN_NAME_PREFIX}_${i.TARGET_COLUMN_NAME}`;
+      if (i.TARGET_COLUMN_NAME.indexOf(columnsToAdd.COLUMN_NAME_PREFIX) < 0) {
+        i.TARGET_COLUMN_NAME = `${columnsToAdd.COLUMN_NAME_PREFIX}_${i.TARGET_COLUMN_NAME}`;
+      }
       i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
       i.UPDATE_DATE = `${new Date()}`;
-      delete i.TARGET_COLUMN_ID;
       return i;
     });
     this.columnMetadataService.addLookUp({ data: lookUpObject, isEdit: this.action === 'edit', columnsToAdd }).subscribe((resp: any) => {
       if (!resp.error) {
         this.showToast('success', 'Successfully saved lookup!');
         this.closePopUp(true);
-        if (resp.data && resp.data.columnsToAdd && resp.data.columnsToAdd.length) {
-          for (const iterator of resp.data.columnsToAdd) {
-            const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-            localCopyOfVersion[`${iterator.METADATA_VERSION}_${iterator.TABLE_NAME}`].unshift(iterator);
-            this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-          }
-        }
+        localStorage.removeItem('localCopyOfVersion');
       } else {
         this.showToast('error', 'Could not save lookup info.');
       }

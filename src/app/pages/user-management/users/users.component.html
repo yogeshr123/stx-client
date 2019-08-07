@@ -1,0 +1,210 @@
+<p-toast></p-toast>
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-user"></i> User management</h1>
+  </div>
+</div>
+<!-- <div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <h4 class="mb-4">Users list</h4>
+      <div class="table-responsive">
+        <table class="table table table-striped border-bottom">
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Full name</th>
+              <th>Roles</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="animated-checkbox">
+                  <label>
+                    <input type="checkbox">
+                    <span class="label-text"></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                1
+              </td>
+              <td>
+                admin
+              </td>
+              <td>
+                admin@demo.com
+              </td>
+              <td>
+                Varsha
+              </td>
+              <td>
+                Varsha N
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm mr-2" type="button">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-primary btn-sm" type="button">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animated-checkbox">
+                  <label>
+                    <input type="checkbox">
+                    <span class="label-text"></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                2
+              </td>
+              <td>
+                user
+              </td>
+              <td>
+                user@demo.com
+              </td>
+              <td>
+                Vania
+              </td>
+              <td>
+                Vania Westley
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm mr-2" type="button">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-primary btn-sm" type="button">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="animated-checkbox">
+                  <label>
+                    <input type="checkbox">
+                    <span class="label-text"></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                3
+              </td>
+              <td>
+                guest
+              </td>
+              <td>
+                quest@demo.com
+              </td>
+              <td>
+                Daniel
+              </td>
+              <td>
+                Daniel Faraday
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm mr-2" type="button">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-primary btn-sm" type="button">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="btn-group">
+          </div>
+          <div class="btn-group float-right">
+            <button class="btn btn-sm btn-primary" (click)="addNew(true)">New
+              User</button>
+          </div>
+        </div>
+      </div>
+      <p-table #dt [value]="users" [columns]="userTableColumns"
+        [reorderableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div class="globalSearch">
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto">
+            <button class="btn btn-sm btn-primary" type="button">
+              <i class="fa fa-lg fa-fw fa-search"></i>
+            </button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field"
+              class="ui-flclassuid">
+              <input pInputText *ngSwitchDefault type="text"
+                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                [value]="dt.filters[col.field]?.value">
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <!-- <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td> -->
+            <td *ngFor="let col of columns">
+              <ng-container *ngIf="col.field === 'ROLE'; else elseTemplate2">
+                <span> {{ getUserRolesStr(rowData.ROLE) }}</span>
+              </ng-container>
+              <ng-template #elseTemplate2>
+                <span> {{rowData[col.field]}} </span>
+              </ng-template>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary mr-2" type="button"
+                (click)="selectUser(rowData)">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-primary btn-sm" type="button"
+                (click)="deleteUser(rowData)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div colspan="10" class="text-center p-2 border"
+        *ngIf="!users || !users.length">
+        <h6>No Data Available!</h6>
+      </div>
+    </div>
+  </div>
+</div>

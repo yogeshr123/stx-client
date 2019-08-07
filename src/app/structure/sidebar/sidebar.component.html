@@ -1,16 +1,17 @@
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-    <div class="app-sidebar__user">
-        <img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"
-            alt="User Image">
-        <div>
-            <p class="app-sidebar__user-name">John Doe</p>
-            <p class="app-sidebar__user-designation"></p>
-        </div>
+  <div class="app-sidebar__user">
+    <img class="app-sidebar__user-avatar"
+      src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"
+      alt="User Image">
+    <div>
+      <p class="app-sidebar__user-name">John Doe</p>
+      <p class="app-sidebar__user-designation"></p>
     </div>
-    <ul class="app-menu">
-        <!-- <li><a class="app-menu__item active" href="index.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+  </div>
+  <ul class="app-menu">
+    <!-- <li><a class="app-menu__item active" href="index.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
             <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">UI Elements</span><i class="treeview-indicator fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a class="treeview-item" href="bootstrap-components.html"><i class="icon fa fa-circle-o"></i> Bootstrap Elements</a></li>
@@ -20,61 +21,75 @@
               </ul>
             </li>
             <li><a class="app-menu__item" href="/bot"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li> -->
+    <li>
+      <a class="app-menu__item" routerLink="/dashboard"
+        routerLinkActive="active">
+        <i class="app-menu__icon fa fa-dashboard"></i>
+        <span class="app-menu__label">Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a class="app-menu__item" routerLink="/loadcontrol"
+        routerLinkActive="active">
+        <i class="app-menu__icon fa fa-table"></i>
+        <span class="app-menu__label">Load Control</span>
+      </a>
+    </li>
+    <li class="treeview is-expanded">
+      <a class="app-menu__item" routerLink="/CMV" routerLinkActive="active"
+        data-toggle="treeview">
+        <i class="app-menu__icon fa fa-columns"></i>
+        <span class="app-menu__label">Column Metadata Version</span>
+        <i class="treeview-indicator fa fa-angle-right"></i>
+      </a>
+      <ul class="treeview-menu">
         <li>
-            <a class="app-menu__item" routerLink="/dashboard" routerLinkActive="active">
-                <i class="app-menu__icon fa fa-dashboard"></i>
-                <span class="app-menu__label">Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a class="app-menu__item" routerLink="/loadcontrol" routerLinkActive="active">
-                <i class="app-menu__icon fa fa-table"></i>
-                <span class="app-menu__label">Load Control</span>
-            </a>
-        </li>
-        <li class="treeview is-expanded">
-            <a class="app-menu__item" routerLink="/CMV" routerLinkActive="active" data-toggle="treeview">
-                <i class="app-menu__icon fa fa-columns"></i>
-                <span class="app-menu__label">Column Metadata Version</span>
-                <i class="treeview-indicator fa fa-angle-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li>
-                    <a class="treeview-item" routerLink="/CMV/all-versions">
-                        <i class="icon fa fa-circle-o"></i> All Table Versions</a>
-                </li>
-                <li>
-                    <a class="treeview-item" routerLink="/CMV">
-                        <i class="icon fa fa-circle-o"></i>Table Details</a>
-                </li>
-                <li>
-                    <a class="treeview-item" routerLink="/header-hash">
-                        <i class="icon fa fa-circle-o"></i> File Header Hash</a>
-                </li>
-            </ul>
+          <a class="treeview-item" routerLink="/CMV/all-versions"
+            routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i> All Table Versions</a>
         </li>
         <li>
-            <a class="app-menu__item" routerLink="/load-status" routerLinkActive="active">
-                <i class="app-menu__icon fa fa-tasks"></i>
-                <span class="app-menu__label">Load Status</span>
-            </a>
+          <a class="treeview-item" routerLink="/CMV" routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i>Table Details</a>
         </li>
-        <li class="treeview is-expanded">
-            <a class="app-menu__item" routerLink="/user-management" data-toggle="treeview" routerLinkActive="active">
-                <i class="app-menu__icon fa fa-user"></i>
-                <span class="app-menu__label">User Management</span>
-                <i class="treeview-indicator fa fa-angle-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li>
-                    <a class="treeview-item" routerLink="/user-management/users">
-                        <i class="icon fa fa-circle-o"></i> Users</a>
-                </li>
-                <li>
-                    <a class="treeview-item" routerLink="/user-management/roles">
-                        <i class="icon fa fa-circle-o"></i> Roles</a>
-                </li>
-            </ul>
+        <li>
+          <a class="treeview-item" routerLink="/header-hash"
+            routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i> File Header Hash</a>
         </li>
-    </ul>
+      </ul>
+    </li>
+    <li>
+      <a class="app-menu__item" routerLink="/load-status"
+        routerLinkActive="active">
+        <i class="app-menu__icon fa fa-tasks"></i>
+        <span class="app-menu__label">Load Status</span>
+      </a>
+    </li>
+    <li class="treeview is-expanded">
+      <a class="app-menu__item" routerLink="/user-management"
+        data-toggle="treeview" routerLinkActive="active">
+        <i class="app-menu__icon fa fa-user"></i>
+        <span class="app-menu__label">User Management</span>
+        <i class="treeview-indicator fa fa-angle-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li>
+          <a class="treeview-item" routerLink="/user-management/users"
+            routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i> Users</a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/user-management/roles"
+            routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i> Roles</a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/user-management/permissions"
+            routerLinkActive="active">
+            <i class="icon fa fa-circle-o"></i> Permissions</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </aside>

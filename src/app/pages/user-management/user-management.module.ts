@@ -3,45 +3,52 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserComponent } from './users/user.component';
-import { RoleComponent } from './roles/role.component';
+import { UsersComponent } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
 import { UserManagementComponent } from './user-management.component';
-
-const routes: Routes = [
-    {
-        path: '',
-        component: UserManagementComponent,
-        children: [
-            {
-                path: '',
-                redirectTo: 'users',
-                pathMatch: 'full'
-            },
-            {
-                path: 'roles',
-                component: RoleComponent
-            },
-            {
-                path: 'users',
-                component: UserComponent
-            }
-        ]
-    }
-];
+import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
+import { PermissionsComponent } from './permissions/permissions.component';
+import { UserManagementRouting } from './user-management.routing';
+import { AddEditPermissionComponent } from './permissions/add-edit-permission/add-edit-permission.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { UsersService } from 'src/app/services/users.service';
+import { PermissionsService } from 'src/app/services/permissions.service';
+import { RolesService } from 'src/app/services/roles.service';
+import { TableModule } from 'primeng/table';
+import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
+import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule.forChild(routes),
+        UserManagementRouting,
         FormsModule,
         ReactiveFormsModule,
+        DialogModule,
+        CheckboxModule,
+        ToastModule,
+        DynamicDialogModule,
+        TableModule
     ],
-    providers: [],
+    providers: [
+        MessageService,
+        UsersService,
+        PermissionsService,
+        RolesService
+    ],
     declarations: [
         UserManagementComponent,
-        UserComponent,
-        RoleComponent
-    ]
+        UsersComponent,
+        RolesComponent,
+        PermissionsComponent,
+        AddEditPermissionComponent,
+        AddEditRoleComponent,
+        AddEditUserComponent,
+    ],
+    entryComponents: [AddEditPermissionComponent, AddEditRoleComponent, AddEditUserComponent]
 })
 export class UserManagementModule {
 }

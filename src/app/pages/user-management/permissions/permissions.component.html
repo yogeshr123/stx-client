@@ -1,0 +1,80 @@
+<p-toast></p-toast>
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-table"></i> Permissions
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <div class="btn-group">
+          </div>
+          <div class="btn-group float-right">
+            <button class="btn btn-sm btn-primary" (click)="addNew(true)">New
+              Permission</button>
+          </div>
+        </div>
+      </div>
+      <p-table #dt [value]="permissions" [columns]="permissionTableColumns"
+        [reorderableColumns]="true">
+        <ng-template pTemplate="caption">
+          <div class="globalSearch">
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto">
+            <button class="btn btn-sm btn-primary" type="button">
+              <i class="fa fa-lg fa-fw fa-search"></i>
+            </button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field"
+              class="ui-flclassuid">
+              <input pInputText *ngSwitchDefault type="text"
+                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                [value]="dt.filters[col.field]?.value">
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+
+            <td>
+              <button class="btn btn-sm btn-primary mr-2" type="button"
+                (click)="selectPermission(rowData)">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-primary btn-sm" type="button"
+                (click)="deletePermission(rowData)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div colspan="10" class="text-center p-2 border"
+        *ngIf="!permissions || !permissions.length">
+        <h6>No Data Available!</h6>
+      </div>
+    </div>
+  </div>
+</div>

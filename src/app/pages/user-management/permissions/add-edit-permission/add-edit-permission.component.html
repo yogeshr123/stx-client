@@ -1,0 +1,40 @@
+<form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label class="control-label">Enter Title (Eg. Read)</label>
+      <input class="form-control" type="text" formControlName="TITLE"
+        [ngClass]="{ 'is-invalid': submitted && f.TITLE.errors }" />
+      <div *ngIf="submitted && f.TITLE.errors" class="invalid-feedback">
+        <div *ngIf="f.TITLE.errors.required">Permission Title is
+          required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Enter Name (Eg.
+        canReadLoadControlData)</label>
+      <input class="form-control" type="text" formControlName="NAME"
+        [ngClass]="{ 'is-invalid': submitted && f.NAME.errors }" />
+      <div *ngIf="submitted && f.NAME.errors" class="invalid-feedback">
+        <div *ngIf="f.NAME.errors.required">Permission Name is
+          required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Select Parent</label>
+      <select class="form-control" formControlName="PARENT">
+        <option value="0">None</option>
+        <option [value]="permission.ID"
+          *ngFor="let permission of parentPermissions; let i = index">
+          {{permission.NAME}}</option>
+      </select>
+
+    </div>
+  </div>
+  <div class="col-md-8 col-md-offset-3">.
+    <button class="btn btn-sm btn-primary">
+      <i
+        class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-sm btn-secondary" (click)="closeModal(false)">
+      <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</button>
+  </div>
+</form>

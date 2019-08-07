@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
-import { MessageService } from 'primeng/api';
+import { DynamicDialogConfig, MessageService, DynamicDialogRef } from 'primeng/api';
 
 @Component({
   selector: 'app-fact-column',
@@ -10,16 +10,21 @@ import { MessageService } from 'primeng/api';
 export class FactColumnComponent implements OnInit {
 
   tables: any;
-  selectedTable: any;
+  selectedTable: any = '';
   errors = '';
   columns: any;
+  existingTable: any;
+  saveLoader = false;
 
   constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
   ) { }
 
   ngOnInit() {
+    this.existingTable = this.config.data;
     this.getAllTables();
   }
 
@@ -44,6 +49,7 @@ export class FactColumnComponent implements OnInit {
 
   tableSelected() {
     this.errors = '';
+    this.columns = [];
     this.getTableVersions(this.selectedTable.TABLE_NAME);
   }
 
@@ -63,8 +69,10 @@ export class FactColumnComponent implements OnInit {
           const maximumVersion = Math.max.apply(null, metadataVersions);
           this.getColumns(tableName, maximumVersion);
         } else {
-          this.errors = 'There are no columns available';
+          this.errors = 'There are no columns available for this table.';
         }
+      } else {
+        this.errors = 'There are no columns available for this table.';
       }
     });
   }
@@ -77,10 +85,58 @@ export class FactColumnComponent implements OnInit {
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       if (!resp.error && resp.data && resp.data.length) {
         this.columns = resp.data;
+      } else {
+        this.errors = 'There are no columns available for this table.';
       }
     }, error => {
       this.showToast('error', 'Could not get columns added');
     });
+  }
+
+  itemChecked(item) {
+    item.checked = !item.checked;
+  }
+
+  saveColumns() {
+    let selectedColumns = this.columns.filter(i => i.checked);
+    selectedColumns = selectedColumns.map(i => {
+      i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
+      i.TABLE_NAME = this.existingTable.TABLE_NAME;
+      i.UPDATE_DATE = `${new Date()}`;
+      i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
+      i.IS_DATATYPE_CHANGED =
+        i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
+      i.IS_PARTITION_COLUMN =
+        i.IS_PARTITION_COLUMN.data ? i.IS_PARTITION_COLUMN.data[0] : i.IS_PARTITION_COLUMN;
+      i.IS_PKEY_COLUMN =
+        i.IS_PKEY_COLUMN.data ? i.IS_PKEY_COLUMN.data[0] : i.IS_PKEY_COLUMN;
+      i.IS_RENAMED =
+        i.IS_RENAMED.data ? i.IS_RENAMED.data[0] : i.IS_RENAMED;
+      i.IS_UPDATE_DATE_COLUMN =
+        i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
+      i.IS_NEW = 1;
+      delete i.checked;
+      return i;
+    });
+    const request = {
+      columnsToAdd: selectedColumns,
+      oldTableInfo: this.selectedTable
+    };
+    this.columnMetadataService.saveFactColumns(request).subscribe((resp: any) => {
+      if (!resp.error) {
+        this.showToast('success', 'Successfully saved columns.');
+        localStorage.removeItem('localCopyOfVersion');
+        this.closePopUp(true);
+      } else {
+        this.showToast('error', 'Could not save columns');
+      }
+    }, error => {
+      this.showToast('error', 'Could not save columns');
+    });
+  }
+
+  closePopUp(status) {
+    this.ref.close(status);
   }
 
   showToast(severity, summary) {

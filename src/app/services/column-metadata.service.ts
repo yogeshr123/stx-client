@@ -71,6 +71,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    saveFactColumns(tableData) {
+        const url = `${environment.baseUrl}column-metadata/saveFactColumns`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getRefreshTables() {
         const url = `${environment.baseUrl}column-metadata/getRefreshTables`;
         return this.http

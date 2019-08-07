@@ -514,7 +514,14 @@ export class ColumnMetadataComponent implements OnInit {
   showFactColumns() {
     const ref = this.dialogService.open(FactColumnComponent, {
       header: 'Add Fact Columns',
-      width: '45%'
+      width: '45%',
+      data: this.selectedTable
+    });
+
+    ref.onClose.subscribe((reason) => {
+      if (reason) {
+        this.ngOnInit();
+      }
     });
   }
 

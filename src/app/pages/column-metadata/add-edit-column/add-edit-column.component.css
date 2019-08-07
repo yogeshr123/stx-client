@@ -29,3 +29,10 @@ input[type="checkbox"].form-control {
   background: rgba(255, 255, 255, 0.3);
   z-index: 1;
 }
+
+div.disabled {
+  pointer-events: none;
+
+  /* for "disabled" effect */
+  opacity: 0.7;
+}

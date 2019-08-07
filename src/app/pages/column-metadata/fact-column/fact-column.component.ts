@@ -13,8 +13,10 @@ export class FactColumnComponent implements OnInit {
   selectedTable: any = '';
   errors = '';
   columns: any;
+  alreadyAddedColumns: any;
   existingTable: any;
   saveLoader = false;
+  dataLoader = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -32,6 +34,7 @@ export class FactColumnComponent implements OnInit {
     this.columnMetadataService.getAllLoadControlTables().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
+        this.tables = this.tables.filter(i => i.LOAD_STRATEGY === 'UPDATE');
         this.tables = this.tables.map(i => {
           i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
           return i;
@@ -50,6 +53,7 @@ export class FactColumnComponent implements OnInit {
   tableSelected() {
     this.errors = '';
     this.columns = [];
+    this.dataLoader = true;
     this.getTableVersions(this.selectedTable.TABLE_NAME);
   }
 
@@ -68,6 +72,7 @@ export class FactColumnComponent implements OnInit {
           metadataVersions = metadataVersions.filter(i => i !== undefined);
           const maximumVersion = Math.max.apply(null, metadataVersions);
           this.getColumns(tableName, maximumVersion);
+          this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
         } else {
           this.errors = 'There are no columns available for this table.';
         }
@@ -77,14 +82,34 @@ export class FactColumnComponent implements OnInit {
     });
   }
 
-  getColumns(tableName, metadataVersion) {
+  compareData() {
+    if (this.columns && this.columns.length && this.alreadyAddedColumns && this.alreadyAddedColumns.length) {
+      this.columns.forEach(e1 => {
+        this.alreadyAddedColumns.forEach(e2 => {
+          if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
+            e1.checked = true;
+          }
+        });
+      });
+      this.dataLoader = false;
+    } else {
+      this.dataLoader = false;
+    }
+  }
+
+  getColumns(tableName, metadataVersion, toCompare?) {
     const request = {
       table_name: tableName,
       columnVersion: metadataVersion
     };
     this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
       if (!resp.error && resp.data && resp.data.length) {
-        this.columns = resp.data;
+        if (!toCompare) {
+          this.columns = resp.data;
+        } else {
+          this.alreadyAddedColumns = resp.data;
+        }
+        this.compareData();
       } else {
         this.errors = 'There are no columns available for this table.';
       }
@@ -98,10 +123,13 @@ export class FactColumnComponent implements OnInit {
   }
 
   saveColumns() {
+    this.saveLoader = true;
     let selectedColumns = this.columns.filter(i => i.checked);
     selectedColumns = selectedColumns.map(i => {
       i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
       i.TABLE_NAME = this.existingTable.TABLE_NAME;
+      i.METADATA_VERSION = this.existingTable.METADATA_VERSION;
+      i.SRC_COLUMN_TYPE = 'MAPPED';
       i.UPDATE_DATE = `${new Date()}`;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
@@ -119,8 +147,7 @@ export class FactColumnComponent implements OnInit {
       return i;
     });
     const request = {
-      columnsToAdd: selectedColumns,
-      oldTableInfo: this.selectedTable
+      columnsToAdd: selectedColumns
     };
     this.columnMetadataService.saveFactColumns(request).subscribe((resp: any) => {
       if (!resp.error) {
@@ -130,7 +157,9 @@ export class FactColumnComponent implements OnInit {
       } else {
         this.showToast('error', 'Could not save columns');
       }
+      this.saveLoader = false;
     }, error => {
+      this.saveLoader = false;
       this.showToast('error', 'Could not save columns');
     });
   }

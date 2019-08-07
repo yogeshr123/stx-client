@@ -7,6 +7,11 @@
   border-color: red;
 }
 
+.oldVersionColumns {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
 /deep/ .columnsToAdd {
   min-width: 300px !important;
 
@@ -18,5 +23,43 @@
   .ui-listbox-list-wrapper {
     max-height: 200px;
     overflow-y: scroll;
+  }
+}
+
+.form-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+/deep/ .dualList {
+  .button-bar {
+    display: none;
+  }
+
+  .listbox {
+    button {
+      padding: 2px;
+    }
+  }
+
+  .filter {
+    input {
+      height: 25px;
+    }
+
+    &::after {
+      top: -30px !important;
+    }
+  }
+
+  .record-picker {
+    label {
+      font-size: 11px !important;
+    }
   }
 }

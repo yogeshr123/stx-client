@@ -78,7 +78,7 @@ export class AddEditColumnComponent implements OnInit {
       METADATA_VERSION: ['', Validators.required],
       SRC_COLUMN_NAME: [
         { value: '', disabled: this.routeInfo.fromHeaderHash },
-        Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9-_]+$/)])],
+        Validators.compose([Validators.required, Validators.pattern(/^[a-z][a-z0-9-_]+$/)])],
       SRC_COLUMN_TYPE: [
         {
           value: this.routeInfo.fromHeaderHash ? 'MAPPED' : '',
@@ -90,7 +90,7 @@ export class AddEditColumnComponent implements OnInit {
       SRC_RIGHT_PRECISION: [0],
       INTERNAL_COLUMN: [0, Validators.required],
       DERIVED_COLUMN_FORMULA: [''],
-      LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.pattern(/^[a-zA-Z0-9-_]+$/)])],
+      LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.pattern(/^[a-z][a-zA-Z0-9-_]+$/)])],
       PREDEFINED_VALUE: [''],
       TARGET_COLUMN_NAME: [
         { value: '', disabled: this.routeInfo.fromHeaderHash },
@@ -141,7 +141,31 @@ export class AddEditColumnComponent implements OnInit {
           }
         }
       }
-      this.addEditColumnForm.controls.UPDATE_DATE.patchValue(new Date());
+      // For Decimal & Varchar Precision
+      if (this.columnData.TARGET_DATA_TYPE.indexOf('decimal') > -1) {
+        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+        formControls.TARGET_DATA_TYPE.patchValue('decimal');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+        formControls.TARGET_RIGHT_PRECISION.patchValue(items[1]);
+      }
+      if (this.columnData.TARGET_DATA_TYPE.indexOf('varchar') > -1) {
+        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+        formControls.TARGET_DATA_TYPE.patchValue('varchar');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+      }
+      if (this.columnData.SRC_DATA_TYPE.indexOf('decimal') > -1) {
+        const splitDataType = this.columnData.SRC_DATA_TYPE.split('(');
+        formControls.SRC_DATA_TYPE.patchValue('decimal');
+        splitDataType[1] = splitDataType[1].replace(')', '');
+        const items = splitDataType[1].split(',');
+        formControls.SRC_LEFT_PRECISION.patchValue(items[0]);
+        formControls.SRC_RIGHT_PRECISION.patchValue(items[1]);
+      }
+      formControls.UPDATE_DATE.patchValue(new Date());
     }
     this.loader.formData = false;
   }

@@ -178,10 +178,10 @@ export class LoadStatusComponent implements OnInit {
     this.loader.tasks = true;
     this.loadStatusService.getTasks(this.toogleButtonPeriod).subscribe((data: any) => {
       this.taskData = data.data;
-      this.taskDataBackUp = this.taskData;
+      this.taskDataBackUp = JSON.parse(JSON.stringify(this.taskData));
       if (this.taskData && this.taskData.length) {
-        this.taskData.length = this.taskData.length < 10 ? this.taskData.length : 10;
         this.onSubmit(null, true);
+        this.changeLimit(10);
       }
       this.loader.tasks = false;
     }, error => {

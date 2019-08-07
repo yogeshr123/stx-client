@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from 'primeng/api';
+import { DialogService, ConfirmationService } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { lookUpColumns } from '../tableColumns';
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   selector: 'app-dim-lookup',
   templateUrl: './dim-lookup.component.html',
   styleUrls: ['./dim-lookup.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class DimLookupComponent implements OnInit {
 
@@ -22,12 +22,15 @@ export class DimLookupComponent implements OnInit {
   lookUps: any;
   tableColumns = lookUpColumns;
   loader = {
-    lookUps: false
+    lookUps: false,
+    delete: false
   };
   dimensionTables = [];
   allColumns = [];
+  deleteError = '';
 
   constructor(
+    private confirmationService: ConfirmationService,
     private location: Location,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
@@ -65,7 +68,10 @@ export class DimLookupComponent implements OnInit {
 
   getLookUps() {
     this.loader.lookUps = true;
-    const request = { table_name: this.selectedTable.TABLE_NAME };
+    const request = {
+      table_name: this.selectedTable.TABLE_NAME,
+      columnVersion: this.selectedTable.METADATA_VERSION
+    };
     this.columnMetadataService.getTableLookUps(request).subscribe((resp: any) => {
       this.lookUps = resp.data;
       this.loader.lookUps = false;
@@ -95,6 +101,42 @@ export class DimLookupComponent implements OnInit {
     });
   }
 
+  deleteDIMLookUp(lookUp) {
+    this.deleteError = '';
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this lookup?',
+      accept: () => {
+        this.loader.delete = true;
+        // Check If any columns present
+        const request = {
+          table_name: lookUp.TABLE_NAME,
+          columnVersion: lookUp.METADATA_VERSION
+        };
+        this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+          if (!resp.error && resp.data && resp.data.length) {
+            const selectedColumns = resp.data.filter(i => i.LOOKUP_TABLE_ALIAS === lookUp.LOOKUP_TABLE_ALIAS);
+            if (selectedColumns && selectedColumns.length) {
+              this.deleteError = 'You must delete all the added columns first.';
+            } else {
+              this.columnMetadataService.deleteLookups({ data: lookUp }).subscribe((resp2: any) => {
+                if (!resp2.error) {
+                  this.showToast('success', 'Successfully deleted!');
+                  this.ngOnInit();
+                } else {
+                  this.showToast('error', 'Could not delete lookup.');
+                }
+                this.loader.delete = false;
+              }, error => {
+                this.showToast('error', 'Could not delete lookup.');
+                this.loader.delete = false;
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+
   changeTable() {
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
@@ -107,14 +149,16 @@ export class DimLookupComponent implements OnInit {
     });
   }
 
-  addNew() {
+  addNew(action, lookUp?) {
     const ref = this.dialogService.open(AddComponent, {
-      header: 'Add DIM Look Up',
+      header: `Add DIM Look Up`,
       width: '55%',
       data: {
         selectedTable: this.selectedTable,
         dimensionTables: this.dimensionTables,
-        allColumns: this.allColumns
+        allColumns: this.allColumns,
+        action,
+        lookUp
       }
     });
 

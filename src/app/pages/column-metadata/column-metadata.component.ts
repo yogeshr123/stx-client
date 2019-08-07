@@ -8,6 +8,7 @@ import { ColumnMetadataService } from 'src/app/services/column-metadata.service'
 import { CommonService } from 'src/app/services/common.service';
 import { columnTableColumns, versionTableColumns } from './tableColumns';
 import { Router } from '@angular/router';
+import { FactColumnComponent } from './fact-column/fact-column.component';
 
 
 @Component({
@@ -507,6 +508,20 @@ export class ColumnMetadataComponent implements OnInit {
       header: 'Errors',
       width: '45%',
       data
+    });
+  }
+
+  showFactColumns() {
+    const ref = this.dialogService.open(FactColumnComponent, {
+      header: 'Add Fact Columns',
+      width: '45%',
+      data: this.selectedTable
+    });
+
+    ref.onClose.subscribe((reason) => {
+      if (reason) {
+        this.ngOnInit();
+      }
     });
   }
 

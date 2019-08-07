@@ -46,7 +46,8 @@
                         <!-- Source Info -->
                         <p-accordionTab header="Source Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
-                                <div class="form-group col-6 row">
+                                <div class="form-group col-6 row"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">SRC COLUMN TYPE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -55,11 +56,14 @@
                                             <option value="MAPPED">MAPPED</option>
                                             <option value="DERIVED">DERIVED</option>
                                             <option value="PREDEFINED">PREDEFINED</option>
-                                            <option value="DIMLOOKUP">DIMLOOKUP</option>
+                                            <option
+                                                *ngIf="addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'"
+                                                value="DIMLOOKUP">DIMLOOKUP</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
+                                <div class="form-group col-6 row"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">SRC COLUMN NAME <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -68,7 +72,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || routeInfo.fromHeaderHash">
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || routeInfo.fromHeaderHash"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">SRC DATA TYPE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -82,7 +87,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'">
+                                    *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">SRC DECIMAL PRECISION <span
                                             class="required">*</span></label>
                                     <div class="row m-0 pl-3 col-8">
@@ -93,14 +99,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">INTERNAL COLUMN</label>
                                     <div class="col-md-8">
                                         <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'">
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">DERIVED COLUMN FORMULA <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -109,14 +117,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="!routeInfo.fromHeaderHash && addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DIMLOOKUP'">
+                                    *ngIf="!routeInfo.fromHeaderHash && addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DIMLOOKUP'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
                                     <div class="col-md-8">
                                         <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'">
+                                    *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">PREDEFINED VALUE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -153,7 +163,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
-                                    *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'">
+                                    *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'"
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
                                     <label class="control-label col-md-4">IS UPDATE DATE COLUMN <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
@@ -187,7 +198,8 @@
                         </p-accordionTab>
                         <!-- Other Info  -->
                         <p-accordionTab header="Other Info" class="col-12" [selected]="true">
-                            <div class="row mt-2">
+                            <div class="row mt-2"
+                                [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
 
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">IS PRIMARY KEY COLUMN</label>

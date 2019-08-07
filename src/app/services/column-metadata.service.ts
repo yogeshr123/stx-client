@@ -50,6 +50,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getAllLoadControlTables() {
+        const url = `${environment.baseUrl}column-metadata/getAllLoadControlTables`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getTableVersions(tableData) {
         const url = `${environment.baseUrl}column-metadata/version`;
         return this.http
@@ -59,6 +66,13 @@ export class ColumnMetadataService {
 
     getTableLookUps(tableData) {
         const url = `${environment.baseUrl}column-metadata/lookups`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    saveFactColumns(tableData) {
+        const url = `${environment.baseUrl}column-metadata/saveFactColumns`;
         return this.http
             .post(url, tableData)
             .pipe(catchError(this.commonService.handleError));
@@ -82,6 +96,13 @@ export class ColumnMetadataService {
         const url = `${environment.baseUrl}column-metadata/getAllColumns`;
         return this.http
             .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    deleteLookups(lookupData) {
+        const url = `${environment.baseUrl}column-metadata/deleteLookups`;
+        return this.http
+            .post(url, lookupData)
             .pipe(catchError(this.commonService.handleError));
     }
 

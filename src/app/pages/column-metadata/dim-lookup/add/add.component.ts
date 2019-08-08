@@ -127,15 +127,7 @@ export class AddComponent implements OnInit {
           });
         });
         this.addForm.controls.LOOKUP_COLUMNS.patchValue(dimColumnArray);
-        dimColumnArray = dimColumnArray.filter(i => {
-          if (this.oldVersionColumns && this.oldVersionColumns.length) {
-            if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === -1 && (i.IS_NEW && i.IS_NEW.data && i.IS_NEW.data[0] !== 0)) {
-              return i;
-            }
-          } else {
-            return i;
-          }
-        });
+        dimColumnArray = dimColumnArray.filter(i => i.IS_NEW === 1);
         // remove from right side list previous version
         this.LOOKUP_COLUMNS = dimColumnArray;
         // remove from left side list previous version
@@ -234,6 +226,7 @@ export class AddComponent implements OnInit {
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
       i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
+      i.IS_NEW = 1;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
         i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;

@@ -18,6 +18,8 @@ export class AddComponent implements OnInit {
   dimensionColumns: any;
   action: any;
   lookUp: any;
+  aliases: any;
+  colNamePrefix: any;
   errors = {
     noValidatedVersion: ''
   };
@@ -38,6 +40,8 @@ export class AddComponent implements OnInit {
     this.dimensionTables = this.config.data.dimensionTables;
     this.action = this.config.data.action;
     this.lookUp = this.config.data.lookUp;
+    this.aliases = this.config.data.aliases;
+    this.colNamePrefix = this.config.data.colNamePrefix;
     this.dimensionTables = this.dimensionTables.map(i => {
       i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
       return i;
@@ -191,6 +195,24 @@ export class AddComponent implements OnInit {
     }, error => {
       this.showToast('error', 'Could not get dimension tables columns.');
     });
+  }
+
+  checkValidations(control) {
+    switch (control) {
+      case 'alias':
+        if (this.aliases.indexOf(this.addForm.value.LOOKUP_TABLE_ALIAS) > -1) {
+          this.addForm.controls.LOOKUP_TABLE_ALIAS.setErrors({ incorrect: true });
+        }
+        break;
+      case 'prefix':
+        if (this.colNamePrefix.indexOf(this.addForm.value.COLUMN_NAME_PREFIX) > -1) {
+          this.addForm.controls.COLUMN_NAME_PREFIX.setErrors({ incorrect: true });
+        }
+        break;
+
+      default:
+        break;
+    }
   }
 
   submit() {

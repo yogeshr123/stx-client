@@ -125,6 +125,10 @@ const lookUpColumns = [
         field: 'LOOKUP_TABLE_ALIAS'
     },
     {
+        header: 'COLUMN_NAME_PREFIX',
+        field: 'COLUMN_NAME_PREFIX'
+    },
+    {
         header: 'LOOKUP_JOIN_KEYS',
         field: 'LOOKUP_JOIN_KEYS'
     },

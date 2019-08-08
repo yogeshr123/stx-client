@@ -29,7 +29,8 @@
       <div class="form-overlay" *ngIf="action !== 'new'"></div>
       <label class="pr-0 col-5">Table Alias <span class="required">*</span></label>
       <div class="col-5 row">
-        <input type="text" class="form-control" formControlName="LOOKUP_TABLE_ALIAS" placeholder="Table Alias">
+        <input type="text" class="form-control" formControlName="LOOKUP_TABLE_ALIAS" placeholder="Table Alias"
+          (keyup)="checkValidations('alias')">
       </div>
     </div>
 
@@ -58,7 +59,7 @@
       <label class="pr-0 col-5">Column Name Prefix <span class="required">*</span></label>
       <div class="col-5 row">
         <input oninput="this.value = this.value.toLowerCase()" type="text" class="form-control"
-          formControlName="COLUMN_NAME_PREFIX" placeholder="Column Name Prefix">
+          formControlName="COLUMN_NAME_PREFIX" placeholder="Column Name Prefix" (keyup)="checkValidations('prefix')">
       </div>
     </div>
 

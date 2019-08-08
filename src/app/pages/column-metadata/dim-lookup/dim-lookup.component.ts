@@ -150,6 +150,8 @@ export class DimLookupComponent implements OnInit {
   }
 
   addNew(action, lookUp?) {
+    const aliases = this.lookUps.map(i => i.LOOKUP_TABLE_ALIAS);
+    const colNamePrefix = this.lookUps.map(i => i.COLUMN_NAME_PREFIX);
     const ref = this.dialogService.open(AddComponent, {
       header: `Add DIM Look Up`,
       width: '55%',
@@ -158,7 +160,9 @@ export class DimLookupComponent implements OnInit {
         dimensionTables: this.dimensionTables,
         allColumns: this.allColumns,
         action,
-        lookUp
+        lookUp,
+        aliases,
+        colNamePrefix
       }
     });
 

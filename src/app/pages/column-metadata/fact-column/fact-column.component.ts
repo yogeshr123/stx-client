@@ -30,6 +30,7 @@ export class FactColumnComponent implements OnInit {
   ngOnInit() {
     this.existingTable = this.config.data;
     this.getAllTables();
+    this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
   }
 
   getAllTables() {
@@ -74,11 +75,12 @@ export class FactColumnComponent implements OnInit {
           metadataVersions = metadataVersions.filter(i => i !== undefined);
           const maximumVersion = Math.max.apply(null, metadataVersions);
           this.getColumns(tableName, maximumVersion);
-          this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
         } else {
+          this.dataLoader = false;
           this.errors = 'There are no columns available for this table.';
         }
       } else {
+        this.dataLoader = false;
         this.errors = 'There are no columns available for this table.';
       }
     });
@@ -96,7 +98,9 @@ export class FactColumnComponent implements OnInit {
       });
       this.dataLoader = false;
     } else {
-      this.dataLoader = false;
+      if (this.alreadyAddedColumns && !this.alreadyAddedColumns.length) {
+        this.dataLoader = false;
+      }
     }
   }
 
@@ -109,11 +113,12 @@ export class FactColumnComponent implements OnInit {
       if (!resp.error && resp.data && resp.data.length) {
         if (!toCompare) {
           this.columns = resp.data;
+          this.compareData();
         } else {
           this.alreadyAddedColumns = resp.data;
         }
-        this.compareData();
       } else {
+        this.dataLoader = false;
         this.errors = 'There are no columns available for this table.';
       }
     }, error => {

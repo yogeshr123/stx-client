@@ -86,7 +86,7 @@ export class HeaderHashComponent implements OnInit {
   }
 
   getAllTables() {
-    this.columnMetadataService.getAllTablesInVersions().subscribe((res: any) => {
+    this.columnMetadataService.getAllTablesInVersions({ queryString: '' }).subscribe((res: any) => {
       const allTables = res.data;
       this.uniqueTables = this.removeDuplicates(allTables, 'TABLE_NAME');
       if (!this.state.CMV || !this.state.CMV.selectedTable) {

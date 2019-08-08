@@ -1,23 +1,23 @@
 const versionTableColumns = [
     {
-        header: 'Version',
+        header: 'METADATA_VERSION',
         field: 'METADATA_VERSION'
     },
     {
-        header: 'Table Name',
+        header: 'TABLE_NAME',
         field: 'TABLE_NAME'
     },
     {
-        header: 'Status',
+        header: 'STATUS',
         field: 'STATUS'
     },
     {
-        header: 'Start Date Time',
+        header: 'START_DATE',
         field: 'START_DATE',
         type: 'date'
     },
     {
-        header: 'Updated Date Time',
+        header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date'
     }

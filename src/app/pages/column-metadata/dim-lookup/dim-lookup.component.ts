@@ -49,7 +49,7 @@ export class DimLookupComponent implements OnInit {
   }
 
   getAllTables() {
-    this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
+    this.columnMetadataService.getAllTablesInVersions({ queryString: '' }).subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
         if (!this.state.CMV || !this.state.CMV.selectedTable) {

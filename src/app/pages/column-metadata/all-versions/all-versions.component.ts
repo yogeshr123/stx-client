@@ -17,6 +17,7 @@ export class AllVersionsComponent implements OnInit {
   tables: any;
   state: any;
   statusDefaultFilter: any;
+  globalQuery: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
 
@@ -32,7 +33,7 @@ export class AllVersionsComponent implements OnInit {
   }
 
   getAllTables() {
-    this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
+    this.columnMetadataService.getAllTablesInVersions({ queryString: this.globalQuery }).subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
         this.tables.forEach(element => {

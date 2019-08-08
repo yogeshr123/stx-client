@@ -14,9 +14,11 @@ export class FactColumnComponent implements OnInit {
   errors = '';
   columns: any;
   alreadyAddedColumns: any;
+  columnsSavedInPrev = [];
   existingTable: any;
   saveLoader = false;
   dataLoader = false;
+  removedColumns: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -88,6 +90,7 @@ export class FactColumnComponent implements OnInit {
         this.alreadyAddedColumns.forEach(e2 => {
           if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
             e1.checked = true;
+            this.columnsSavedInPrev.push(e1.SRC_COLUMN_NAME);
           }
         });
       });
@@ -120,6 +123,15 @@ export class FactColumnComponent implements OnInit {
 
   itemChecked(item) {
     item.checked = !item.checked;
+
+    const uncheckedItems = this.columns.filter(i => i.checked === false);
+    const itemsToRemove = [];
+    uncheckedItems.forEach(element => {
+      if (this.columnsSavedInPrev.indexOf(element.SRC_COLUMN_NAME) > -1) {
+        itemsToRemove.push(element);
+      }
+    });
+    this.removedColumns = itemsToRemove;
   }
 
   saveColumns() {
@@ -146,8 +158,14 @@ export class FactColumnComponent implements OnInit {
       delete i.checked;
       return i;
     });
+    this.removedColumns = this.removedColumns.map(i => {
+      i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
+      i.TABLE_NAME = this.existingTable.TABLE_NAME;
+      return i;
+    });
     const request = {
-      columnsToAdd: selectedColumns
+      columnsToAdd: selectedColumns,
+      columnsToRemove: this.removedColumns
     };
     this.columnMetadataService.saveFactColumns(request).subscribe((resp: any) => {
       if (!resp.error) {

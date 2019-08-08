@@ -67,7 +67,7 @@
       *ngIf="addForm.value.LOOKUP_TABLE_NAME && oldVersionColumns && oldVersionColumns.length">
       <label class="pr-0 col-5">Existing Columns - </label>
       <div class="col-7 row">
-        <input class="form-control" type="text" value="{{oldVersionColumns}}">
+        <input class="form-control" type="text" value="{{ oldVersionColumns.join(', ') }}">
       </div>
     </div>
     <div class="col-12"></div>

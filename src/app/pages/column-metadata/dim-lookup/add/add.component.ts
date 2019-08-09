@@ -26,6 +26,8 @@ export class AddComponent implements OnInit {
   saveLookUpLoader = false;
   LOOKUP_COLUMNS = [];
   oldVersionColumns = [];
+  oldVersionColumnsBackUp = [];
+  displayExistingColumns = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -136,6 +138,7 @@ export class AddComponent implements OnInit {
             return i;
           }
         });
+        this.oldVersionColumnsBackUp = this.oldVersionColumns;
 
       }
     }, error => {
@@ -262,6 +265,19 @@ export class AddComponent implements OnInit {
     });
   }
 
+  filterItem(value) {
+    if (!value) {
+      this.oldVersionColumns = this.oldVersionColumnsBackUp;
+    }
+    if (value) {
+      this.oldVersionColumns = this.oldVersionColumnsBackUp.filter(
+        item => {
+          return item.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        }
+      );
+    }
+  }
+
   reset() {
     if (this.action === 'new') {
       this.LOOKUP_COLUMNS = [];
@@ -275,6 +291,14 @@ export class AddComponent implements OnInit {
 
   closePopUp(status) {
     this.ref.close(status);
+  }
+
+  closeModal() {
+    this.displayExistingColumns = !this.displayExistingColumns;
+  }
+
+  showExistingColumnsPopUp() {
+    this.displayExistingColumns = !this.displayExistingColumns;
   }
 
 }

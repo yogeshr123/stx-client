@@ -7,11 +7,6 @@
   border-color: red;
 }
 
-.oldVersionColumns {
-  max-height: 100px;
-  overflow-y: auto;
-}
-
 /deep/ .columnsToAdd {
   min-width: 300px !important;
 
@@ -60,6 +55,31 @@
   .record-picker {
     label {
       font-size: 11px !important;
+    }
+  }
+}
+
+.displayExistingColumns {
+  position: absolute;
+  top: 36px;
+  background: #fff;
+  left: 0;
+  z-index: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+
+  .close {
+    position: absolute;
+    top: -22px;
+    right: 0;
+  }
+
+  .innerDiv {
+    min-width: 175px;
+    max-height: 200px;
+    overflow: auto;
+    div {
+      padding: 5px;
     }
   }
 }

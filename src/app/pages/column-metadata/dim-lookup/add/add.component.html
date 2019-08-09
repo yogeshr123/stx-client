@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<div class="mt-3 p-0">
+<div class="mt-3 p-0" [ngClass]="{'viewOnly': action === 'view'}">
   <form class="row p-0" [formGroup]="addForm">
     <div class="form-group col-6 row">
       <div class="form-overlay" *ngIf="action !== 'new'"></div>

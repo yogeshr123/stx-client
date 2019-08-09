@@ -11,6 +11,13 @@
   border-color: red;
 }
 
+/deep/ .viewOnly {
+  .point-right,
+  .point-left {
+    display: none !important;
+  }
+}
+
 /deep/ .columnsToAdd {
   min-width: 300px !important;
 

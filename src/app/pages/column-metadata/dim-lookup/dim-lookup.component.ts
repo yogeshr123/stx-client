@@ -154,7 +154,7 @@ export class DimLookupComponent implements OnInit {
     const colNamePrefix = this.lookUps.map(i => i.COLUMN_NAME_PREFIX);
     const ref = this.dialogService.open(AddComponent, {
       header: `Add DIM Look Up`,
-      width: '55%',
+      width: '60%',
       data: {
         selectedTable: this.selectedTable,
         dimensionTables: this.dimensionTables,

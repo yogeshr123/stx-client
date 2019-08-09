@@ -27,7 +27,8 @@
 
     <div class="form-group col-6 row">
       <div class="form-overlay" *ngIf="action !== 'new'"></div>
-      <label class="pr-0 col-5">Table Alias <span class="required">*</span></label>
+      <label class="pr-0 col-5">Table Alias <span class="required">*</span>
+        <i class="fa fa-info-circle ml-1" aria-hidden="true" pTooltip="Should be unique"></i></label>
       <div class="col-5 row">
         <input type="text" class="form-control" formControlName="LOOKUP_TABLE_ALIAS" placeholder="Table Alias"
           (keyup)="checkValidations('alias')">
@@ -56,7 +57,10 @@
 
     <div class="form-group col-6 row" *ngIf="addForm.value.LOOKUP_TABLE_NAME">
       <div class="form-overlay" *ngIf="action !== 'new'"></div>
-      <label class="pr-0 col-5">Column Name Prefix <span class="required">*</span></label>
+      <label class="pr-0 col-5">
+        Column Name Prefix <span class="required">*</span>
+        <i class="fa fa-info-circle ml-1" aria-hidden="true" pTooltip="Should be unique"></i>
+      </label>
       <div class="col-5 row">
         <input oninput="this.value = this.value.toLowerCase()" type="text" class="form-control"
           formControlName="COLUMN_NAME_PREFIX" placeholder="Column Name Prefix" (keyup)="checkValidations('prefix')">
@@ -65,11 +69,14 @@
 
     <div class="form-group col-6 row oldVersionColumns"
       *ngIf="addForm.value.LOOKUP_TABLE_NAME && oldVersionColumnsBackUp && oldVersionColumnsBackUp.length">
-      <label class="pr-0 col-5">Existing Columns - </label>
+      <label class="pr-0 col-5">
+        Existing Columns
+        <i class="fa fa-info-circle ml-1" aria-hidden="true" pTooltip="Columns coming from previous version"></i>
+      </label>
       <div class="col-7 row">
         <div class="position-relative">
-          <button class="btn btn-warning" title="Columns from previous version" (click)="showExistingColumnsPopUp()">
-            <!-- <i class="fa fa-columns" aria-hidden="true"></i> -->
+          <button class="btn btn-warning btn-sm" title="Columns from previous version"
+            (click)="showExistingColumnsPopUp()">
             <span *ngIf="displayExistingColumns === false">Show</span>
             <span *ngIf="displayExistingColumns === true">Hide</span>
           </button>

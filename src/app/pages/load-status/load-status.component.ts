@@ -239,17 +239,17 @@ export class LoadStatusComponent implements OnInit {
     // });
 
     const request = {
-      records: updatedTasks,
-      schedulerInterval: ''
+      records: updatedTasks
     };
-    this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
-      // this.loadAllRecords();
-      this.loader.saveTasks = false;
-      this.showToast('success', 'Scheduler interval saved.');
-    }, error => {
-      this.loader.saveTasks = false;
-      this.showToast('error', 'Could not save Scheduler interval.');
-    });
+    console.log('request ', request);
+    // this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
+    //   // this.loadAllRecords();
+    //   this.loader.saveTasks = false;
+    //   this.showToast('success', 'Scheduler interval saved.');
+    // }, error => {
+    //   this.loader.saveTasks = false;
+    //   this.showToast('error', 'Could not save Scheduler interval.');
+    // });
   }
 
   filter(query, arrayToFilter) {

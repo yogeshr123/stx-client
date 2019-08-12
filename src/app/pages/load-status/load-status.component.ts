@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import * as frappeGantt from '../../../../lib/frappe-gantt';
 
 import * as $ from 'jquery';
+import { LoadControlService } from 'src/app/services/load-control.service';
 
 @Component({
   selector: 'app-load-status',
@@ -37,6 +38,7 @@ export class LoadStatusComponent implements OnInit {
   @ViewChild('ganttChart', { static: false }) ganttChart: ElementRef;
 
   constructor(
+    private loadControlService: LoadControlService,
     private messageService: MessageService,
     private loadStatusService: LoadStatusService,
     private formBuilder: FormBuilder
@@ -216,24 +218,37 @@ export class LoadStatusComponent implements OnInit {
     this.errors.updateEror = false;
     this.loader.saveTasks = true;
     const updatedTasks = this.taskData.filter(item => item.updated === true);
-    updatedTasks.map(i => {
-      i.start = `${i._start}`;
-    });
-    this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
-      if (!resp.data.error || !resp.data.error.length) {
-        this.tasksMoved = false;
-        this.loader.saveTasks = false;
-        this.showToast('success', 'Details successfully saved!');
-      } else {
-        this.errors.updateEror = true;
-        this.showToast('error', 'Could not update all records.');
-      }
-      this.getTasks();
+    // updatedTasks.map(i => {
+    //   i.start = `${i._start}`;
+    // });
+    // this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
+    //   if (!resp.data.error || !resp.data.error.length) {
+    //     this.tasksMoved = false;
+    //     this.loader.saveTasks = false;
+    //     this.showToast('success', 'Details successfully saved!');
+    //   } else {
+    //     this.errors.updateEror = true;
+    //     this.showToast('error', 'Could not update all records.');
+    //   }
+    //   this.getTasks();
+    //   this.loader.saveTasks = false;
+    //   this.tasksMoved = false;
+    // }, error => {
+    //   this.showToast('error', 'Could not update details.');
+    //   this.loader.saveTasks = false;
+    // });
+
+    const request = {
+      records: updatedTasks,
+      schedulerInterval: ''
+    };
+    this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
+      // this.loadAllRecords();
       this.loader.saveTasks = false;
-      this.tasksMoved = false;
+      this.showToast('success', 'Scheduler interval saved.');
     }, error => {
-      this.showToast('error', 'Could not update details.');
       this.loader.saveTasks = false;
+      this.showToast('error', 'Could not save Scheduler interval.');
     });
   }
 

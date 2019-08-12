@@ -6,6 +6,7 @@ import { Table } from 'primeng/table';
 import { columnTableColumns } from './tableColumns';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { CommonService } from 'src/app/services/common.service';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class HeaderHashComponent implements OnInit {
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
+    private messageService: MessageService,
     private commonService: CommonService,
     private columnMetadataService: ColumnMetadataService,
     private location: Location,
@@ -115,7 +117,7 @@ export class HeaderHashComponent implements OnInit {
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
       this.headers = res.data;
     }, error => {
-      console.error('error ', error);
+      this.showToast('error', 'Could not get data.');
     });
   }
 
@@ -123,6 +125,10 @@ export class HeaderHashComponent implements OnInit {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
   goBack() {

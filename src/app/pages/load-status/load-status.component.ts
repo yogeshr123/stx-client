@@ -80,7 +80,7 @@ export class LoadStatusComponent implements OnInit {
     setTimeout(() => {
       this.frappeGanttChart = new frappeGantt.default(this.ganttChart.nativeElement, this.taskData, {
         header_height: 40,
-        bar_height: 20,
+        bar_height: 15,
         custom_popup_html: (task) => {
           // console.log("task ", task);
           return `

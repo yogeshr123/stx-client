@@ -100,6 +100,10 @@ const columnTableColumns = [
         header: 'IS_NEW',
         field: 'IS_NEW',
         type: 'boolean'
+    },
+    {
+        header: 'METADATA_VERSION',
+        field: 'METADATA_VERSION'
     }
 ];
 

@@ -32,7 +32,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
+                        <th *ngFor="let col of columns" [ngSwitch]="col.type" class="ui-flclassuid">
                             <p-multiSelect appendTo="body" *ngSwitchCase="'ENV_NAME'" [options]="ENV_NAME"
                                 defaultLabel="ENV_NAME" [panelStyle]="{width:'200px'}"
                                 (onChange)="dt1.filter($event.value, col.field, 'in')">

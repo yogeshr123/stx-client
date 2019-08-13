@@ -14,11 +14,13 @@ export class PermissionsComponent implements OnInit {
   permissionTableColumns = permissionTableColumns;
   selectedPermission: any;
   permissions: any[];
+
   constructor(
     private messageService: MessageService,
     public dialogService: DialogService,
     private permissionsService: PermissionsService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.loadPermissions();
@@ -28,6 +30,9 @@ export class PermissionsComponent implements OnInit {
     this.permissionsService.getPermissions().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.permissions = data.data;
+      }
+      else {
+        this.permissions = [];
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');

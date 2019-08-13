@@ -25,6 +25,8 @@ import { AddLoadControlComponent } from './add-load-control/add-load-control.com
 import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
 import { LoadControlRouting } from './load-control.routing';
 import { DBEndpointsService } from '../../services/db-endpoints.service';
+import { LoadControlService } from 'src/app/services/load-control.service';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
     imports: [
@@ -44,8 +46,10 @@ import { DBEndpointsService } from '../../services/db-endpoints.service';
         TabViewModule,
         CheckboxModule,
         ReactiveFormsModule,
+        PermissionModule
     ],
     providers: [
+        LoadControlService,
         RecordService,
         MessageService,
         ConfirmationService,

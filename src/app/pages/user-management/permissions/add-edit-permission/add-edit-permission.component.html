@@ -1,6 +1,19 @@
 <form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
   <div class="col-md-12">
     <div class="form-group">
+      <label class="control-label">Select Module</label>
+      <select class="form-control" formControlName="module"
+        [ngClass]="{ 'is-invalid': submitted && f.module.errors }">
+        <option [value]="appModule"
+          *ngFor="let appModule of appModulesList; let i = index">
+          {{appModule}}</option>
+      </select>
+      <div *ngIf="submitted && f.module.errors" class="invalid-feedback">
+        <div *ngIf="f.module.errors.required">Module name is
+          required</div>
+      </div>
+    </div>
+    <!-- <div class="form-group">
       <label class="control-label">Enter Title (Eg. Read)</label>
       <input class="form-control" type="text" formControlName="TITLE"
         [ngClass]="{ 'is-invalid': submitted && f.TITLE.errors }" />
@@ -28,7 +41,7 @@
           {{permission.NAME}}</option>
       </select>
 
-    </div>
+    </div> -->
   </div>
   <div class="col-md-8 col-md-offset-3">.
     <button class="btn btn-sm btn-primary">

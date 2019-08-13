@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'primeng/api';
+import { PermissionsService } from 'src/app/services/permissions.service';
+import { RolesService } from 'src/app/services/roles.service';
+import { Permission } from 'src/app/model/permissions.table';
+import { CommonService } from 'src/app/services/common.service';
 // import { UserLoginService } from "../service/user-login.service";
 // import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/cognito.service";
 // import { NgxSpinnerService } from 'ngx-spinner';
@@ -22,82 +29,118 @@ export class LoginComponent implements OnInit {
     email: string;
     password: string;
     errorMessage: string;
-    // mfaStep = false;
-    // mfaData = {
-    //     destination: '',
-    //     callback: null
-    // };
-
-    constructor(public router: Router,
-        // public ddb: DynamoDBService,
-        // public userService: UserLoginService,
-        // private spinner: NgxSpinnerService
+    loginForm: FormGroup;
+    submitted = false;
+    currentUser: any;
+    currentUserRole: any;
+    currentUserPermissions: string[] = [];
+    isLoggedIn = false;
+    permissions: any;
+    appState: any;
+    constructor(
+        public router: Router,
+        private formBuilder: FormBuilder,
+        private authService: AuthService,
+        private messageService: MessageService,
+        private permissionsService: PermissionsService,
+        private rolesService: RolesService,
+        private commonService: CommonService
     ) {
     }
     ngOnInit() {
         this.errorMessage = null;
+        this.formInit();
+        this.appState = this.commonService.getState();
+        this.loadPermissions();
         // // console.log("Checking if the user is already authenticated. If so, then redirect to the secure site");
         // this.userService.isAuthenticated(this);
     }
 
-    onLogin() {
-        // this.spinner.show();
-        if (this.email == null || this.password == null) {
-            this.errorMessage = "All fields are required";
-            // this.spinner.hide();
-            return;
-        }
-
-        this.errorMessage = null;
-        if (DEMO_PARAMS.EMAIL === this.email && DEMO_PARAMS.PASSWORD === this.password) {
-            this.router.navigate(['/dashboard']);
-        }
-        else {
-            this.errorMessage = "Invalid credentials";
-        }
-        // this.userService.authenticate(this.email, this.password, this);
-        // this.spinner.hide();
+    formInit() {
+        this.loginForm = this.formBuilder.group({
+            USER_NAME: ['', Validators.required],
+            PASSWORD: ['', Validators.required],
+        });
+    }
+    get f() {
+        return this.loginForm.controls;
     }
 
-    // cognitoCallback(message: string, result: any) {
-    //     if (message != null) { //error
-    //         this.errorMessage = message;
-    //         // console.log("result: " + this.errorMessage);
-    //         // if (this.errorMessage === 'User is not confirmed.') {
-    //         //     console.log("redirecting");
-    //         //     this.router.navigate(['/home/confirmRegistration', this.email]);
-    //         // } else if (this.errorMessage === 'User needs to set password.') {
-    //         //     console.log("redirecting to set new password");
-    //         //     this.router.navigate(['/home/newPassword']);
-    //         // }
-    //     } else { //success
-    //         // this.ddb.writeLogEntry("login");
-    //         this.router.navigate(['/bot']);
-    //     }
-    // }
+    onSubmit() {
+        this.submitted = true;
+        // stop here if form is invalid
+        if (this.loginForm.invalid) {
+            return;
+        }
+        let formValues = Object.assign({}, this.loginForm.value);
 
-    // handleMFAStep(challengeName: string, challengeParameters: ChallengeParameters, callback: (confirmationCode: string) => any): void {
-    //     this.mfaStep = true;
-    //     this.mfaData.destination = challengeParameters.CODE_DELIVERY_DESTINATION;
-    //     this.mfaData.callback = (code: string) => {
-    //         if (code == null || code.length === 0) {
-    //             this.errorMessage = "Code is required";
-    //             return;
-    //         }
-    //         this.errorMessage = null;
-    //         callback(code);
-    //     };
-    // }
+        const body = {
+            user: formValues
+        };
+        this.authService.login(body).subscribe((data: any) => {
+            if (data.data) {
+                this.currentUser = data.data;
+                this.fetchLoggedInUserDetails();
+            }
+        }, error => {
+            this.showToast('error', 'user failed to login.');
+        });
+    }
 
-    // isLoggedIn(message: string, isLoggedIn: boolean) {
-    //     if (isLoggedIn) {
-    //         this.router.navigate(['/bot']);
-    //     }
-    // }
+    fetchLoggedInUserDetails() {
+        if (this.currentUser.ID != null && this.currentUser.ID != undefined && this.currentUser.ID != '0') {
+            this.isLoggedIn = true;
+        } else {
+            this.isLoggedIn = false;
+        }
+        if (this.isLoggedIn) {
+            this.appState = { ...this.appState, loggedInUser: this.currentUser };
+            this.commonService.setState(this.appState);
+            this.rolesService.getRoleById(this.currentUser.ROLE).subscribe((data: any) => {
+                if (data.data) {
+                    this.currentUserRole = data.data;
+                    this.currentUserRole.PERMISSIONSARRAY = this.currentUserRole.PERMISSIONS.split(',').map(Number);
 
-    // cancelMFA(): boolean {
-    //     this.mfaStep = false;
-    //     return false;   //necessary to prevent href navigation
-    // }
+                    const mainPermissions = this.permissions.filter(el => !el.PARENT);
+                    mainPermissions.forEach((element: Permission) => {
+                        const hasUserPermission = this.currentUserRole.PERMISSIONSARRAY.some(t => t === element.ID);
+                        if (hasUserPermission)
+                            this.currentUserPermissions.push(element.NAME);
+                        const children = this.permissions.filter(el => el.PARENT && el.PARENT === element.ID);
+                        children.forEach(child => {
+                            const hasUserChildPermission = this.currentUserRole.PERMISSIONSARRAY.some(t => t === child.ID);
+                            if (hasUserChildPermission)
+                                this.currentUserPermissions.push(child.NAME);
+                        });
+                    });
+                    this.appState = { ...this.appState, loggedInUserPermissions: this.currentUserPermissions };
+                    this.commonService.setState(this.appState);
+                    console.log(this.currentUserPermissions);
+                    this.router.navigateByUrl('/dashboard');
+                }
+            }, error => {
+                this.showToast('error', 'Error while fetching data.');
+            });
+
+        }
+    }
+
+    loadPermissions() {
+        this.permissionsService.getPermissions().subscribe((data: any) => {
+            if (data.data && data.data.length > 0) {
+                this.permissions = data.data;
+            }
+        }, error => {
+            this.showToast('error', 'Error while fetching data.');
+        });
+    }
+
+    getUserPermissions() {
+
+    }
+
+    showToast(severity, summary) {
+        this.messageService.add({ severity, summary, life: 3000 });
+    }
 }
 

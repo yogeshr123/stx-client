@@ -9,12 +9,14 @@ import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { BaseComponent } from './base.component';
 import { BaseRoutingModule } from './base-routing.module';
+import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
 
 @NgModule({
     declarations: [
         BaseComponent,
         HeaderComponent,
         SidebarComponent,
+        UnauthorizedComponent
     ],
     exports: [
         HeaderComponent,

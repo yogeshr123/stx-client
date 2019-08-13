@@ -34,10 +34,17 @@ export class RolesService {
             .pipe(catchError(this.commonService.handleError));
     }
 
-    deleteRole(ID: number) {
+    deleteRoleById(ID: number) {
         const url = `${environment.baseUrl}user_roles/${ID}`;
         return this.http
             .delete(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getRoleById(ID: number) {
+        const url = `${environment.baseUrl}user_roles/${ID}`;
+        return this.http
+            .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
 }

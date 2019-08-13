@@ -218,38 +218,31 @@ export class LoadStatusComponent implements OnInit {
     this.errors.updateEror = false;
     this.loader.saveTasks = true;
     const updatedTasks = this.taskData.filter(item => item.updated === true);
-    // updatedTasks.map(i => {
-    //   i.start = `${i._start}`;
-    // });
-    // this.loadStatusService.updateTasks(updatedTasks).subscribe((resp: any) => {
-    //   if (!resp.data.error || !resp.data.error.length) {
-    //     this.tasksMoved = false;
-    //     this.loader.saveTasks = false;
-    //     this.showToast('success', 'Details successfully saved!');
-    //   } else {
-    //     this.errors.updateEror = true;
-    //     this.showToast('error', 'Could not update all records.');
-    //   }
-    //   this.getTasks();
-    //   this.loader.saveTasks = false;
-    //   this.tasksMoved = false;
-    // }, error => {
-    //   this.showToast('error', 'Could not update details.');
-    //   this.loader.saveTasks = false;
-    // });
+    updatedTasks.map(i => {
+      if (i.DAG_SCHEDULE_INTERVAL && i._start) {
+        let updatedInterval = i.DAG_SCHEDULE_INTERVAL.split(' ');
+        const generateInterval = new Date(i._start);
+        updatedInterval[1] = generateInterval.getHours();
+        updatedInterval[0] = generateInterval.getMinutes();
+        updatedInterval = updatedInterval.join(' ');
+        i.DAG_SCHEDULE_INTERVAL = updatedInterval;
+      }
+      return i;
+    });
 
     const request = {
       records: updatedTasks
     };
-    console.log('request ', request);
-    // this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
-    //   // this.loadAllRecords();
-    //   this.loader.saveTasks = false;
-    //   this.showToast('success', 'Scheduler interval saved.');
-    // }, error => {
-    //   this.loader.saveTasks = false;
-    //   this.showToast('error', 'Could not save Scheduler interval.');
-    // });
+    this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
+      this.tasksMoved = false;
+      this.loader.saveTasks = false;
+      this.showToast('success', 'Scheduler interval saved.');
+      this.getTasks();
+    }, error => {
+      this.errors.updateEror = true;
+      this.loader.saveTasks = false;
+      this.showToast('error', 'Could not save Scheduler interval.');
+    });
   }
 
   filter(query, arrayToFilter) {

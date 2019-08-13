@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { LoadControlComponent } from './load-control.component';
 import { AddLoadControlComponent } from './add-load-control/add-load-control.component';
 import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 
 const routes: Routes = [
@@ -13,11 +14,15 @@ const routes: Routes = [
     },
     {
         path: 'edit',
-        component: EditLoadControlComponent
+        component: EditLoadControlComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editLoadControlModule' }
     },
     {
         path: 'add',
-        component: AddLoadControlComponent
+        component: AddLoadControlComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'addLoadControlModule' }
     }
 ];
 

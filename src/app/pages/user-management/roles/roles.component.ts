@@ -85,7 +85,7 @@ export class RolesComponent implements OnInit {
 
     deleteRole(role: any) {
         if (role.ID) {
-            this.rolesService.deleteRole(role.ID).subscribe((data: any) => {
+            this.rolesService.deleteRoleById(role.ID).subscribe((data: any) => {
                 this.showToast('success', 'Role deleted.');
                 this.ngOnInit();
             }, error => {

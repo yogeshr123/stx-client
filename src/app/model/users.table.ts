@@ -24,26 +24,26 @@ const userTableColumns = [
 ];
 
 class User {
-	id: number;
-	username: string;
-	password: string;
-	email: string;
-	roles: number[];
-	pic: string;
-	fullname: string;
-	phone: string;
-	department: string;
+	ID: number;
+	USER_NAME: string;
+	PASSWORD: string;
+	EMAIL_ID: string;
+	ROLE: number[];
+	PROFILE_PIC: string;
+	FULL_NAME: string;
+	PHONE: string;
+	DEPARTMENT: string;
 
 	clear(): void {
-		this.id = undefined;
-		this.username = '';
-		this.password = '';
-		this.email = '';
-		this.roles = [];
-		this.fullname = '';
-		this.pic = './assets/media/users/default.jpg';
-		this.phone = '';
-		this.department = '';
+		this.ID = undefined;
+		this.USER_NAME = '';
+		this.PASSWORD = '';
+		this.EMAIL_ID = '';
+		this.ROLE = [];
+		this.FULL_NAME = '';
+		this.PROFILE_PIC = './assets/media/users/default.jpg';
+		this.PHONE = '';
+		this.DEPARTMENT = '';
 	}
 }
 

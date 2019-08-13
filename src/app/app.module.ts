@@ -7,15 +7,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Custom components
 import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component';
-
-//Custom Services
-import { LoadControlService } from './services/load-control.service';
+// import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    // LoginComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -24,11 +21,9 @@ import { LoadControlService } from './services/load-control.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
-  providers: [
-    LoadControlService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

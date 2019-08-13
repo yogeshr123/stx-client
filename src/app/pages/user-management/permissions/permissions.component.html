@@ -53,17 +53,18 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr [pSelectableRow]="rowData">
+          <tr height="35px" [pSelectableRow]="rowData">
             <td *ngFor="let col of columns">
               {{rowData[col.field]}}
             </td>
 
             <td>
-              <button class="btn btn-sm btn-primary mr-2" type="button"
+              <!-- <button class="btn btn-sm btn-primary mr-2" type="button"
                 (click)="selectPermission(rowData)">
                 <i class="fa fa-pencil"></i>
-              </button>
-              <button class="btn btn-primary btn-sm" type="button"
+              </button> -->
+              <button class="btn btn-primary btn-sm"
+                *ngIf="rowData.PARENT === 0" type="button"
                 (click)="deletePermission(rowData)">
                 <i class="fa fa-trash-o"></i>
               </button>

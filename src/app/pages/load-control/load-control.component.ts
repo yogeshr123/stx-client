@@ -47,6 +47,7 @@ export class LoadControlComponent implements OnInit {
 
   async ngOnInit() {
     this.formInit();
+    this.appState = this.commonService.getState();
     await this.getColumnDataType();
     this.loadAllRecords();
 
@@ -448,11 +449,11 @@ export class LoadControlComponent implements OnInit {
           SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
           TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
           ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+          DAG_SCHEDULE_INTERVAL: cronExpression
         })
       }
       const body: any = {
-        records: records,
-        schedulerInterval: cronExpression
+        records: records
       };
 
       this.loadControlService.setSchedulerInterval(body).subscribe((data: any) => {

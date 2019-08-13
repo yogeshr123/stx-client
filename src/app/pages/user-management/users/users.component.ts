@@ -13,6 +13,7 @@ import { each, find } from 'lodash';
     providers: [DialogService]
 })
 export class UsersComponent implements OnInit {
+    count: number = 1;
     userTableColumns = userTableColumns;
     selectedUser: any;
     users: any[];
@@ -96,7 +97,9 @@ export class UsersComponent implements OnInit {
     }
 
     getUserRolesStr(id: any): string {
+        // this.count++;
         let title: string;
+        // console.log("test" + this.count);
         const _role = find(this.roles, (role: any) => role.ID === id);
         if (_role) {
             title = _role.TITLE;

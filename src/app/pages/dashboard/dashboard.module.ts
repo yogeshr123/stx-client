@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard.component';
 import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MessageService } from 'primeng/api';
+import { DataLatencySummaryComponent } from './data-latency-summary/data-latency-summary.component';
 
 
 @NgModule({
@@ -22,11 +23,16 @@ import { MessageService } from 'primeng/api';
                 path: '',
                 component: DashboardComponent
             },
+            {
+                path: 'data-latency-summary',
+                component: DataLatencySummaryComponent
+            }
         ]),
     ],
     providers: [MessageService],
     declarations: [
         DashboardComponent,
+        DataLatencySummaryComponent,
     ]
 })
 export class DashboardModule {

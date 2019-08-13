@@ -1,0 +1,33 @@
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-dashboard"></i> Data Latency Summary</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <h6 class="text-center">
+        T2 Data Latency
+      </h6>
+      <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
+        [reorderableColumns]="true" [(selection)]="selectedRecords" [tableStyle]="{'table-layout':'auto'}">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
+              {{col.field}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              <span> {{ rowData[col.field] }} </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

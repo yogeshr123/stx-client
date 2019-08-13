@@ -18,12 +18,16 @@ export class AddComponent implements OnInit {
   dimensionColumns: any;
   action: any;
   lookUp: any;
+  aliases: any;
+  colNamePrefix: any;
   errors = {
     noValidatedVersion: ''
   };
   saveLookUpLoader = false;
   LOOKUP_COLUMNS = [];
   oldVersionColumns = [];
+  oldVersionColumnsBackUp = [];
+  displayExistingColumns = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -38,6 +42,8 @@ export class AddComponent implements OnInit {
     this.dimensionTables = this.config.data.dimensionTables;
     this.action = this.config.data.action;
     this.lookUp = this.config.data.lookUp;
+    this.aliases = this.config.data.aliases;
+    this.colNamePrefix = this.config.data.colNamePrefix;
     this.dimensionTables = this.dimensionTables.map(i => {
       i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
       return i;
@@ -123,15 +129,7 @@ export class AddComponent implements OnInit {
           });
         });
         this.addForm.controls.LOOKUP_COLUMNS.patchValue(dimColumnArray);
-        dimColumnArray = dimColumnArray.filter(i => {
-          if (this.oldVersionColumns && this.oldVersionColumns.length) {
-            if (this.oldVersionColumns.indexOf(i.TARGET_COLUMN_NAME) === -1 && (i.IS_NEW && i.IS_NEW.data && i.IS_NEW.data[0] !== 0)) {
-              return i;
-            }
-          } else {
-            return i;
-          }
-        });
+        dimColumnArray = dimColumnArray.filter(i => i.IS_NEW === 1);
         // remove from right side list previous version
         this.LOOKUP_COLUMNS = dimColumnArray;
         // remove from left side list previous version
@@ -140,6 +138,7 @@ export class AddComponent implements OnInit {
             return i;
           }
         });
+        this.oldVersionColumnsBackUp = this.oldVersionColumns;
 
       }
     }, error => {
@@ -193,6 +192,24 @@ export class AddComponent implements OnInit {
     });
   }
 
+  checkValidations(control) {
+    switch (control) {
+      case 'alias':
+        if (this.aliases.indexOf(this.addForm.value.LOOKUP_TABLE_ALIAS) > -1) {
+          this.addForm.controls.LOOKUP_TABLE_ALIAS.setErrors({ incorrect: true });
+        }
+        break;
+      case 'prefix':
+        if (this.colNamePrefix.indexOf(this.addForm.value.COLUMN_NAME_PREFIX) > -1) {
+          this.addForm.controls.COLUMN_NAME_PREFIX.setErrors({ incorrect: true });
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
   submit() {
     // Save in lookUp Table
     this.saveLookUpLoader = true;
@@ -212,6 +229,7 @@ export class AddComponent implements OnInit {
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
       i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
+      i.IS_NEW = 1;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =
         i.IS_DATATYPE_CHANGED.data ? i.IS_DATATYPE_CHANGED.data[0] : i.IS_DATATYPE_CHANGED;
@@ -247,6 +265,19 @@ export class AddComponent implements OnInit {
     });
   }
 
+  filterItem(value) {
+    if (!value) {
+      this.oldVersionColumns = this.oldVersionColumnsBackUp;
+    }
+    if (value) {
+      this.oldVersionColumns = this.oldVersionColumnsBackUp.filter(
+        item => {
+          return item.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        }
+      );
+    }
+  }
+
   reset() {
     if (this.action === 'new') {
       this.LOOKUP_COLUMNS = [];
@@ -260,6 +291,14 @@ export class AddComponent implements OnInit {
 
   closePopUp(status) {
     this.ref.close(status);
+  }
+
+  closeModal() {
+    this.displayExistingColumns = !this.displayExistingColumns;
+  }
+
+  showExistingColumnsPopUp() {
+    this.displayExistingColumns = !this.displayExistingColumns;
   }
 
 }

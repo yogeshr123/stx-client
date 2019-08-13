@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="app-title">
     <div>
         <h1>
@@ -8,13 +9,16 @@
 
 <div class="row">
     <div class="col-12 mt-2">
+        <ngx-loading [show]="versionsLoader" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
         <div class="tile">
             <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns"
                 [reorderableColumns]="true">
                 <ng-template pTemplate="caption">
                     <div class="globalSearch">
-                        <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery">
-                        <button class="btn btn-sm btn-primary" type="button" (click)="search()">
+                        <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"
+                            (keyup.enter)="getAllTables()">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="getAllTables()">
                             <i class="fa fa-lg fa-fw fa-search"></i>
                         </button>
                     </div>

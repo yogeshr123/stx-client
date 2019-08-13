@@ -14,9 +14,11 @@ export class FactColumnComponent implements OnInit {
   errors = '';
   columns: any;
   alreadyAddedColumns: any;
+  columnsSavedInPrev = [];
   existingTable: any;
   saveLoader = false;
   dataLoader = false;
+  removedColumns: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -28,6 +30,7 @@ export class FactColumnComponent implements OnInit {
   ngOnInit() {
     this.existingTable = this.config.data;
     this.getAllTables();
+    this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
   }
 
   getAllTables() {
@@ -72,11 +75,12 @@ export class FactColumnComponent implements OnInit {
           metadataVersions = metadataVersions.filter(i => i !== undefined);
           const maximumVersion = Math.max.apply(null, metadataVersions);
           this.getColumns(tableName, maximumVersion);
-          this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
         } else {
+          this.dataLoader = false;
           this.errors = 'There are no columns available for this table.';
         }
       } else {
+        this.dataLoader = false;
         this.errors = 'There are no columns available for this table.';
       }
     });
@@ -88,12 +92,15 @@ export class FactColumnComponent implements OnInit {
         this.alreadyAddedColumns.forEach(e2 => {
           if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
             e1.checked = true;
+            this.columnsSavedInPrev.push(e1.SRC_COLUMN_NAME);
           }
         });
       });
       this.dataLoader = false;
     } else {
-      this.dataLoader = false;
+      if (this.alreadyAddedColumns && !this.alreadyAddedColumns.length) {
+        this.dataLoader = false;
+      }
     }
   }
 
@@ -106,11 +113,12 @@ export class FactColumnComponent implements OnInit {
       if (!resp.error && resp.data && resp.data.length) {
         if (!toCompare) {
           this.columns = resp.data;
+          this.compareData();
         } else {
           this.alreadyAddedColumns = resp.data;
         }
-        this.compareData();
       } else {
+        this.dataLoader = false;
         this.errors = 'There are no columns available for this table.';
       }
     }, error => {
@@ -120,6 +128,15 @@ export class FactColumnComponent implements OnInit {
 
   itemChecked(item) {
     item.checked = !item.checked;
+
+    const uncheckedItems = this.columns.filter(i => i.checked === false);
+    const itemsToRemove = [];
+    uncheckedItems.forEach(element => {
+      if (this.columnsSavedInPrev.indexOf(element.SRC_COLUMN_NAME) > -1) {
+        itemsToRemove.push(element);
+      }
+    });
+    this.removedColumns = itemsToRemove;
   }
 
   saveColumns() {
@@ -146,8 +163,14 @@ export class FactColumnComponent implements OnInit {
       delete i.checked;
       return i;
     });
+    this.removedColumns = this.removedColumns.map(i => {
+      i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
+      i.TABLE_NAME = this.existingTable.TABLE_NAME;
+      return i;
+    });
     const request = {
-      columnsToAdd: selectedColumns
+      columnsToAdd: selectedColumns,
+      columnsToRemove: this.removedColumns
     };
     this.columnMetadataService.saveFactColumns(request).subscribe((resp: any) => {
       if (!resp.error) {

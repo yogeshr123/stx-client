@@ -15,6 +15,8 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ListboxModule } from 'primeng/listbox';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { ColumnMetadataRouting } from './column-metadata.routing';
 import { ColumnMetadataComponent } from './column-metadata.component';
@@ -35,6 +37,8 @@ import { FactColumnComponent } from './fact-column/fact-column.component';
     AddComponent,
     FactColumnComponent],
   imports: [
+    TooltipModule,
+    DialogModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,

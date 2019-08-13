@@ -1,23 +1,23 @@
 const versionTableColumns = [
     {
-        header: 'Version',
+        header: 'METADATA_VERSION',
         field: 'METADATA_VERSION'
     },
     {
-        header: 'Table Name',
+        header: 'TABLE_NAME',
         field: 'TABLE_NAME'
     },
     {
-        header: 'Status',
+        header: 'STATUS',
         field: 'STATUS'
     },
     {
-        header: 'Start Date Time',
+        header: 'START_DATE',
         field: 'START_DATE',
         type: 'date'
     },
     {
-        header: 'Updated Date Time',
+        header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date'
     }
@@ -100,6 +100,10 @@ const columnTableColumns = [
         header: 'IS_NEW',
         field: 'IS_NEW',
         type: 'boolean'
+    },
+    {
+        header: 'METADATA_VERSION',
+        field: 'METADATA_VERSION'
     }
 ];
 
@@ -123,6 +127,10 @@ const lookUpColumns = [
     {
         header: 'LOOKUP_TABLE_ALIAS',
         field: 'LOOKUP_TABLE_ALIAS'
+    },
+    {
+        header: 'COLUMN_NAME_PREFIX',
+        field: 'COLUMN_NAME_PREFIX'
     },
     {
         header: 'LOOKUP_JOIN_KEYS',

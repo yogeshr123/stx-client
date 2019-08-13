@@ -43,10 +43,10 @@ export class ColumnMetadataService {
         return true;
     }
 
-    getAllTablesInVersions() {
+    getAllTablesInVersions(queryString) {
         const url = `${environment.baseUrl}column-metadata/getAllTablesInVersions`;
         return this.http
-            .get(url)
+            .post(url, queryString)
             .pipe(catchError(this.commonService.handleError));
     }
 

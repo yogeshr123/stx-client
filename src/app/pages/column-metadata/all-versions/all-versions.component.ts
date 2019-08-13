@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { versionTableColumns } from '../tableColumns';
 import { CommonService } from 'src/app/services/common.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-all-versions',
@@ -14,13 +15,16 @@ import { CommonService } from 'src/app/services/common.service';
 export class AllVersionsComponent implements OnInit {
 
   tableColumns = versionTableColumns;
+  versionsLoader = false;
   tables: any;
   state: any;
   statusDefaultFilter: any;
+  globalQuery: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   @ViewChild('statusFilter', { static: false }) statusFilter: ElementRef<HTMLElement>;
 
   constructor(
+    private messageService: MessageService,
     private router: Router,
     private commonService: CommonService,
     private columnMetadataService: ColumnMetadataService
@@ -32,7 +36,8 @@ export class AllVersionsComponent implements OnInit {
   }
 
   getAllTables() {
-    this.columnMetadataService.getAllTablesInVersions().subscribe((resp: any) => {
+    this.versionsLoader = true;
+    this.columnMetadataService.getAllTablesInVersions({ queryString: this.globalQuery }).subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
         this.tables.forEach(element => {
@@ -43,8 +48,12 @@ export class AllVersionsComponent implements OnInit {
         // Trigger New Filter After some Time
         setTimeout(() => {
           this.triggerDefaultFilter();
+          this.versionsLoader = false;
         }, 0);
       }
+    }, error => {
+      this.showToast('error', 'Could not get table versions.');
+      this.versionsLoader = false;
     });
   }
 
@@ -61,6 +70,10 @@ export class AllVersionsComponent implements OnInit {
       cancelable: true
     });
     el.dispatchEvent(event);
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, MessageService } from 'primeng/api';
+import { DialogService, MessageService, ConfirmationService } from 'primeng/api';
 import { roleTableColumns } from '../../../model/roles.table';
 import { AddEditRoleComponent } from './add-edit-role/add-edit-role.component';
 import { RolesService } from 'src/app/services/roles.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
+import { CommonService } from 'src/app/services/common.service';
+import { isNullOrUndefined } from 'util';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-roles',
@@ -16,11 +19,15 @@ export class RolesComponent implements OnInit {
     selectedRole: any;
     permissions: any[];
     roles: any[];
+    appState: any;
     constructor(
         private messageService: MessageService,
         public dialogService: DialogService,
         private rolesService: RolesService,
-        private permissionsService: PermissionsService
+        private permissionsService: PermissionsService,
+        private commonService: CommonService,
+        private router: Router,
+        private confirmationService: ConfirmationService
     ) { }
 
     ngOnInit() {
@@ -70,6 +77,19 @@ export class RolesComponent implements OnInit {
 
         ref.onClose.subscribe((reason) => {
             if (reason) {
+                this.appState = this.commonService.getState();
+                if (!(isNullOrUndefined(this.appState.loggedInUser))) {
+                    if (this.selectedRole.ID === this.appState.loggedInUser.ROLE) {
+                        this.confirmationService.confirm({
+                            rejectVisible: false,
+                            acceptLabel: 'Ok',
+                            message: 'You have changed the permissions of logged in user. Please login again...',
+                            accept: () => {
+                                this.router.navigateByUrl('/login');
+                            }
+                        });
+                    }
+                }
                 this.ngOnInit();
             }
         });

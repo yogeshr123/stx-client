@@ -12,7 +12,7 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { UserManagementRouting } from './user-management.routing';
 import { AddEditPermissionComponent } from './permissions/add-edit-permission/add-edit-permission.component';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { UsersService } from 'src/app/services/users.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
@@ -20,6 +20,7 @@ import { RolesService } from 'src/app/services/roles.service';
 import { TableModule } from 'primeng/table';
 import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
 import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
     imports: [
@@ -31,13 +32,15 @@ import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.compon
         CheckboxModule,
         ToastModule,
         DynamicDialogModule,
-        TableModule
+        TableModule,
+        ConfirmDialogModule
     ],
     providers: [
         MessageService,
         UsersService,
         PermissionsService,
-        RolesService
+        RolesService,
+        ConfirmationService
     ],
     declarations: [
         UserManagementComponent,

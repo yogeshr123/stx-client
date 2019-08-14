@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MessageService } from 'primeng/api';
 import { DataLatencySummaryComponent } from './data-latency-summary/data-latency-summary.component';
+import { LoadingStatusSummaryComponent } from './loading-status-summary/loading-status-summary.component';
 
 
 @NgModule({
@@ -26,6 +27,10 @@ import { DataLatencySummaryComponent } from './data-latency-summary/data-latency
             {
                 path: 'data-latency-summary',
                 component: DataLatencySummaryComponent
+            },
+            {
+                path: 'loading-status-summary',
+                component: LoadingStatusSummaryComponent
             }
         ]),
     ],
@@ -33,6 +38,7 @@ import { DataLatencySummaryComponent } from './data-latency-summary/data-latency
     declarations: [
         DashboardComponent,
         DataLatencySummaryComponent,
+        LoadingStatusSummaryComponent,
     ]
 })
 export class DashboardModule {

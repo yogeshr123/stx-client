@@ -25,6 +25,10 @@ const routes: Routes = [
         component: AddEditColumnComponent
     },
     {
+        path: 'view-column/fhh',
+        component: AddEditColumnComponent
+    },
+    {
         path: 'view-column/:versionId/:columnId',
         component: AddEditColumnComponent
     },

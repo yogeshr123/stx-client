@@ -114,7 +114,11 @@ export class AddEditHeaderComponent implements OnInit {
     } else {
       this.appState = { ...this.appState, header };
       this.commonService.setState(this.appState);
-      this.router.navigate([`/CMV/add-column/fhh`]);
+      if (this.header.STATUS === 'APPROVED') {
+        this.router.navigate([`/CMV/view-column/fhh`]);
+      } else {
+        this.router.navigate([`/CMV/add-column/fhh`]);
+      }
     }
   }
 

@@ -12,10 +12,12 @@ import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ClustersComponent } from './clusters.component';
 import { RouterModule } from '@angular/router';
+import { AddEditClusterComponent } from './add-edit-cluster/add-edit-cluster.component';
 
 @NgModule({
     declarations: [
-        ClustersComponent
+        ClustersComponent,
+        AddEditClusterComponent
     ],
     imports: [
         TooltipModule,
@@ -29,6 +31,14 @@ import { RouterModule } from '@angular/router';
             {
                 path: '',
                 component: ClustersComponent
+            },
+            {
+                path: 'add-cluster',
+                component: AddEditClusterComponent
+            },
+            {
+                path: 'edit-cluster',
+                component: AddEditClusterComponent
             }
         ]),
         DropdownModule,

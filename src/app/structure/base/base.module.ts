@@ -12,7 +12,6 @@ import { BaseRoutingModule } from './base-routing.module';
 import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
 import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 import { DbEndpointsComponent } from 'src/app/pages/db-endpoints/db-endpoints.component';
-import { ClustersComponent } from 'src/app/pages/clusters/clusters.component';
 
 @NgModule({
     declarations: [
@@ -21,8 +20,7 @@ import { ClustersComponent } from 'src/app/pages/clusters/clusters.component';
         SidebarComponent,
         UnauthorizedComponent,
         ProfileComponent,
-        DbEndpointsComponent,
-        ClustersComponent
+        DbEndpointsComponent
     ],
     exports: [
         HeaderComponent,

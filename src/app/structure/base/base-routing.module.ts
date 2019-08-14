@@ -5,6 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { BaseComponent } from './base.component';
 import { AuthGuard } from 'src/app/services/auth.guard';
 import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
+import { ProfileComponent } from 'src/app/pages/profile/profile.component';
+import { DbEndpointsComponent } from 'src/app/pages/db-endpoints/db-endpoints.component';
+import { ClustersComponent } from 'src/app/pages/clusters/clusters.component';
 // import { ErrorPageComponent } from './content/error-page/error-page.component';
 // Auth
 // import { AuthGuard } from '../../../core/auth';
@@ -53,6 +56,18 @@ const routes: Routes = [
             {
                 path: 'unauthorized',
                 component: UnauthorizedComponent
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent
+            },
+            {
+                path: 'db-endpoints',
+                component: DbEndpointsComponent
+            },
+            {
+                path: 'clusters',
+                component: ClustersComponent
             },
             // {
             // 	path: 'error/403',

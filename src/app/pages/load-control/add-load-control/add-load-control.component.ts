@@ -58,6 +58,7 @@ export class AddLoadControlComponent implements OnInit {
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       RAW_FACTORY_PATH: ['', Validators.pattern(this.s3UrlPattern)],
+      RAW_FACTORY_MAX_LANDING_DATE: [null],
       RAW_FACTORY_RETENTION_STRATEGY: [''],
       RAW_FACTORY_RETENTION_DAYS: [0],
       DB_ID: [''],
@@ -65,6 +66,7 @@ export class AddLoadControlComponent implements OnInit {
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
+      CHECK_INDEX_EXIST: ['TRUE'],
       ETL_STATUS: [''],
       ETL_STATUS_REASON: [''],
       ETL_EXECUTION_STATUS: ['TODO'],
@@ -97,9 +99,11 @@ export class AddLoadControlComponent implements OnInit {
     const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
     const DBDB_TABLE_PK_COLUMNS_SCHEMA = this.addLoadControlForm.get('DB_TABLE_PK_COLUMNS');
     const DB_TABLE_UPDATE_DATE_COLUMN = this.addLoadControlForm.get('DB_TABLE_UPDATE_DATE_COLUMN');
+    const CHECK_INDEX_EXIST = this.addLoadControlForm.get('CHECK_INDEX_EXIST');
     const RAW_FACTORY_PATH = this.addLoadControlForm.get('RAW_FACTORY_PATH');
     const RAW_FACTORY_RETENTION_STRATEGY = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_STRATEGY');
     const RAW_FACTORY_RETENTION_DAYS = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_DAYS');
+    const RAW_FACTORY_MAX_LANDING_DATE = this.addLoadControlForm.get('RAW_FACTORY_MAX_LANDING_DATE');
 
     this.addLoadControlForm.get('TABLE_SOURCE').valueChanges
       .subscribe(TABLE_SOURCE => {
@@ -110,17 +114,20 @@ export class AddLoadControlComponent implements OnInit {
           DB_TABLE.setValidators([Validators.required]);
           DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required]);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required]);
+          CHECK_INDEX_EXIST.setValidators([Validators.required]);
 
           DB_ID.enable();
           DB_SCHEMA.enable();
           DB_TABLE.enable();
           DBDB_TABLE_PK_COLUMNS_SCHEMA.enable();
           DB_TABLE_UPDATE_DATE_COLUMN.enable();
+          CHECK_INDEX_EXIST.enable();
 
           RAW_FACTORY_PATH.setValidators(null);
           RAW_FACTORY_PATH.disable();
           RAW_FACTORY_RETENTION_STRATEGY.disable();
           RAW_FACTORY_RETENTION_DAYS.disable();
+          RAW_FACTORY_MAX_LANDING_DATE.disable();
         }
 
         if (TABLE_SOURCE === 'RAW_FACTORY') {
@@ -129,17 +136,20 @@ export class AddLoadControlComponent implements OnInit {
           DB_TABLE.setValidators(null);
           DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators(null);
+          CHECK_INDEX_EXIST.setValidators(null);
 
           DB_ID.disable();
           DB_SCHEMA.disable();
           DB_TABLE.disable();
           DBDB_TABLE_PK_COLUMNS_SCHEMA.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();
+          CHECK_INDEX_EXIST.disable();
 
           RAW_FACTORY_PATH.setValidators([Validators.required, Validators.pattern(this.s3UrlPattern)]);
           RAW_FACTORY_PATH.enable();
           RAW_FACTORY_RETENTION_STRATEGY.enable();
           RAW_FACTORY_RETENTION_DAYS.enable();
+          RAW_FACTORY_MAX_LANDING_DATE.enable();
         }
 
         DB_ID.updateValueAndValidity();

@@ -21,6 +21,7 @@ import { TableModule } from 'primeng/table';
 import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
 import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         ToastModule,
         DynamicDialogModule,
         TableModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        PermissionModule
     ],
     providers: [
         MessageService,

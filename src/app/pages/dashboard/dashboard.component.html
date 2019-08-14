@@ -7,8 +7,11 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
-                [reorderableColumns]="true" [(selection)]="selectedRecords" [tableStyle]="{'table-layout':'auto'}">
+            <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+            </ngx-loading>
+            <p-table *ngIf="!dataLoader" #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
+                dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords"
+                [tableStyle]="{'table-layout':'auto'}">
                 <ng-template pTemplate="caption">
                     <div style="text-align: left">
                         <p-multiSelect [options]="totalCols" [(ngModel)]="selectedColumns" optionLabel="field"

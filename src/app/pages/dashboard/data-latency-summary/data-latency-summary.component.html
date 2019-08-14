@@ -11,7 +11,7 @@
         T2 Data Latency
       </h6>
       <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
-        [reorderableColumns]="true" [(selection)]="selectedRecords" [tableStyle]="{'table-layout':'auto'}">
+        [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   recordMeta: any;
   totalCols: any;
   currentDate = new Date();
+  dataLoader = false;
   @ViewChild(Table, { static: false }) tableComponent: Table;
   ENV_NAME = [
     { label: 'PRD', value: 'PRD' },
@@ -51,28 +52,33 @@ export class DashboardComponent implements OnInit {
   }
 
   getColumnDataType() {
+    this.dataLoader = true;
     this.loadControlService.getColumnDataType().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.recordMeta = data.data;
         this.setTotalCols();
       }
     }, error => {
+      this.dataLoader = false;
       this.showToast('error', 'Error while fetching data.');
     });
   }
 
   loadAllRecords() {
+    this.dataLoader = true;
     this.loadControlService.getRecords().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.recordsArray = data.data;
         this.setTotalCols();
       }
     }, error => {
+      this.dataLoader = false;
       this.showToast('error', 'Error while fetching data.');
     });
   }
 
   setTotalCols() {
+    this.dataLoader = true;
     this.totalCols = [];
     if (this.recordsArray && this.recordsArray.length) {
       for (const key in this.recordsArray[0]) {
@@ -85,6 +91,7 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
+    this.dataLoader = false;
   }
 
   checkIfURL(key) {

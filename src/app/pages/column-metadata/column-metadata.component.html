@@ -25,7 +25,7 @@
                 <img *ngIf="loader.save" class="float-right ml-2" width="40" src="assets/images/green_loader.gif"
                     alt="Loader Image">
                 <button title="Save Changes" [ngClass]="{'disabled': !enableSaveChanges}" (click)="saveChanges()"
-                    class="btn btn-bg btn-primary float-right ml-2" [ngClass]="{'disabled': loader.save}">
+                    class="btn btn-primary float-right ml-2" [ngClass]="{'disabled': loader.save}">
                     Save Changes
                 </button>
                 <button *ngIf="errors.hasError" (click)="showErros()" title="Show Errors"

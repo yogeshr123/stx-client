@@ -20,31 +20,31 @@
             <ngx-loading [show]="loader.formData" [config]="{ backdropBorderRadius: '3px' }">
             </ngx-loading>
 
-            <div class="tile-title text-right">
+            <div class="text-right">
                 <div class="row">
                     <div class="col-md-12">
                         <button *ngIf="!routeInfo.isViewOnly"
                             [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn}"
-                            class="btn btn-primary" type="button" (click)="onSubmit()">
+                            class="btn btn-sm btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save
                         </button>
                         <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
                             alt="Loader Image">
-                        <button class="btn btn-secondary ml-2" (click)="goBack()">
+                        <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
                         </button>
                     </div>
                 </div>
             </div>
-
+            <div class="separator"></div>
             <div class="tile-body">
                 <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
                 <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal row">
                     <p-accordion [multiple]="true" class="col-12">
 
                         <!-- Source Info -->
-                        <p-accordionTab header="Source Info" class="col-12" [selected]="true">
+                        <p-accordionTab header="Source Info" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
@@ -224,13 +224,13 @@
                     <div class="col-md-8 col-md-offset-3">
                         <button *ngIf="!routeInfo.isViewOnly"
                             [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn }"
-                            class="btn btn-primary" type="button" (click)="onSubmit()">
+                            class="btn btn-sm btn-primary" type="button" (click)="onSubmit()">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Save
                         </button>
                         <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
                             alt="Loader Image">
-                        <button class="btn btn-secondary ml-2" (click)="goBack()">
+                        <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>
                             Cancel
                         </button>

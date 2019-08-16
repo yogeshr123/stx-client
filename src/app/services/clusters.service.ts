@@ -24,4 +24,11 @@ export class ClustersService {
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    addCluster(cluster) {
+        const url = `${environment.baseUrl}clusters/addCluster`;
+        return this.http
+            .post(url, cluster)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

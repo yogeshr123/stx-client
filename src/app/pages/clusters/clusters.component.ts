@@ -18,7 +18,7 @@ export class ClustersComponent implements OnInit {
     { field: 'SPARK_URL' },
     { field: 'GANGLIA_URL' },
     { field: 'SPARK_SCRIPT_PATH' },
-    { field: 'UPDATE_DATE' },
+    { field: 'UPDATE_DATE', type: 'date' },
     { field: 'UPDATED_BY' },
   ];
   clustersArray = [];

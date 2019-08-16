@@ -7,7 +7,11 @@ import { LoadingStatusSummaryComponent } from './loading-status-summary/loading-
 
 const routes: Routes = [
     {
-        path: '',
+        path: '/',
+        component: DashboardComponent
+    },
+    {
+        path: 'emr',
         component: DashboardComponent
     },
     {

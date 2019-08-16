@@ -1,0 +1,15 @@
+td,
+th {
+  height: 30px;
+  white-space: nowrap;
+}
+
+.table-responsive {
+  max-height: 300px;
+  overflow: auto;
+
+  td,
+  th {
+    padding: 8px;
+  }
+}

@@ -1,0 +1,38 @@
+<form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label class="control-label">Enter DB ID </label>
+      <input class="form-control" type="text" formControlName="DB_ID"
+        [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }" />
+      <div *ngIf="submitted && f.DB_ID.errors" class="invalid-feedback">
+        <div *ngIf="f.DB_ID.errors.required">DB ID is
+          required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Enter Host</label>
+      <input class="form-control" type="text" formControlName="HOST"
+        [ngClass]="{ 'is-invalid': submitted && f.HOST.errors }" />
+      <div *ngIf="submitted && f.HOST.errors" class="invalid-feedback">
+        <div *ngIf="f.HOST.errors.required">HOST is
+          required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Enter DB NAME</label>
+      <input class="form-control" type="text" formControlName="DB_NAME"
+        [ngClass]="{ 'is-invalid': submitted && f.DB_NAME.errors }" />
+      <div *ngIf="submitted && f.DB_NAME.errors" class="invalid-feedback">
+        <div *ngIf="f.DB_NAME.errors.required">DB NAME is
+          required</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8 col-md-offset-3">.
+    <button class="btn btn-sm btn-primary">
+      <i
+        class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-sm btn-secondary" (click)="closeModal(false)">
+      <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</button>
+  </div>
+</form>

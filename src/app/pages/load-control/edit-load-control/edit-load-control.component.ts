@@ -26,6 +26,7 @@ export class EditLoadControlComponent implements OnInit {
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   dbEndpoints: any[];
   state: any;
+  isEdit = false;
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -44,8 +45,9 @@ export class EditLoadControlComponent implements OnInit {
     this.setRetentionStrategyValidators();
     this.state = this.commonService.getState();
     // this.recordService.currentRecord.subscribe(record => this.record = record);
-    if (this.state.selectedRecord) {
-      this.record = this.state.selectedRecord;
+    if (this.state.selectedRecord && this.state.selectedRecord.record) {
+      this.record = this.state.selectedRecord.record;
+      this.isEdit = this.state.selectedRecord.edit;
       this.getColumnDataType();
     }
     else {

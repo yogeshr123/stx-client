@@ -32,6 +32,8 @@ export class LoadControlComponent implements OnInit {
   statusType: string;
   statusValue: string;
   statusValueReason: string;
+  loader = false;
+
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -85,6 +87,7 @@ export class LoadControlComponent implements OnInit {
   }
 
   loadAllRecords() {
+    this.loader = true;
     this.loadControlService.getRecords().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.recordsArray = data.data;
@@ -99,7 +102,9 @@ export class LoadControlComponent implements OnInit {
 
         }
       }
+      this.loader = false;
     }, error => {
+      this.loader = false;
       this.showToast('error', 'Error while fetching data.');
     });
   }
@@ -187,9 +192,13 @@ export class LoadControlComponent implements OnInit {
     this.tableComponent.reset();
   }
 
-  onRowEdit(row: any) {
+  onRowEdit(row: any, edit: boolean) {
     // this.recordService.changeActiveRecord(row);
-    this.appState = { ...this.appState, selectedRecord: row };
+    const tempState: any = {
+      edit: edit,
+      record: row
+    };
+    this.appState = { ...this.appState, selectedRecord: tempState };
     this.commonService.setState(this.appState);
     this.router.navigate(['/loadcontrol/edit']);
   }

@@ -63,7 +63,7 @@ const routes: Routes = [
             },
             {
                 path: 'db-endpoints',
-                component: DbEndpointsComponent
+                loadChildren: '../../pages/db-endpoints/db-endpoints.module#DbEndpointsModule'
             },
             {
                 path: 'clusters',

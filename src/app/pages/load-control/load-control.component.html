@@ -394,6 +394,8 @@
         </div>
       </div>
       <div class="clearfix"></div>
+      <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '3px' }">
+      </ngx-loading>
       <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray"
         [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
         [(selection)]="selectedRecords" stateStorage="local"
@@ -464,9 +466,14 @@
             </td>
             <td class="fixedcol rightfixedcol" style="text-align:center">
               <button appPermission expectedPermission="editLoadControlModule"
-                class="btn btn-sm btn-primary btn-sm" type="button"
-                (click)="onRowEdit(rowData)">
+                class="btn btn-sm btn-primary mr-2" type="button"
+                (click)="onRowEdit(rowData, true)">
                 <i class="fa fa-pencil"></i>
+              </button>
+              <button appPermission expectedPermission="editLoadControlModule"
+                class="btn btn-sm btn-primary" type="button"
+                (click)="onRowEdit(rowData, false)">
+                <i class="fa fa-eye"></i>
               </button>
             </td>
           </tr>

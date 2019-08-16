@@ -115,7 +115,6 @@ export class LoginComponent implements OnInit {
                     });
                     this.appState = { ...this.appState, loggedInUserPermissions: this.currentUserPermissions };
                     this.commonService.setState(this.appState);
-                    console.log(this.currentUserPermissions);
                     this.router.navigateByUrl('/dashboard');
                 }
             }, error => {

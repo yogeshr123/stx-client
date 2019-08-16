@@ -12,107 +12,89 @@
   </div>
   <ul class="app-menu">
     <li class="treeview is-expanded">
-      <a class="app-menu__item" [routerLink]=" ['./'] "
-        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-        data-toggle="treeview">
+      <a class="app-menu__item" data-toggle="treeview">
         <i class="app-menu__icon fa fa-dashboard"></i>
         <span class="app-menu__label">Dashboard</span>
         <i class="treeview-indicator fa fa-angle-right"></i>
       </a>
       <ul class="treeview-menu">
         <li>
-          <a class="treeview-item" routerLink="/dashboard"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/dashboard">
             <i class="icon fa fa-circle-o"></i> EMR Table Status</a>
         </li>
         <li>
-          <a class="treeview-item" routerLink="/dashboard/data-latency-summary"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/dashboard/data-latency-summary">
             <i class="icon fa fa-circle-o"></i> Data Latency Summary</a>
         </li>
         <li>
           <a class="treeview-item"
-            routerLink="/dashboard/loading-status-summary"
-            routerLinkActive="active">
+            routerLink="/dashboard/loading-status-summary">
             <i class="icon fa fa-circle-o"></i> Loading Status Summary</a>
         </li>
       </ul>
     </li>
     <li>
-      <a class="app-menu__item" routerLink="/loadcontrol"
-        routerLinkActive="active">
+      <a class="app-menu__item" routerLink="/loadcontrol">
         <i class="app-menu__icon fa fa-table"></i>
         <span class="app-menu__label">Load Control</span>
       </a>
     </li>
     <li class="treeview">
-      <a class="app-menu__item" [routerLink]=" ['./'] "
-        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-        data-toggle="treeview">
+      <a class="app-menu__item" data-toggle="treeview">
         <i class="app-menu__icon fa fa-columns"></i>
         <span class="app-menu__label">Column Metadata Version</span>
         <i class="treeview-indicator fa fa-angle-right"></i>
       </a>
       <ul class="treeview-menu">
         <li>
-          <a class="treeview-item" routerLink="/CMV/all-versions"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/CMV/all-versions">
             <i class="icon fa fa-circle-o"></i> All Table Versions</a>
         </li>
         <li>
-          <a class="treeview-item" routerLink="/CMV" routerLinkActive="active">
+          <a class="treeview-item" routerLink="/CMV">
             <i class="icon fa fa-circle-o"></i>Table Details</a>
         </li>
         <li>
-          <a class="treeview-item" routerLink="/header-hash"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/header-hash">
             <i class="icon fa fa-circle-o"></i> File Header Hash</a>
         </li>
       </ul>
     </li>
     <li>
-      <a class="app-menu__item" routerLink="/load-status"
-        routerLinkActive="active">
+      <a class="app-menu__item" routerLink="/load-status">
         <i class="app-menu__icon fa fa-tasks"></i>
         <span class="app-menu__label">Load Status</span>
       </a>
     </li>
     <li class="treeview">
-      <a class="app-menu__item" [routerLink]=" ['./'] "
-        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-        data-toggle="treeview">
+      <a class="app-menu__item" data-toggle="treeview">
         <i class="app-menu__icon fa fa-user"></i>
         <span class="app-menu__label">User Management</span>
         <i class="treeview-indicator fa fa-angle-right"></i>
       </a>
       <ul class="treeview-menu">
         <li>
-          <a class="treeview-item" routerLink="/user-management/users"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/user-management/users">
             <i class="icon fa fa-circle-o"></i> Users</a>
         </li>
         <li>
-          <a class="treeview-item" routerLink="/user-management/roles"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/user-management/roles">
             <i class="icon fa fa-circle-o"></i> Roles</a>
         </li>
         <li>
-          <a class="treeview-item" routerLink="/user-management/permissions"
-            routerLinkActive="active">
+          <a class="treeview-item" routerLink="/user-management/permissions">
             <i class="icon fa fa-circle-o"></i> Permissions</a>
         </li>
       </ul>
     </li>
     <li>
-      <a class="app-menu__item" routerLink="/db-endpoints"
-        routerLinkActive="active">
+      <a class="app-menu__item" routerLink="/db-endpoints">
         <i class="app-menu__icon fa fa-tasks"></i>
         <span class="app-menu__label">DB Endpoints</span>
       </a>
     </li>
     <li>
-      <a class="app-menu__item" routerLink="/clusters"
-        routerLinkActive="active">
+      <a class="app-menu__item" routerLink="/clusters">
         <i class="app-menu__icon fa fa-tasks"></i>
         <span class="app-menu__label">Clusters</span>
       </a>

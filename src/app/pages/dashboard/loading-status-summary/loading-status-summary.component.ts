@@ -25,13 +25,14 @@ export class LoadingStatusSummaryComponent implements OnInit {
     this.getLoadStatus();
   }
 
-  showDetails(tableInfo, status) {
+  showDetails(tableInfo, status, rowData?) {
     const ref = this.dialogService.open(DetailsPopupComponent, {
       header: `Table Details: Schema Name - ${tableInfo.SCHEMA_NAME}`,
       width: '45%',
       data: {
         SCHEMA_NAME: tableInfo.SCHEMA_NAME,
-        status
+        status,
+        rowData
       }
     });
   }

@@ -36,7 +36,7 @@ export class DataLatencySummaryComponent implements OnInit {
               createObject[element.SCHEMA_NAME] = [];
             }
             const updatedObject = {};
-            updatedObject[element.LATENCY_HEADER] = element.LATENCY_ORDER;
+            updatedObject[element.LATENCY_HEADER] = element.TABLE_COUNT;
             createObject[element.SCHEMA_NAME].push(updatedObject);
           });
           const dataArray = [];
@@ -57,7 +57,6 @@ export class DataLatencySummaryComponent implements OnInit {
             }
           }
           this.recordsArray = dataArray;
-          console.log('this.recordsArray ', this.recordsArray);
         }
       } else {
         this.showToast('error', 'Could not get latency data.');
@@ -67,13 +66,15 @@ export class DataLatencySummaryComponent implements OnInit {
     });
   }
 
-  showDetails(tableInfo, status) {
+  showDetails(tableInfo, status, rowData?) {
     const ref = this.dialogService.open(DetailsPopupComponent, {
       header: `Table Details: Schema Name - ${tableInfo.SCHEMA_NAME}`,
       width: '45%',
       data: {
         SCHEMA_NAME: tableInfo.SCHEMA_NAME,
-        status
+        status,
+        latency: true,
+        rowData
       }
     });
   }

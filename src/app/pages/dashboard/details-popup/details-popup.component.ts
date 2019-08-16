@@ -11,6 +11,8 @@ export class DetailsPopupComponent implements OnInit {
 
   data: any;
   details: any;
+  objectKey = Object.keys;
+
   constructor(
     private dashboardService: DashboardService,
     public config: DynamicDialogConfig
@@ -18,14 +20,28 @@ export class DetailsPopupComponent implements OnInit {
 
   ngOnInit() {
     this.data = this.config.data;
-    this.getDetails();
+    if (this.data.status !== 'SCHEMA_NAME') {
+      if (this.data.latency) {
+        this.getLatencyDetails();
+      } else {
+        this.getLoadControlDetails();
+      }
+
+    }
   }
 
-  getDetails() {
+  getLatencyDetails() {
+    this.dashboardService.getLatencyDetails(this.data).subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        this.details = resp.data;
+      }
+    });
+  }
+
+  getLoadControlDetails() {
     this.dashboardService.getLoadControlDetails(this.data).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.details = resp.data;
-        console.log("resp.data ", resp.data);
       }
     });
   }

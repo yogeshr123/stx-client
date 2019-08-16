@@ -19,6 +19,11 @@
                             selectedItemsLabel="{0} columns selected" defaultLabel="Choose Columns"
                             (onChange)="saveColumnState()">
                         </p-multiSelect>
+                        <div class="dateNow">
+                            <span>
+                                Data As Of - {{currentDate | date: 'short'}}
+                            </span>
+                        </div>
                     </div>
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"
@@ -41,7 +46,7 @@
                                 defaultLabel="ENV_NAME" [panelStyle]="{width:'200px'}"
                                 (onChange)="dt1.filter($event.value, col.field, 'in')">
                             </p-multiSelect>
-                            <span *ngSwitchCase="'dateNow'"></span>
+                            <!-- <span *ngSwitchCase="'dateNow'"></span> -->
                             <span *ngSwitchCase="'date'"></span>
                             <input pInputText *ngSwitchDefault type="text"
                                 (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
@@ -59,9 +64,9 @@
                             <ng-container *ngSwitchCase="'date'">
                                 <span> {{ rowData[col.field] | date: 'short'}} </span>
                             </ng-container>
-                            <ng-container *ngSwitchCase="'dateNow'">
+                            <!-- <ng-container *ngSwitchCase="'dateNow'">
                                 <span> {{ currentDate | date: 'short'}} </span>
-                            </ng-container>
+                            </ng-container> -->
                             <ng-container *ngSwitchDefault>
                                 <span> {{ rowData[col.field] || 'NULL' }} </span>
                             </ng-container>

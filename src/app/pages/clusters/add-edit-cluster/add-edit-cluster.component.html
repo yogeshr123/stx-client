@@ -44,7 +44,11 @@
             <div class="form-group col-6 row">
               <label class="control-label col-md-4">ENV NAME</label>
               <div class="col-md-8">
-                <input formControlName="ENV_NAME" class="form-control" type="text" />
+                <select formControlName="ENV_NAME" class="form-control">
+                  <option value="PRD">PRD</option>
+                  <option value="DEV">DEV</option>
+                  <option value="QA">QA</option>
+                </select>
               </div>
             </div>
             <div class="form-group col-6 row">

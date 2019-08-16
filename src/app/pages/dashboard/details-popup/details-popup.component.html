@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="data.status !== 'SCHEMA_NAME'">
   <h6>Status: {{ data.status }}</h6>
   <table class="table table-bordered">
     <thead>
@@ -15,4 +15,10 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="table-responsive" *ngIf="data.status === 'SCHEMA_NAME' && data.rowData">
+  <div class="schemaDetails" *ngFor="let key of objectKey(data.rowData)">
+    <span>{{key}}: </span>
+    <span>{{data.rowData[key]}}</span>
+  </div>
 </div>

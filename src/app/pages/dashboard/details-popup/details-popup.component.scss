@@ -13,3 +13,15 @@ th {
     padding: 8px;
   }
 }
+
+.schemaDetails {
+  max-height: 300px;
+  overflow: auto;
+  text-align: center;
+  span {
+    padding: 10px;
+    display: inline-block;
+    width: 200px;
+    border: 1px solid #ccc;
+  }
+}

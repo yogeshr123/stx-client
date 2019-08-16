@@ -12,10 +12,20 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 )
 export class ClustersService {
 
+    clusterObject: any;
+
     constructor(
         private commonService: CommonService,
         private http: HttpClient,
     ) {
+    }
+
+    getClusterObject() {
+        return this.clusterObject;
+    }
+
+    setClusterObject(clusterObject) {
+        this.clusterObject = clusterObject;
     }
 
     getClusters() {

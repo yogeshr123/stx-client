@@ -31,6 +31,10 @@ export class ClustersComponent implements OnInit {
     this.getClusters();
   }
 
+  editCluster() {
+
+  }
+
   getClusters() {
     this.clustersService.getClusters().subscribe((resp: any) => {
       this.clustersArray = resp.data;

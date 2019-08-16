@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from 'primeng/api';
 import { DetailsPopupComponent } from '../details-popup/details-popup.component';
 import { loadStatusColumns } from '../tableColumns';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { MessageService, DialogService } from 'primeng/api';
 
 @Component({
   selector: 'app-loading-status-summary',
@@ -12,47 +13,16 @@ import { loadStatusColumns } from '../tableColumns';
 export class LoadingStatusSummaryComponent implements OnInit {
 
   selectedColumns = loadStatusColumns;
-  recordsArray = [
-    {
-      SCHEMA_NAME: 'ATHENA',
-      'Fully Loading': '',
-      'Error Hold': '1',
-      'Hold All Processes': '',
-      'Hold Tier 2/3': '',
-      'Hold Table DDL Needed': '',
-      'Low Priority Table On Hold': '3',
-      'No Data Feed': '',
-      'Grand Total': ''
-    },
-    {
-      SCHEMA_NAME: 'DIM',
-      'Fully Loading': '2',
-      'Error Hold': '',
-      'Hold All Processes': '',
-      'Hold Tier 2/3': '4',
-      'Hold Table DDL Needed': '',
-      'Low Priority Table On Hold': '',
-      'No Data Feed': '',
-      'Grand Total': '7'
-    },
-    {
-      SCHEMA_NAME: 'DRIVE',
-      'Fully Loading': '12',
-      'Error Hold': '118',
-      'Hold All Processes': '5',
-      'Hold Tier 2/3': '4',
-      'Hold Table DDL Needed': '35',
-      'Low Priority Table On Hold': '7',
-      'No Data Feed': '9',
-      'Grand Total': '7'
-    }
-  ];
+  recordsArray: any;
 
   constructor(
+    private messageService: MessageService,
+    private dashboardService: DashboardService,
     public dialogService: DialogService
   ) { }
 
   ngOnInit() {
+    this.getLoadStatus();
   }
 
   showDetails(tableInfo, status) {
@@ -64,6 +34,51 @@ export class LoadingStatusSummaryComponent implements OnInit {
         status
       }
     });
+  }
+
+  getLoadStatus() {
+    this.dashboardService.getLoadControlStatus().subscribe((resp: any) => {
+      if (resp && !resp.error) {
+        if (resp.data.length) {
+          const dataLatency = resp.data;
+          const createObject = {};
+          dataLatency.forEach(element => {
+            if (!createObject[element.SCHEMA_NAME]) {
+              createObject[element.SCHEMA_NAME] = [];
+            }
+            const updatedObject = {};
+            updatedObject[element.TABLE_STATUS] = element.TABLE_COUNT;
+            createObject[element.SCHEMA_NAME].push(updatedObject);
+          });
+          const dataArray = [];
+          for (const key in createObject) {
+            if (createObject.hasOwnProperty(key)) {
+              const element = createObject[key];
+              const dataObject = { SCHEMA_NAME: key };
+              element.forEach(innerElement => {
+                for (const key2 in innerElement) {
+                  if (innerElement.hasOwnProperty(key2)) {
+                    if (key2 !== 'SCHEMA_NAME') {
+                      dataObject[key2] = innerElement[key2];
+                    }
+                  }
+                }
+              });
+              dataArray.push(dataObject);
+            }
+          }
+          this.recordsArray = dataArray;
+        }
+      } else {
+        this.showToast('error', 'Could not get data.');
+      }
+    }, error => {
+      this.showToast('error', 'Could not get data.');
+    });
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

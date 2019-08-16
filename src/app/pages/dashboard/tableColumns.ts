@@ -9,14 +9,21 @@ const EMRTableLoadingStatus = [
 
 const loadStatusColumns = [
     { field: 'SCHEMA_NAME' },
-    { field: 'Fully Loading' },
-    { field: 'Error Hold' },
-    { field: 'Hold All Processes' },
-    { field: 'Hold Tier 2/3' },
-    { field: 'Hold Table DDL Needed' },
-    { field: 'Low Priority Table On Hold' },
-    { field: 'No Data Feed' },
-    { field: 'Grand Total' }
+    { field: 'NEW_TABLE' },
+    { field: 'COMPLETE' },
+    { field: 'RUNNING' },
+    { field: 'HOLD' },
+    { field: 'EDW_RETIRED' },
+    { field: 'NO_FACTORY_DATA' },
+    { field: 'TODO' },
+    { field: 'T1_FAILED' },
+    { field: 'NO_TS_INDEX' },
+    { field: 'T1_NO_DATA' },
+    { field: 'T2_FAILED' },
+    { field: 'T2_NO_DATA' },
+    { field: 'COLUMN_METADATA_UPDATING' },
+    { field: 'FILE_HEADER_UPDATING' },
+    { field: 'EHC_METADATA_MISMATCH' },
 ];
 
 const dataLatencySummaryColumns = [

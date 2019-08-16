@@ -39,24 +39,24 @@ export class DataLatencySummaryComponent implements OnInit {
             updatedObject[element.LATENCY_HEADER] = element.LATENCY_ORDER;
             createObject[element.SCHEMA_NAME].push(updatedObject);
           });
-          const someArray = [];
+          const dataArray = [];
           for (const key in createObject) {
             if (createObject.hasOwnProperty(key)) {
               const element = createObject[key];
-              const someSome = { SCHEMA_NAME: key };
+              const dataObject = { SCHEMA_NAME: key };
               element.forEach(innerElement => {
                 for (const key2 in innerElement) {
                   if (innerElement.hasOwnProperty(key2)) {
                     if (key2 !== 'SCHEMA_NAME') {
-                      someSome[key2] = innerElement[key2];
+                      dataObject[key2] = innerElement[key2];
                     }
                   }
                 }
               });
-              someArray.push(someSome);
+              dataArray.push(dataObject);
             }
           }
-          this.recordsArray = someArray;
+          this.recordsArray = dataArray;
           console.log('this.recordsArray ', this.recordsArray);
         }
       } else {

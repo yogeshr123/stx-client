@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClustersService } from 'src/app/services/clusters.service';
 
 @Component({
   selector: 'app-clusters',
@@ -7,9 +8,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClustersComponent implements OnInit {
 
-  constructor() { }
+  selectedColumns = [
+    { field: 'CLUSTER_ID' },
+    { field: 'ENV_NAME' },
+    { field: 'CLUSTER_FOR' },
+    { field: 'MASTER_IP_ADD' },
+    { field: 'LIVY_URL' },
+    { field: 'YARN_URL' },
+    { field: 'SPARK_URL' },
+    { field: 'GANGLIA_URL' },
+    { field: 'SPARK_SCRIPT_PATH' },
+    { field: 'UPDATE_DATE' },
+    { field: 'UPDATED_BY' },
+  ];
+  clustersArray = [];
+
+  constructor(
+    private clustersService: ClustersService
+  ) { }
 
   ngOnInit() {
+    this.getClusters();
+  }
+
+  getClusters() {
+    this.clustersService.getClusters().subscribe((resp: any) => {
+      this.clustersArray = resp.data;
+    }, error => {
+      console.log('error ', error);
+    });
   }
 
 }

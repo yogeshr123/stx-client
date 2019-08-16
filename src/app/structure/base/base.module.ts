@@ -21,7 +21,8 @@ import { ClustersComponent } from 'src/app/pages/clusters/clusters.component';
         SidebarComponent,
         UnauthorizedComponent,
         ProfileComponent,
-        ClustersComponent
+        ClustersComponent,
+        DbEndpointsComponent
     ],
     exports: [
         HeaderComponent,

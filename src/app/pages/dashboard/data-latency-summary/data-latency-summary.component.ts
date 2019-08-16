@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { dataLatencySummaryColumns } from '../tableColumns';
 
 @Component({
   selector: 'app-data-latency-summary',
@@ -7,18 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataLatencySummaryComponent implements OnInit {
 
-  selectedColumns = [
-    { field: 'SCHEMA_NAME' },
-    { field: 'Current' },
-    { field: 'Data < 1 Week' },
-    { field: 'Data < 2 Week' },
-    { field: 'Data < 3 Week' },
-    { field: 'Data < 4 Week' },
-    { field: 'Data < 8 Week' },
-    { field: 'Data <=13 Week' },
-    { field: 'Data <=18 Week' },
-    { field: 'Data <=26 Week' },
-  ];
+  selectedColumns = dataLatencySummaryColumns;
   recordsArray = [
     {
       SCHEMA_NAME: 'ATHENA',

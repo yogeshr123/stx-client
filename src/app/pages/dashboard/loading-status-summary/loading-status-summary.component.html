@@ -23,7 +23,9 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td *ngFor="let col of columns">
-              <span> {{ rowData[col.field] }} </span>
+              <span title="Show Details" class="details" (click)="showDetails(rowData, col.field)"
+                *ngIf="rowData[col.field]">
+                {{ rowData[col.field] }} </span>
             </td>
           </tr>
         </ng-template>

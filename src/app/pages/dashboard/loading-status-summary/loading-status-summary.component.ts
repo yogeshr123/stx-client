@@ -1,25 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService } from 'primeng/api';
+import { DetailsPopupComponent } from '../details-popup/details-popup.component';
+import { loadStatusColumns } from '../tableColumns';
 
 @Component({
   selector: 'app-loading-status-summary',
   templateUrl: './loading-status-summary.component.html',
-  styleUrls: ['./loading-status-summary.component.scss']
+  styleUrls: ['./loading-status-summary.component.scss'],
+  providers: [DialogService]
 })
 export class LoadingStatusSummaryComponent implements OnInit {
 
-  selectedColumns = [
-    { field: 'Fully Loading' },
-    { field: 'Error Hold' },
-    { field: 'Hold All Processes' },
-    { field: 'Hold Tier 2/3' },
-    { field: 'Hold Table DDL Needed' },
-    { field: 'Low Priority Table On Hold' },
-    { field: 'No Data Feed' },
-    { field: 'Grand Total' }
-  ];
+  selectedColumns = loadStatusColumns;
   recordsArray = [
     {
-      'Fully Loading': 'ATHENA',
+      SCHEMA_NAME: 'ATHENA',
+      'Fully Loading': '',
       'Error Hold': '1',
       'Hold All Processes': '',
       'Hold Tier 2/3': '',
@@ -29,7 +25,8 @@ export class LoadingStatusSummaryComponent implements OnInit {
       'Grand Total': ''
     },
     {
-      'Fully Loading': 'DIM',
+      SCHEMA_NAME: 'DIM',
+      'Fully Loading': '2',
       'Error Hold': '',
       'Hold All Processes': '',
       'Hold Tier 2/3': '4',
@@ -39,7 +36,8 @@ export class LoadingStatusSummaryComponent implements OnInit {
       'Grand Total': '7'
     },
     {
-      'Fully Loading': 'DRIVE',
+      SCHEMA_NAME: 'DRIVE',
+      'Fully Loading': '12',
       'Error Hold': '118',
       'Hold All Processes': '5',
       'Hold Tier 2/3': '4',
@@ -50,9 +48,22 @@ export class LoadingStatusSummaryComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    public dialogService: DialogService
+  ) { }
 
   ngOnInit() {
+  }
+
+  showDetails(tableInfo, status) {
+    const ref = this.dialogService.open(DetailsPopupComponent, {
+      header: `Table Details: Schema Name - ${tableInfo.SCHEMA_NAME}`,
+      width: '45%',
+      data: {
+        SCHEMA_NAME: tableInfo.SCHEMA_NAME,
+        status
+      }
+    });
   }
 
 }

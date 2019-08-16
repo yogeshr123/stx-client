@@ -27,9 +27,9 @@ const dataLatencySummaryColumns = [
     { field: 'Data < 3 Week' },
     { field: 'Data < 4 Week' },
     { field: 'Data < 8 Week' },
-    { field: 'Data <=13 Week' },
-    { field: 'Data <=18 Week' },
-    { field: 'Data <=26 Week' },
+    { field: 'Data <= 13 Week' },
+    { field: 'Data <= 18 Week' },
+    { field: 'Data <= 26 Week' },
 ];
 
 export { EMRTableLoadingStatus, loadStatusColumns, dataLatencySummaryColumns };

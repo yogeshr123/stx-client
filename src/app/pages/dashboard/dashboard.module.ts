@@ -8,6 +8,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DashboardComponent } from './dashboard.component';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MessageService } from 'primeng/api';
 import { DataLatencySummaryComponent } from './data-latency-summary/data-latency-summary.component';
@@ -24,7 +25,8 @@ import { DetailsPopupComponent } from './details-popup/details-popup.component';
         MultiSelectModule,
         DashboardRouting,
         NgxLoadingModule.forRoot({}),
-        DynamicDialogModule
+        DynamicDialogModule,
+        ToastModule
     ],
     providers: [MessageService],
     declarations: [

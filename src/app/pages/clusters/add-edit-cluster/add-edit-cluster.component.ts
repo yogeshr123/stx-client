@@ -71,7 +71,6 @@ export class AddEditClusterComponent implements OnInit {
   onSubmit() {
     this.loader.saveCluster = true;
     const request = { cluster: this.addEditClusterForm.value };
-    console.log("this.addEditClusterForm.value ", this.addEditClusterForm.value);
     request.cluster.UPDATE_DATE = `${request.cluster.UPDATE_DATE}`;
     this.clustersService.addCluster(request).subscribe((resp: any) => {
       if (resp && !resp.error) {

@@ -10,13 +10,14 @@
       <button class="btn btn-sm btn-primary mb-2" [routerLink]="[ './add-cluster' ]">Add New</button>
       <div class="table-responsive">
         <p-table #dt1 [columns]="selectedColumns" [value]="clustersArray" [responsive]="true" dataKey="TABLE_NAME"
-          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
+          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-cluster">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
                 {{col.field}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </th>
+              <th class="fixedcol rightfixedcol">Action</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -28,6 +29,13 @@
                 <ng-template #elseTemplate>
                   <span> {{ rowData[col.field] }} </span>
                 </ng-template>
+              </td>
+              <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
+                <div>
+                  <button (click)="editCluster(version)" title="Edit" class="btn btn-sm btn-primary ml-1">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           </ng-template>

@@ -19,4 +19,18 @@ export class DBEndpointsService {
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    addEndpoint(endpoint: any) {
+        const url = `${environment.baseUrl}db_endpoints`;
+        return this.http
+            .post(url, endpoint)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    updateEndpoint(endpoint: any) {
+        const url = `${environment.baseUrl}db_endpoints`;
+        return this.http
+            .put(url, endpoint)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

@@ -27,6 +27,7 @@ import { LoadControlRouting } from './load-control.routing';
 import { DBEndpointsService } from '../../services/db-endpoints.service';
 import { LoadControlService } from 'src/app/services/load-control.service';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         TabViewModule,
         CheckboxModule,
         ReactiveFormsModule,
-        PermissionModule
+        PermissionModule,
+        NgxLoadingModule.forRoot({}),
     ],
     providers: [
         LoadControlService,

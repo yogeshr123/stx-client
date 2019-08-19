@@ -11,7 +11,6 @@ import { BaseComponent } from './base.component';
 import { BaseRoutingModule } from './base-routing.module';
 import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
 import { ProfileComponent } from 'src/app/pages/profile/profile.component';
-import { DbEndpointsComponent } from 'src/app/pages/db-endpoints/db-endpoints.component';
 
 @NgModule({
     declarations: [
@@ -19,8 +18,7 @@ import { DbEndpointsComponent } from 'src/app/pages/db-endpoints/db-endpoints.co
         HeaderComponent,
         SidebarComponent,
         UnauthorizedComponent,
-        ProfileComponent,
-        DbEndpointsComponent
+        ProfileComponent
     ],
     exports: [
         HeaderComponent,

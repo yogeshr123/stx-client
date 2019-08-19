@@ -19,6 +19,12 @@ const routes: Routes = [
         data: { expectedPermission: 'editLoadControlModule' }
     },
     {
+        path: 'view',
+        component: EditLoadControlComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editLoadControlModule' }
+    },
+    {
         path: 'add',
         component: AddLoadControlComponent,
         canActivate: [AuthGuard],

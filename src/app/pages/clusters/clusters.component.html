@@ -7,13 +7,16 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
-      <button class="btn btn-sm btn-primary mb-2" [routerLink]="[ './add-cluster' ]">Add New</button>
+      <button class="btn btn-sm btn-primary mb-2"
+        [routerLink]="[ './add-cluster' ]">Add New</button>
       <div class="table-responsive">
-        <p-table #dt1 [columns]="selectedColumns" [value]="clustersArray" [responsive]="true" dataKey="TABLE_NAME"
-          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
+        <p-table #dt1 [columns]="selectedColumns" [value]="clustersArray"
+          [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
+          [tableStyle]="{'table-layout':'auto'}">
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field"
+                pReorderableColumn>
                 {{col.field}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </th>

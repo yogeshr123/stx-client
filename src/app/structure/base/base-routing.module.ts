@@ -70,6 +70,10 @@ const routes: Routes = [
                 path: 'db-endpoints',
                 loadChildren: '../../pages/db-endpoints/db-endpoints.module#DbEndpointsModule'
             },
+            {
+                path: 'spark-config',
+                loadChildren: '../../pages/spark-config/spark-config.module#SparkConfigModule'
+            },
             // {
             // 	path: 'error/403',
             // 	component: ErrorPageComponent,

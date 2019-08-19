@@ -200,7 +200,12 @@ export class LoadControlComponent implements OnInit {
     };
     this.appState = { ...this.appState, selectedRecord: tempState };
     this.commonService.setState(this.appState);
-    this.router.navigate(['/loadcontrol/edit']);
+    if (edit) {
+      this.router.navigate(['/loadcontrol/edit']);
+    }
+    else {
+      this.router.navigate(['/loadcontrol/view']);
+    }
   }
 
   onStateSave(event: any) {

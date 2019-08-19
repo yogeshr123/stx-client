@@ -33,11 +33,39 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a class="app-menu__item" routerLink="/loadcontrol">
+    <li class="treeview">
+      <a class="app-menu__item" data-toggle="treeview" routerLink="/loadcontrol"
+        data-toggle="treeview">
         <i class="app-menu__icon fa fa-table"></i>
         <span class="app-menu__label">Load Control</span>
+        <i class="treeview-indicator fa fa-angle-right"></i>
       </a>
+      <ul class="treeview-menu">
+        <li>
+          <a class="treeview-item" routerLink="/loadcontrol">
+            <i class="icon fa fa-circle-o"></i>
+            All Data
+          </a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/load-status">
+            <i class="icon fa fa-circle-o"></i>
+            Load Status
+          </a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/db-endpoints">
+            <i class="icon fa fa-circle-o"></i> DB Endpoints</a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/clusters">
+            <i class="icon fa fa-circle-o"></i> Clusters</a>
+        </li>
+        <li>
+          <a class="treeview-item" routerLink="/spark-config">
+            <i class="icon fa fa-circle-o"></i> Spark Config</a>
+        </li>
+      </ul>
     </li>
     <li class="treeview">
       <a class="app-menu__item" data-toggle="treeview">
@@ -60,12 +88,7 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a class="app-menu__item" routerLink="/load-status">
-        <i class="app-menu__icon fa fa-tasks"></i>
-        <span class="app-menu__label">Load Status</span>
-      </a>
-    </li>
+
     <li class="treeview">
       <a class="app-menu__item" data-toggle="treeview">
         <i class="app-menu__icon fa fa-user"></i>
@@ -87,17 +110,6 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a class="app-menu__item" routerLink="/db-endpoints">
-        <i class="app-menu__icon fa fa-tasks"></i>
-        <span class="app-menu__label">DB Endpoints</span>
-      </a>
-    </li>
-    <li>
-      <a class="app-menu__item" routerLink="/clusters">
-        <i class="app-menu__icon fa fa-tasks"></i>
-        <span class="app-menu__label">Clusters</span>
-      </a>
-    </li>
+
   </ul>
 </aside>

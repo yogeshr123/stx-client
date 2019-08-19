@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClustersService } from 'src/app/services/clusters.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clusters',
@@ -24,6 +25,7 @@ export class ClustersComponent implements OnInit {
   clustersArray = [];
 
   constructor(
+    private router: Router,
     private clustersService: ClustersService
   ) { }
 
@@ -31,8 +33,9 @@ export class ClustersComponent implements OnInit {
     this.getClusters();
   }
 
-  editCluster() {
-
+  editCluster(cluster) {
+    this.clustersService.setClusterObject(cluster);
+    return this.router.navigate(['clusters/edit-cluster']);
   }
 
   getClusters() {

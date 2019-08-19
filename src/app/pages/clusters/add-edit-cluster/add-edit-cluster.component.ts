@@ -22,6 +22,7 @@ export class AddEditClusterComponent implements OnInit {
     formData: false,
     saveCluster: false
   };
+  oldClusterInfo: any;
 
   constructor(
     private clustersService: ClustersService,
@@ -43,6 +44,9 @@ export class AddEditClusterComponent implements OnInit {
 
   ngOnInit() {
     this.formInit();
+    if (this.routeInfo.isEditMode) {
+      this.setFormValues();
+    }
   }
 
   formInit() {
@@ -62,17 +66,36 @@ export class AddEditClusterComponent implements OnInit {
       YARN_URL: ['', Validators.required],
       SPARK_URL: ['', Validators.required],
       GANGLIA_URL: ['', Validators.required],
-      SPARK_SCRIPT_PATH: ['', Validators.required],
+      SPARK_SCRIPT_PATH: '',
       UPDATE_DATE: [new Date(), Validators.required],
       UPDATED_BY: ['User', Validators.required],
     });
   }
 
+  setFormValues() {
+    const cluster = this.clustersService.getClusterObject();
+    this.oldClusterInfo = this.clustersService.getClusterObject();
+    const formControls = this.addEditClusterForm.controls;
+    if (cluster) {
+      for (const key in formControls) {
+        if (formControls.hasOwnProperty(key)) {
+          const element = formControls[key];
+          element.patchValue(cluster[key]);
+        }
+      }
+    }
+  }
+
   onSubmit() {
     this.loader.saveCluster = true;
-    const request = { cluster: this.addEditClusterForm.value };
-    request.cluster.UPDATE_DATE = `${request.cluster.UPDATE_DATE}`;
-    this.clustersService.addCluster(request).subscribe((resp: any) => {
+    const request = { cluster: this.addEditClusterForm.value, oldClusterInfo: '' };
+    request.cluster.UPDATE_DATE = `${new Date()}`;
+    let functionToCall = 'addCluster';
+    if (this.routeInfo.isEditMode) {
+      functionToCall = 'updateCluster';
+      request.oldClusterInfo = this.oldClusterInfo;
+    }
+    this.clustersService[functionToCall](request).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Successfully Saved.');
         setTimeout(() => {

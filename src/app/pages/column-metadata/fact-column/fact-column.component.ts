@@ -141,6 +141,7 @@ export class FactColumnComponent implements OnInit {
 
   saveColumns() {
     this.saveLoader = true;
+    const appState = JSON.parse(localStorage.getItem('appState'));
     let selectedColumns = this.columns.filter(i => i.checked);
     selectedColumns = selectedColumns.map(i => {
       i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
@@ -160,6 +161,9 @@ export class FactColumnComponent implements OnInit {
       i.IS_UPDATE_DATE_COLUMN =
         i.IS_UPDATE_DATE_COLUMN.data ? i.IS_UPDATE_DATE_COLUMN.data[0] : i.IS_UPDATE_DATE_COLUMN;
       i.IS_NEW = 1;
+      if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
+        i.UPDATED_BY = appState.loggedInUser.USER_NAME;
+      }
       delete i.checked;
       return i;
     });

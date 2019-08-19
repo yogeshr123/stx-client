@@ -53,6 +53,7 @@ export class AddComponent implements OnInit {
     if (this.action === 'view' || this.action === 'edit') {
       this.setValuesInViewEdit();
     }
+    this.getUserInfo();
   }
 
   formInit() {
@@ -69,6 +70,13 @@ export class AddComponent implements OnInit {
       UPDATED_BY: ['User'],
       UPDATE_DATE: [new Date()],
     });
+  }
+
+  getUserInfo() {
+    const appState = JSON.parse(localStorage.getItem('appState'));
+    if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
+      this.addForm.controls.UPDATED_BY.patchValue(appState.loggedInUser.USER_NAME);
+    }
   }
 
   destinationChange() {

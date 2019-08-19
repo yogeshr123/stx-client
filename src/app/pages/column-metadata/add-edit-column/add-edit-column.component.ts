@@ -69,6 +69,7 @@ export class AddEditColumnComponent implements OnInit {
     if (this.routeInfo.fromHeaderHash) {
       this.getHeaderHashData();
     }
+    this.getUserInfo();
   }
 
   formInit() {
@@ -112,6 +113,13 @@ export class AddEditColumnComponent implements OnInit {
     });
   }
 
+  getUserInfo() {
+    const appState = JSON.parse(localStorage.getItem('appState'));
+    if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
+      this.addEditColumnForm.controls.UPDATED_BY.patchValue(appState.loggedInUser.USER_NAME);
+    }
+  }
+
   getHeaderHashData() {
     if (this.appState && this.appState.header) {
       this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.header.SCHEMA_NAME);
@@ -141,6 +149,7 @@ export class AddEditColumnComponent implements OnInit {
           }
         }
       }
+      this.getUserInfo();
       // For Decimal & Varchar Precision
       if (this.columnData.TARGET_DATA_TYPE.indexOf('decimal') > -1) {
         const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');

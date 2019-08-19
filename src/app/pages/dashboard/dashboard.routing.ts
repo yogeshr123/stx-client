@@ -8,7 +8,6 @@ import { LoadingStatusSummaryComponent } from './loading-status-summary/loading-
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/dashboard/emr',
         component: DashboardComponent
     },
     {

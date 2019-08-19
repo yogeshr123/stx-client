@@ -124,7 +124,7 @@ export class AddEditClusterComponent implements OnInit {
     if (this.addEditClusterForm.controls.MASTER_IP_ADD.valid) {
       this.addEditClusterForm.controls.LIVY_URL.patchValue(`http://${this.addEditClusterForm.value.MASTER_IP_ADD}:8998`);
       this.addEditClusterForm.controls.YARN_URL.patchValue(`http://${this.addEditClusterForm.value.MASTER_IP_ADD}:8088`);
-      this.addEditClusterForm.controls.SPARK_URL.patchValue(`http://${this.addEditClusterForm.value.MASTER_IP_ADD}:8088`);
+      this.addEditClusterForm.controls.SPARK_URL.patchValue(`http://${this.addEditClusterForm.value.MASTER_IP_ADD}:18080`);
       this.addEditClusterForm.controls.GANGLIA_URL.patchValue(`http://${this.addEditClusterForm.value.MASTER_IP_ADD}/ganglia`);
     }
   }

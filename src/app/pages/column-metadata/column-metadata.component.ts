@@ -85,6 +85,11 @@ export class ColumnMetadataComponent implements OnInit {
     this.tableComponent.reset();
   }
 
+  resetTable() {
+    localStorage.removeItem('stateSelectedVersionColumns');
+    this.initColumnState();
+  }
+
   initColumnState() {
     this.selectedColumns = columnTableColumns;
   }

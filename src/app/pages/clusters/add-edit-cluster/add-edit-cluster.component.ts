@@ -47,6 +47,7 @@ export class AddEditClusterComponent implements OnInit {
     if (this.routeInfo.isEditMode) {
       this.setFormValues();
     }
+    this.getUserInfo();
   }
 
   formInit() {
@@ -70,6 +71,13 @@ export class AddEditClusterComponent implements OnInit {
       UPDATE_DATE: [new Date(), Validators.required],
       UPDATED_BY: ['User', Validators.required],
     });
+  }
+
+  getUserInfo() {
+    const appState = JSON.parse(localStorage.getItem('appState'));
+    if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
+      this.addEditClusterForm.controls.UPDATED_BY.patchValue(appState.loggedInUser.USER_NAME);
+    }
   }
 
   setFormValues() {

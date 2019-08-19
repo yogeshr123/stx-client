@@ -24,6 +24,7 @@
                                 Data As Of - {{currentDate | date: 'short'}}
                             </span>
                         </div>
+                        <button class="btn btn-secondary btn-sm float-right" (click)="resetTable()">Reset Table</button>
                     </div>
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"

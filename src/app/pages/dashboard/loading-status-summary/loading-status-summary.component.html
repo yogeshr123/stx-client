@@ -14,6 +14,14 @@
       <div class="table-responsive">
         <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
           [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
+          <ng-template pTemplate="caption">
+            <div style="text-align: left">
+              <p-multiSelect [options]="allColumns" [(ngModel)]="selectedColumns" optionLabel="field"
+                selectedItemsLabel="{0} columns selected" defaultLabel="Choose Columns" (onChange)="saveColumnState()">
+              </p-multiSelect>
+              <button class="btn btn-secondary btn-sm float-right" (click)="resetTable()">Reset Table</button>
+            </div>
+          </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>

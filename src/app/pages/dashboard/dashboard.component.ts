@@ -51,6 +51,11 @@ export class DashboardComponent implements OnInit {
     this.selectedColumns = EMRTableLoadingStatus;
   }
 
+  resetTable() {
+    localStorage.removeItem('dashboardSelectedColumns');
+    this.initColumnState();
+  }
+
   getColumnDataType() {
     this.dataLoader = true;
     this.loadControlService.getColumnDataType().subscribe((data: any) => {

@@ -12,7 +12,8 @@ import { MessageService, DialogService } from 'primeng/api';
 })
 export class LoadingStatusSummaryComponent implements OnInit {
 
-  selectedColumns = loadStatusColumns;
+  selectedColumns: any;
+  allColumns = loadStatusColumns;
   recordsArray: any;
 
   constructor(
@@ -23,6 +24,25 @@ export class LoadingStatusSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.getLoadStatus();
+    if (!localStorage.getItem('loadingStatusSelectedColumns')) {
+      this.initColumnState();
+    } else {
+      // get selected columns from local storage
+      this.selectedColumns = JSON.parse(localStorage.getItem('loadingStatusSelectedColumns'));
+    }
+  }
+
+  saveColumnState() {
+    localStorage.setItem('loadingStatusSelectedColumns', JSON.stringify(this.selectedColumns));
+  }
+
+  initColumnState() {
+    this.selectedColumns = loadStatusColumns;
+  }
+
+  resetTable() {
+    localStorage.removeItem('loadingStatusSelectedColumns');
+    this.initColumnState();
   }
 
   showDetails(tableInfo, status, rowData?) {

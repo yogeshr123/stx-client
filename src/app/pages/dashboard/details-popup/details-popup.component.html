@@ -1,20 +1,22 @@
-<div class="table-responsive" *ngIf="data.status !== 'SCHEMA_NAME'">
+<div *ngIf="data.status !== 'SCHEMA_NAME'">
   <h6>Status: {{ data.status }}</h6>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>SCHEMA NAME</th>
-        <th>TABLE NAME</th>
-        <!-- <th></th> -->
-      </tr>
-    </thead>
-    <tbody *ngIf="details && details.length">
-      <tr *ngFor="let item of details">
-        <td>{{item.SCHEMA_NAME}}</td>
-        <td>{{item.TABLE_NAME}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>SCHEMA NAME</th>
+          <th>TABLE NAME</th>
+          <!-- <th></th> -->
+        </tr>
+      </thead>
+      <tbody *ngIf="details && details.length">
+        <tr *ngFor="let item of details">
+          <td>{{item.SCHEMA_NAME}}</td>
+          <td>{{item.TABLE_NAME}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="table-responsive" *ngIf="data.status === 'SCHEMA_NAME' && data.rowData">
   <div class="schemaDetails" *ngFor="let key of objectKey(data.rowData)">

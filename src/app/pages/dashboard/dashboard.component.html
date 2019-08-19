@@ -28,8 +28,8 @@
                     </div>
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"
-                            (ngModelChange)="globalQueryEmpty()" (keyup.enter)="search()">
-                        <button class="btn btn-sm btn-primary" type="button" (click)="search()">
+                            (keyup.enter)="getSearchQueryResult()">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="getSearchQueryResult()">
                             <i class="fa fa-lg fa-fw fa-search"></i>
                         </button>
                     </div>

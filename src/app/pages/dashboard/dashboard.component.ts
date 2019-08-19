@@ -82,6 +82,23 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getSearchQueryResult() {
+    if (this.globalQuery) {
+      this.dataLoader = true;
+      this.loadControlService.getSearchQueryResult({ query: this.globalQuery }).subscribe((data: any) => {
+        if (data.data && data.data.length > 0) {
+          this.recordsArray = data.data;
+          this.dataLoader = false;
+        }
+      }, error => {
+        this.dataLoader = false;
+        this.showToast('error', 'Error while fetching data.');
+      });
+    } else {
+      this.loadAllRecords();
+    }
+  }
+
   setTotalCols() {
     this.dataLoader = true;
     this.totalCols = [];

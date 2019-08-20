@@ -26,6 +26,7 @@ import { AllVersionsComponent } from './all-versions/all-versions.component';
 import { DimLookupComponent } from './dim-lookup/dim-lookup.component';
 import { AddComponent } from './dim-lookup/add/add.component';
 import { FactColumnComponent } from './fact-column/fact-column.component';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { FactColumnComponent } from './fact-column/fact-column.component';
     AddComponent,
     FactColumnComponent],
   imports: [
+    PermissionModule,
     TooltipModule,
     DialogModule,
     FormsModule,

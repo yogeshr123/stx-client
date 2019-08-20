@@ -24,7 +24,8 @@
 
                 <img *ngIf="loader.save" class="float-right ml-2" width="40" src="assets/images/green_loader.gif"
                     alt="Loader Image">
-                <button title="Save Changes" [ngClass]="{'disabled': !enableSaveChanges}" (click)="saveChanges()"
+                <button appPermission expectedPermission="addColumnMetadataModule" title="Save Changes"
+                    [ngClass]="{'disabled': !enableSaveChanges}" (click)="saveChanges()"
                     class="btn btn-primary float-right ml-2" [ngClass]="{'disabled': loader.save}">
                     Save Changes
                 </button>
@@ -62,10 +63,12 @@
                             </td>
                             <td>
                                 <button (click)="viewData(version)" class="btn btn-sm btn-primary">View</button>
-                                <button *ngIf="version.STATUS.toLowerCase() === 'new' && i === isFirstNewVersion"
+                                <button appPermission expectedPermission="editColumnMetadataModule"
+                                    *ngIf="version.STATUS.toLowerCase() === 'new' && i === isFirstNewVersion"
                                     (click)="saveChanges(true, version)"
                                     class="ml-2 btn btn-sm btn-warning">Validate</button>
-                                <button *ngIf="showGenerateVersion && i === versions.length - 1"
+                                <button appPermission expectedPermission="editColumnMetadataModule"
+                                    *ngIf="showGenerateVersion && i === versions.length - 1"
                                     class="ml-2 btn btn-sm btn-info" (click)="generateNewVersion()">Generate New
                                     Version</button>
                             </td>
@@ -85,12 +88,13 @@
                 <h6>
                     Metadata Version - {{selectedVersion.METADATA_VERSION}}
                     <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
-                    <button [routerLink]="[ './add-column']" class="mb-2 ml-2 btn btn-sm btn-secondary float-right"
+                    <button appPermission expectedPermission="addColumnMetadataModule" [routerLink]="[ './add-column']"
+                        class="mb-2 ml-2 btn btn-sm btn-secondary float-right"
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add Column</button>
-                    <button
+                    <button appPermission expectedPermission="addColumnMetadataModule"
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
                         class="mb-2 btn btn-sm btn-info float-right ml-2" (click)="dimLookUp()">DIM LookUp</button>
-                    <button
+                    <button appPermission expectedPermission="addColumnMetadataModule"
                         *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
                         class="mb-2 btn btn-sm btn-warning float-right" (click)="showFactColumns()">Fact Column</button>
                 </h6>
@@ -160,12 +164,14 @@
                                             class="btn btn-sm btn-info">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                         </button>
-                                        <button (click)="editColumn(version)" title="Edit"
+                                        <button appPermission expectedPermission="editColumnMetadataModule"
+                                            (click)="editColumn(version)" title="Edit"
                                             *ngIf="selectedVersion.STATUS === 'NEW' && version?.action !== 'deleted'"
                                             class="btn btn-sm btn-primary ml-1">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button (click)="deleteColumn(version)" title="Delete"
+                                        <button appPermission expectedPermission="deleteColumnMetadataModule"
+                                            (click)="deleteColumn(version)" title="Delete"
                                             class="btn btn-danger btn-sm ml-1"
                                             *ngIf="selectedVersion?.STATUS?.toUpperCase() === 'NEW' && (version.IS_NEW?.data && version.IS_NEW?.data[0] || version.IS_NEW === 1)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>

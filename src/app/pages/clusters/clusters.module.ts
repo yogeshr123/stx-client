@@ -13,6 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ClustersComponent } from './clusters.component';
 import { RouterModule } from '@angular/router';
 import { AddEditClusterComponent } from './add-edit-cluster/add-edit-cluster.component';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { AddEditClusterComponent } from './add-edit-cluster/add-edit-cluster.com
         AddEditClusterComponent
     ],
     imports: [
+        PermissionModule,
         TooltipModule,
         DialogModule,
         FormsModule,

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { isNullOrUndefined } from 'util';
+import { CommonService } from 'src/app/services/common.service';
 declare var $: any;
 
 @Component({
@@ -8,6 +10,13 @@ declare var $: any;
 })
 
 export class SidebarComponent implements OnInit {
+  appState: any;
+  currentUser: any;
+
+  constructor(
+    private commonService: CommonService,
+  ) { }
+
   ngOnInit() {
     $(document).ready(function () {
       var treeviewMenu = $('.app-menu');
@@ -23,6 +32,11 @@ export class SidebarComponent implements OnInit {
       // Set initial active toggle
       $("[data-toggle='treeview.'].is-expanded").parent().toggleClass('is-expanded');
     });
+
+    this.appState = this.commonService.getState();
+    if (!isNullOrUndefined(this.appState.loggedInUser)) {
+      this.currentUser = this.appState.loggedInUser;
+    }
   }
 }
 

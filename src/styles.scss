@@ -127,6 +127,43 @@ input[type="submit"].disabled {
   }
 }
 
+.scroll-table-without-checkbox {
+  .ui-table-wrapper {
+    overflow-y: scroll;
+    overflow-x: auto;
+    overflow-y: visible;
+    margin-right: 110px;
+
+    th,
+    td {
+      height: 40px;
+      white-space: nowrap;
+    }
+
+    .fixedcol {
+      position: absolute;
+      width: 110px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .rightfixedcol {
+      right: 0;
+    }
+
+    .ui-table-tbody>tr.ui-state-highlight {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+
+    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
+      background-color: #f9f9f9 !important;
+    }
+  }
+}
 
 /* Scrollable table with fixed left and right col ends */
 

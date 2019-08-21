@@ -100,7 +100,8 @@ export class LoginComponent implements OnInit {
                 if (data.data) {
                     this.currentUserRole = data.data;
                     this.currentUserRole.PERMISSIONSARRAY = this.currentUserRole.PERMISSIONS.split(',').map(Number);
-
+                    this.appState = { ...this.appState, loggedInUserRole: this.currentUserRole.TITLE };
+                    this.commonService.setState(this.appState);
                     const mainPermissions = this.permissions.filter(el => !el.PARENT);
                     mainPermissions.forEach((element: Permission) => {
                         const hasUserPermission = this.currentUserRole.PERMISSIONSARRAY.some(t => t === element.ID);

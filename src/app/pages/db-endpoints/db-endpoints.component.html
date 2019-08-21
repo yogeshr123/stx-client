@@ -13,13 +13,14 @@
           <div class="btn-group">
           </div>
           <div class="btn-group float-right">
-            <button class="btn btn-sm btn-primary" (click)="addNew(true)">New
-              Endpoint</button>
+            <button class="btn btn-sm btn-primary"
+              [routerLink]="[ './add' ]">Add New</button>
           </div>
         </div>
       </div>
       <p-table #dt [value]="dbEndpoints" [columns]="dbEndpointColumns"
-        [reorderableColumns]="true">
+        [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}"
+        styleClass="scroll-table-without-checkbox">
         <ng-template pTemplate="caption">
           <div class="globalSearch">
             <input type="text" pInputText size="50" placeholder="Global Filter"
@@ -39,7 +40,7 @@
                 ariaLabelAsc="Activate to sort in ascending order">
               </p-sortIcon>
             </th>
-            <th>Action</th>
+            <th class="fixedcol rightfixedcol">Action</th>
           </tr>
           <tr>
             <th *ngFor="let col of columns" [ngSwitch]="col.field"
@@ -48,7 +49,7 @@
                 (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                 [value]="dt.filters[col.field]?.value">
             </th>
-            <th></th>
+            <th class="fixedcol rightfixedcol"></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -56,9 +57,9 @@
             <td *ngFor="let col of columns">
               {{rowData[col.field]}}
             </td>
-            <td>
+            <td class="fixedcol rightfixedcol">
               <button class="btn btn-sm btn-primary mr-2" type="button"
-                (click)="selectEndpoint(rowData)">
+                (click)="selectEndpoint(rowData, true)">
                 <i class="fa fa-pencil"></i>
               </button>
             </td>

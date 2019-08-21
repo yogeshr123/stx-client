@@ -10,7 +10,6 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { BaseComponent } from './base.component';
 import { BaseRoutingModule } from './base-routing.module';
 import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
-import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +17,6 @@ import { ProfileComponent } from 'src/app/pages/profile/profile.component';
         HeaderComponent,
         SidebarComponent,
         UnauthorizedComponent,
-        ProfileComponent
     ],
     exports: [
         HeaderComponent,

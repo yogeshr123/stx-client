@@ -84,4 +84,18 @@ export class LoadControlService {
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
+
+    getDistinctSchemaNames() {
+        const url = `${environment.baseUrl}table_load_control/schemaNames`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
+    getDistinctTableNames() {
+        const url = `${environment.baseUrl}table_load_control/tableNames`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

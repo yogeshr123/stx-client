@@ -2,24 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { MessageService, DialogService } from 'primeng/api';
 import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbendpoint.component';
+import { CommonService } from 'src/app/services/common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-db-endpoints',
   templateUrl: './db-endpoints.component.html',
   styleUrls: ['./db-endpoints.component.scss'],
-  providers: [DialogService]
 })
 export class DbEndpointsComponent implements OnInit {
   dbEndpoints: any[];
   selectedEndpoint: any;
   dbEndpointColumns: any;
+  appState: any;
+
   constructor(
     private dbEndpointsService: DBEndpointsService,
     private messageService: MessageService,
-    private dialogService: DialogService
+    private commonService: CommonService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.appState = this.commonService.getState();
     this.dbEndpointColumns = [
       {
         header: 'DB_ID',
@@ -60,33 +65,40 @@ export class DbEndpointsComponent implements OnInit {
     this.messageService.add({ severity, summary, life: 3000 });
   }
 
-  selectEndpoint(endpoint: any) {
-    this.selectedEndpoint = endpoint;
-    this.addNew(false);
+  selectEndpoint(endpoint: any, edit: boolean) {
+    this.appState = { ...this.appState, selectedEndpoint: endpoint };
+    this.commonService.setState(this.appState);
+    if (edit) {
+      this.router.navigate(['/db-endpoints/edit']);
+    }
+    else {
+      this.router.navigate(['/db-endpoints/view']);
+    }
+
   }
 
   addNew(isNew) {
-    let header;
-    if (isNew) {
-      this.selectedEndpoint = {};
-      header = 'Add Endpoint';
-    }
-    else {
-      header = 'Edit Endpoint';
-    }
-    const ref = this.dialogService.open(AddEditDbendpointComponent, {
-      header: header,
-      width: '55%',
-      data: {
-        selectedEndpoint: this.selectedEndpoint,
-        isNew: isNew
-      }
-    });
+    // let header;
+    // if (isNew) {
+    //   this.selectedEndpoint = {};
+    //   header = 'Add Endpoint';
+    // }
+    // else {
+    //   header = 'Edit Endpoint';
+    // }
+    // const ref = this.dialogService.open(AddEditDbendpointComponent, {
+    //   header: header,
+    //   width: '55%',
+    //   data: {
+    //     selectedEndpoint: this.selectedEndpoint,
+    //     isNew: isNew
+    //   }
+    // });
 
-    ref.onClose.subscribe((reason) => {
-      if (reason) {
-        this.ngOnInit();
-      }
-    });
+    // ref.onClose.subscribe((reason) => {
+    //   if (reason) {
+    //     this.ngOnInit();
+    //   }
+    // });
   }
 }

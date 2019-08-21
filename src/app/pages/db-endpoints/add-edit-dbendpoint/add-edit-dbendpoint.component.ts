@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { MessageService, DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-dbendpoint',
@@ -14,26 +16,72 @@ export class AddEditDbendpointComponent implements OnInit {
   selectedEndpoint: any;
   submitted: boolean = false;
   isNew: boolean = true;
+  routeInfo = {
+    path: '',
+    isViewOnly: false,
+    isEditMode: false
+  };
+  loader = {
+    formData: false,
+    saveEndpoint: false
+  };
+  appState: any;
   constructor(
     private formBuilder: FormBuilder,
-    private config: DynamicDialogConfig,
-    private ref: DynamicDialogRef,
     private messageService: MessageService,
-    private dbEndpointsService: DBEndpointsService
-  ) { }
+    private dbEndpointsService: DBEndpointsService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router
+  ) {
+    this.route.url.subscribe(params => {
+      this.routeInfo.path = params[0].path;
+      if (this.routeInfo.path.indexOf('view') > -1) {
+        this.routeInfo.isViewOnly = true;
+      }
+      if (this.routeInfo.path.indexOf('edit') > -1) {
+        this.routeInfo.isEditMode = true;
+      }
+    });
+  }
 
   ngOnInit() {
-    this.selectedEndpoint = this.config.data.selectedEndpoint;
-    this.isNew = this.config.data.isNew;
+    this.appState = JSON.parse(localStorage.getItem('appState'));
     this.formInit();
+    if (this.routeInfo.isEditMode) {
+      this.setFormValues();
+    }
+    this.getUserInfo();
   }
 
   formInit() {
     this.addEditForm = this.formBuilder.group({
-      DB_ID: [this.selectedEndpoint.DB_ID, Validators.required],
-      HOST: [this.selectedEndpoint.HOST, Validators.required],
-      DB_NAME: [this.selectedEndpoint.DB_NAME, Validators.required],
+      DB_ID: ['', Validators.required],
+      HOST: ['', Validators.required],
+      DB_NAME: ['', Validators.required],
+      UPDATE_DATE: [new Date(), Validators.required],
+      UPDATED_BY: ['User', Validators.required],
     });
+  }
+
+  getUserInfo() {
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      this.addEditForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
+    }
+  }
+  setFormValues() {
+    if (this.appState && this.appState.selectedEndpoint) {
+      this.selectedEndpoint = this.appState.selectedEndpoint;
+      const formControls = this.addEditForm.controls;
+      if (this.selectedEndpoint) {
+        for (const key in formControls) {
+          if (formControls.hasOwnProperty(key)) {
+            const element = formControls[key];
+            element.patchValue(this.selectedEndpoint[key]);
+          }
+        }
+      }
+    }
   }
 
   get f() {
@@ -47,42 +95,41 @@ export class AddEditDbendpointComponent implements OnInit {
     if (this.addEditForm.invalid) {
       return;
     }
-
+    this.loader.saveEndpoint = true;
     let formValues = Object.assign({}, this.addEditForm.value);
+    formValues.UPDATE_DATE = `${new Date()}`;
     let tempEndpoint = formValues;
-    tempEndpoint.UPDATE_DATE = `${new Date()}`;
-    tempEndpoint.UPDATED_BY = 'user';
-    if (this.isNew) {
-      const body = {
-        endpoint: tempEndpoint
-      };
-      this.dbEndpointsService.addEndpoint(body).subscribe((data: any) => {
-        this.showToast('success', 'DB Endpoint saved.');
-        this.closeModal(true);
-      }, error => {
-        this.showToast('error', 'Could not save DB endpoint.');
-      });
-    }
-    else {
-      const body = {
-        endpoint: tempEndpoint,
-        ID: this.selectedEndpoint.DB_ID
-      };
-      this.dbEndpointsService.updateEndpoint(body).subscribe((data: any) => {
-        this.showToast('success', 'DB Endpoint updated.');
-        this.closeModal(true);
-      }, error => {
-        this.showToast('error', 'Could not update DB endpoint.');
-      });
-    }
-  }
 
-  closeModal(status) {
-    this.ref.close(status);
+    let body = {
+      endpoint: tempEndpoint,
+      ID: ''
+    };
+    let functionToCall = 'addEndpoint';
+    if (this.routeInfo.isEditMode) {
+      functionToCall = 'updateEndpoint';
+      body.ID = this.selectedEndpoint.DB_ID
+    }
+
+    // if (this.routeInfo.isEditMode) {
+    this.dbEndpointsService[functionToCall](body).subscribe((data: any) => {
+      if (data && !data.error) {
+        this.showToast('success', 'Successfully Saved.');
+        this.router.navigate(['/db-endpoints']);
+      } else {
+        this.showToast('error', 'Could not save data.');
+      }
+      this.loader.saveEndpoint = false;
+    }, error => {
+      this.showToast('error', 'Could not save data.');
+      this.loader.saveEndpoint = false;
+    });
   }
 
   showToast(severity, summary) {
     this.messageService.add({ severity, summary, life: 3000 });
   }
 
+  goBack() {
+    this.location.back();
+  }
 }

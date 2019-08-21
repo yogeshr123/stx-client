@@ -40,6 +40,9 @@ export class RolesComponent implements OnInit {
             if (data.data && data.data.length > 0) {
                 this.roles = data.data;
             }
+            else {
+                this.roles = [];
+            }
         }, error => {
             this.showToast('error', 'Error while fetching data.');
         });
@@ -49,6 +52,9 @@ export class RolesComponent implements OnInit {
         this.permissionsService.getPermissions().subscribe((data: any) => {
             if (data.data && data.data.length > 0) {
                 this.permissions = data.data;
+            }
+            else {
+                this.permissions = [];
             }
         }, error => {
             this.showToast('error', 'Error while fetching data.');

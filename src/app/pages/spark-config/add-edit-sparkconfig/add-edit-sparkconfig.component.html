@@ -1,0 +1,167 @@
+<p-toast></p-toast>
+<div class="app-title">
+  <div>
+    <h1>
+      <i class="fa fa-server"></i>
+      <span *ngIf="routeInfo">
+        {{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
+        Spark Config</span>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <ngx-loading [show]="loader.formData"
+        [config]="{ backdropBorderRadius: '3px' }">
+      </ngx-loading>
+      <div class="tile-body">
+        <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
+        <form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">SCHEMA NAME </label>
+              <select class="form-control" formControlName="SCHEMA_NAME"
+                [ngClass]="{ 'is-invalid': submitted && f.SCHEMA_NAME.errors }">
+                <option value="*">*</option>
+                <option [value]="schemaName.SCHEMA_NAME"
+                  *ngFor="let schemaName of schemaNames; let i = index">
+                  {{schemaName.SCHEMA_NAME}}</option>
+              </select>
+              <div *ngIf="submitted && f.SCHEMA_NAME.errors"
+                class="invalid-feedback">
+                <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is
+                  required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">TABLE NAME</label>
+              <select class="form-control" formControlName="TABLE_NAME"
+                [ngClass]="{ 'is-invalid': submitted && f.TABLE_NAME.errors }">
+                <option value="*">*</option>
+                <option [value]="tableName.TABLE_NAME"
+                  *ngFor="let tableName of tableNames; let i = index">
+                  {{tableName.TABLE_NAME}}</option>
+              </select>
+              <div *ngIf="submitted && f.TABLE_NAME.errors"
+                class="invalid-feedback">
+                <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is
+                  required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">ENV NAME</label>
+              <select formControlName="ENV_NAME" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.ENV_NAME.errors }">
+                <option value="PRD">PRD</option>
+                <option value="DEV">DEV</option>
+                <option value="QA">QA</option>
+              </select>
+              <div *ngIf="submitted && f.ENV_NAME.errors"
+                class="invalid-feedback">
+                <div *ngIf="f.ENV_NAME.errors.required">ENV NAME is
+                  required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">LOAD TYPE</label>
+              <select formControlName="LOAD_TYPE" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.LOAD_TYPE.errors }">
+                <option value="T1">T1</option>
+                <option value="T2">T2</option>
+              </select>
+              <div *ngIf="submitted && f.LOAD_TYPE.errors"
+                class="invalid-feedback">
+                <div *ngIf="f.LOAD_TYPE.errors.required">LOAD TYPE is
+                  required</div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">SPARK CONFIG</label>
+            <br />
+            <button class="btn btn-sm btn-primary mb-2" (click)="addItem()">
+              <i class="fa fa-fw fa-lg fa-plus-circle"></i></button>
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th class="delete-col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let config of sparkConfigArray; let i = index;"
+                    [ngSwitch]="config.DATA_TYPE">
+                    <td>
+                      <ng-template [ngIf]="!config.CONFIG_KEY"
+                        [ngIfElse]="elsetemplate">
+                        <select
+                          (change)="onSparkConfigKeySelected($event.target.value, i)"
+                          class="form-control">
+                          <option disabled>Select key</option>
+                          <option [value]="sparkConfigProperty.CONFIG_KEY"
+                            *ngFor="let sparkConfigProperty of sparkConfigProperties; let i = index">
+                            {{sparkConfigProperty.CONFIG_KEY}}</option>
+                        </select>
+                      </ng-template>
+                      <ng-template #elsetemplate>
+                        <input type="text" class="form-control" disabled
+                          placeholder="Config Key"
+                          [(ngModel)]="config.CONFIG_KEY" />
+                      </ng-template>
+                    </td>
+                    <td>
+                      <ng-container *ngSwitchCase="'VALUE_SET'">
+                        <select class="form-control" [(ngModel)]="config.VALUE">
+                          <option [value]="value"
+                            *ngFor="let value of config.VALUE_SET.split(','); let i = index">
+                            {{value}}</option>
+                        </select>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'RANGE'">
+                        <input type="number" class="form-control"
+                          placeholder="Config value"
+                          [(ngModel)]="config.VALUE" />
+                      </ng-container>
+                      <ng-container *ngSwitchDefault>
+                        <input type="text" class="form-control"
+                          placeholder="Config value"
+                          [(ngModel)]="config.VALUE" />
+                      </ng-container>
+                    </td>
+                    <td>
+                      <span style="display: flex;">
+                        <button
+                          *ngIf="config.CONFIG_KEY!=null || config.CONFIG_KEY!=undefined"
+                          class="btn btn-primary btn-sm btn-icon" type="button"
+                          (click)="removeItem(i, config.CONFIG_KEY);">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="separator"></div>
+        <div class="col-md-12 text-right">
+          <button class="btn btn-sm btn-primary" (click)="submit()">
+            <i
+              class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+          <a class="btn btn-sm btn-secondary" routerLinkActive="active"
+            routerLink="/spark-config">
+            <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

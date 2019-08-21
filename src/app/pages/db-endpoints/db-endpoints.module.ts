@@ -33,7 +33,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         DbEndpointsComponent,
         AddEditDbendpointComponent,
     ],
-    entryComponents: [AddEditDbendpointComponent]
+    // entryComponents: [AddEditDbendpointComponent]
 })
 export class DbEndpointsModule {
 }

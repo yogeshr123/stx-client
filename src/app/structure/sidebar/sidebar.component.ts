@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
     $(document).ready(() => {
       const treeviewMenu = $('.app-menu');
       // Activate sidebar treeview toggle
-      $('[data-toggle=\'treeview\']').click((event) => {
+      $('[data-toggle=\'treeview\']').click(function (event) {
         event.preventDefault();
         if (!$(this).parent().hasClass('is-expanded')) {
           treeviewMenu.find('[data-toggle=\'treeview\']').parent().removeClass('is-expanded');

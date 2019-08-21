@@ -26,10 +26,7 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private commonService: CommonService,
-    private usersService: UsersService,
-    private router: Router,
-    private confirmationService: ConfirmationService,
-    private rolesService: RolesService
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -66,7 +63,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    let formValues = Object.assign({}, this.editUserForm.value);
+    const formValues = Object.assign({}, this.editUserForm.value);
 
     const body = {
       user: {
@@ -76,14 +73,23 @@ export class ProfileComponent implements OnInit {
       }
     };
     this.usersService.updateUser(body).subscribe((data: any) => {
-      this.confirmationService.confirm({
-        rejectVisible: false,
-        acceptLabel: 'Ok',
-        message: 'User profile updated. Please login again...',
-        accept: () => {
-          this.router.navigateByUrl('/login');
-        }
-      });
+      this.showToast('success', 'Successfully updated user.');
+      if (body.user.FULL_NAME) {
+        this.appState.loggedInUser.FULL_NAME = body.user.FULL_NAME;
+      }
+      if (body.user.PROFILE_PIC) {
+        this.appState.loggedInUser.PROFILE_PIC = body.user.PROFILE_PIC;
+      }
+      this.commonService.setState(this.appState);
+      this.usersService.toggle();
+      // this.confirmationService.confirm({
+      //   rejectVisible: false,
+      //   acceptLabel: 'Ok',
+      //   message: 'User profile updated. Please login again...',
+      //   accept: () => {
+      //     // this.router.navigateByUrl('/login');
+      //   }
+      // });
     }, error => {
       this.showToast('error', 'Could not update user profile.');
     });

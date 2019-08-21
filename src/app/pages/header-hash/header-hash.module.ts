@@ -14,6 +14,7 @@ import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
 import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.component';
 import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
   declarations: [HeaderHashComponent, AddEditHeaderComponent, AddCmvPopupComponent],
@@ -27,7 +28,8 @@ import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
     ToastModule,
     TableModule,
     DropdownModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    PermissionModule
   ],
   providers: [
     MessageService

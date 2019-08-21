@@ -1,3 +1,5 @@
+<ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+</ngx-loading>
 <div *ngIf="data.status !== 'SCHEMA_NAME'">
   <h6>Status: {{ data.status }}</h6>
   <div class="table-responsive">

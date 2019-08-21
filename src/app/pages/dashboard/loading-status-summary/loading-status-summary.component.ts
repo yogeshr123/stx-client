@@ -15,6 +15,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
   selectedColumns: any;
   allColumns = loadStatusColumns;
   recordsArray: any;
+  dataLoader = false;
 
   constructor(
     private messageService: MessageService,
@@ -58,6 +59,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
   }
 
   getLoadStatus() {
+    this.dataLoader = true;
     this.dashboardService.getLoadControlStatus().subscribe((resp: any) => {
       if (resp && !resp.error) {
         if (resp.data.length) {
@@ -93,7 +95,9 @@ export class LoadingStatusSummaryComponent implements OnInit {
       } else {
         this.showToast('error', 'Could not get data.');
       }
+      this.dataLoader = false;
     }, error => {
+      this.dataLoader = false;
       this.showToast('error', 'Could not get data.');
     });
   }

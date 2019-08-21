@@ -12,6 +12,7 @@ export class DetailsPopupComponent implements OnInit {
   data: any;
   details: any;
   objectKey = Object.keys;
+  dataLoader = false;
 
   constructor(
     private dashboardService: DashboardService,
@@ -31,18 +32,22 @@ export class DetailsPopupComponent implements OnInit {
   }
 
   getLatencyDetails() {
+    this.dataLoader = true;
     this.dashboardService.getLatencyDetails(this.data).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.details = resp.data;
       }
+      this.dataLoader = false;
     });
   }
 
   getLoadControlDetails() {
+    this.dataLoader = true;
     this.dashboardService.getLoadControlDetails(this.data).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.details = resp.data;
       }
+      this.dataLoader = false;
     });
   }
 

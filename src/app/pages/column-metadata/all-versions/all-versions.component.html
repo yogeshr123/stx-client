@@ -13,7 +13,7 @@
         </ngx-loading>
         <div class="tile">
             <p-table #dt [value]="tables" [tableStyle]="{'table-layout':'auto'}" [columns]="tableColumns"
-                [reorderableColumns]="true">
+                stateStorage="local" stateKey="allTableVersions" [reorderableColumns]="true">
                 <ng-template pTemplate="caption">
                     <div class="globalSearch">
                         <input type="text" placeholder="Global Filter" [(ngModel)]="globalQuery"

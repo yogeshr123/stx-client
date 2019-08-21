@@ -93,9 +93,11 @@
                     </div>
                     <img *ngIf="loader.saveTasks" class="float-right" width="40" src="assets/images/green_loader.gif"
                         alt="Loader Image">
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}"
+                    <button appPermission expectedPermission="editLoadStatusModule"
+                        [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}"
                         class="float-right btn btn-sm btn-primary ml-2 mr-3" (click)="save()">Save Changes</button>
-                    <button [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}"
+                    <button appPermission expectedPermission="editLoadStatusModule"
+                        [ngClass]="{'disabled': !tasksMoved || loader.saveTasks}"
                         class="float-right btn btn-sm btn-danger" (click)="
                     discard()">Discard Changes</button>
                 </div>

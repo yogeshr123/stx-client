@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { NgxLoadingModule } from 'ngx-loading';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 import { LoadStatusComponent } from './load-status.component';
 import { LoadStatusRouting } from './load-status.routing';
@@ -15,6 +16,7 @@ import { LoadStatusRouting } from './load-status.routing';
 @NgModule({
   declarations: [LoadStatusComponent],
   imports: [
+    PermissionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

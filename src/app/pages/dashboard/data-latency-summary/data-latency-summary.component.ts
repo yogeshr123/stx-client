@@ -14,6 +14,7 @@ export class DataLatencySummaryComponent implements OnInit {
 
   selectedColumns = dataLatencySummaryColumns;
   recordsArray: any;
+  dataLoader = false;
 
   constructor(
     public dialogService: DialogService,
@@ -26,6 +27,7 @@ export class DataLatencySummaryComponent implements OnInit {
   }
 
   getLatency() {
+    this.dataLoader = true;
     this.dashboardService.getDataLatency().subscribe((resp: any) => {
       if (resp && !resp.error) {
         if (resp.data.length) {
@@ -61,7 +63,9 @@ export class DataLatencySummaryComponent implements OnInit {
       } else {
         this.showToast('error', 'Could not get latency data.');
       }
+      this.dataLoader = false;
     }, error => {
+      this.dataLoader = false;
       this.showToast('error', 'Could not get latency data.');
     });
   }

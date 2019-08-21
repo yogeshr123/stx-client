@@ -18,7 +18,7 @@ export class SidebarComponent implements OnInit {
     private usersService: UsersService,
     private commonService: CommonService,
   ) {
-    this.usersService.change.subscribe(() => {
+    this.usersService.changeProfile.subscribe(() => {
       this.getState();
     });
   }

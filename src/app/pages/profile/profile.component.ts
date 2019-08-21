@@ -81,7 +81,7 @@ export class ProfileComponent implements OnInit {
         this.appState.loggedInUser.PROFILE_PIC = body.user.PROFILE_PIC;
       }
       this.commonService.setState(this.appState);
-      this.usersService.toggle();
+      this.usersService.toggleProfile();
       // this.confirmationService.confirm({
       //   rejectVisible: false,
       //   acceptLabel: 'Ok',

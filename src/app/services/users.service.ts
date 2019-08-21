@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 })
 export class UsersService {
 
-    @Output() change: EventEmitter<boolean> = new EventEmitter();
+    @Output() changeProfile: EventEmitter<boolean> = new EventEmitter();
 
     constructor(
         private commonService: CommonService,
@@ -18,8 +18,8 @@ export class UsersService {
     ) {
     }
 
-    toggle() {
-        this.change.emit();
+    toggleProfile() {
+        this.changeProfile.emit();
     }
 
     getUsers() {

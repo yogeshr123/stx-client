@@ -12,6 +12,8 @@
         Load Control Status
       </h6>
       <div class="table-responsive">
+        <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
         <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
           [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
           <ng-template pTemplate="caption">

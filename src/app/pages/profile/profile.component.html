@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="col-md-10">
-          <form class="row p-0" [formGroup]="editUserForm" (ngSubmit)="submit()">
+          <form class="row p-0" [formGroup]="editUserForm" (ngSubmit)="ngSubmit()">
             <div class="col-md-6">
               <div class="form-group">
                 <label class="control-label">User Name</label>
@@ -53,7 +53,7 @@
       <div class="tile-footer">
         <div class="row">
           <div class="col-md-12 text-right">
-            <button [disabled]="saveLoader" class="btn btn-sm btn-primary" (click)="onSubmit()">
+            <button [disabled]="saveLoader" class="btn btn-sm btn-primary" (click)="ngSubmit()">
               <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
             <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
             <a class="btn btn-sm btn-secondary ml-2" routerLinkActive="active" routerLink="/dashboard">

@@ -62,6 +62,7 @@ export class ProfileComponent implements OnInit {
     this.submitted = true;
     // stop here if form is invalid
     if (this.editUserForm.invalid) {
+      this.saveLoader = false;
       return;
     }
 

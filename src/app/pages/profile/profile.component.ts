@@ -97,10 +97,7 @@ export class ProfileComponent implements OnInit {
   }
 
   b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    b64Data = b64Data.replace('data:image/jpeg;base64,', '');
-    b64Data = b64Data.replace('data:image/gif;base64,', '');
-    b64Data = b64Data.replace('data:image/png;base64,', '');
-    b64Data = b64Data.replace('data:image/jpg;base64,', '');
+    b64Data = b64Data.replace(/data:image\/(jpeg|gif|png|jpg);base64,/g, '');
     const byteCharacters = atob(b64Data);
     return byteCharacters;
   }

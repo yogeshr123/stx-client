@@ -33,6 +33,7 @@ export class ProfileComponent implements OnInit {
     this.appState = this.commonService.getState();
     if (!isNullOrUndefined(this.appState.loggedInUser)) {
       this.currentUser = this.appState.loggedInUser;
+      this.currentUser.PROFILE_PIC = `data:image/jpeg;base64,${this.currentUser.PROFILE_PIC}`;
     }
     if (!isNullOrUndefined(this.appState.loggedInUserRole)) {
       this.currentUserRole = this.appState.loggedInUserRole;
@@ -68,7 +69,7 @@ export class ProfileComponent implements OnInit {
     const body = {
       user: {
         ID: this.currentUser.ID,
-        PROFILE_PIC: this.imgURL,
+        PROFILE_PIC: this.b64toBlob(this.imgURL),
         FULL_NAME: formValues.FULL_NAME
       }
     };
@@ -78,7 +79,7 @@ export class ProfileComponent implements OnInit {
         this.appState.loggedInUser.FULL_NAME = body.user.FULL_NAME;
       }
       if (body.user.PROFILE_PIC) {
-        this.appState.loggedInUser.PROFILE_PIC = body.user.PROFILE_PIC;
+        this.appState.loggedInUser.PROFILE_PIC = btoa(body.user.PROFILE_PIC);
       }
       this.commonService.setState(this.appState);
       this.usersService.toggleProfile();
@@ -93,6 +94,15 @@ export class ProfileComponent implements OnInit {
     }, error => {
       this.showToast('error', 'Could not update user profile.');
     });
+  }
+
+  b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+    b64Data = b64Data.replace('data:image/jpeg;base64,', '');
+    b64Data = b64Data.replace('data:image/gif;base64,', '');
+    b64Data = b64Data.replace('data:image/png;base64,', '');
+    b64Data = b64Data.replace('data:image/jpg;base64,', '');
+    const byteCharacters = atob(b64Data);
+    return byteCharacters;
   }
 
 

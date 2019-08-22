@@ -49,6 +49,7 @@ export class SidebarComponent implements OnInit {
     this.appState = this.commonService.getState();
     if (!isNullOrUndefined(this.appState.loggedInUser)) {
       this.currentUser = this.appState.loggedInUser;
+      this.currentUser.PROFILE_PIC = `data:image/jpeg;base64,${this.currentUser.PROFILE_PIC}`;
     }
   }
 

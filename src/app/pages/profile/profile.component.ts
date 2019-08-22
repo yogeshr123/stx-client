@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  onSubmit() {
+  submit() {
     this.saveLoader = true;
     this.submitted = true;
     // stop here if form is invalid

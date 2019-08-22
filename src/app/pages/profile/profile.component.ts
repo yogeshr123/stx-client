@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   uploadedFiles: any[] = [];
   imgURL: any;
   roles: any;
+  saveLoader = false;
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
@@ -58,6 +59,7 @@ export class ProfileComponent implements OnInit {
 
 
   onSubmit() {
+    this.saveLoader = true;
     this.submitted = true;
     // stop here if form is invalid
     if (this.editUserForm.invalid) {
@@ -74,7 +76,6 @@ export class ProfileComponent implements OnInit {
       }
     };
     this.usersService.updateUser(body).subscribe((data: any) => {
-      this.showToast('success', 'Successfully updated user.');
       if (body.user.FULL_NAME) {
         this.appState.loggedInUser.FULL_NAME = body.user.FULL_NAME;
       }
@@ -83,6 +84,8 @@ export class ProfileComponent implements OnInit {
       }
       this.commonService.setState(this.appState);
       this.usersService.toggleProfile();
+      this.saveLoader = false;
+      this.showToast('success', 'Successfully updated user.');
       // this.confirmationService.confirm({
       //   rejectVisible: false,
       //   acceptLabel: 'Ok',
@@ -92,6 +95,7 @@ export class ProfileComponent implements OnInit {
       //   }
       // });
     }, error => {
+      this.saveLoader = false;
       this.showToast('error', 'Could not update user profile.');
     });
   }

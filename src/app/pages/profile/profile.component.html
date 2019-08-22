@@ -13,31 +13,24 @@
       <div class="row mb-3">
         <div class="col-md-2">
           <div class="img-outer">
-            <button class="btn btn-secondary" #upload (click)="file.click()"><i
-                class="fa fa-pencil"></i></button>
-            <img width="100%" class="user-img"
-              [src]="imgURL? imgURL: 'assets/images/profile-pic.jpeg'">
-            <input #file type="file" accept='image/*'
-              (change)="preview(file.files)" style="visibility: hidden" />
+            <button class="btn btn-secondary" #upload (click)="file.click()"><i class="fa fa-pencil"></i></button>
+            <img width="100%" class="user-img" [src]="imgURL? imgURL: 'assets/images/profile-pic.jpeg'">
+            <input #file type="file" accept='image/*' (change)="preview(file.files)" style="visibility: hidden" />
           </div>
         </div>
         <div class="col-md-10">
-          <form class="row p-0" [formGroup]="editUserForm"
-            (ngSubmit)="submit()">
+          <form class="row p-0" [formGroup]="editUserForm" (ngSubmit)="submit()">
             <div class="col-md-6">
               <div class="form-group">
                 <label class="control-label">User Name</label>
-                <input class="form-control" type="text"
-                  formControlName="USER_NAME" />
+                <input class="form-control" type="text" formControlName="USER_NAME" />
               </div>
               <div class="form-group">
                 <label class="control-label">Full Name (Eg.
                   John Doe)</label>
-                <input class="form-control" type="text"
-                  formControlName="FULL_NAME"
+                <input class="form-control" type="text" formControlName="FULL_NAME"
                   [ngClass]="{ 'is-invalid': submitted && f.FULL_NAME.errors }" />
-                <div *ngIf="submitted && f.FULL_NAME.errors"
-                  class="invalid-feedback">
+                <div *ngIf="submitted && f.FULL_NAME.errors" class="invalid-feedback">
                   <div *ngIf="f.FULL_NAME.errors.required">FULL NAME is
                     required</div>
                 </div>
@@ -46,13 +39,11 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="control-label">Email ID</label>
-                <input class="form-control" type="text"
-                  formControlName="EMAIL_ID" />
+                <input class="form-control" type="text" formControlName="EMAIL_ID" />
               </div>
               <div class="form-group">
                 <label class="control-label">Role</label>
-                <input class="form-control" type="text"
-                  formControlName="ROLE" />
+                <input class="form-control" type="text" formControlName="ROLE" />
               </div>
             </div>
 
@@ -62,11 +53,10 @@
       <div class="tile-footer">
         <div class="row">
           <div class="col-md-12 text-right">
-            <button class="btn btn-sm btn-primary" (click)="onSubmit()">
-              <i
-                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
-              routerLink="/dashboard">
+            <button [disabled]="saveLoader" class="btn btn-sm btn-primary" (click)="onSubmit()">
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
+            <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
+            <a class="btn btn-sm btn-secondary ml-2" routerLinkActive="active" routerLink="/dashboard">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
         </div>

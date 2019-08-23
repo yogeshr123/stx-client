@@ -9,6 +9,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
@@ -19,6 +20,7 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
 @NgModule({
   declarations: [HeaderHashComponent, AddEditHeaderComponent, AddCmvPopupComponent],
   imports: [
+    ToggleButtonModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

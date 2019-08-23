@@ -19,10 +19,13 @@ export class HeaderHashComponent implements OnInit {
   headers: any;
   selectedColumns: any;
   selectedTable: any;
+  fileHeaderHashErrorTableData: any;
   uniqueTables: any;
+  uniqueTablesBackUp: any;
   columnTableColumns = columnTableColumns;
   state: any;
   dataLoader = false;
+  showMismatchToggle = true;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -41,6 +44,7 @@ export class HeaderHashComponent implements OnInit {
     }
     this.getSelectedColumns();
     this.getAllTables();
+    this.fileHeaderHashErrorTable();
   }
 
   getSelectedColumns() {
@@ -88,10 +92,28 @@ export class HeaderHashComponent implements OnInit {
     this.ngOnInit();
   }
 
+  fileHeaderHashErrorTable() {
+    this.headerHashService.fileHeaderHashErrorTable().subscribe((res: any) => {
+      const allTables = res.data;
+      this.fileHeaderHashErrorTableData = this.removeDuplicates(allTables, 'TABLE_NAME');
+    }, error => {
+      console.error('error ', error);
+    });
+  }
+
+  toggleTablesList() {
+    if (this.showMismatchToggle) {
+      this.uniqueTables = this.uniqueTablesBackUp;
+    } else {
+      this.uniqueTables = this.fileHeaderHashErrorTableData;
+    }
+  }
+
   getAllTables() {
     this.columnMetadataService.getAllTablesInVersions({ queryString: '' }).subscribe((res: any) => {
       const allTables = res.data;
       this.uniqueTables = this.removeDuplicates(allTables, 'TABLE_NAME');
+      this.uniqueTablesBackUp = JSON.parse(JSON.stringify(this.uniqueTables));
       if (!this.state.CMV || !this.state.CMV.selectedTable) {
         this.selectedTable = this.uniqueTables[0];
         this.getHeaders();

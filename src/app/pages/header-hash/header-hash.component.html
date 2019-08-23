@@ -13,9 +13,14 @@
         <div class="tile mt-2">
             <div *ngIf="uniqueTables?.length">
                 Table Name:
-                <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTable"
-                    optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
+                <p-dropdown styleClass="{{showMismatchToggle ? '' : 'showMismatchToggle'}}"
+                    panelStyleClass="{{showMismatchToggle ? '' : 'showMismatchToggle'}}" appendTo="body"
+                    class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME"
+                    [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
                 </p-dropdown>
+                <p-toggleButton onLabel="Show Only Mismatch Tables" offLabel="Show All Tables" onIcon="pi pi-check"
+                    offIcon="pi pi-times" [(ngModel)]="showMismatchToggle" (onChange)="toggleTablesList()">
+                </p-toggleButton>
             </div>
             <div class="table-responsive mt-4">
                 <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">

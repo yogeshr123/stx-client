@@ -270,7 +270,7 @@ export class AddEditColumnComponent implements OnInit {
           }, 2000);
         }
       }, error => {
-        this.showToast('error', 'Column not save column.');
+        this.showToast('error', error.error.message);
         this.loader.saveColumn = false;
       });
     } else {

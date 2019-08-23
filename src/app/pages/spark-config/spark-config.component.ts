@@ -77,12 +77,10 @@ export class SparkConfigComponent implements OnInit {
     this.appState = { ...this.appState, selectedSparkConfig: sparkConfig };
     this.commonService.setState(this.appState);
     if (edit) {
-      this.router.navigate(['./edit']);
+      this.router.navigate(['spark-config/edit']);
     }
     else {
-      this.router.navigate(['./view']);
+      this.router.navigate(['spark-config/view']);
     }
-
   }
-
 }

@@ -22,6 +22,7 @@ export class HeaderHashComponent implements OnInit {
   uniqueTables: any;
   columnTableColumns = columnTableColumns;
   state: any;
+  dataLoader = false;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -110,13 +111,16 @@ export class HeaderHashComponent implements OnInit {
   }
 
   getHeaders(globalQuery?) {
+    this.dataLoader = true;
     const request = { table_name: this.selectedTable.TABLE_NAME, globalQuery };
     if (globalQuery) {
       request.globalQuery = globalQuery;
     }
     this.headerHashService.getHeaders(request).subscribe((res: any) => {
       this.headers = res.data;
+      this.dataLoader = false;
     }, error => {
+      this.dataLoader = false;
       this.showToast('error', 'Could not get data.');
     });
   }

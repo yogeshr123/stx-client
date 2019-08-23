@@ -25,6 +25,7 @@ export class AddEditHeaderComponent implements OnInit {
   appState: any;
   header: any;
   headerMismatches: any;
+  dataLoader = false;
   headerMismatchesTableCols = headerMismatchesTableCols;
 
   constructor(
@@ -72,12 +73,14 @@ export class AddEditHeaderComponent implements OnInit {
   }
 
   getHeaderMismatches() {
+    this.dataLoader = true;
     const request = {
       table_name: this.TABLE_NAME,
       header_hash: this.routeInfo.id
     };
     this.headerHashService.getHeaderMismatches(request).subscribe((res: any) => {
       this.headerMismatches = res.data;
+      this.dataLoader = false;
     });
   }
 

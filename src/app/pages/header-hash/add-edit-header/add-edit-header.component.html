@@ -29,6 +29,8 @@
                 </h6>
             </div>
             <div class="table-responsive">
+                <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+                </ngx-loading>
                 <p-table #dt1 [responsive]="true" [value]="headerMismatches" [tableStyle]="{'table-layout':'auto'}"
                     [columns]="headerMismatchesTableCols" [reorderableColumns]="true"
                     styleClass="scroll-table-fhh mismatch">

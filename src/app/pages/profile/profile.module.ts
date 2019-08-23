@@ -8,7 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { RouterModule } from '@angular/router';
 import { ProfileComponent } from './profile.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { UsersService } from 'src/app/services/users.service';
+// import { UsersService } from 'src/app/services/users.service';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RolesService } from 'src/app/services/roles.service';
@@ -36,7 +36,7 @@ import { RolesService } from 'src/app/services/roles.service';
     ],
     providers: [
         MessageService,
-        UsersService,
+        // UsersService,
         ConfirmationService,
         RolesService
     ],

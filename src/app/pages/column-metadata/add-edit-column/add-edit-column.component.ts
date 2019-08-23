@@ -77,15 +77,8 @@ export class AddEditColumnComponent implements OnInit {
       SCHEMA_NAME: ['', Validators.required],
       TABLE_NAME: ['', Validators.required],
       METADATA_VERSION: ['', Validators.required],
-      SRC_COLUMN_NAME: [
-        { value: '', disabled: this.routeInfo.fromHeaderHash },
-        Validators.compose([Validators.required, Validators.pattern(/^[a-z][a-z0-9-_]+$/)])],
-      SRC_COLUMN_TYPE: [
-        {
-          value: this.routeInfo.fromHeaderHash ? 'MAPPED' : '',
-          disabled: this.routeInfo.fromHeaderHash
-        },
-        Validators.required],
+      SRC_COLUMN_NAME: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-z][a-z0-9-_]+$/)])],
+      SRC_COLUMN_TYPE: ['MAPPED', Validators.required],
       SRC_DATA_TYPE: [''],
       SRC_LEFT_PRECISION: [0],
       SRC_RIGHT_PRECISION: [0],
@@ -93,9 +86,7 @@ export class AddEditColumnComponent implements OnInit {
       DERIVED_COLUMN_FORMULA: [''],
       LOOKUP_TABLE_ALIAS: ['', Validators.compose([Validators.pattern(/^[a-z][a-zA-Z0-9-_]+$/)])],
       PREDEFINED_VALUE: [''],
-      TARGET_COLUMN_NAME: [
-        { value: '', disabled: this.routeInfo.fromHeaderHash },
-        Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9-_]+$/)])],
+      TARGET_COLUMN_NAME: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9-_]+$/)])],
       TARGET_DATA_TYPE: ['', Validators.required],
       TARGET_LEFT_PRECISION: [0],
       TARGET_RIGHT_PRECISION: [0],
@@ -124,8 +115,8 @@ export class AddEditColumnComponent implements OnInit {
     if (this.appState && this.appState.header) {
       this.addEditColumnForm.controls.SCHEMA_NAME.patchValue(this.appState.header.SCHEMA_NAME);
       this.addEditColumnForm.controls.TABLE_NAME.patchValue(this.appState.header.TABLE_NAME);
-      this.addEditColumnForm.controls.SRC_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME);
-      this.addEditColumnForm.controls.TARGET_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME);
+      this.addEditColumnForm.controls.SRC_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME.toLowerCase());
+      this.addEditColumnForm.controls.TARGET_COLUMN_NAME.patchValue(this.appState.header.COLUMN_NAME.toLowerCase());
       this.addEditColumnForm.controls.SRC_DATA_TYPE.patchValue(this.appState.header.DATA_TYPE);
       this.addEditColumnForm.controls.TARGET_DATA_TYPE.patchValue(this.appState.header.DATA_TYPE);
       this.addEditColumnForm.controls.IS_NEW.patchValue(1);
@@ -263,23 +254,49 @@ export class AddEditColumnComponent implements OnInit {
     const formValues = Object.assign({}, this.addEditColumnForm.value);
     this.addPrecisionValues(formValues);
     this.checkFormValues(functionToCall, formValues);
-    const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
-    if (functionToCall === 'addColumn') {
-      localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`].unshift(formValues);
-    } else {
-      localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`] =
-        localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`]
-          .map(i => {
-            if (i.TARGET_COLUMN_ID === formValues.TARGET_COLUMN_ID) {
-              i = formValues;
-            }
-            return i;
-          });
-    }
 
-    this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
-    this.loader.saveColumn = false;
-    this.goBack();
+    if (this.routeInfo.fromHeaderHash) {
+      const request = {
+        data: formValues,
+        fromHeaderHash: true
+      };
+      this.columnMetadataService.addColumn(request).subscribe((resp: any) => {
+        if (resp && !resp.error) {
+          this.showToast('success', 'Column Successfuly saved!');
+          setTimeout(() => {
+            localStorage.removeItem('localCopyOfVersion');
+            this.loader.saveColumn = false;
+            this.goBack();
+          }, 2000);
+        }
+      }, error => {
+        this.showToast('error', 'Column not save column.');
+        this.loader.saveColumn = false;
+      });
+    } else {
+
+      const localCopyOfVersion = this.columnMetadataService.getLocalCopyOfVersion();
+      if (functionToCall === 'addColumn') {
+        localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`].unshift(formValues);
+      } else {
+        localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`] =
+          localCopyOfVersion[`${formValues.METADATA_VERSION}_${this.TABLE_NAME}`]
+            .map(i => {
+              if (i.TARGET_COLUMN_ID === formValues.TARGET_COLUMN_ID) {
+                i = formValues;
+              }
+              return i;
+            });
+      }
+
+      this.columnMetadataService.setLocalCopyOfVersion(localCopyOfVersion);
+      this.loader.saveColumn = false;
+      this.goBack();
+    }
+  }
+
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
   goBack() {

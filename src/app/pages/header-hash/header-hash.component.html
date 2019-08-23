@@ -18,6 +18,8 @@
                 </p-dropdown>
             </div>
             <div class="table-responsive mt-4">
+                <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+                </ngx-loading>
                 <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}"
                     [columns]="selectedColumns" [reorderableColumns]="true" styleClass="scroll-table-fhh">
                     <ng-template pTemplate="caption">

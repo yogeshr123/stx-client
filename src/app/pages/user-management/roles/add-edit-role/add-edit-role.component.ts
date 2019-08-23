@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogConfig, DynamicDialogRef, MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { RolesService } from 'src/app/services/roles.service';
 import { Permission } from 'src/app/model/permissions.table';
 import * as _lodash from 'lodash';
 import { each, find, some } from 'lodash';
 import { Role } from 'src/app/model/roles.table';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
+import { PermissionsService } from 'src/app/services/permissions.service';
 
 @Component({
   selector: 'app-add-edit-role',
@@ -17,33 +20,77 @@ export class AddEditRoleComponent implements OnInit {
   selectedRole: any;
   permissions: any;
   roles: any;
-  isNew: boolean = true;
   rolePermissions: Permission[] = [];
+  routeInfo = {
+    path: '',
+    isViewOnly: false,
+    isEditMode: false
+  };
+  loader = {
+    formData: false,
+    saveEndpoint: false
+  };
+  appState: any;
 
   constructor(
     private formBuilder: FormBuilder,
-    private config: DynamicDialogConfig,
-    private ref: DynamicDialogRef,
     private rolesService: RolesService,
-    private messageService: MessageService
-  ) { }
-
-  ngOnInit() {
-    this.selectedRole = this.config.data.selectedRole;
-    this.permissions = this.config.data.permissions;
-    this.roles = this.config.data.roles;
-    this.isNew = this.config.data.isNew;
-    if (!this.isNew) {
-      this.selectedRole.PERMISSIONSARRAY = this.selectedRole.PERMISSIONS.split(',').map(Number);
-    }
-    this.loadPermissions();
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService,
+    private permissionsService: PermissionsService,
+    private confirmationService: ConfirmationService
+  ) {
+    this.route.url.subscribe(params => {
+      this.routeInfo.path = params[0].path;
+      if (this.routeInfo.path.indexOf('viewrole') > -1) {
+        this.routeInfo.isViewOnly = true;
+      }
+      if (this.routeInfo.path.indexOf('editrole') > -1) {
+        this.routeInfo.isEditMode = true;
+      }
+    });
   }
 
-  loadPermissions() {
+  ngOnInit() {
+
+    this.appState = this.commonService.getState();
+
+    if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
+      this.selectedRole = this.appState.selectedRole;
+      this.selectedRole.PERMISSIONSARRAY = this.selectedRole.PERMISSIONS.split(',').map(Number);
+    }
+    else {
+      this.selectedRole = {};
+    }
+    this.fetchAllPermissions();
+  }
+
+  ngOnDestroy() {
+    delete this.appState.selectedRole;
+    this.commonService.setState(this.appState);
+  }
+
+  fetchAllPermissions() {
+    this.permissionsService.getPermissions().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.permissions = data.data;
+        this.loadCurrentRolesPermissions();
+      }
+      else {
+        this.permissions = [];
+      }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  loadCurrentRolesPermissions() {
     const mainPermissions = this.permissions.filter(el => !el.PARENT);
     mainPermissions.forEach((element: Permission) => {
       let hasUserPermission = false;
-      if (!this.isNew) {
+      if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
         hasUserPermission = this.selectedRole.PERMISSIONSARRAY.some(t => t === element.ID);
       }
       const rootPermission = new Permission();
@@ -58,7 +105,7 @@ export class AddEditRoleComponent implements OnInit {
       const children = this.permissions.filter(el => el.PARENT && el.PARENT === element.ID);
       children.forEach(child => {
         let hasUserChildPermission = false;
-        if (!this.isNew) {
+        if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
           hasUserChildPermission = this.selectedRole.PERMISSIONSARRAY.some(t => t === child.ID);
         }
         const childPermission = new Permission();
@@ -135,6 +182,11 @@ export class AddEditRoleComponent implements OnInit {
   submit() {
     const editedRole = this.prepareRole();
     editedRole.PERMISSIONS = editedRole.PERMISSIONSARRAY.join(',');
+    editedRole.UPDATE_DATE = `${new Date()}`;
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      editedRole.UPDATED_BY = this.appState.loggedInUser.USER_NAME;
+    }
+
     delete editedRole.PERMISSIONSARRAY;
     const body = {
       role: editedRole
@@ -142,22 +194,31 @@ export class AddEditRoleComponent implements OnInit {
     if (editedRole.ID > 0) {
       this.rolesService.updateRole(body).subscribe((data: any) => {
         this.showToast('success', 'role updated.');
-        this.closeModal(true);
+        if (editedRole.ID === this.appState.loggedInUser.ROLE) {
+          this.confirmationService.confirm({
+            rejectVisible: false,
+            acceptLabel: 'Ok',
+            message: 'You have changed the permissions of logged in user. Please login again...',
+            accept: () => {
+              this.router.navigateByUrl('/login');
+            }
+          });
+        }
+        else {
+          this.router.navigate(['/user-management/roles']);
+
+        }
       }, error => {
         this.showToast('error', 'Could not update role.');
       });
     } else {
       this.rolesService.addRole(body).subscribe((data: any) => {
         this.showToast('success', 'role saved.');
-        this.closeModal(true);
+        this.router.navigate(['/user-management/roles']);
       }, error => {
         this.showToast('error', 'Could not save role.');
       });
     }
-  }
-
-  closeModal(status) {
-    this.ref.close(status);
   }
 
   showToast(severity, summary) {

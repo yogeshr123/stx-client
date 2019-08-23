@@ -49,6 +49,7 @@ export class SparkConfigComponent implements OnInit {
       {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
+        type: 'date'
       },
       {
         header: 'UPDATED_BY',

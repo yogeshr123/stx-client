@@ -7,12 +7,16 @@ const roleTableColumns = [
     {
         header: 'TITLE',
         field: 'TITLE'
+    },
+    {
+        header: 'UPDATE_DATE',
+        field: 'UPDATE_DATE',
+        type: 'date'
+    },
+    {
+        header: 'UPDATED_BY',
+        field: 'UPDATED_BY'
     }
-    // ,
-    // {
-    //     header: 'PERMISSIONS',
-    //     field: 'PERMISSIONS'
-    // }
 ];
 
 class Role {
@@ -21,6 +25,8 @@ class Role {
     PERMISSIONSARRAY: number[];
     PERMISSIONS: string;
     ISCOREROLE: boolean = false;
+    UPDATE_DATE: string;
+    UPDATED_BY: string;
 
     clear(): void {
         this.ID = undefined;
@@ -28,6 +34,8 @@ class Role {
         this.PERMISSIONSARRAY = [];
         this.PERMISSIONS = '';
         this.ISCOREROLE = false;
+        this.UPDATE_DATE = `${new Date()}`;
+        this.UPDATED_BY = '';
     }
 }
 

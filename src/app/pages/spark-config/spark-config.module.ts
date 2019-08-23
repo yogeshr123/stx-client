@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { AddEditSparkconfigComponent } from './add-edit-sparkconfig/add-edit-sparkconfig.component';
 import { LoadControlService } from 'src/app/services/load-control.service';
 import { SparkConfigPropertiesService } from 'src/app/services/spark-config-properties.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { SparkConfigPropertiesService } from 'src/app/services/spark-config-prop
     MessageService,
     SparkConfigService,
     LoadControlService,
-    SparkConfigPropertiesService
+    SparkConfigPropertiesService,
+    CommonService
   ],
 })
 export class SparkConfigModule { }

@@ -41,10 +41,11 @@ export class DbEndpointsComponent implements OnInit {
       {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
+        type: 'date'
       },
       {
         header: 'UPDATED_BY',
-        field: 'UPDATED_BY',
+        field: 'UPDATED_BY'
       }
     ];
 
@@ -74,31 +75,5 @@ export class DbEndpointsComponent implements OnInit {
     else {
       this.router.navigate(['/db-endpoints/view']);
     }
-
-  }
-
-  addNew(isNew) {
-    // let header;
-    // if (isNew) {
-    //   this.selectedEndpoint = {};
-    //   header = 'Add Endpoint';
-    // }
-    // else {
-    //   header = 'Edit Endpoint';
-    // }
-    // const ref = this.dialogService.open(AddEditDbendpointComponent, {
-    //   header: header,
-    //   width: '55%',
-    //   data: {
-    //     selectedEndpoint: this.selectedEndpoint,
-    //     isNew: isNew
-    //   }
-    // });
-
-    // ref.onClose.subscribe((reason) => {
-    //   if (reason) {
-    //     this.ngOnInit();
-    //   }
-    // });
   }
 }

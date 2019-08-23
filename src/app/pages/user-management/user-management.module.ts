@@ -22,6 +22,8 @@ import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.compon
 import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { CommonService } from 'src/app/services/common.service';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [
@@ -35,14 +37,16 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         DynamicDialogModule,
         TableModule,
         ConfirmDialogModule,
-        PermissionModule
+        PermissionModule,
+        NgxLoadingModule.forRoot({})
     ],
     providers: [
         MessageService,
         UsersService,
         PermissionsService,
         RolesService,
-        ConfirmationService
+        ConfirmationService,
+        CommonService
     ],
     declarations: [
         UserManagementComponent,
@@ -53,7 +57,7 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         AddEditRoleComponent,
         AddEditUserComponent,
     ],
-    entryComponents: [AddEditPermissionComponent, AddEditRoleComponent, AddEditUserComponent]
+    entryComponents: [AddEditPermissionComponent, AddEditUserComponent]
 })
 export class UserManagementModule {
 }

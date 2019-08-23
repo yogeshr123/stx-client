@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { roleTableColumns } from '../../../model/roles.table';
 import { AddEditRoleComponent } from './add-edit-role/add-edit-role.component';
 import { RolesService } from 'src/app/services/roles.service';
@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
     selector: 'app-roles',
     templateUrl: './roles.component.html',
     styleUrls: ['./roles.component.scss'],
-    providers: [DialogService]
 })
 export class RolesComponent implements OnInit {
     roleTableColumns = roleTableColumns;
@@ -22,15 +21,14 @@ export class RolesComponent implements OnInit {
     appState: any;
     constructor(
         private messageService: MessageService,
-        public dialogService: DialogService,
         private rolesService: RolesService,
         private permissionsService: PermissionsService,
         private commonService: CommonService,
         private router: Router,
-        private confirmationService: ConfirmationService
     ) { }
 
     ngOnInit() {
+        this.appState = this.commonService.getState();
         this.loadRoles();
         this.loadPermissions();
     }
@@ -61,52 +59,19 @@ export class RolesComponent implements OnInit {
         });
     }
 
-    addNew(isNew) {
-        let header;
-        if (isNew) {
-            this.selectedRole = {};
-            header = 'Add Role';
-        }
-        else {
-            header = 'Edit Role';
-        }
-        const ref = this.dialogService.open(AddEditRoleComponent, {
-            header: header,
-            width: '55%',
-            data: {
-                selectedRole: this.selectedRole,
-                roles: this.roles,
-                permissions: this.permissions,
-                isNew: isNew
-            }
-        });
-
-        ref.onClose.subscribe((reason) => {
-            if (reason) {
-                this.appState = this.commonService.getState();
-                if (!(isNullOrUndefined(this.appState.loggedInUser))) {
-                    if (this.selectedRole.ID === this.appState.loggedInUser.ROLE) {
-                        this.confirmationService.confirm({
-                            rejectVisible: false,
-                            acceptLabel: 'Ok',
-                            message: 'You have changed the permissions of logged in user. Please login again...',
-                            accept: () => {
-                                this.router.navigateByUrl('/login');
-                            }
-                        });
-                    }
-                }
-                this.ngOnInit();
-            }
-        });
-    }
     showToast(severity, summary) {
         this.messageService.add({ severity, summary, life: 3000 });
     }
 
-    selectRole(role: any) {
-        this.selectedRole = role;
-        this.addNew(false);
+    selectRole(role: any, edit: boolean) {
+        this.appState = { ...this.appState, selectedRole: role };
+        this.commonService.setState(this.appState);
+        if (edit) {
+            this.router.navigate(['/user-management/editrole']);
+        }
+        else {
+            this.router.navigate(['/user-management/viewrole']);
+        }
     }
 
     deleteRole(role: any) {

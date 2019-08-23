@@ -13,6 +13,7 @@ import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { DbEndpointsRouting } from './db-endpoints.routing';
 import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbendpoint.component';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CommonService } from 'src/app/services/common.service';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
     providers: [
         DBEndpointsService,
         MessageService,
-        DialogService
+        DialogService,
+        CommonService
     ],
     declarations: [
         DbEndpointsComponent,

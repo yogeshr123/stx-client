@@ -85,15 +85,15 @@ export class LoadControlService {
             .pipe(catchError(this.commonService.handleError));
     }
 
-    getDistinctSchemaNames() {
-        const url = `${environment.baseUrl}table_load_control/schemaNames`;
+    getDistinctSchemaNames(ENV_NAME: string) {
+        const url = `${environment.baseUrl}table_load_control/schemaNames?ENV_NAME=${ENV_NAME}`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
 
-    getDistinctTableNames() {
-        const url = `${environment.baseUrl}table_load_control/tableNames`;
+    getDistinctTableNames(ENV_NAME: string, SCHEMA_NAME: string) {
+        const url = `${environment.baseUrl}table_load_control/tableNames?ENV_NAME=${ENV_NAME}&SCHEMA_NAME=${SCHEMA_NAME}`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));

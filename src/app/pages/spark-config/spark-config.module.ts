@@ -39,6 +39,10 @@ import { SparkConfigPropertiesService } from 'src/app/services/spark-config-prop
         path: 'add',
         component: AddEditSparkconfigComponent,
       },
+      {
+        path: 'view',
+        component: AddEditSparkconfigComponent,
+      }
     ]),
   ],
   providers: [

@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { SparkConfigService } from 'src/app/services/spark-config.service';
 import { LoadControlService } from 'src/app/services/load-control.service';
 import * as _lodash from 'lodash';
-import { remove, find } from 'lodash';
+import { remove, findIndex, forEach } from 'lodash';
 import { SparkConfigPropertiesService } from 'src/app/services/spark-config-properties.service';
 
 class SparkConfig {
@@ -18,6 +18,14 @@ class SparkConfig {
   EXAMPLE: string;
   VALUE: string
 
+  constructor() {
+    this.CONFIG_KEY = '';
+    this.DATA_TYPE = '';
+    this.REGEX = '';
+    this.VALUE_SET = '';
+    this.EXAMPLE = '';
+    this.VALUE = '';
+  }
   clear(): void {
     this.CONFIG_KEY = '';
     this.DATA_TYPE = '';
@@ -53,8 +61,7 @@ export class AddEditSparkconfigComponent implements OnInit {
   tableNames: any;
   sparkConfigProperties = [];
   sparkConfigArray = [];
-  sparkConfig: SparkConfig;
-
+  private sparkConfigList: FormArray;
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
@@ -76,44 +83,123 @@ export class AddEditSparkconfigComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.appState = JSON.parse(localStorage.getItem('appState'));
     this.formInit();
-    if (this.routeInfo.isEditMode) {
-      this.setFormValues();
-    }
+    this.loadSparkConfigProperties();
     this.getUserInfo();
-    this.loadSchemaNames();
-    this.loadTableNames();
-    this.loadSparkServiceProperties();
   }
 
   formInit() {
     this.addEditForm = this.formBuilder.group({
-      SCHEMA_NAME: ['', Validators.required],
-      TABLE_NAME: ['', Validators.required],
+      SCHEMA_NAME: [{ value: '', disabled: true }, Validators.required],
+      TABLE_NAME: [{ value: '', disabled: true }, Validators.required],
       ENV_NAME: ['', Validators.required],
       LOAD_TYPE: ['', Validators.required],
       UPDATE_DATE: [new Date(), Validators.required],
       UPDATED_BY: ['', Validators.required],
+      SPARK_CONF: this.formBuilder.array([])
     });
+    this.sparkConfigList = this.addEditForm.get('SPARK_CONF') as FormArray;
+  }
+
+  loadData(value, type) {
+    if (type === "ENV_NAME") {
+      this.loadSchemaNames(value);
+      this.addEditForm.get('SCHEMA_NAME').enable();
+    }
+    else if (type === "SCHEMA_NAME") {
+      if (value !== "*") {
+        const ENV_NAME = this.addEditForm.get('ENV_NAME').value;
+        this.addEditForm.get('TABLE_NAME').enable();
+        this.loadTableNames(ENV_NAME, value);
+      }
+      else {
+        this.addEditForm.get('TABLE_NAME').disable();
+        this.addEditForm.get('TABLE_NAME').patchValue("*")
+      }
+    }
+  }
+
+  get SparkConfigFormGroup() {
+    return this.addEditForm.get('SPARK_CONF') as FormArray;
+  }
+
+  getSparkConfigFormGroup(index): FormGroup {
+    const formGroup = this.sparkConfigList.controls[index] as FormGroup;
+    return formGroup;
+  }
+
+  createConf() {
+    return this.formBuilder.group(new SparkConfig());
   }
 
   addItem() {
-    this.sparkConfig = new SparkConfig();
-    this.sparkConfigArray.push(this.sparkConfig);
+    this.sparkConfigList.push(this.createConf());
+    // this.sparkConfigArray.push(new SparkConfig());
   }
 
-  onSparkConfigKeySelected(value, index) {
+  onSparkConfigKeySelected(value, index, controlValue) {
     let tempConf = remove(this.sparkConfigProperties, (item: any) => item.CONFIG_KEY === value);
-    if (tempConf.length > 0)
-      this.sparkConfigArray[index] = tempConf[0];
+    if (tempConf.length > 0) {
+      tempConf = tempConf[0];
+      this.sparkConfigArray[index] = tempConf;
+      const formControls = this.getSparkConfigFormGroup(index).controls;
+      for (const key in formControls) {
+        if (formControls.hasOwnProperty(key)) {
+          const element = formControls[key];
+          element.patchValue(tempConf[key]);
+          if (key === "CONFIG_KEY") {
+            this.getSparkConfigFormGroup(index).controls['CONFIG_KEY'].disable();
+          }
+        }
+      }
+      if (controlValue) {
+        this.getSparkConfigFormGroup(index).controls['VALUE'].patchValue(controlValue);
+      }
+      this.applyValidation(index, tempConf);
+    }
+    else {
+      this.showToast('error', `${value} not found in spark configuration properties`);
+    }
+  }
+
+  applyValidation(index, tempConf) {
+    let validators = null;
+    Validators.min(1)
+    if (tempConf['DATA_TYPE'] === 'RANGE' && tempConf['VALUE_SET']) {
+      const min = tempConf['VALUE_SET'].split('-')[0];
+      const max = tempConf['VALUE_SET'].split('-')[1];
+      validators = Validators.compose([
+        Validators.required,
+        Validators.min(min),
+        Validators.max(max)
+      ]);
+    }
+    else if (tempConf['REGEX']) {
+      validators = Validators.compose([
+        Validators.required,
+        Validators.pattern(tempConf['REGEX'])
+        // Validators.pattern("([0-9]+(|.[0-9]+)(m|g|k)$)")
+      ]);
+    }
+    else {
+      validators = Validators.compose([
+        Validators.required
+      ]);
+    }
+    this.getSparkConfigFormGroup(index).controls['VALUE'].setValidators(
+      validators
+    );
+
+    this.getSparkConfigFormGroup(index).controls['VALUE'].updateValueAndValidity();
   }
 
   removeItem(index: number, key: string) {
     const tempConf = this.sparkConfigArray.splice(index, 1);
-    if (tempConf.length > 0)
+    if (tempConf.length > 0 && key)
       this.sparkConfigProperties.push(tempConf[0]);
+    this.sparkConfigList.removeAt(index);
   }
 
   getUserInfo() {
@@ -130,7 +216,21 @@ export class AddEditSparkconfigComponent implements OnInit {
         for (const key in formControls) {
           if (formControls.hasOwnProperty(key)) {
             const element = formControls[key];
-            element.patchValue(this.selectedSparkConfig[key]);
+            if (key === "SPARK_CONF") {
+              console.log(this.selectedSparkConfig[key]);
+              let sparkConfig = JSON.parse(this.selectedSparkConfig[key]);
+              let index = 0;
+              for (var config in sparkConfig) {
+                this.addItem();
+                console.log(sparkConfig[config] + config);
+                this.onSparkConfigKeySelected(config, index, sparkConfig[config]);
+                index++;
+              }
+            }
+            else {
+              element.patchValue(this.selectedSparkConfig[key]);
+              element.disable();
+            }
           }
         }
       }
@@ -143,10 +243,6 @@ export class AddEditSparkconfigComponent implements OnInit {
 
 
   submit() {
-    let sparkConfigList = {};
-    this.sparkConfigArray.forEach(childObj => {
-      sparkConfigList[childObj.CONFIG_KEY] = childObj.VALUE;
-    })
     this.submitted = true;
     // stop here if form is invalid
     if (this.addEditForm.invalid) {
@@ -157,9 +253,17 @@ export class AddEditSparkconfigComponent implements OnInit {
       return;
     }
     this.loader.saveSparkConfig = true;
-    let formValues = Object.assign({}, this.addEditForm.value);
+    let formValues = Object.assign({}, this.addEditForm.getRawValue());
     formValues.UPDATE_DATE = `${new Date()}`;
-    formValues.SPARK_CONF = sparkConfigList;
+
+    let sparkConfig = {};
+    formValues.SPARK_CONF.forEach(childObj => {
+      if (childObj.CONFIG_KEY && childObj.VALUE) {
+        sparkConfig[childObj.CONFIG_KEY] = childObj.VALUE;
+      }
+    });
+    formValues.SPARK_CONF = sparkConfig;
+
     let body = {
       record: formValues,
     };
@@ -178,7 +282,10 @@ export class AddEditSparkconfigComponent implements OnInit {
       }
       this.loader.saveSparkConfig = false;
     }, error => {
-      this.showToast('error', 'Could not save data.');
+      if (error.error.error.code === "ER_DUP_ENTRY") {
+        this.showToast('error', 'Record already exists.');
+      }
+
       this.loader.saveSparkConfig = false;
     });
   }
@@ -187,30 +294,39 @@ export class AddEditSparkconfigComponent implements OnInit {
     this.messageService.add({ severity, summary, life: 3000 });
   }
 
-  loadSchemaNames() {
-    this.loadControlService.getDistinctSchemaNames().subscribe((data: any) => {
+  loadSchemaNames(ENV_NAME: string) {
+    this.loadControlService.getDistinctSchemaNames(ENV_NAME).subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.schemaNames = data.data;
       }
-    }, error => {
-      this.showToast('error', 'Error while fetching data.');
-    });
-  }
-
-  loadTableNames() {
-    this.loadControlService.getDistinctTableNames().subscribe((data: any) => {
-      if (data.data && data.data.length > 0) {
-        this.tableNames = data.data;
+      else {
+        this.schemaNames = [];
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');
     });
   }
 
-  loadSparkServiceProperties() {
+  loadTableNames(ENV_NAME: string, SCHEMA_NAME: string) {
+    this.loadControlService.getDistinctTableNames(ENV_NAME, SCHEMA_NAME).subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.tableNames = data.data;
+      }
+      else {
+        this.tableNames = [];
+      }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  loadSparkConfigProperties() {
     this.sparkConfigPropertiesService.getSparkConfigProperties().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
-        this.sparkConfigProperties = data.data;;
+        this.sparkConfigProperties = data.data;
+        if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
+          this.setFormValues();
+        }
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');

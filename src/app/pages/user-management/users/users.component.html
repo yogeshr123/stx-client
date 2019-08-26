@@ -43,9 +43,8 @@
             <th>Action</th>
           </tr>
           <tr>
-            <th *ngFor="let col of columns" [ngSwitch]="col.field"
-              class="ui-flclassuid">
-              <input pInputText *ngSwitchDefault type="text"
+            <th *ngFor="let col of columns" class="ui-flclassuid">
+              <input pInputText *ngIf="col.type !== 'date'" type="text"
                 (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                 [value]="dt.filters[col.field]?.value">
             </th>
@@ -59,7 +58,12 @@
                 <span> {{ getUserRolesStr(rowData.ROLE) }}</span>
               </ng-container>
               <ng-template #elseTemplate2>
-                <span> {{rowData[col.field]}} </span>
+                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
+                  <span> {{ rowData[col.field] | date: 'short' }} </span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <span> {{ rowData[col.field] }} </span>
+                </ng-template>
               </ng-template>
             </td>
             <td>

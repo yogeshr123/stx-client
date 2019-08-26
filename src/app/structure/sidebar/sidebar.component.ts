@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { isNullOrUndefined } from 'util';
 import { CommonService } from 'src/app/services/common.service';
 import { UsersService } from 'src/app/services/users.service';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -17,6 +18,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private commonService: CommonService,
+    private router: Router
   ) {
     this.usersService.changeProfile.subscribe(() => {
       this.getState();
@@ -26,6 +28,7 @@ export class SidebarComponent implements OnInit {
 
 
   ngOnInit() {
+    const currentPageRouterLink = this.router.url;
     $(document).ready(() => {
       const treeviewMenu = $('.app-menu');
       // Activate sidebar treeview toggle
@@ -39,6 +42,16 @@ export class SidebarComponent implements OnInit {
 
       // Set initial active toggle
       $('[data-toggle=\'treeview.\'].is-expanded').parent().toggleClass('is-expanded');
+      const items = $('ul.app-menu li');
+      items.each(function (id, el) {
+        const routerLink = $(this).find('a').attr('routerlink');
+        if (routerLink) {
+          if (routerLink.indexOf(currentPageRouterLink) > -1) {
+            $(this).parent().parent('.treeview').siblings().removeClass('is-expanded');
+            $(this).parent().parent('.treeview').addClass('is-expanded');
+          }
+        }
+      });
     });
 
     this.getState();

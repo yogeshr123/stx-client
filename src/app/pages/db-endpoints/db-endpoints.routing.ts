@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'add',
         component: AddEditDbendpointComponent,
     },
+    {
+        path: 'view',
+        component: AddEditDbendpointComponent,
+    },
 ];
 
 @NgModule({

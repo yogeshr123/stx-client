@@ -9,6 +9,7 @@ import { LoadControlService } from 'src/app/services/load-control.service';
 import * as _lodash from 'lodash';
 import { remove, findIndex, forEach } from 'lodash';
 import { SparkConfigPropertiesService } from 'src/app/services/spark-config-properties.service';
+import { CommonService } from 'src/app/services/common.service';
 
 class SparkConfig {
   CONFIG_KEY: string;
@@ -70,7 +71,8 @@ export class AddEditSparkconfigComponent implements OnInit {
     private location: Location,
     private router: Router,
     private loadControlService: LoadControlService,
-    private sparkConfigPropertiesService: SparkConfigPropertiesService
+    private sparkConfigPropertiesService: SparkConfigPropertiesService,
+    private commonService:CommonService
   ) {
     this.route.url.subscribe(params => {
       this.routeInfo.path = params[0].path;
@@ -84,10 +86,15 @@ export class AddEditSparkconfigComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.appState = JSON.parse(localStorage.getItem('appState'));
+    this.appState = this.commonService.getState();
     this.formInit();
     this.loadSparkConfigProperties();
     this.getUserInfo();
+  }
+
+  ngOnDestroy() {
+    delete this.appState.selectedSparkConfig;
+    this.commonService.setState(this.appState);
   }
 
   formInit() {

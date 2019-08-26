@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-dbendpoint',
@@ -15,7 +16,6 @@ export class AddEditDbendpointComponent implements OnInit {
   addEditForm: FormGroup;
   selectedEndpoint: any;
   submitted: boolean = false;
-  isNew: boolean = true;
   routeInfo = {
     path: '',
     isViewOnly: false,
@@ -32,7 +32,8 @@ export class AddEditDbendpointComponent implements OnInit {
     private dbEndpointsService: DBEndpointsService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService
   ) {
     this.route.url.subscribe(params => {
       this.routeInfo.path = params[0].path;
@@ -46,12 +47,17 @@ export class AddEditDbendpointComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appState = JSON.parse(localStorage.getItem('appState'));
+    this.appState = this.commonService.getState();
     this.formInit();
-    if (this.routeInfo.isEditMode) {
+    if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
       this.setFormValues();
     }
     this.getUserInfo();
+  }
+
+  ngOnDestroy() {
+    delete this.appState.selectedEndpoint;
+    this.commonService.setState(this.appState);
   }
 
   formInit() {

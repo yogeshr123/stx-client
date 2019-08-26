@@ -5,6 +5,7 @@ import { UserManagementComponent } from './user-management.component';
 import { RolesComponent } from './roles/roles.component';
 import { UsersComponent } from './users/users.component';
 import { PermissionsComponent } from './permissions/permissions.component';
+import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
 
 const routes: Routes = [
     {
@@ -19,6 +20,18 @@ const routes: Routes = [
             {
                 path: 'roles',
                 component: RolesComponent
+            },
+            {
+                path: 'editrole',
+                component: AddEditRoleComponent,
+            },
+            {
+                path: 'addrole',
+                component: AddEditRoleComponent,
+            },
+            {
+                path: 'viewrole',
+                component: AddEditRoleComponent,
             },
             {
                 path: 'users',

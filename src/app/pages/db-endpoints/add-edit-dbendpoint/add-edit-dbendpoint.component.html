@@ -15,7 +15,7 @@
       <ngx-loading [show]="loader.formData"
         [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
-      <div class="tile-body">
+      <div class="tile-body form-overlay-parent">
         <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
         <form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
           <div class="col-md-6">
@@ -50,16 +50,20 @@
               </div>
             </div>
           </div>
-          <div class="separator"></div>
+        </form>
+      </div>
+      <div class="tile-footer">
+        <div class="row">
           <div class="col-md-12 text-right">
-            <button class="btn btn-sm btn-primary">
+            <button *ngIf="!routeInfo.isReadMode" class="btn btn-sm btn-primary"
+              (click)="submit()">
               <i
                 class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
             <a class="btn btn-sm btn-secondary" routerLinkActive="active"
               routerLink="/db-endpoints">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

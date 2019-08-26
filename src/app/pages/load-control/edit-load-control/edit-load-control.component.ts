@@ -25,8 +25,9 @@ export class EditLoadControlComponent implements OnInit {
   recordMeta: any;
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   dbEndpoints: any[];
-  state: any;
   isEdit = false;
+  appState: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -39,19 +40,30 @@ export class EditLoadControlComponent implements OnInit {
     this.loadControl = LoadControl;
   }
   ngOnInit() {
+    this.appState = this.commonService.getState();
     this.loadDBEndpoints();
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
-    this.state = this.commonService.getState();
-    // this.recordService.currentRecord.subscribe(record => this.record = record);
-    if (this.state.selectedRecord && this.state.selectedRecord.record) {
-      this.record = this.state.selectedRecord.record;
-      this.isEdit = this.state.selectedRecord.edit;
-      this.getColumnDataType();
+    if (this.appState.selectedRecord && this.appState.selectedRecord.record) {
+      this.record = this.appState.selectedRecord.record;
+      this.isEdit = this.appState.selectedRecord.edit;
+      this.getColumnDataTypeAndSetFormValues();
     }
     else {
       this.router.navigate(['/loadcontrol/add']);
+    }
+    this.getUserInfo();
+  }
+
+  ngOnDestroy() {
+    delete this.appState.selectedRecord;
+    this.commonService.setState(this.appState);
+  }
+
+  getUserInfo() {
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      this.editLoadControlForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
     }
   }
 
@@ -167,7 +179,7 @@ export class EditLoadControlComponent implements OnInit {
     });
   }
 
-  getColumnDataType() {
+  getColumnDataTypeAndSetFormValues() {
     this.loadControlService.getColumnDataType().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.recordMeta = data.data;

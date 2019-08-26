@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ClustersService } from 'src/app/services/clusters.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-cluster',
   templateUrl: './add-edit-cluster.component.html',
   styleUrls: ['./add-edit-cluster.component.scss']
 })
-export class AddEditClusterComponent implements OnInit {
+export class AddEditClusterComponent implements OnInit, OnDestroy {
 
   addEditClusterForm: FormGroup;
   routeInfo = {
@@ -25,6 +26,7 @@ export class AddEditClusterComponent implements OnInit {
   oldClusterInfo: any;
 
   constructor(
+    private commonService: CommonService,
     private clustersService: ClustersService,
     private messageService: MessageService,
     private route: ActivatedRoute,
@@ -81,14 +83,17 @@ export class AddEditClusterComponent implements OnInit {
   }
 
   setFormValues() {
-    const cluster = this.clustersService.getClusterObject();
     this.oldClusterInfo = this.clustersService.getClusterObject();
-    const formControls = this.addEditClusterForm.controls;
-    if (cluster) {
-      for (const key in formControls) {
-        if (formControls.hasOwnProperty(key)) {
-          const element = formControls[key];
-          element.patchValue(cluster[key]);
+    const appState: any = this.commonService.getState();
+    if (appState && appState.selectedCluster) {
+      const cluster = appState.selectedCluster;
+      const formControls = this.addEditClusterForm.controls;
+      if (cluster) {
+        for (const key in formControls) {
+          if (formControls.hasOwnProperty(key)) {
+            const element = formControls[key];
+            element.patchValue(cluster[key]);
+          }
         }
       }
     }
@@ -135,6 +140,12 @@ export class AddEditClusterComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  ngOnDestroy() {
+    const appState = JSON.parse(localStorage.getItem('appState'));
+    delete appState.selectedCluster;
+    this.commonService.setState(appState);
   }
 
 }

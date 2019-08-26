@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClustersService } from 'src/app/services/clusters.service';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-clusters',
@@ -26,7 +27,8 @@ export class ClustersComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private clustersService: ClustersService
+    private clustersService: ClustersService,
+    private commonService: CommonService,
   ) { }
 
   ngOnInit() {
@@ -34,7 +36,9 @@ export class ClustersComponent implements OnInit {
   }
 
   editCluster(cluster, isEdit) {
-    this.clustersService.setClusterObject(cluster);
+    let appState = this.commonService.getState();
+    appState = { ...appState, selectedCluster: cluster };
+    this.commonService.setState(appState);
     if (isEdit) {
       return this.router.navigate(['clusters/edit-cluster']);
     } else {

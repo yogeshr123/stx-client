@@ -25,7 +25,7 @@ export class HeaderHashComponent implements OnInit {
   columnTableColumns = columnTableColumns;
   state: any;
   dataLoader = false;
-  showMismatchToggle = true;
+  showMismatchToggle = false;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -89,7 +89,7 @@ export class HeaderHashComponent implements OnInit {
   changeTable() {
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTable };
     this.commonService.setState(this.state);
-    this.ngOnInit();
+    this.getHeaders();
   }
 
   fileHeaderHashErrorTable() {
@@ -103,10 +103,12 @@ export class HeaderHashComponent implements OnInit {
 
   toggleTablesList() {
     if (this.showMismatchToggle) {
-      this.uniqueTables = this.uniqueTablesBackUp;
-    } else {
       this.uniqueTables = this.fileHeaderHashErrorTableData;
+    } else {
+      this.uniqueTables = this.uniqueTablesBackUp;
     }
+    this.headers = [];
+    this.selectedTable = '';
   }
 
   getAllTables() {

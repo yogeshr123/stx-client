@@ -13,14 +13,24 @@
         <div class="tile mt-2">
             <div *ngIf="uniqueTables?.length">
                 Table Name:
-                <p-dropdown styleClass="{{showMismatchToggle ? '' : 'showMismatchToggle'}}"
-                    panelStyleClass="{{showMismatchToggle ? '' : 'showMismatchToggle'}}" appendTo="body"
+                <p-dropdown styleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}" placeholder="Select a Table"
+                    panelStyleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}" appendTo="body"
                     class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME"
                     [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
                 </p-dropdown>
-                <p-toggleButton onLabel="Show Only Mismatch Tables" offLabel="Show All Tables" onIcon="pi pi-check"
-                    offIcon="pi pi-times" [(ngModel)]="showMismatchToggle" (onChange)="toggleTablesList()">
-                </p-toggleButton>
+                <!-- <p-toggleButton onLabel="Show Only Mismatch Tables" offLabel="Show All Tables"
+                    [(ngModel)]="showMismatchToggle" (onChange)="toggleTablesList()">
+                </p-toggleButton> -->
+                <!-- Rectangular switch -->
+                <span>
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="showMismatchToggle" (change)="toggleTablesList()">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label ml-1">
+                        Show only Header Mismatch Tables
+                    </span>
+                </span>
             </div>
             <div class="table-responsive mt-4">
                 <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">

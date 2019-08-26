@@ -15,6 +15,7 @@ import { DataLatencySummaryComponent } from './data-latency-summary/data-latency
 import { LoadingStatusSummaryComponent } from './loading-status-summary/loading-status-summary.component';
 import { DashboardRouting } from './dashboard.routing';
 import { DetailsPopupComponent } from './details-popup/details-popup.component';
+import { DateConvert } from 'src/app/pipes/dateConverter';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { DetailsPopupComponent } from './details-popup/details-popup.component';
     ],
     providers: [MessageService],
     declarations: [
+        DateConvert,
         DashboardComponent,
         DataLatencySummaryComponent,
         LoadingStatusSummaryComponent,

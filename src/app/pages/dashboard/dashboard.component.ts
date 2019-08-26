@@ -4,6 +4,10 @@ import { MessageService } from 'primeng/api';
 declare var $: any;
 import { Table } from 'primeng/components/table/table';
 import { EMRTableLoadingStatus } from './tableColumns';
+import * as moment from 'moment';
+import * as momentTZ from 'moment-timezone';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -80,6 +84,14 @@ export class DashboardComponent implements OnInit {
       this.dataLoader = false;
       this.showToast('error', 'Error while fetching data.');
     });
+  }
+
+  parseDateToGMT(date) {
+    return new Date(date).toUTCString();
+  }
+
+  parseDateToCEST(date) {
+    return moment(momentTZ(date).tz('Europe/Berlin')).format('LLLL');
   }
 
   getSearchQueryResult() {

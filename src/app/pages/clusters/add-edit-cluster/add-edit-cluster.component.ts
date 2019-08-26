@@ -24,6 +24,7 @@ export class AddEditClusterComponent implements OnInit, OnDestroy {
     saveCluster: false
   };
   oldClusterInfo: any;
+  submitted = false;
 
   constructor(
     private commonService: CommonService,
@@ -51,6 +52,8 @@ export class AddEditClusterComponent implements OnInit, OnDestroy {
     }
     this.getUserInfo();
   }
+
+  get f() { return this.addEditClusterForm.controls; }
 
   formInit() {
     this.addEditClusterForm = this.formBuilder.group({
@@ -100,7 +103,12 @@ export class AddEditClusterComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.submitted = true;
     this.loader.saveCluster = true;
+    if (this.addEditClusterForm.invalid) {
+      this.loader.saveCluster = false;
+      return;
+    }
     const request = { cluster: this.addEditClusterForm.value, oldClusterInfo: '' };
     request.cluster.UPDATE_DATE = `${new Date()}`;
     let functionToCall = 'addCluster';

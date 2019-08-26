@@ -33,7 +33,10 @@
               </td>
               <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                 <div>
-                  <button appPermission expectedPermission="editClustersModule" (click)="editCluster(rowData)"
+                  <button class="btn btn-sm btn-primary" type="button" (click)="editCluster(rowData, false)">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button appPermission expectedPermission="editClustersModule" (click)="editCluster(rowData, true)"
                     title="Edit" class="btn btn-sm btn-primary ml-1">
                     <i class="fa fa-pencil"></i>
                   </button>

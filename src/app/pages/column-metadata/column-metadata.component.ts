@@ -281,7 +281,10 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   editColumn(version, isView?) {
-    this.columnMetadataService.setColumnToEdit(version);
+    // this.columnMetadataService.setColumnToEdit(version);
+    let appState = this.commonService.getState();
+    appState = { ...appState, selectedColumn: version };
+    this.commonService.setState(appState);
     if (isView) {
       return this.router.navigate(['/CMV/view-column', version.METADATA_VERSION, version.TARGET_COLUMN_ID || 'new']);
     }

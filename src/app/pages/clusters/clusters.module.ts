@@ -43,6 +43,10 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
             {
                 path: 'edit-cluster',
                 component: AddEditClusterComponent
+            },
+            {
+                path: 'view-cluster',
+                component: AddEditClusterComponent
             }
         ]),
         DropdownModule,

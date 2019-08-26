@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { MessageService } from 'primeng/api';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-column',
   templateUrl: './add-edit-column.component.html',
   styleUrls: ['./add-edit-column.component.css']
 })
-export class AddEditColumnComponent implements OnInit {
+export class AddEditColumnComponent implements OnInit, OnDestroy {
 
   addEditColumnForm: FormGroup;
   routeInfo = {
@@ -30,6 +31,7 @@ export class AddEditColumnComponent implements OnInit {
   appState: any;
 
   constructor(
+    private commonService: CommonService,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
     private route: ActivatedRoute,
@@ -105,9 +107,8 @@ export class AddEditColumnComponent implements OnInit {
   }
 
   getUserInfo() {
-    const appState = JSON.parse(localStorage.getItem('appState'));
-    if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
-      this.addEditColumnForm.controls.UPDATED_BY.patchValue(appState.loggedInUser.USER_NAME);
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      this.addEditColumnForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
     }
   }
 
@@ -126,46 +127,48 @@ export class AddEditColumnComponent implements OnInit {
 
   getColumnData() {
     this.loader.formData = true;
-    this.columnData = this.columnMetadataService.getColumnToEdit();
-    if (this.columnData) {
-      this.TABLE_NAME = this.columnData.TABLE_NAME;
-      const formControls = this.addEditColumnForm.controls;
-      for (const key in formControls) {
-        if (formControls.hasOwnProperty(key)) {
-          const element = formControls[key];
-          if (this.columnData[key] && Object.keys(this.columnData[key]).length > 0 && this.columnData[key].constructor === Object) {
-            element.patchValue(this.columnData[key].data[0]);
-          } else {
-            element.patchValue(this.columnData[key]);
+    if (this.appState && this.appState.selectedColumn) {
+      this.columnData = this.appState.selectedColumn;
+      if (this.columnData) {
+        this.TABLE_NAME = this.columnData.TABLE_NAME;
+        const formControls = this.addEditColumnForm.controls;
+        for (const key in formControls) {
+          if (formControls.hasOwnProperty(key)) {
+            const element = formControls[key];
+            if (this.columnData[key] && Object.keys(this.columnData[key]).length > 0 && this.columnData[key].constructor === Object) {
+              element.patchValue(this.columnData[key].data[0]);
+            } else {
+              element.patchValue(this.columnData[key]);
+            }
           }
         }
+        this.getUserInfo();
+        // For Decimal & Varchar Precision
+        if (this.columnData.TARGET_DATA_TYPE.indexOf('decimal') > -1) {
+          const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+          formControls.TARGET_DATA_TYPE.patchValue('decimal');
+          splitDataType[1] = splitDataType[1].replace(')', '');
+          const items = splitDataType[1].split(',');
+          formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+          formControls.TARGET_RIGHT_PRECISION.patchValue(items[1]);
+        }
+        if (this.columnData.TARGET_DATA_TYPE.indexOf('varchar') > -1) {
+          const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
+          formControls.TARGET_DATA_TYPE.patchValue('varchar');
+          splitDataType[1] = splitDataType[1].replace(')', '');
+          const items = splitDataType[1].split(',');
+          formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
+        }
+        if (this.columnData.SRC_DATA_TYPE.indexOf('decimal') > -1) {
+          const splitDataType = this.columnData.SRC_DATA_TYPE.split('(');
+          formControls.SRC_DATA_TYPE.patchValue('decimal');
+          splitDataType[1] = splitDataType[1].replace(')', '');
+          const items = splitDataType[1].split(',');
+          formControls.SRC_LEFT_PRECISION.patchValue(items[0]);
+          formControls.SRC_RIGHT_PRECISION.patchValue(items[1]);
+        }
+        formControls.UPDATE_DATE.patchValue(new Date());
       }
-      this.getUserInfo();
-      // For Decimal & Varchar Precision
-      if (this.columnData.TARGET_DATA_TYPE.indexOf('decimal') > -1) {
-        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
-        formControls.TARGET_DATA_TYPE.patchValue('decimal');
-        splitDataType[1] = splitDataType[1].replace(')', '');
-        const items = splitDataType[1].split(',');
-        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
-        formControls.TARGET_RIGHT_PRECISION.patchValue(items[1]);
-      }
-      if (this.columnData.TARGET_DATA_TYPE.indexOf('varchar') > -1) {
-        const splitDataType = this.columnData.TARGET_DATA_TYPE.split('(');
-        formControls.TARGET_DATA_TYPE.patchValue('varchar');
-        splitDataType[1] = splitDataType[1].replace(')', '');
-        const items = splitDataType[1].split(',');
-        formControls.TARGET_LEFT_PRECISION.patchValue(items[0]);
-      }
-      if (this.columnData.SRC_DATA_TYPE.indexOf('decimal') > -1) {
-        const splitDataType = this.columnData.SRC_DATA_TYPE.split('(');
-        formControls.SRC_DATA_TYPE.patchValue('decimal');
-        splitDataType[1] = splitDataType[1].replace(')', '');
-        const items = splitDataType[1].split(',');
-        formControls.SRC_LEFT_PRECISION.patchValue(items[0]);
-        formControls.SRC_RIGHT_PRECISION.patchValue(items[1]);
-      }
-      formControls.UPDATE_DATE.patchValue(new Date());
     }
     this.loader.formData = false;
   }
@@ -301,6 +304,12 @@ export class AddEditColumnComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  ngOnDestroy() {
+    delete this.appState.selectedColumn;
+    delete this.appState.header;
+    this.commonService.setState(this.appState);
   }
 
 }

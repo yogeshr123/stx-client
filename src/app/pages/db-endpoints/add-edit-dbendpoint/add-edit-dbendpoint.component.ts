@@ -79,6 +79,7 @@ export class AddEditDbendpointComponent implements OnInit {
       this.addEditForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
     }
   }
+
   setFormValues() {
     if (this.appState && this.appState.selectedEndpoint) {
       this.selectedEndpoint = this.appState.selectedEndpoint;

@@ -213,11 +213,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">DB ID</label>
-                    <!-- <input class="form-control" type="text" formControlName="DB_ID" oninput="this.value = this.value.toUpperCase()"
-                      [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }"> -->
                     <select class="form-control" type="text"
                       formControlName="DB_ID"
-                      oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }">
                       <option *ngFor="let endpoint of dbEndpoints"
                         [value]="endpoint.DB_ID">{{endpoint.DB_ID}}</option>
@@ -433,6 +430,21 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label class="control-label">T1 CLUSTER ID</label>
+                    <select class="form-control" type="text"
+                      formControlName="T1_CLUSTER_ID"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_CLUSTER_ID.errors }">
+                      <option *ngFor="let cluster of clusters"
+                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && f.T1_CLUSTER_ID.errors"
+                      class="invalid-feedback">
+                      <div *ngIf="f.T1_CLUSTER_ID.errors.required">
+                        T1 CLUSTER ID is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="control-label">T1 EXECUTION STATUS</label>
                     <select formControlName="T1_EXECUTION_STATUS"
                       class="form-control">
@@ -520,6 +532,21 @@
                       formControlName="T2_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
+                    <label class="control-label">T2_CLUSTER_ID</label>
+                    <select class="form-control" type="text"
+                      formControlName="T2_CLUSTER_ID"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_CLUSTER_ID.errors }">
+                      <option *ngFor="let cluster of clusters"
+                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && f.T2_CLUSTER_ID.errors"
+                      class="invalid-feedback">
+                      <div *ngIf="f.T2_CLUSTER_ID.errors.required">
+                        T2 CLUSTER ID is required</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="control-label">T2 EXECUTION STATUS</label>
                     <select formControlName="T2_EXECUTION_STATUS"
                       class="form-control">
@@ -585,30 +612,6 @@
                 </div>
               </div>
             </p-accordionTab>
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">UPDATED BY</label>
-                  <input class="form-control" type="text"
-                    formControlName="UPDATED_BY"
-                    [ngClass]="{ 'is-invalid': submitted && f.UPDATED_BY.errors }">
-                  <div *ngIf="submitted && f.UPDATED_BY.errors"
-                    class="invalid-feedback">
-                    <div *ngIf="f.UPDATED_BY.errors.required">UPDATED BY is
-                      required</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">UPDATE DATE</label>
-                  <br />
-                  <p-calendar inputStyleClass="form-control" showTime="true"
-                    showSeconds="true" hourFormat="24" required="true"
-                    formControlName="UPDATE_DATE"></p-calendar>
-                </div>
-              </div>
-            </div>
           </p-accordion>
         </div>
         <div class="tile-footer">

@@ -8,6 +8,7 @@ import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
+import { ClustersService } from 'src/app/services/clusters.service';
 declare var $: any;
 
 @Component({
@@ -25,6 +26,7 @@ export class EditLoadControlComponent implements OnInit {
   recordMeta: any;
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   dbEndpoints: any[];
+  clusters: any[];
   isEdit = false;
   appState: any;
 
@@ -35,13 +37,15 @@ export class EditLoadControlComponent implements OnInit {
     private loadControlService: LoadControlService,
     private dbEndpointsService: DBEndpointsService,
     private messageService: MessageService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private clustersService: ClustersService
   ) {
     this.loadControl = LoadControl;
   }
   ngOnInit() {
     this.appState = this.commonService.getState();
     this.loadDBEndpoints();
+    this.getClusters();
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
@@ -53,7 +57,6 @@ export class EditLoadControlComponent implements OnInit {
     else {
       this.router.navigate(['/loadcontrol/add']);
     }
-    this.getUserInfo();
   }
 
   ngOnDestroy() {
@@ -104,7 +107,7 @@ export class EditLoadControlComponent implements OnInit {
       T1_STATUS: [''],
       T1_BATCH_IN_DAYS: [0, Validators.required],
       T1_MAX_LOAD_END_DATE: [null],
-      T1_CLUSTER_ID: [{ value: '', disabled: true }],
+      T1_CLUSTER_ID: ['', Validators.required],
       T1_LIVY_BATCH_ID: [{ value: '', disabled: true }],
       T1_SPARK_APP_ID: [{ value: '', disabled: true }],
       T1_SPARK_UI_URL: [{ value: '', disabled: true }],
@@ -119,7 +122,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_PARTITION_JOB_TYPE: ['', Validators.required],
       T2_MAX_LOAD_END_DATE: [null],
       T2_MAX_ATLAS_VERSION: [{ value: 0, disabled: true }],
-      T2_CLUSTER_ID: [{ value: '', disabled: true }],
+      T2_CLUSTER_ID: ['', Validators.required],
       T2_LIVY_BATCH_ID: [{ value: '', disabled: true }],
       T2_SPARK_APP_ID: [{ value: '', disabled: true }],
       T2_SPARK_UI_URL: [{ value: '', disabled: true }],
@@ -197,6 +200,7 @@ export class EditLoadControlComponent implements OnInit {
             }
           }
         }
+        this.getUserInfo();
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');
@@ -327,6 +331,14 @@ export class EditLoadControlComponent implements OnInit {
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  getClusters() {
+    this.clustersService.getClusters().subscribe((resp: any) => {
+      this.clusters = resp.data;
+    }, error => {
+      console.log('error ', error);
     });
   }
 

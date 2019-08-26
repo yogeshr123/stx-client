@@ -29,6 +29,7 @@ import { LoadControlService } from 'src/app/services/load-control.service';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
+import { ClustersService } from 'src/app/services/clusters.service';
 
 @NgModule({
     imports: [
@@ -57,7 +58,8 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
         RecordService,
         MessageService,
         ConfirmationService,
-        DBEndpointsService
+        DBEndpointsService,
+        ClustersService
     ],
     declarations: [
         LoadControlComponent,

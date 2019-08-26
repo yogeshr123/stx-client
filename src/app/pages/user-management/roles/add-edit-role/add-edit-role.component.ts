@@ -24,7 +24,8 @@ export class AddEditRoleComponent implements OnInit {
   routeInfo = {
     path: '',
     isViewOnly: false,
-    isEditMode: false
+    isEditMode: false,
+    isReadMode: false
   };
   loader = {
     formData: false,
@@ -49,6 +50,9 @@ export class AddEditRoleComponent implements OnInit {
       }
       if (this.routeInfo.path.indexOf('editrole') > -1) {
         this.routeInfo.isEditMode = true;
+      }
+      if (this.routeInfo.path.indexOf('read') > -1) {
+        this.routeInfo.isReadMode = true;
       }
     });
   }

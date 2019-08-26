@@ -51,7 +51,8 @@ export class AddEditSparkconfigComponent implements OnInit {
   routeInfo = {
     path: '',
     isViewOnly: false,
-    isEditMode: false
+    isEditMode: false,
+    isReadMode: false
   };
   loader = {
     formData: false,
@@ -72,7 +73,7 @@ export class AddEditSparkconfigComponent implements OnInit {
     private router: Router,
     private loadControlService: LoadControlService,
     private sparkConfigPropertiesService: SparkConfigPropertiesService,
-    private commonService:CommonService
+    private commonService: CommonService
   ) {
     this.route.url.subscribe(params => {
       this.routeInfo.path = params[0].path;
@@ -81,6 +82,9 @@ export class AddEditSparkconfigComponent implements OnInit {
       }
       if (this.routeInfo.path.indexOf('edit') > -1) {
         this.routeInfo.isEditMode = true;
+      }
+      if (this.routeInfo.path.indexOf('read') > -1) {
+        this.routeInfo.isReadMode = true;
       }
     });
   }

@@ -7,6 +7,8 @@ import { LoadControlService } from '../../../services/load-control.service';
 import { MessageService } from 'primeng/api';
 import { DBEndpointsService } from '../../../services/db-endpoints.service';
 import { environment } from '../../../../environments/environment';
+import { ClustersService } from 'src/app/services/clusters.service';
+import { CommonService } from 'src/app/services/common.service';
 declare var $: any;
 
 @Component({
@@ -21,6 +23,7 @@ export class AddLoadControlComponent implements OnInit {
   record: any;
   loadControl: any;
   dbEndpoints: any[];
+  clusters: any[];
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   recordMeta: any;
   appState: any;
@@ -31,12 +34,16 @@ export class AddLoadControlComponent implements OnInit {
     private router: Router,
     private loadControlService: LoadControlService,
     private messageService: MessageService,
-    private dbEndpointsService: DBEndpointsService
+    private dbEndpointsService: DBEndpointsService,
+    private clustersService: ClustersService,
+    private commonService: CommonService
   ) {
     this.loadControl = LoadControl;
   }
   ngOnInit() {
+    this.appState = this.commonService.getState();
     this.loadDBEndpoints();
+    this.getClusters();
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
@@ -82,7 +89,8 @@ export class AddLoadControlComponent implements OnInit {
       T1_RETENTION_DAYS: [0],
       T1_STATUS: [''],
       T1_BATCH_IN_DAYS: ['', Validators.required],
-      T1_MAX_LOAD_END_DATE: [null, Validators.required],
+      T1_MAX_LOAD_END_DATE: [null],
+      T1_CLUSTER_ID: ['', Validators.required],
       T1_EXECUTION_STATUS: ['TODO'],
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
@@ -90,6 +98,7 @@ export class AddLoadControlComponent implements OnInit {
       T2_INSERT_DIR_BATCH_SIZE: [0, Validators.required],
       T2_PARTITION_JOB_TYPE: ['SINGLE', Validators.required],
       T2_MAX_LOAD_END_DATE: [null],
+      T2_CLUSTER_ID: ['', Validators.required],
       T2_EXECUTION_STATUS: ['TODO'],
       ANALYZE_STATUS: [''],
       ANALYZE_EXECUTION_DAYS: [0, Validators.required],
@@ -257,6 +266,14 @@ export class AddLoadControlComponent implements OnInit {
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  getClusters() {
+    this.clustersService.getClusters().subscribe((resp: any) => {
+      this.clusters = resp.data;
+    }, error => {
+      console.log('error ', error);
     });
   }
 

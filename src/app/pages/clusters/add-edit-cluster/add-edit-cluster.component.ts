@@ -44,7 +44,7 @@ export class AddEditClusterComponent implements OnInit {
 
   ngOnInit() {
     this.formInit();
-    if (this.routeInfo.isEditMode) {
+    if (this.routeInfo.isEditMode || this.routeInfo.isViewOnly) {
       this.setFormValues();
     }
     this.getUserInfo();

@@ -33,9 +33,13 @@ export class ClustersComponent implements OnInit {
     this.getClusters();
   }
 
-  editCluster(cluster) {
+  editCluster(cluster, isEdit) {
     this.clustersService.setClusterObject(cluster);
-    return this.router.navigate(['clusters/edit-cluster']);
+    if (isEdit) {
+      return this.router.navigate(['clusters/edit-cluster']);
+    } else {
+      return this.router.navigate(['clusters/view-cluster']);
+    }
   }
 
   getClusters() {

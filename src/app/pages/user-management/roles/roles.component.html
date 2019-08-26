@@ -14,20 +14,17 @@
           <div class="btn-group">
           </div>
           <div class="btn-group float-right">
-            <a appPermission expectedPermission="addUserManagementModule"
-              class="btn btn-sm btn-primary"
+            <a appPermission expectedPermission="addUserManagementModule" class="btn btn-sm btn-primary"
               routerLink="/user-management/addrole">New
               Role</a>
           </div>
         </div>
       </div>
-      <p-table #dt [value]="roles" [columns]="roleTableColumns"
-        [reorderableColumns]="true">
+      <p-table #dt [value]="roles" [columns]="roleTableColumns" [reorderableColumns]="true">
         <ng-template pTemplate="caption">
           <div class="globalSearch">
             <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')"
-              style="width:auto">
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
             <button class="btn btn-sm btn-primary" type="button">
               <i class="fa fa-lg fa-fw fa-search"></i>
             </button>
@@ -38,8 +35,7 @@
             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
               {{col.header}}
               <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order"
-                ariaLabelAsc="Activate to sort in ascending order">
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
               </p-sortIcon>
             </th>
             <th>Action</th>
@@ -57,7 +53,7 @@
           <tr height="35px" [pSelectableRow]="rowData">
             <td *ngFor="let col of columns">
               <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                <span> {{ rowData[col.field] | date: 'short' }} </span>
+                <span> {{ rowData[col.field] | dateConvert }} </span>
               </ng-container>
               <ng-template #elseTemplate>
                 <span> {{ rowData[col.field] }} </span>
@@ -65,24 +61,19 @@
             </td>
 
             <td>
-              <button appPermission
-                expectedPermission="editUserManagementModule"
-                class="btn btn-sm btn-primary mr-2" type="button"
-                (click)="selectRole(rowData, true)">
+              <button appPermission expectedPermission="editUserManagementModule" class="btn btn-sm btn-primary mr-2"
+                type="button" (click)="selectRole(rowData, true)">
                 <i class="fa fa-pencil"></i>
               </button>
-              <button appPermission
-                expectedPermission="deleteUserManagementModule"
-                class="btn btn-primary btn-sm" type="button"
-                (click)="deleteRole(rowData)">
+              <button appPermission expectedPermission="deleteUserManagementModule" class="btn btn-primary btn-sm"
+                type="button" (click)="deleteRole(rowData)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </td>
           </tr>
         </ng-template>
       </p-table>
-      <div colspan="10" class="text-center p-2 border"
-        *ngIf="!roles || !roles.length">
+      <div colspan="10" class="text-center p-2 border" *ngIf="!roles || !roles.length">
         <h6>No Data Available!</h6>
       </div>
     </div>

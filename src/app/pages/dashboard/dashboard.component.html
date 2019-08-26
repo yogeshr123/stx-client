@@ -21,7 +21,7 @@
                         </p-multiSelect>
                         <div class="dateNow">
                             <span>
-                                Data As Of - {{currentDate | date: 'short'}}
+                                Data As Of - {{currentDate | dateConvert }}
                             </span>
                         </div>
                         <button class="btn btn-secondary btn-sm float-right" (click)="resetTable()">Reset Table</button>
@@ -63,11 +63,10 @@
                                     {{ rowData[col.field] }} </a>
                             </ng-container>
                             <ng-container *ngSwitchCase="'date'">
-                                <span> {{ rowData[col.field] | date: 'short'}} </span>
+                                <!-- <span> {{ parseDateToGMT(rowData[col.field]) }} </span> -->
+                                <!-- <span class="ml-2"> {{ parseDateToCEST(rowData[col.field]) }} CEST</span> -->
+                                <span> {{ rowData[col.field] | dateConvert }} </span>
                             </ng-container>
-                            <!-- <ng-container *ngSwitchCase="'dateNow'">
-                                <span> {{ currentDate | date: 'short'}} </span>
-                            </ng-container> -->
                             <ng-container *ngSwitchDefault>
                                 <span> {{ rowData[col.field] || 'NULL' }} </span>
                             </ng-container>

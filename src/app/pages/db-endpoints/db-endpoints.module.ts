@@ -14,9 +14,11 @@ import { DbEndpointsRouting } from './db-endpoints.routing';
 import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbendpoint.component';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CommonService } from 'src/app/services/common.service';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
     imports: [
+        DateConvertModule,
         DbEndpointsRouting,
         CommonModule,
         ToastModule,

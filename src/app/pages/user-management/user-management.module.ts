@@ -24,9 +24,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
 import { CommonService } from 'src/app/services/common.service';
 import { NgxLoadingModule } from 'ngx-loading';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
     imports: [
+        DateConvertModule,
         CommonModule,
         UserManagementRouting,
         FormsModule,

@@ -25,7 +25,7 @@
             <tr [pSelectableRow]="rowData">
               <td *ngFor="let col of columns">
                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                  <span> {{ rowData[col.field] | date: 'short' }} </span>
+                  <span> {{ rowData[col.field] | dateConvert }} </span>
                 </ng-container>
                 <ng-template #elseTemplate>
                   <span> {{ rowData[col.field] }} </span>

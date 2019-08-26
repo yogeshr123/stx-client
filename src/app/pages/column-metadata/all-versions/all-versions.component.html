@@ -53,8 +53,8 @@
                         <td>{{version.METADATA_VERSION}}</td>
                         <td>{{version.TABLE_NAME}}</td>
                         <td>{{version.STATUS}}</td>
-                        <td>{{version.START_DATE | date: 'short' }}</td>
-                        <td>{{version.UPDATE_DATE | date: 'short' }}</td>
+                        <td>{{version.START_DATE | dateConvert }}</td>
+                        <td>{{version.UPDATE_DATE | dateConvert }}</td>
                         <td>
                             <button (click)="viewDetails(version, 'CMV')" class="btn btn-sm btn-primary">View
                                 Details</button>

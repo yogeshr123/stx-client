@@ -9,16 +9,24 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 import { HeaderHashComponent } from './header-hash.component';
 import { HeaderHashRouting } from './header-hash.routing';
 import { AddEditHeaderComponent } from './add-edit-header/add-edit-header.component';
 import { AddCmvPopupComponent } from './add-cmv-popup/add-cmv-popup.component';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
-  declarations: [HeaderHashComponent, AddEditHeaderComponent, AddCmvPopupComponent],
+  declarations: [
+    HeaderHashComponent,
+    AddEditHeaderComponent,
+    AddCmvPopupComponent
+  ],
   imports: [
+    DateConvertModule,
+    ToggleButtonModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

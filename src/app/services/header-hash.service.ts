@@ -25,6 +25,13 @@ export class HeaderHashService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    fileHeaderHashErrorTable() {
+        const url = `${environment.baseUrl}header-hash/fileHeaderHashErrorTable`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getHeaderByHash(tableData) {
         const url = `${environment.baseUrl}header-hash/getHeaderByHash`;
         return this.http

@@ -64,7 +64,7 @@
                         <tr [pSelectableRow]="item">
                             <td *ngFor="let col of columns">
                                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                                    <span> {{item[col.field] | date: 'short'}} </span>
+                                    <span> {{item[col.field] | dateConvert }} </span>
                                 </ng-container>
                                 <ng-template #elseTemplate>
                                     <span> {{item[col.field]}} </span>

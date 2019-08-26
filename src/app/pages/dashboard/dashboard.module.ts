@@ -15,7 +15,7 @@ import { DataLatencySummaryComponent } from './data-latency-summary/data-latency
 import { LoadingStatusSummaryComponent } from './loading-status-summary/loading-status-summary.component';
 import { DashboardRouting } from './dashboard.routing';
 import { DetailsPopupComponent } from './details-popup/details-popup.component';
-import { DateConvert } from 'src/app/pipes/dateConverter';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 
 @NgModule({
@@ -27,11 +27,11 @@ import { DateConvert } from 'src/app/pipes/dateConverter';
         DashboardRouting,
         NgxLoadingModule.forRoot({}),
         DynamicDialogModule,
-        ToastModule
+        ToastModule,
+        DateConvertModule
     ],
     providers: [MessageService],
     declarations: [
-        DateConvert,
         DashboardComponent,
         DataLatencySummaryComponent,
         LoadingStatusSummaryComponent,

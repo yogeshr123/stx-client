@@ -14,6 +14,7 @@ import { ClustersComponent } from './clusters.component';
 import { RouterModule } from '@angular/router';
 import { AddEditClusterComponent } from './add-edit-cluster/add-edit-cluster.component';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         AddEditClusterComponent
     ],
     imports: [
+        DateConvertModule,
         PermissionModule,
         TooltipModule,
         DialogModule,

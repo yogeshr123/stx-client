@@ -28,6 +28,7 @@ import { DBEndpointsService } from '../../services/db-endpoints.service';
 import { LoadControlService } from 'src/app/services/load-control.service';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
 import { NgxLoadingModule } from 'ngx-loading';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
     imports: [
@@ -49,6 +50,7 @@ import { NgxLoadingModule } from 'ngx-loading';
         ReactiveFormsModule,
         PermissionModule,
         NgxLoadingModule.forRoot({}),
+        DateConvertModule
     ],
     providers: [
         LoadControlService,

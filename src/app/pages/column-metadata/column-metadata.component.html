@@ -55,7 +55,7 @@
                         <tr [pSelectableRow]="version">
                             <td *ngFor="let col of columns">
                                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                                    <span> {{ version[col.field] | date: 'short' }} </span>
+                                    <span> {{ version[col.field] | dateConvert }} </span>
                                 </ng-container>
                                 <ng-template #elseTemplate>
                                     <span> {{ version[col.field] }} </span>
@@ -147,7 +147,7 @@
                                     <ng-container>
                                         <span [ngSwitch]="col.type">
                                             <span *ngSwitchCase="'date'">
-                                                {{version[col.field] | date: 'short'}}
+                                                {{version[col.field] | dateConvert }}
                                             </span>
                                             <span *ngSwitchCase="'boolean'">
                                                 {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true ? 'True' : 'False' }}

@@ -63,7 +63,7 @@
             <tr [pSelectableRow]="lookUp">
               <td *ngFor="let col of columns">
                 <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                  <span> {{ lookUp[col.field] | date: 'short' }} </span>
+                  <span> {{ lookUp[col.field] | dateConvert }} </span>
                 </ng-container>
                 <ng-template #elseTemplate>
                   <span> {{ lookUp[col.field] }} </span>

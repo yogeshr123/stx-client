@@ -27,6 +27,7 @@ import { DimLookupComponent } from './dim-lookup/dim-lookup.component';
 import { AddComponent } from './dim-lookup/add/add.component';
 import { FactColumnComponent } from './fact-column/fact-column.component';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
     AddComponent,
     FactColumnComponent],
   imports: [
+    DateConvertModule,
     PermissionModule,
     TooltipModule,
     DialogModule,

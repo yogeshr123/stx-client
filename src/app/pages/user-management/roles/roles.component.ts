@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { roleTableColumns } from '../../../model/roles.table';
-import { AddEditRoleComponent } from './add-edit-role/add-edit-role.component';
 import { RolesService } from 'src/app/services/roles.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import { CommonService } from 'src/app/services/common.service';
-import { isNullOrUndefined } from 'util';
 import { Router } from '@angular/router';
 
 @Component({

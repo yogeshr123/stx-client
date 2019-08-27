@@ -79,7 +79,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
     this.addEditColumnForm = this.formBuilder.group({
       SCHEMA_NAME: ['', Validators.required],
       TABLE_NAME: ['', Validators.required],
-      METADATA_VERSION: ['', Validators.required],
+      METADATA_VERSION: [''],
       SRC_COLUMN_NAME: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-z][a-z0-9-_]+$/)])],
       SRC_COLUMN_TYPE: ['MAPPED', Validators.required],
       SRC_DATA_TYPE: ['', Validators.required],

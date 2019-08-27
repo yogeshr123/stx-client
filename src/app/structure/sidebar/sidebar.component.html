@@ -4,7 +4,7 @@
   <div class="app-sidebar__user">
     <img class="app-sidebar__user-avatar" width="48px" height="48px" style="object-fit: contain; background-color:#000"
       [src]="currentUser.PROFILE_PIC? currentUser.PROFILE_PIC: 'assets/images/profile-pic.jpeg'">
-    <div>
+    <div class="user-detail">
       <p class="app-sidebar__user-name">
         {{currentUser.FULL_NAME?currentUser.FULL_NAME:currentUser.USER_NAME}}
       </p>

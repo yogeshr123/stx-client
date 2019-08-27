@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef, MessageService } from 'primeng/api';
 import { UsersService } from 'src/app/services/users.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -17,15 +18,18 @@ export class AddEditUserComponent implements OnInit {
   roles: any;
   submitted: boolean = false;
   isNew: boolean = true;
+  appState: any;
   constructor(
     private formBuilder: FormBuilder,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
     private usersService: UsersService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit() {
+    this.appState = this.commonService.getState();
     this.selectedUser = this.config.data.selectedUser;
     this.users = this.config.data.users;
     this.roles = this.config.data.roles;
@@ -55,6 +59,10 @@ export class AddEditUserComponent implements OnInit {
 
     let formValues = Object.assign({}, this.addEditForm.value);
     let tempUser = formValues;
+    tempUser.UPDATE_DATE = `${new Date()}`;
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      tempUser.UPDATED_BY = this.appState.loggedInUser.USER_NAME;
+    }
     if (this.isNew) {
       const body = {
         user: tempUser

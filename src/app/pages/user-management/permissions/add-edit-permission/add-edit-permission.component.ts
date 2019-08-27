@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef, MessageService } from 'primeng/api';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import { environment } from '../../../../../environments/environment';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-add-edit-permission',
@@ -18,15 +19,18 @@ export class AddEditPermissionComponent implements OnInit {
   isNew: boolean = true;
   appModulesList = environment.appModulesList;
   defaultPermissions = environment.defaultPermissions;
+  appState: any;
   constructor(
     private formBuilder: FormBuilder,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
     private permissionsService: PermissionsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit() {
+    this.appState = this.commonService.getState();
     this.selectedPermission = this.config.data.selectedPermission;
     this.permissions = this.config.data.permissions;
     if (this.permissions) {
@@ -60,14 +64,21 @@ export class AddEditPermissionComponent implements OnInit {
 
     let formValues = Object.assign({}, this.addEditForm.value);
     // let tempPermission = formValues;
+    let UPDATE_DATE = `${new Date()}`;
+    let UPDATED_BY = '';
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      UPDATED_BY = this.appState.loggedInUser.USER_NAME;
+    }
+
     if (this.isNew) {
       const name = this.camelCase('access' + formValues.module + 'Module');
       const isPermissionExist = this.permissions.find(permission => permission.NAME === name);
       if (!isPermissionExist) {
         const body = {
           module: formValues.module,
-          defaultPermissions: this.defaultPermissions
-
+          defaultPermissions: this.defaultPermissions,
+          UPDATE_DATE: UPDATE_DATE,
+          UPDATED_BY: UPDATED_BY
         };
         this.permissionsService.addPermission(body).subscribe((data: any) => {
           this.showToast('success', 'permission saved.');
@@ -81,18 +92,6 @@ export class AddEditPermissionComponent implements OnInit {
       }
 
     }
-    // else {
-    //   tempPermission.ID = this.selectedPermission.ID;
-    //   const body = {
-    //     permission: tempPermission
-    //   };
-    //   this.permissionsService.updatePermission(body).subscribe((data: any) => {
-    //     this.showToast('success', 'permission updated.');
-    //     this.closeModal(true);
-    //   }, error => {
-    //     this.showToast('error', 'Could not update permission.');
-    //   });
-    // }
   }
 
   closeModal(status) {

@@ -13,17 +13,21 @@
           <div class="btn-group">
           </div>
           <div class="btn-group float-right">
-            <a class="btn btn-sm btn-primary" [routerLink]="[ './add' ]">Add
+            <a class="btn btn-sm btn-primary" appPermission
+              expectedPermission="addDBEndponitsModule"
+              [routerLink]="[ './add' ]">Add
               New</a>
           </div>
         </div>
       </div>
-      <p-table #dt [value]="dbEndpoints" [columns]="dbEndpointColumns" [reorderableColumns]="true"
-        [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-without-checkbox">
+      <p-table #dt [value]="dbEndpoints" [columns]="dbEndpointColumns"
+        [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}"
+        styleClass="scroll-table-without-checkbox">
         <ng-template pTemplate="caption">
           <div class="globalSearch">
             <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto">
             <button class="btn btn-sm btn-primary" type="button">
               <i class="fa fa-lg fa-fw fa-search"></i>
             </button>
@@ -34,7 +38,8 @@
             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
               {{col.header}}
               <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order">
               </p-sortIcon>
             </th>
             <th class="fixedcol rightfixedcol">Action</th>
@@ -59,17 +64,22 @@
               </ng-template>
             </td>
             <td class="fixedcol rightfixedcol">
-              <button class="btn btn-sm btn-primary mr-2" type="button" (click)="selectEndpoint(rowData, true)">
+              <button appPermission expectedPermission="editDBEndponitsModule"
+                class="btn btn-sm btn-primary mr-2" type="button"
+                (click)="selectEndpoint(rowData, true)">
                 <i class="fa fa-pencil"></i>
               </button>
-              <button class="btn btn-sm btn-primary" type="button" (click)="selectEndpoint(rowData, false)">
+              <button appPermission expectedPermission="readDBEndponitsModule"
+                class="btn btn-sm btn-primary" type="button"
+                (click)="selectEndpoint(rowData, false)">
                 <i class="fa fa-eye"></i>
               </button>
             </td>
           </tr>
         </ng-template>
       </p-table>
-      <div colspan="10" class="text-center p-2 border" *ngIf="!dbEndpoints || !dbEndpoints.length">
+      <div colspan="10" class="text-center p-2 border"
+        *ngIf="!dbEndpoints || !dbEndpoints.length">
         <h6>No Data Available!</h6>
       </div>
     </div>

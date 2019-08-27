@@ -29,8 +29,8 @@ const routes: Routes = [
             {
                 path: 'user-management',
                 loadChildren: '../../pages/user-management/user-management.module#UserManagementModule',
-                // canActivate: [AuthGuard],
-                // data: { expectedPermission: 'accessUserManagementModule' }
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'accessUserManagementModule' }
             },
             {
                 path: 'load-status',
@@ -54,7 +54,7 @@ const routes: Routes = [
                 path: 'clusters',
                 loadChildren: '../../pages/clusters/clusters.module#ClustersModule',
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'accessHeaderHashModule' }
+                data: { expectedPermission: 'accessClustersModule' }
             },
             {
                 path: 'unauthorized',
@@ -67,11 +67,15 @@ const routes: Routes = [
             },
             {
                 path: 'db-endpoints',
-                loadChildren: '../../pages/db-endpoints/db-endpoints.module#DbEndpointsModule'
+                loadChildren: '../../pages/db-endpoints/db-endpoints.module#DbEndpointsModule',
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'accessDBEndponitsModule' }
             },
             {
                 path: 'spark-config',
-                loadChildren: '../../pages/spark-config/spark-config.module#SparkConfigModule'
+                loadChildren: '../../pages/spark-config/spark-config.module#SparkConfigModule',
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'accessSparkConfigModule' }
             },
             // {
             // 	path: 'error/403',

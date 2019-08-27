@@ -15,6 +15,15 @@ const permissionTableColumns = [
     {
         header: 'PARENT',
         field: 'PARENT',
+    },
+    {
+        header: 'UPDATE_DATE',
+        field: 'UPDATE_DATE',
+        type: 'date'
+    },
+    {
+        header: 'UPDATED_BY',
+        field: 'UPDATED_BY'
     }
 ];
 

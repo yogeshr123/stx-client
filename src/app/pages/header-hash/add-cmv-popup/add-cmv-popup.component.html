@@ -60,9 +60,11 @@
                     <td *ngIf="formValues.dataType === 'decimal'">
                         <div>
                             <input (keyup)="checkFormValidation()" type="number" [(ngModel)]="formValues.precisionLeft"
-                                class="form-control d-inline-block col-4" min="0" max="99">
-                            <input (keyup)="checkFormValidation()" type="number" [(ngModel)]="formValues.precisionRight"
-                                class="form-control d-inline-block col-4 ml-2" min="0" max="99">
+                                (input)="checkFormValidation()" class="form-control d-inline-block col-4" min="0"
+                                max="99">
+                            <input (input)="checkFormValidation()" (keyup)="checkFormValidation()" type="number"
+                                [(ngModel)]="formValues.precisionRight" class="form-control d-inline-block col-4 ml-2"
+                                min="0" max="99">
                         </div>
                     </td>
                 </tr>
@@ -70,13 +72,13 @@
         </div>
         <hr class="col-12">
         <div>
-            <button *ngIf="status !== 'APPROVED'" class="btn btn-primary" type="button" (click)="saveColumn()"
+            <button *ngIf="status !== 'APPROVED'" class="btn btn-primary btn-sm" type="button" (click)="saveColumn()"
                 [ngClass]="{'disabled': saveLoader || isValid}">
                 <i class="fa fa-fw fa-lg fa-check-circle"></i>
                 Save
             </button>
             <img *ngIf="saveLoader" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-            <button class="btn btn-secondary ml-2" (click)="closePopUp(false)">
+            <button class="btn btn-secondary ml-2 btn-sm" (click)="closePopUp(false)">
                 <i class="fa fa-fw fa-lg fa-times-circle"></i> Close
             </button>
         </div>

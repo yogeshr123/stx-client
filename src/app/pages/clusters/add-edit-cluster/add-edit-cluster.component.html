@@ -11,78 +11,97 @@
       <ngx-loading [show]="loader.formData" [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
 
-      <div class="text-right">
-        <div class="row">
-          <div class="col-md-12">
-            <button *ngIf="!routeInfo.isViewOnly"
-              [ngClass]="{'disabled': !addEditClusterForm.valid || loader.saveCluster}" class="btn btn-sm btn-primary"
-              type="button" (click)="onSubmit()">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>
-              Save
-            </button>
-            <img *ngIf="loader.saveCluster" class="ml-2" width="40" src="assets/images/green_loader.gif"
-              alt="Loader Image">
-            <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
-            </button>
+      <form [formGroup]="addEditClusterForm" (ngSubmit)="onSubmit()" class="form-horizontal">
+        <div class="text-right">
+          <div class="row">
+            <div class="col-md-12">
+              <button *ngIf="!routeInfo.isViewOnly"
+                [ngClass]="{'disabled': !addEditClusterForm.valid || loader.saveCluster}" class="btn btn-sm btn-primary"
+                type="button" (click)="onSubmit()">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                Save
+              </button>
+              <img *ngIf="loader.saveCluster" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                alt="Loader Image">
+              <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="separator"></div>
-      <div class="tile-body position-relative">
-        <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
-        <form [formGroup]="addEditClusterForm" (ngSubmit)="onSubmit()" class="form-horizontal">
+        <div class="separator"></div>
+        <div class="tile-body position-relative">
+          <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
 
           <div class="row mt-2">
-
             <div class="form-group col-6 row">
               <label class="control-label col-md-4">CLUSTER ID <span class="required">*</span></label>
               <div class="col-md-8">
-                <input formControlName="CLUSTER_ID" class="form-control" type="text" />
+                <input formControlName="CLUSTER_ID" class="form-control" type="text"
+                  [ngClass]="{ 'is-invalid': submitted && f.CLUSTER_ID.errors }" />
+                <div *ngIf="submitted && f.CLUSTER_ID.errors" class="invalid-feedback">
+                  <div *ngIf="f.CLUSTER_ID.errors.required">CLUSTER ID is
+                    required</div>
+                </div>
               </div>
             </div>
             <div class="form-group col-6 row">
-              <label class="control-label col-md-4">ENV NAME</label>
+              <label class="control-label col-md-4">ENV NAME <span class="required">*</span></label>
               <div class="col-md-8">
-                <select formControlName="ENV_NAME" class="form-control">
+                <select formControlName="ENV_NAME" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f.ENV_NAME.errors }">
                   <option value="PRD">PRD</option>
                   <option value="DEV">DEV</option>
                   <option value="QA">QA</option>
                 </select>
+                <div *ngIf="submitted && f.ENV_NAME.errors" class="invalid-feedback">
+                  <div *ngIf="f.ENV_NAME.errors.required">ENV NAME is
+                    required</div>
+                </div>
               </div>
             </div>
             <div class="form-group col-6 row">
-              <label class="control-label col-md-4">CLUSTER FOR</label>
+              <label class="control-label col-md-4">CLUSTER FOR <span class="required">*</span></label>
               <div class="col-md-8">
-                <input formControlName="CLUSTER_FOR" class="form-control" type="text" />
+                <input formControlName="CLUSTER_FOR" class="form-control" type="text"
+                  [ngClass]="{ 'is-invalid': submitted && f.CLUSTER_FOR.errors }" />
+                <div *ngIf="submitted && f.CLUSTER_FOR.errors" class="invalid-feedback">
+                  <div *ngIf="f.CLUSTER_FOR.errors.required">CLUSTER FOR is
+                    required</div>
+                </div>
               </div>
             </div>
             <div class="form-group col-6 row">
-              <label class="control-label col-md-4">MASTER IP ADDRESS</label>
+              <label class="control-label col-md-4">MASTER IP ADDRESS <span class="required">*</span></label>
               <div class="col-md-8">
-                <input formControlName="MASTER_IP_ADD" class="form-control" type="text" (keyup)="populateUrls()" />
+                <input formControlName="MASTER_IP_ADD" class="form-control" type="text" (keyup)="populateUrls()"
+                  [ngClass]="{ 'is-invalid': submitted && f.MASTER_IP_ADD.errors }" />
+                <div *ngIf="submitted && f.MASTER_IP_ADD.errors" class="invalid-feedback">
+                  <div *ngIf="f.MASTER_IP_ADD.errors.required">MASTER IP ADDRESS is
+                    required</div>
+                </div>
               </div>
             </div>
             <div class="form-group col-6 row disabled">
-              <label class="control-label col-md-4">LIVY URL</label>
+              <label class="control-label col-md-4">LIVY URL <span class="required">*</span></label>
               <div class="col-md-8">
                 <input formControlName="LIVY_URL" class="form-control" type="text" tabindex="-1" />
               </div>
             </div>
             <div class="form-group col-6 row disabled">
-              <label class="control-label col-md-4">YARN URL</label>
+              <label class="control-label col-md-4">YARN URL <span class="required">*</span></label>
               <div class="col-md-8">
                 <input formControlName="YARN_URL" class="form-control" type="text" tabindex="-1" />
               </div>
             </div>
             <div class="form-group col-6 row disabled">
-              <label class="control-label col-md-4">SPARK URL</label>
+              <label class="control-label col-md-4">SPARK URL <span class="required">*</span></label>
               <div class="col-md-8">
                 <input formControlName="SPARK_URL" class="form-control" type="text" tabindex="-1" />
               </div>
             </div>
             <div class="form-group col-6 row disabled">
-              <label class="control-label col-md-4">GANGLIA URL</label>
+              <label class="control-label col-md-4">GANGLIA URL <span class="required">*</span></label>
               <div class="col-md-8">
                 <input formControlName="GANGLIA_URL" class="form-control" type="text" tabindex="-1" />
               </div>
@@ -95,26 +114,25 @@
             </div>
 
           </div>
-        </form>
-      </div>
-      <div class="tile-footer">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-3">
-            <button *ngIf="!routeInfo.isViewOnly"
-              [ngClass]="{'disabled': !addEditClusterForm.valid || loader.saveCluster }" class="btn btn-sm btn-primary"
-              type="button" (click)="onSubmit()">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>
-              Save
-            </button>
-            <img *ngIf="loader.saveCluster" class="ml-2" width="40" src="assets/images/green_loader.gif"
-              alt="Loader Image">
-            <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i>
-              Cancel
-            </button>
+          <div class="tile-footer">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-3">
+                <button *ngIf="!routeInfo.isViewOnly" class="btn btn-sm btn-primary" type="submit"
+                  [ngClass]="{'disabled': !addEditClusterForm.valid || loader.saveCluster }">
+                  <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                  Save
+                </button>
+                <img *ngIf="loader.saveCluster" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                  alt="Loader Image">
+                <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                  <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
 
     </div>
   </div>

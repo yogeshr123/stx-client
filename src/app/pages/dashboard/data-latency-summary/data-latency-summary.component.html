@@ -34,6 +34,9 @@
             </tr>
           </ng-template>
         </p-table>
+        <div colspan="10" class="text-center p-2 border" *ngIf="!recordsArray || !recordsArray.length">
+          <h6>No Data Available!</h6>
+        </div>
       </div>
     </div>
   </div>

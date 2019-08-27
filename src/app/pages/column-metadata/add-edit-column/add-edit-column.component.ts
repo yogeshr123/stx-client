@@ -29,6 +29,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
   columnData: any;
   TABLE_NAME: any;
   appState: any;
+  submitted = false;
 
   constructor(
     private commonService: CommonService,
@@ -78,10 +79,10 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
     this.addEditColumnForm = this.formBuilder.group({
       SCHEMA_NAME: ['', Validators.required],
       TABLE_NAME: ['', Validators.required],
-      METADATA_VERSION: ['', Validators.required],
+      METADATA_VERSION: [''],
       SRC_COLUMN_NAME: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-z][a-z0-9-_]+$/)])],
       SRC_COLUMN_TYPE: ['MAPPED', Validators.required],
-      SRC_DATA_TYPE: [''],
+      SRC_DATA_TYPE: ['', Validators.required],
       SRC_LEFT_PRECISION: [0],
       SRC_RIGHT_PRECISION: [0],
       INTERNAL_COLUMN: [0, Validators.required],
@@ -105,6 +106,8 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
       UPDATE_DATE: [new Date()],
     });
   }
+
+  get f() { return this.addEditColumnForm.controls; }
 
   getUserInfo() {
     if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
@@ -242,6 +245,11 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.loader.saveColumn = true;
+    this.submitted = true;
+    if (this.addEditColumnForm.invalid) {
+      this.loader.saveColumn = false;
+      return;
+    }
     let functionToCall: any = 'addColumn';
     let messages = {
       success: 'Column Add!',

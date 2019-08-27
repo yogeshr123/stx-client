@@ -20,28 +20,28 @@
         <div class="tile">
             <ngx-loading [show]="loader.formData" [config]="{ backdropBorderRadius: '3px' }">
             </ngx-loading>
+            <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal">
 
-            <div class="text-right">
-                <div class="row">
-                    <div class="col-md-12">
-                        <button *ngIf="!routeInfo.isViewOnly"
-                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn}"
-                            class="btn btn-sm btn-primary" type="button" (click)="onSubmit()">
-                            <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                            Save
-                        </button>
-                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
-                            alt="Loader Image">
-                        <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
-                            <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
-                        </button>
+                <div class="text-right">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button *ngIf="!routeInfo.isViewOnly" class="btn btn-sm btn-primary" type="button"
+                                (click)="onSubmit()"
+                                [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn}">
+                                <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                                Save
+                            </button>
+                            <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                                alt="Loader Image">
+                            <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                                <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="separator"></div>
-            <div class="tile-body">
-                <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
-                <form [formGroup]="addEditColumnForm" (ngSubmit)="onSubmit()" class="form-horizontal row">
+                <div class="separator"></div>
+                <div class="tile-body">
+                    <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
                     <p-accordion [multiple]="true" class="col-12">
 
                         <!-- Source Info -->
@@ -54,7 +54,8 @@
                                     <div class="col-md-8">
                                         <select tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             formControlName="SRC_COLUMN_TYPE" class="form-control"
-                                            (change)="updateValidation()">
+                                            (change)="updateValidation()"
+                                            [ngClass]="{ 'is-invalid': submitted && f.SRC_COLUMN_TYPE.errors }">
                                             <option value="MAPPED" [selected]="true">MAPPED</option>
                                             <option value="DERIVED">DERIVED</option>
                                             <option value="PREDEFINED">PREDEFINED</option>
@@ -62,6 +63,10 @@
                                                 *ngIf="addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'"
                                                 value="DIMLOOKUP">DIMLOOKUP</option>
                                         </select>
+                                        <div *ngIf="submitted && f.SRC_COLUMN_TYPE.errors" class="invalid-feedback">
+                                            <div *ngIf="f.SRC_COLUMN_TYPE.errors.required">SRC COLUMN TYPE is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -71,7 +76,12 @@
                                     <div class="col-md-8">
                                         <input tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             oninput="this.value = this.value.toLowerCase()"
-                                            formControlName="SRC_COLUMN_NAME" class="form-control" type="text" />
+                                            formControlName="SRC_COLUMN_NAME" class="form-control" type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && f.SRC_COLUMN_NAME.errors }" />
+                                        <div *ngIf="submitted && f.SRC_COLUMN_NAME.errors" class="invalid-feedback">
+                                            <div *ngIf="f.SRC_COLUMN_NAME.errors.required">SRC COLUMN NAME is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -80,13 +90,18 @@
                                     <label class="control-label col-md-4">SRC DATA TYPE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
-                                        <select formControlName="SRC_DATA_TYPE" class="form-control">
+                                        <select formControlName="SRC_DATA_TYPE" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.SRC_DATA_TYPE.errors }">
                                             <option value="string">string</option>
                                             <option value="integer">integer</option>
                                             <option value="long">long</option>
                                             <option value="decimal">decimal</option>
                                             <option value="timestamp">timestamp</option>
                                         </select>
+                                        <div *ngIf="submitted && f.SRC_DATA_TYPE.errors" class="invalid-feedback">
+                                            <div *ngIf="f.SRC_DATA_TYPE.errors.required">SRC DATA TYPE is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -115,8 +130,14 @@
                                     <label class="control-label col-md-4">DERIVED COLUMN FORMULA <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
-                                        <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control"
-                                            type="text" />
+                                        <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && f.DERIVED_COLUMN_FORMULA.errors }" />
+                                        <div *ngIf="submitted && f.DERIVED_COLUMN_FORMULA.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="f.DERIVED_COLUMN_FORMULA.errors.required">DERIVED COLUMN FORMULA
+                                                is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -133,10 +154,16 @@
                                     <label class="control-label col-md-4">PREDEFINED VALUE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
-                                        <select formControlName="PREDEFINED_VALUE" class="form-control">
+                                        <select formControlName="PREDEFINED_VALUE" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.PREDEFINED_VALUE.errors }">
                                             <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
                                             <option value="INPUT_FILENAME">INPUT_FILENAME</option>
                                         </select>
+                                        <div *ngIf="submitted && f.PREDEFINED_VALUE.errors" class="invalid-feedback">
+                                            <div *ngIf="f.PREDEFINED_VALUE.errors.required">PREDEFINED VALUE
+                                                is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -144,26 +171,36 @@
                         <!-- TARGET Info-->
                         <p-accordionTab header="Target Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
-                                <div class="form-group col-6 row" [ngClass]="{'disabled': routeInfo.fromHeaderHash}">
+                                <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET COLUMN NAME <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
                                         <input tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             oninput="this.value = this.value.toLowerCase()"
-                                            formControlName="TARGET_COLUMN_NAME" class="form-control" type="text" />
+                                            formControlName="TARGET_COLUMN_NAME" class="form-control" type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && f.TARGET_COLUMN_NAME.errors }" />
+                                        <div *ngIf="submitted && f.TARGET_COLUMN_NAME.errors" class="invalid-feedback">
+                                            <div *ngIf="f.TARGET_COLUMN_NAME.errors.required">TARGET COLUMN NAME is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-4">TARGET DATA TYPE <span
                                             class="required">*</span></label>
                                     <div class="col-md-8">
-                                        <select formControlName="TARGET_DATA_TYPE" class="form-control">
+                                        <select formControlName="TARGET_DATA_TYPE" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.TARGET_DATA_TYPE.errors }">
                                             <option value="varchar">varchar</option>
                                             <option value="int">int</option>
                                             <option value="bigint">bigint</option>
                                             <option value="decimal">decimal</option>
                                             <option value="timestamp">timestamp</option>
                                         </select>
+                                        <div *ngIf="submitted && f.TARGET_DATA_TYPE.errors" class="invalid-feedback">
+                                            <div *ngIf="f.TARGET_DATA_TYPE.errors.required">TARGET DATA TYPE is
+                                                required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
@@ -221,27 +258,27 @@
                             </div>
                         </p-accordionTab>
                     </p-accordion>
-                </form>
-            </div>
-            <div class="tile-footer">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-3">
-                        <button *ngIf="!routeInfo.isViewOnly"
-                            [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn }"
-                            class="btn btn-sm btn-primary" type="button" (click)="onSubmit()">
-                            <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                            Save
-                        </button>
-                        <img *ngIf="loader.saveColumn" class="ml-2" width="40" src="assets/images/green_loader.gif"
-                            alt="Loader Image">
-                        <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
-                            <i class="fa fa-fw fa-lg fa-times-circle"></i>
-                            Cancel
-                        </button>
+
+                    <div class="tile-footer">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-3">
+                                <button *ngIf="!routeInfo.isViewOnly"
+                                    [ngClass]="{'disabled': !addEditColumnForm.valid || loader.saveColumn }"
+                                    class="btn btn-sm btn-primary" type="button" (click)="onSubmit()">
+                                    <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                                    Save
+                                </button>
+                                <img *ngIf="loader.saveColumn" class="ml-2" width="40"
+                                    src="assets/images/green_loader.gif" alt="Loader Image">
+                                <button class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                                    <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            </form>
         </div>
     </div>
 </div>

@@ -463,7 +463,9 @@ export class LoadControlComponent implements OnInit {
           SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
           TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
           ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-          DAG_SCHEDULE_INTERVAL: cronExpression
+          DAG_SCHEDULE_INTERVAL: cronExpression,
+          UPDATED_BY: this.appState.loggedInUser.USER_NAME,
+          UPDATE_DATE: `${new Date()}`
         })
       }
       const body: any = {

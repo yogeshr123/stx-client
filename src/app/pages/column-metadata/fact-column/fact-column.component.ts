@@ -34,6 +34,7 @@ export class FactColumnComponent implements OnInit {
   }
 
   getAllTables() {
+    this.dataLoader = true;
     this.columnMetadataService.getAllLoadControlTables().subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
         this.tables = resp.data;
@@ -44,6 +45,7 @@ export class FactColumnComponent implements OnInit {
         });
         this.tables = this.removeDuplicates(this.tables, 'schemaTableName');
       }
+      this.dataLoader = false;
     });
   }
 

@@ -34,7 +34,7 @@
         <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
         </ngx-loading>
         <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
-          [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-fhh">
+          [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-fhh-dim">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field">

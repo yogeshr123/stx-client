@@ -213,25 +213,26 @@ export class LoadControlComponent implements OnInit {
   }
 
   changeETLStatus(status: string) {
-    // if (this.selectedRecords.length > 0) {
-    //   let records = [];
-    //   for (var _i = 0; _i < this.selectedRecords.length; _i++) {
-    //     records.push({
-    //       SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-    //       TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-    //       ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-    //     })
-    //   }
-    //   const body = {
-    //     ETL_STATUS: status,
-    //     records: records
-    //   };
+    if (this.selectedRecords.length > 0) {
+      let records = [];
+      for (var _i = 0; _i < this.selectedRecords.length; _i++) {
+        // records.push({
+        //   SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+        //   TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+        //   ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+        // })
 
-    //   this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
-    //     console.log(data);
-    //     this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
-    //   });
-    // }
+        const dagName = `${this.selectedRecords[_i].SCHEMA_NAME}_${this.selectedRecords[_i].TABLE_NAME}_dag`
+        const body = {
+          ETL_STATUS: status,
+          dagName: dagName
+        };
+        this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
+          console.log(data);
+          this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+        });
+      }
+    }
   }
 
   changeStatus() {
@@ -242,6 +243,8 @@ export class LoadControlComponent implements OnInit {
           SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
           TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
           ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+          UPDATED_BY: this.appState.loggedInUser.USER_NAME,
+          UPDATE_DATE: `${new Date()}`
         })
       }
       const body: any = {
@@ -270,6 +273,8 @@ export class LoadControlComponent implements OnInit {
           SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
           TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
           ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+          UPDATED_BY: this.appState.loggedInUser.USER_NAME,
+          UPDATE_DATE: `${new Date()}`
         })
       }
       const body: any = {

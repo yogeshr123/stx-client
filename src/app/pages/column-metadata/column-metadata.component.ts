@@ -253,9 +253,9 @@ export class ColumnMetadataComponent implements OnInit {
           localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`] =
             localCopyOfVersion[`${version.METADATA_VERSION}_${version.TABLE_NAME}`]
               .map(i => {
-                if (!i.TARGET_COLUMN_ID && version.action === 'newColumn') {
+                if (!i.TARGET_COLUMN_ID && version.TARGET_COLUMN_NAME === i.TARGET_COLUMN_NAME && version.action === 'newColumn') {
                   return undefined;
-                } else if (i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
+                } else if (i.TARGET_COLUMN_ID && i.TARGET_COLUMN_ID === version.TARGET_COLUMN_ID) {
                   i.oldUpdateDate = i.UPDATE_DATE;
                   i.UPDATE_DATE = new Date();
                   i.action = 'deleted';

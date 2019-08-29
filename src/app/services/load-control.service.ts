@@ -37,9 +37,17 @@ export class LoadControlService {
     }
 
     changeETLStatus(body: any) {
-        const url = `${environment.baseUrl}table_load_control/changeETLStatus`;
+        let dagAction = '';
+        if (body.ETL_STATUS === "TRIGGER") {
+            dagAction = 'dag_runs';
+        }
+        // else if(body.ETL_STATUS === "KILL"){
+        //     dagAction = 'dag_runs';
+        // }
+
+        const url = `${environment.airflowExperimentalDevApiUrl}${body.dagName}/${dagAction}`;
         return this.http
-            .put(url, body)
+            .post(url, body)
             .pipe(catchError(this.commonService.handleError));
     }
 

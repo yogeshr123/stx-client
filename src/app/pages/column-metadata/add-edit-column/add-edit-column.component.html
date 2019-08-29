@@ -49,9 +49,9 @@
                             <div class="row mt-2">
                                 <div class="form-group col-6 row"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || routeInfo.fromHeaderHash}">
-                                    <label class="control-label col-md-4">SRC COLUMN TYPE <span
+                                    <label class="control-label col-md-5">SRC COLUMN TYPE <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <select tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             formControlName="SRC_COLUMN_TYPE" class="form-control"
                                             (change)="updateValidation()"
@@ -71,9 +71,9 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || routeInfo.fromHeaderHash}">
-                                    <label class="control-label col-md-4">SRC COLUMN NAME <span
+                                    <label class="control-label col-md-5">SRC COLUMN NAME <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <input tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             oninput="this.value = this.value.toLowerCase()"
                                             formControlName="SRC_COLUMN_NAME" class="form-control" type="text"
@@ -87,10 +87,11 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || routeInfo.fromHeaderHash"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">SRC DATA TYPE <span
+                                    <label class="control-label col-md-5">SRC DATA TYPE <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
-                                        <select formControlName="SRC_DATA_TYPE" class="form-control"
+                                    <div class="col-md-7">
+                                        <select (change)="targetDataTypeValidation()" formControlName="SRC_DATA_TYPE"
+                                            class="form-control"
                                             [ngClass]="{ 'is-invalid': submitted && f.SRC_DATA_TYPE.errors }">
                                             <option value="string">string</option>
                                             <option value="integer">integer</option>
@@ -107,29 +108,29 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_DATA_TYPE'] === 'decimal'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">SRC DECIMAL PRECISION <span
+                                    <label class="control-label col-md-5">SRC DECIMAL PRECISION <span
                                             class="required">*</span></label>
-                                    <div class="row m-0 pl-3 col-8">
+                                    <div class="row m-0 pl-3 col-7">
                                         <input type="number" class="form-control col-3"
-                                            formControlName="SRC_LEFT_PRECISION" min="0" max="99">
+                                            formControlName="SRC_LEFT_PRECISION" min="0" max="38">
                                         <input type="number" class="form-control ml-1 col-3"
-                                            formControlName="SRC_RIGHT_PRECISION" min="0" max="99">
+                                            formControlName="SRC_RIGHT_PRECISION" min="0" max="38">
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">INTERNAL COLUMN</label>
-                                    <div class="col-md-8">
+                                    <label class="control-label col-md-5">INTERNAL COLUMN</label>
+                                    <div class="col-md-7">
                                         <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DERIVED'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">DERIVED COLUMN FORMULA <span
+                                    <label class="control-label col-md-5">DERIVED COLUMN FORMULA <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <input formControlName="DERIVED_COLUMN_FORMULA" class="form-control" type="text"
                                             [ngClass]="{ 'is-invalid': submitted && f.DERIVED_COLUMN_FORMULA.errors }" />
                                         <div *ngIf="submitted && f.DERIVED_COLUMN_FORMULA.errors"
@@ -143,17 +144,17 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="!routeInfo.fromHeaderHash && addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'DIMLOOKUP'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">LOOKUP TABLE ALIAS</label>
-                                    <div class="col-md-8">
+                                    <label class="control-label col-md-5">LOOKUP TABLE ALIAS</label>
+                                    <div class="col-md-7">
                                         <input formControlName="LOOKUP_TABLE_ALIAS" class="form-control" type="text" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">PREDEFINED VALUE <span
+                                    <label class="control-label col-md-5">PREDEFINED VALUE <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <select formControlName="PREDEFINED_VALUE" class="form-control"
                                             [ngClass]="{ 'is-invalid': submitted && f.PREDEFINED_VALUE.errors }">
                                             <option value="LOAD_TIMESTAMP">LOAD_TIMESTAMP</option>
@@ -172,9 +173,9 @@
                         <p-accordionTab header="Target Info" class="col-12" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET COLUMN NAME <span
+                                    <label class="control-label col-md-5">TARGET COLUMN NAME <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <input tabindex="{{ routeInfo.fromHeaderHash ? -1 : '' }}"
                                             oninput="this.value = this.value.toLowerCase()"
                                             formControlName="TARGET_COLUMN_NAME" class="form-control" type="text"
@@ -186,10 +187,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET DATA TYPE <span
+                                    <label class="control-label col-md-5">TARGET DATA TYPE <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
-                                        <select formControlName="TARGET_DATA_TYPE" class="form-control"
+                                    <div class="col-md-7">
+                                        <select (change)="targetDataTypeValidation()" formControlName="TARGET_DATA_TYPE"
+                                            class="form-control"
                                             [ngClass]="{ 'is-invalid': submitted && f.TARGET_DATA_TYPE.errors }">
                                             <option value="varchar">varchar</option>
                                             <option value="int">int</option>
@@ -197,6 +199,9 @@
                                             <option value="decimal">decimal</option>
                                             <option value="timestamp">timestamp</option>
                                         </select>
+                                        <div *ngIf="f.TARGET_DATA_TYPE.errors?.error" class="mt-1 targetCustomError">
+                                            <span>TARGET Data Type Error</span>
+                                        </div>
                                         <div *ngIf="submitted && f.TARGET_DATA_TYPE.errors" class="invalid-feedback">
                                             <div *ngIf="f.TARGET_DATA_TYPE.errors.required">TARGET DATA TYPE is
                                                 required</div>
@@ -206,18 +211,18 @@
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'"
                                     [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
-                                    <label class="control-label col-md-4">IS UPDATE DATE COLUMN <span
+                                    <label class="control-label col-md-5">IS UPDATE DATE COLUMN <span
                                             class="required">*</span></label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <input formControlName="IS_UPDATE_DATE_COLUMN" class="form-control"
                                             type="checkbox" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal' || addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'">
-                                    <label class=" control-label col-md-4">TARGET PRECISION <span
+                                    <label class=" control-label col-md-5">TARGET PRECISION <span
                                             class="required">*</span></label>
-                                    <div class="row m-0 pl-3 col-8">
+                                    <div class="row m-0 pl-3 col-7">
                                         <input formControlName="TARGET_LEFT_PRECISION" type="number"
                                             class="form-control col-3"
                                             [ngClass]="{'col-6': addEditColumnForm.value['TARGET_DATA_TYPE'] === 'varchar'}"
@@ -225,12 +230,16 @@
                                         <input formControlName="TARGET_RIGHT_PRECISION" type="number"
                                             class="form-control ml-1 col-3"
                                             *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'decimal'" min="0"
-                                            max="99">
+                                            max="38">
+                                        <div *ngIf="submitted && f.TARGET_LEFT_PRECISION.errors"
+                                            class="mt-1 targetCustomError">
+                                            <span>TARGET PRECISION should be more than SRC</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">TARGET DEFAULT VALUE</label>
-                                    <div class="col-md-8">
+                                    <label class="control-label col-md-5">TARGET DEFAULT VALUE</label>
+                                    <div class="col-md-7">
                                         <input formControlName="TARGET_DEFAULT_VALUE" class="form-control"
                                             type="text" />
                                     </div>
@@ -243,14 +252,14 @@
                                 [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
 
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">IS PRIMARY KEY COLUMN</label>
-                                    <div class="col-md-8">
+                                    <label class="control-label col-md-5">IS PRIMARY KEY COLUMN</label>
+                                    <div class="col-md-7">
                                         <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
                                 <div class="form-group col-6 row">
-                                    <label class="control-label col-md-4">IS PARTITION COLUMN</label>
-                                    <div class="col-md-8">
+                                    <label class="control-label col-md-5">IS PARTITION COLUMN</label>
+                                    <div class="col-md-7">
                                         <input formControlName="IS_PARTITION_COLUMN" class="form-control"
                                             type="checkbox" />
                                     </div>

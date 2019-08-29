@@ -212,19 +212,50 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
   checkFormValues(functionToCall, formValues) {
     if (functionToCall === 'addColumn') {
       formValues.IS_NEW = 1;
+      formValues.IS_RENAMED = 0;
+      formValues.IS_DATATYPE_CHANGED = 0;
       formValues.action = 'newColumn';
     } else {
       formValues.action = this.routeInfo.id === 'new' ? 'newColumn' : 'updatedColumn';
     }
-    if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
-      formValues.IS_RENAMED = 1;
-    } else {
-      formValues.IS_RENAMED = 0;
-    }
-    if (formValues.SRC_DATA_TYPE !== formValues.TARGET_DATA_TYPE) {
-      formValues.IS_DATATYPE_CHANGED = 1;
-    } else {
-      formValues.IS_DATATYPE_CHANGED = 0;
+    // if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
+    //   formValues.IS_RENAMED = 1;
+    // } else {
+    //   formValues.IS_RENAMED = 0;
+    // }
+    // if (formValues.SRC_DATA_TYPE !== formValues.TARGET_DATA_TYPE) {
+    //   formValues.IS_DATATYPE_CHANGED = 1;
+    // } else {
+    //   formValues.IS_DATATYPE_CHANGED = 0;
+    // }
+    this.targetDataTypeValidation();
+  }
+
+  targetDataTypeValidation() {
+    this.addEditColumnForm.controls.TARGET_DATA_TYPE.updateValueAndValidity();
+    if (this.addEditColumnForm.value.SRC_DATA_TYPE && this.addEditColumnForm.value.TARGET_DATA_TYPE) {
+      if (this.addEditColumnForm.value.SRC_DATA_TYPE === 'string' && this.addEditColumnForm.value.TARGET_DATA_TYPE !== 'varchar') {
+        this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({ error: true });
+      }
+      if (this.addEditColumnForm.value.SRC_DATA_TYPE === 'decimal' && this.addEditColumnForm.value.TARGET_DATA_TYPE !== 'decimal') {
+        this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({ error: true });
+      }
+      if (this.addEditColumnForm.value.SRC_DATA_TYPE === 'timestamp'
+        && this.addEditColumnForm.value.TARGET_DATA_TYPE.match(/^((?!(timestamp|varchar)).)*$/g)) {
+        this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({ error: true });
+      }
+      if (this.addEditColumnForm.value.SRC_DATA_TYPE.match(/integer|long/g)
+        && this.addEditColumnForm.value.TARGET_DATA_TYPE.match(/^((?!(int|bigint|varchar)).)*$/g)) {
+        this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({ error: true });
+      }
+      if (this.addEditColumnForm.value.SRC_DATA_TYPE === 'decimal' && this.addEditColumnForm.value.TARGET_DATA_TYPE === 'decimal') {
+        if (this.addEditColumnForm.value.SRC_LEFT_PRECISION < this.addEditColumnForm.value.TARGET_LEFT_PRECISION) {
+          this.addEditColumnForm.controls.TARGET_LEFT_PRECISION.setErrors({ error: true });
+        }
+        if (this.addEditColumnForm.value.SRC_RIGHT_PRECISION < this.addEditColumnForm.value.TARGET_RIGHT_PRECISION) {
+          this.addEditColumnForm.controls.TARGET_RIGHT_PRECISION.setErrors({ error: true });
+        }
+      }
     }
   }
 
@@ -246,10 +277,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.loader.saveColumn = true;
     this.submitted = true;
-    if (this.addEditColumnForm.invalid) {
-      this.loader.saveColumn = false;
-      return;
-    }
+
     let functionToCall: any = 'addColumn';
     let messages = {
       success: 'Column Add!',
@@ -265,6 +293,10 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
     const formValues = Object.assign({}, this.addEditColumnForm.value);
     this.addPrecisionValues(formValues);
     this.checkFormValues(functionToCall, formValues);
+    if (this.addEditColumnForm.invalid) {
+      this.loader.saveColumn = false;
+      return;
+    }
 
     if (this.routeInfo.fromHeaderHash) {
       const request = {

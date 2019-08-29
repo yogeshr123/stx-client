@@ -23,6 +23,7 @@ export class ColumnMetadataComponent implements OnInit {
   showMetaData = false;
   selectedVersion: any;
   versionData = [];
+  previousVersionData = [];
   loader = {
     columns: false,
     versions: false,
@@ -224,6 +225,7 @@ export class ColumnMetadataComponent implements OnInit {
       });
     }
     this.reOrderByUpdateDate();
+    this.getPreviousVersionData();
   }
 
   deleteColumn(version) {
@@ -462,12 +464,45 @@ export class ColumnMetadataComponent implements OnInit {
     }
   }
 
+  getPreviousVersionData() {
+    if (this.selectedVersion.METADATA_VERSION > 1) {
+      const request = {
+        table_name: this.selectedTable.TABLE_NAME,
+        columnVersion: this.selectedVersion.METADATA_VERSION - 1
+      };
+      this.columnMetadataService.getAllColumns(request).subscribe((resp: any) => {
+        this.previousVersionData = resp.data;
+      });
+    }
+  }
+
+  checkForRenameAndDataType(updateColumns) {
+    if (this.previousVersionData && this.previousVersionData.length) {
+      updateColumns = updateColumns.map(i => {
+        this.previousVersionData.forEach(j => {
+          if (j.TARGET_COLUMN_ID === i.TARGET_COLUMN_ID) {
+            if (j.TARGET_DATA_TYPE !== i.TARGET_DATA_TYPE || j.SRC_DATA_TYPE !== i.SRC_DATA_TYPE) {
+              i.IS_DATATYPE_CHANGED = 1;
+            }
+            if (j.TARGET_COLUMN_NAME !== i.TARGET_COLUMN_NAME || j.SRC_COLUMN_NAME !== i.SRC_COLUMN_NAME) {
+              i.IS_RENAMED = 1;
+            }
+          }
+        });
+        return i;
+      });
+    }
+  }
+
   saveMasterData(localCopyOfVersion) {
     this.loader.save = true;
     const colums = localCopyOfVersion[this.selectedVersion.METADATA_VERSION + '_' + this.selectedVersion.TABLE_NAME];
     const addColumns = colums.filter(i => i.action === 'newColumn');
     const updateColumns = colums.filter(i => i.action === 'updatedColumn');
     const deleteColumns = colums.filter(i => i.action === 'deleted');
+    if (updateColumns && updateColumns.length) {
+      this.checkForRenameAndDataType(updateColumns);
+    }
     this.columnMetadataService.saveMaster({ addColumns, updateColumns, deleteColumns }).subscribe((resp: any) => {
       if (!resp.error) {
         this.showToast('success', 'All operations are successful.');

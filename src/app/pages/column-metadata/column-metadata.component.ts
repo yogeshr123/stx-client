@@ -524,6 +524,7 @@ export class ColumnMetadataComponent implements OnInit {
 
   generateNewVersion() {
     this.loader.columns = true;
+    this.loader.versions = true;
     const allVersions = [];
     this.versions.forEach(element => {
       allVersions.push(element.METADATA_VERSION);
@@ -540,9 +541,11 @@ export class ColumnMetadataComponent implements OnInit {
         this.showToast('error', 'Could not create version.');
       }
       this.loader.columns = false;
+      this.loader.versions = false;
     }, error => {
       this.showToast('error', 'Could not create version.');
       this.loader.columns = false;
+      this.loader.versions = false;
     });
   }
 

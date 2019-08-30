@@ -120,8 +120,15 @@
                         </ng-template>
                         <ng-template pTemplate="header" let-columns>
                             <tr>
-                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                                    {{col.header}}
+                                <th *ngFor="let col of columns" [ngSwitch]="col.type" [pSortableColumn]="col.field">
+                                    <span *ngSwitchCase="'icon'">
+                                        <span title="{{col.header}}">
+                                            <img width="25" src="assets/images/{{col.header}}.png" alt="{{col.header}}">
+                                        </span>
+                                    </span>
+                                    <span *ngSwitchDefault>
+                                        <span title="{{col.header}}">{{col.header}}</span>
+                                    </span>
                                     <p-sortIcon *ngIf="col.type !== 'boolean'" [field]="col.field"
                                         ariaLabel="Activate to sort"
                                         ariaLabelDesc="Activate to sort in descending order"
@@ -133,6 +140,7 @@
                             <tr>
                                 <th *ngFor="let col of columns" [ngSwitch]="col.type" class="ui-flclassuid">
                                     <span *ngSwitchCase="'boolean'"></span>
+                                    <span *ngSwitchCase="'icon'"></span>
                                     <span *ngSwitchCase="'date'"></span>
                                     <input pInputText *ngSwitchDefault type="text"
                                         (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"

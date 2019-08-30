@@ -32,17 +32,17 @@ const columnTableColumns = [
     {
         header: 'IS_DATATYPE_CHANGED',
         field: 'IS_DATATYPE_CHANGED',
-        type: 'boolean'
+        type: 'icon'
     },
     {
         header: 'IS_RENAMED',
         field: 'IS_RENAMED',
-        type: 'boolean'
+        type: 'icon'
     },
     {
         header: 'IS_NEW',
         field: 'IS_NEW',
-        type: 'boolean'
+        type: 'icon'
     },
     {
         header: 'TARGET_COLUMN_ID',

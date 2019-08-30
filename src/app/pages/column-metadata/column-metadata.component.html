@@ -150,7 +150,14 @@
                                                 {{version[col.field] | dateConvert }}
                                             </span>
                                             <span *ngSwitchCase="'boolean'">
-                                                {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true ? 'True' : 'False' }}
+                                                <!-- {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true ? 'True' : 'False' }} -->
+                                                <ng-container
+                                                    *ngIf="version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true; else elseTemplateCheckBox">
+                                                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                </ng-container>
+                                                <ng-template #elseTemplateCheckBox>
+                                                    <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                                                </ng-template>
                                             </span>
                                             <span *ngSwitchDefault>
                                                 {{version[col.field]}}

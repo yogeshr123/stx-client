@@ -149,8 +149,18 @@
                                             <span *ngSwitchCase="'date'">
                                                 {{version[col.field] | dateConvert }}
                                             </span>
+                                            <span *ngSwitchCase="'icon'">
+                                                <ng-container
+                                                    *ngIf="version[col.field] === 1 || version[col.field] === true; else elseTemplateCheckBox">
+                                                    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                </ng-container>
+                                                <ng-template #elseTemplateCheckBox>
+                                                    <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                                                </ng-template>
+                                            </span>
                                             <span *ngSwitchCase="'boolean'">
-                                                {{ version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 || version[col.field] === true ? 'True' : 'False' }}
+                                                {{version[col.field] && version[col.field].data && version[col.field].data[0] || version[col.field] === 1 ||
+                                                version[col.field] === true ? 'True' : 'False' }}
                                             </span>
                                             <span *ngSwitchDefault>
                                                 {{version[col.field]}}
@@ -173,7 +183,7 @@
                                         <button appPermission expectedPermission="deleteColumnMetadataModule"
                                             (click)="deleteColumn(version)" title="Delete"
                                             class="btn btn-danger btn-sm ml-1"
-                                            *ngIf="selectedVersion?.STATUS?.toUpperCase() === 'NEW' && (version.IS_NEW?.data && version.IS_NEW?.data[0] || version.IS_NEW === 1)">
+                                            *ngIf="selectedVersion?.STATUS?.toUpperCase() === 'NEW' && ( version.IS_NEW === 1 || version.IS_NEW === 'true')">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </div>

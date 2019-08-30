@@ -46,7 +46,7 @@ export class SidebarComponent implements OnInit {
       items.each(function (id, el) {
         const routerLink = $(this).find('a').attr('routerlink');
         if (routerLink) {
-          if (currentPageRouterLink.indexOf(routerLink) > -1) {
+          if (currentPageRouterLink.indexOf(routerLink) > -1 || routerLink.indexOf(currentPageRouterLink) > -1) {
             $(this).parent().parent('.treeview').siblings().removeClass('is-expanded');
             $(this).parent().parent('.treeview').addClass('is-expanded');
           }

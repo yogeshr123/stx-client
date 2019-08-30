@@ -30,6 +30,21 @@ const ENV_NAME = [
 
 const columnTableColumns = [
     {
+        header: 'IS_DATATYPE_CHANGED',
+        field: 'IS_DATATYPE_CHANGED',
+        type: 'icon'
+    },
+    {
+        header: 'IS_RENAMED',
+        field: 'IS_RENAMED',
+        type: 'icon'
+    },
+    {
+        header: 'IS_NEW',
+        field: 'IS_NEW',
+        type: 'icon'
+    },
+    {
         header: 'TARGET_COLUMN_ID',
         field: 'TARGET_COLUMN_ID'
     },
@@ -84,21 +99,6 @@ const columnTableColumns = [
     {
         header: 'IS_UPDATE_DATE_COLUMN',
         field: 'IS_UPDATE_DATE_COLUMN',
-        type: 'boolean'
-    },
-    {
-        header: 'IS_DATATYPE_CHANGED',
-        field: 'IS_DATATYPE_CHANGED',
-        type: 'boolean'
-    },
-    {
-        header: 'IS_RENAMED',
-        field: 'IS_RENAMED',
-        type: 'boolean'
-    },
-    {
-        header: 'IS_NEW',
-        field: 'IS_NEW',
         type: 'boolean'
     },
     {

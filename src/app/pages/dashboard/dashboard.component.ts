@@ -162,10 +162,16 @@ export class DashboardComponent implements OnInit {
   checkIfDate(key) {
     if (this.recordMeta) {
       const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
-      const dataType = this.recordMeta[index].DATA_TYPE;
-      if (dataType === 'timestamp') {
-        return true;
-      } else {
+      if (index) {
+        const dataType = this.recordMeta[index].DATA_TYPE;
+        if (dataType == "timestamp") {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
         return false;
       }
     }

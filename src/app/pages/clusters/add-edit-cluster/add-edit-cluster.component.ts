@@ -90,6 +90,7 @@ export class AddEditClusterComponent implements OnInit, OnDestroy {
     const appState: any = this.commonService.getState();
     if (appState && appState.selectedCluster) {
       const cluster = appState.selectedCluster;
+      this.oldClusterInfo = appState.selectedCluster;
       const formControls = this.addEditClusterForm.controls;
       if (cluster) {
         for (const key in formControls) {

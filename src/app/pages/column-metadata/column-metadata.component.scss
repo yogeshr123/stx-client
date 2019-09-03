@@ -3,6 +3,10 @@ td {
   height: 30px;
 }
 
+.icon {
+  width: 60px !important;
+}
+
 ul {
   margin: 0;
 }
@@ -33,5 +37,6 @@ ul {
 }
 
 .fa-window-close-o {
-  color: #887f7f;
+  font-size: 18px;
+  color: #8c8080;
 }

@@ -1,7 +1,7 @@
 import { environment } from '../../environments/environment';
 // Angular
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
@@ -37,17 +37,9 @@ export class LoadControlService {
     }
 
     changeETLStatus(body: any) {
-        let dagAction = '';
-        if (body.ETL_STATUS === "TRIGGER") {
-            dagAction = 'dag_runs';
-        }
-        // else if(body.ETL_STATUS === "KILL"){
-        //     dagAction = 'dag_runs';
-        // }
-
-        const url = `${environment.airflowExperimentalDevApiUrl}${body.dagName}/${dagAction}`;
+        const url = `${environment.baseUrl}table_load_control/changeETLStatus`;
         return this.http
-            .post(url, body)
+            .put(url, body)
             .pipe(catchError(this.commonService.handleError));
     }
 

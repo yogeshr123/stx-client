@@ -216,22 +216,20 @@ export class LoadControlComponent implements OnInit {
     if (this.selectedRecords.length > 0) {
       let records = [];
       for (var _i = 0; _i < this.selectedRecords.length; _i++) {
-        // records.push({
-        //   SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-        //   TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-        //   ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-        // })
-
-        const dagName = `${this.selectedRecords[_i].SCHEMA_NAME}_${this.selectedRecords[_i].TABLE_NAME}_dag`
-        const body = {
-          ETL_STATUS: status,
-          dagName: dagName
-        };
-        this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
-          console.log(data);
-          this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
-        });
+        records.push({
+          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+        })
       }
+      const body: any = {
+        records: records,
+        status: status,
+      };
+      this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
+        console.log(data);
+        this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+      });
     }
   }
 

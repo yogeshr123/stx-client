@@ -122,7 +122,7 @@
                             <tr>
                                 <th *ngFor="let col of columns" [ngSwitch]="col.type" [pSortableColumn]="col.field">
                                     <span *ngSwitchCase="'icon'">
-                                        <span title="{{col.header}}">
+                                        <span [pTooltip]="col.header" tooltipPosition="top">
                                             <img width="25" src="assets/images/{{col.header}}.png" alt="{{col.header}}">
                                         </span>
                                     </span>

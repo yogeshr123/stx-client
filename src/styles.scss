@@ -7,7 +7,7 @@
 }
 
 .app-header__logo {
-  background: url('assets/images/seagate-logo.png') no-repeat center center;
+  background: url("assets/images/seagate-logo.png") no-repeat center center;
   background-size: 60%;
   background-color: #000;
 }
@@ -16,8 +16,14 @@
   background: #249c42;
 }
 
-.treeview-item {
-  padding: 12px 15px 12px 35px;
+ul.app-menu {
+  .app-menu__item {
+    padding: 12px 10px;
+  }
+
+  .treeview-item {
+    padding: 12px 15px 12px 25px;
+  }
 }
 
 .separator {
@@ -79,9 +85,7 @@ input[type="submit"].disabled {
   }
 }
 
-
 /* GLOBAL CSS ENDs */
-
 
 /* Scrollable table with fixed left and right col */
 
@@ -116,12 +120,12 @@ input[type="submit"].disabled {
       width: 100px;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight {
+    .ui-table-tbody > tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }
@@ -154,19 +158,18 @@ input[type="submit"].disabled {
       right: 0;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight {
+    .ui-table-tbody > tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }
 }
 
 /* Scrollable table with fixed left and right col ends */
-
 
 /* FOR GANTT START */
 
@@ -218,7 +221,7 @@ daypilot-gantt .statusCircle.FAILED {
 }
 
 daypilot-gantt .gantt_default_event_hover:before {
-  content: '';
+  content: "";
   display: inline-block;
   border: 1px solid rgb(204, 204, 204);
   width: 13px;
@@ -235,7 +238,7 @@ daypilot-gantt .gantt_default_event_bar_inner {
 }
 
 daypilot-gantt .gantt_default_event_hover:after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 0;
   height: 0;
@@ -260,7 +263,6 @@ daypilot-gantt .gantt_default_rowmove_handle {
   visibility: hidden !important;
 }
 
-
 /* context menu icons */
 
 .menu_default_main .icon:before {
@@ -269,7 +271,7 @@ daypilot-gantt .gantt_default_rowmove_handle {
   margin-top: 3px;
   width: 14px;
   height: 14px;
-  content: '';
+  content: "";
   background-color: transparent;
   border: 1px solid;
 }
@@ -324,17 +326,16 @@ app-load-status .ui-calendar input {
       right: 0;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight {
+    .ui-table-tbody > tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }
 }
-
 
 .autogenerate-btn {
   cursor: pointer;
@@ -344,7 +345,7 @@ app-load-status .ui-calendar input {
 
 .app-menu__item {
   cursor: pointer;
-  color: #fff !important
+  color: #fff !important;
 }
 
 .form-overlay {

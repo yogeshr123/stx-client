@@ -21,7 +21,7 @@ export class LoadControlComponent implements OnInit {
   totalcols: any[];
   initialBinding = true;
 
-  selectedRecords: any[];
+  selectedRecords: any[] = [];
   selectedColumns: any[];
   globalQuery: string;
   schedulerDisplay: boolean = false;
@@ -165,6 +165,7 @@ export class LoadControlComponent implements OnInit {
 
   initColumnState() {
     this.selectedColumns = [
+      { field: 'TABLE_STATUS', header: 'TABLE STATUS' },
       { field: 'SCHEMA_NAME', header: 'SCHEMA NAME' },
       { field: 'TABLE_NAME', header: 'TABLE NAME' },
       { field: 'ENV_NAME', header: 'ENV NAME' },

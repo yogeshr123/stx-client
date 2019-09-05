@@ -15,16 +15,19 @@
           <div appPermission expectedPermission="editLoadControlModule">
             <button class="btn btn-sm btn-primary mr-2" pTooltip="Trigger ETL"
               tooltipPosition="bottom" type="button"
-              (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')">
+              (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')"
+              [disabled]="selectedRecords.length === 0">
               <i class="fa fa-bolt"></i>
             </button>
             <button class="btn btn-sm btn-danger mr-2" pTooltip="Kill ETL"
               tooltipPosition="bottom" type="button"
-              (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')">
+              (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')"
+              [disabled]="selectedRecords.length === 0">
               <i class="fa fa-ban"></i>
             </button>
             <button class="btn btn-sm btn-primary" pTooltip="Schedule DAG"
-              tooltipPosition="bottom" type="button" (click)="showScheduler()">
+              tooltipPosition="bottom" type="button" (click)="showScheduler()"
+              [disabled]="selectedRecords.length === 0">
               <i class="fa fa-calendar"></i>
             </button>
             <p-dialog modal="true" [(visible)]="schedulerDisplay"
@@ -346,11 +349,19 @@
               </p-footer>
             </p-dialog>
             <div class="separator-vertical"></div>
+            <!-- <button class="dropdown-item" (click)="resetTable()">Reset Table
+                State</button> -->
+            <button class="btn btn-sm btn-outline-primary" pTooltip="Reset Table
+                State" tooltipPosition="bottom" type="button"
+              (click)="resetTable()">
+              <i class="fa fa-refresh"></i>
+            </button>
+            <div class="separator-vertical"></div>
             <div class="btn-group">
               <button type="button"
-                class="btn btn-sm btn-secondary dropdown-toggle"
+                class="btn btn-sm btn-outline-primary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false" [disabled]="selectedRecords.length === 0">
                 More Actions
               </button>
               <div class="dropdown-menu">
@@ -370,6 +381,7 @@
                   (click)="confirmAction('Reset All Execution Statuses', 'resetExecutionStatus', 'All')">Reset
                   All Execution
                   Statuses</button>
+                <div class="dropdown-divider"></div>
                 <button class="dropdown-item"
                   (click)="showStatusDialog('ETL')">Change ETL STATUS
                 </button>
@@ -379,8 +391,6 @@
                 <button class="dropdown-item"
                   (click)="showStatusDialog('T2')">Change T2 STATUS
                 </button>
-                <button class="dropdown-item" (click)="resetTable()">Reset Table
-                  State</button>
               </div>
             </div>
           </div>
@@ -433,14 +443,14 @@
           <tr>
             <th class="fixedcol leftfixedcol">
             </th>
-            <th *ngFor="let col of columns" [ngSwitch]="col.field"
-              class="ui-flclassuid">
-              <p-multiSelect appendTo="body" *ngSwitchCase="'ENV_NAME'"
+            <th *ngFor="let col of columns" class="ui-flclassuid">
+              <!-- <p-multiSelect appendTo="body" *ngSwitchCase="'ENV_NAME'"
                 [options]="ENV_NAME" defaultLabel="ENV_NAME"
                 [panelStyle]="{width:'200px'}"
                 (onChange)="dt1.filter($event.value, col.field, 'in')">
-              </p-multiSelect>
-              <input pInputText *ngSwitchDefault type="text"
+              </p-multiSelect> -->
+              <input pInputText type="text"
+                *ngIf="col.type !== 'date' && col.field !== 'TABLE_STATUS'"
                 (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
                 [value]="dt1.filters[col.field]?.value">
             </th>
@@ -461,7 +471,16 @@
                 <span> {{ rowData[col.field] | dateConvert}} </span>
               </ng-container>
               <ng-container *ngSwitchDefault>
-                <span> {{ rowData[col.field] }} </span>
+                <ng-container
+                  *ngIf="col.field === 'TABLE_STATUS'; else elseTemplate">
+                  <span class="table-status">
+                    <i class="fa fa-2x fa-circle {{rowData[col.field]}}"
+                      aria-hidden="true"></i>
+                  </span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <span> {{ rowData[col.field] }} </span>
+                </ng-template>
               </ng-container>
             </td>
             <td class="fixedcol rightfixedcol" style="text-align:center">

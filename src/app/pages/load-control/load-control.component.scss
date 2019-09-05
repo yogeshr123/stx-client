@@ -35,19 +35,21 @@
 }
 
 .table-status {
+  font-size: 1.5em;
+
   .TODO {
-    color: grey;
+    color: #6c757d;
   }
 
   .RUNNING {
-    color: green;
+    color: #28a745;
   }
 
   .COMPLETE {
-    color: blue;
+    color: #17a2b8;
   }
 
   .FAILED {
-    color: red;
+    color: #dc3545;
   }
 }

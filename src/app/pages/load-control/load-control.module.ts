@@ -30,6 +30,7 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
 import { NgxLoadingModule } from 'ngx-loading';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { ClustersService } from 'src/app/services/clusters.service';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { ClustersService } from 'src/app/services/clusters.service';
         ReactiveFormsModule,
         PermissionModule,
         NgxLoadingModule.forRoot({}),
-        DateConvertModule
+        DateConvertModule,
+        OverlayPanelModule
     ],
     providers: [
         LoadControlService,

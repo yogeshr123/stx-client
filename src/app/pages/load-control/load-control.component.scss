@@ -35,7 +35,9 @@
 }
 
 .table-status {
-  font-size: 1.5em;
+  .fa {
+    font-size: 1.2em;
+  }
 
   .TODO {
     color: #6c757d;

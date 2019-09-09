@@ -6,6 +6,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/common.service';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-loadcontrol',

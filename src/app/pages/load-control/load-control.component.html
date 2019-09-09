@@ -393,6 +393,28 @@
                 </button>
               </div>
             </div>
+            <div class="separator-vertical"></div>
+            <span class="border p-2 border-info">
+              <span class="table-status">
+                Status legend:
+                <span class="mr-2">
+                  <i class="fa fa-circle TODO" aria-hidden="true"></i>
+                  TODO
+                </span>
+                <span class="mr-2">
+                  <i class="fa fa-circle RUNNING" aria-hidden="true"></i>
+                  RUNNING
+                </span>
+                <span class="mr-2">
+                  <i class="fa fa-circle COMPLETE" aria-hidden="true"></i>
+                  COMPLETE
+                </span>
+                <span class="mr-2">
+                  <i class="fa fa-circle FAILED" aria-hidden="true"></i>
+                  FAILED
+                </span>
+              </span>
+            </span>
           </div>
         </div>
         <div class="col-md-4">
@@ -435,8 +457,16 @@
             </th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field"
               pReorderableColumn>
-              {{col.field}}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
+              <ng-container
+                *ngIf="col.field === 'TABLE_STATUS'; else elseTemplate1">
+                <img width="35" src="assets/images/status.png"
+                  alt="{{col.field}}">
+              </ng-container>
+              <ng-template #elseTemplate1>
+                <span> {{col.field}} </span>
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </ng-template>
+
             </th>
             <th class="fixedcol rightfixedcol"></th>
           </tr>

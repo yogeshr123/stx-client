@@ -30,7 +30,7 @@ ul.app-menu {
     font-size: 11px;
 
     .icon {
-      font-size: 8px;
+      margin-right: 10px;
     }
   }
 }
@@ -129,12 +129,12 @@ input[type="submit"].disabled {
       width: 100px;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight {
+    .ui-table-tbody>tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }
@@ -167,12 +167,12 @@ input[type="submit"].disabled {
       right: 0;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight {
+    .ui-table-tbody>tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }
@@ -335,12 +335,12 @@ app-load-status .ui-calendar input {
       right: 0;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight {
+    .ui-table-tbody>tr.ui-state-highlight {
       background-color: #ffffff !important;
       color: #333333 !important;
     }
 
-    .ui-table-tbody > tr.ui-state-highlight:nth-child(even) {
+    .ui-table-tbody>tr.ui-state-highlight:nth-child(even) {
       background-color: #f9f9f9 !important;
     }
   }

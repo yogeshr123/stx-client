@@ -1,9 +1,9 @@
 <p-toast></p-toast>
 <div class="app-title">
-  <div>
-    <h1>
-      <i class="fa fa-dashboard"></i> Data Latency Summary</h1>
-  </div>
+  <h1>
+    <i class="app-title-icon fa  fa-hourglass-o"></i>
+    <span>Data Latency Summary</span>
+  </h1>
 </div>
 <div class="row">
   <div class="col-md-12">
@@ -12,13 +12,16 @@
         T2 Data Latency
       </h6>
       <div class="table-responsive">
-        <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
+        <ngx-loading [show]="dataLoader"
+          [config]="{ backdropBorderRadius: '3px' }">
         </ngx-loading>
-        <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
-          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
+        <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray"
+          [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
+          [tableStyle]="{'table-layout':'auto'}">
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field"
+                pReorderableColumn>
                 {{col.field}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </th>
@@ -27,14 +30,16 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
               <td *ngFor="let col of columns">
-                <span title="Show Details" class="details" (click)="showDetails(rowData, col.field, rowData)"
+                <span title="Show Details" class="details"
+                  (click)="showDetails(rowData, col.field, rowData)"
                   *ngIf="rowData[col.field]">
                   {{ rowData[col.field] }} </span>
               </td>
             </tr>
           </ng-template>
         </p-table>
-        <div colspan="10" class="text-center p-2 border" *ngIf="!recordsArray || !recordsArray.length">
+        <div colspan="10" class="text-center p-2 border"
+          *ngIf="!recordsArray || !recordsArray.length">
           <h6>No Data Available!</h6>
         </div>
       </div>

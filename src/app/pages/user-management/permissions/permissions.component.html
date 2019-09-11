@@ -1,10 +1,9 @@
 <p-toast></p-toast>
 <div class="app-title">
-  <div>
-    <h1>
-      <i class="fa fa-table"></i> Permissions
-    </h1>
-  </div>
+  <h1>
+    <i class="app-title-icon fa fa-shield"></i>
+    <span>Permissions</span>
+  </h1>
 </div>
 <div class="row">
   <div class="col-md-12">
@@ -59,7 +58,13 @@
                 <span> {{ rowData[col.field] | dateConvert }} </span>
               </ng-container>
               <ng-template #elseTemplate>
-                <span> {{ rowData[col.field] }} </span>
+                <span
+                  *ngIf="rowData.PARENT !== 0 && col.field === 'TITLE'; else elseTemplate2"
+                  class="pl-3">
+                  {{ rowData[col.field] }} </span>
+                <ng-template #elseTemplate2>
+                  <span>{{ rowData[col.field] }}</span>
+                </ng-template>
               </ng-template>
             </td>
             <td>

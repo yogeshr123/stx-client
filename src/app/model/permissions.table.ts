@@ -1,8 +1,8 @@
 const permissionTableColumns = [
-    {
-        header: 'ID',
-        field: 'ID'
-    },
+    // {
+    //     header: 'ID',
+    //     field: 'ID'
+    // },
 
     {
         header: 'TITLE',

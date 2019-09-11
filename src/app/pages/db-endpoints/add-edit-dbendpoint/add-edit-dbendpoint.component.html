@@ -2,9 +2,9 @@
 <div class="app-title">
   <div>
     <h1>
-      <i class="fa fa-server"></i>
-      <span *ngIf="routeInfo">
-        {{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
+      <i class="app-title-icon fa fa-bullseye"></i>
+      <span
+        *ngIf="routeInfo">{{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
         DB Endpoint</span>
     </h1>
   </div>

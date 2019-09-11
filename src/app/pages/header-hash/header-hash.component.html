@@ -1,110 +1,122 @@
 <p-toast></p-toast>
 
 <div class="app-title">
-    <div>
-        <h1>
-            <i class="fa fa-file-text-o" aria-hidden="true"></i> File Header Hash
-        </h1>
-    </div>
+  <h1>
+    <i class="app-title-icon fa fa-hashtag"></i>
+    <span>File Header Hash</span>
+  </h1>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="tile mt-2">
-            <div *ngIf="uniqueTables?.length">
-                Table Name:
-                <p-dropdown styleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}" placeholder="Select a Table"
-                    panelStyleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}" appendTo="body"
-                    class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTable" optionLabel="TABLE_NAME"
-                    [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
-                </p-dropdown>
-                <!-- <p-toggleButton onLabel="Show Only Mismatch Tables" offLabel="Show All Tables"
+  <div class="col-md-12">
+    <div class="tile mt-2">
+      <div *ngIf="uniqueTables?.length">
+        Table Name:
+        <p-dropdown
+          styleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}"
+          placeholder="Select a Table"
+          panelStyleClass="{{showMismatchToggle ? 'showMismatchToggle' : ''}}"
+          appendTo="body" class="ml-2 col-4" [options]="uniqueTables"
+          [(ngModel)]="selectedTable" optionLabel="TABLE_NAME" [filter]="true"
+          filterBy="value.TABLE_NAME" (onChange)="changeTable()">
+        </p-dropdown>
+        <!-- <p-toggleButton onLabel="Show Only Mismatch Tables" offLabel="Show All Tables"
                     [(ngModel)]="showMismatchToggle" (onChange)="toggleTablesList()">
                 </p-toggleButton> -->
-                <!-- Rectangular switch -->
-                <span>
-                    <label class="switch">
-                        <input type="checkbox" [(ngModel)]="showMismatchToggle" (change)="toggleTablesList()">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="toggle-label ml-1">
-                        Show only Header Mismatch Tables
-                    </span>
-                </span>
+        <!-- Rectangular switch -->
+        <span>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="showMismatchToggle"
+              (change)="toggleTablesList()">
+            <span class="slider round"></span>
+          </label>
+          <span class="toggle-label ml-1">
+            Show only Header Mismatch Tables
+          </span>
+        </span>
+      </div>
+      <div class="table-responsive mt-4">
+        <ngx-loading [show]="dataLoader"
+          [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
+        <p-table #dt2 [responsive]="true" [value]="headers"
+          [tableStyle]="{'table-layout':'auto'}" [columns]="selectedColumns"
+          [reorderableColumns]="true" styleClass="scroll-table-fhh">
+          <ng-template pTemplate="caption">
+            <div style="text-align: left">
+              <p-multiSelect appendTo="body" [options]="columnTableColumns"
+                [(ngModel)]="selectedColumns" optionLabel="field"
+                selectedItemsLabel="{0} columns selected"
+                [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"
+                (onChange)="saveColumnState()"></p-multiSelect>
+              <button class="btn btn-secondary btn-sm float-right"
+                (click)="resetTable()">Reset
+                Table</button>
             </div>
-            <div class="table-responsive mt-4">
-                <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
-                </ngx-loading>
-                <p-table #dt2 [responsive]="true" [value]="headers" [tableStyle]="{'table-layout':'auto'}"
-                    [columns]="selectedColumns" [reorderableColumns]="true" styleClass="scroll-table-fhh">
-                    <ng-template pTemplate="caption">
-                        <div style="text-align: left">
-                            <p-multiSelect appendTo="body" [options]="columnTableColumns" [(ngModel)]="selectedColumns"
-                                optionLabel="field" selectedItemsLabel="{0} columns selected"
-                                [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"
-                                (onChange)="saveColumnState()"></p-multiSelect>
-                            <button class="btn btn-secondary btn-sm float-right" (click)="resetTable()">Reset
-                                Table</button>
-                        </div>
-                        <div class="globalSearch">
-                            <input type="text" placeholder="Global Filter" #globalQuery
-                                (keyup.enter)="search(globalQuery.value)">
-                            <button class="btn btn-sm btn-primary" type="button" (click)="search(globalQuery.value)">
-                                <i class="fa fa-lg fa-fw fa-search"></i>
-                            </button>
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                                {{col.header}}
-                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                                    ariaLabelDesc="Activate to sort in descending order"
-                                    ariaLabelAsc="Activate to sort in ascending order">
-                                </p-sortIcon>
-                            </th>
-                            <th class="fixedcol rightfixedcol">Action</th>
-                        </tr>
-                        <tr>
-                            <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                                <span *ngSwitchCase="'START_DATE'"></span>
-                                <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                                <span *ngSwitchCase="'INSERT_DATE'"></span>
-                                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
-                                    (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
-                                    [value]="dt2.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                                <input pInputText *ngSwitchDefault type="text"
-                                    (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
-                                    [value]="dt2.filters[col.field]?.value">
-                            </th>
-                            <th class="fixedcol rightfixedcol"></th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-header let-columns="columns">
-                        <tr [pSelectableRow]="header">
-                            <td *ngFor="let col of columns">
-                                <ng-container *ngIf="col.type === 'date'; else elseTemplate2">
-                                    <span> {{header[col.field] | dateConvert}} </span>
-                                </ng-container>
-                                <ng-template #elseTemplate2>
-                                    <span> {{header[col.field]}} </span>
-                                </ng-template>
-                            </td>
-                            <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
-                                <div>
-                                    <button [routerLink]="[ './view-header', header.HEADER_HASH ]" title="view"
-                                        class="btn btn-sm btn-primary btn-sm ml-1">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-                <div colspan="10" class="text-center p-2 border" *ngIf="!headers || !headers.length">
-                    <h6>No Data Available!</h6>
+            <div class="globalSearch">
+              <input type="text" placeholder="Global Filter" #globalQuery
+                (keyup.enter)="search(globalQuery.value)">
+              <button class="btn btn-sm btn-primary" type="button"
+                (click)="search(globalQuery.value)">
+                <i class="fa fa-lg fa-fw fa-search"></i>
+              </button>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+              <th class="fixedcol rightfixedcol">Action</th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field"
+                class="ui-flclassuid">
+                <span *ngSwitchCase="'START_DATE'"></span>
+                <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                <span *ngSwitchCase="'INSERT_DATE'"></span>
+                <input #statusFilter id="statusFilter" pInputText
+                  *ngSwitchCase="'STATUS'" type="text"
+                  (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
+                  [value]="dt2.filters[col.field]?.value"
+                  [(ngModel)]="statusDefaultFilter">
+                <input pInputText *ngSwitchDefault type="text"
+                  (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
+                  [value]="dt2.filters[col.field]?.value">
+              </th>
+              <th class="fixedcol rightfixedcol"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-header let-columns="columns">
+            <tr [pSelectableRow]="header">
+              <td *ngFor="let col of columns">
+                <ng-container *ngIf="col.type === 'date'; else elseTemplate2">
+                  <span> {{header[col.field] | dateConvert}} </span>
+                </ng-container>
+                <ng-template #elseTemplate2>
+                  <span> {{header[col.field]}} </span>
+                </ng-template>
+              </td>
+              <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
+                <div>
+                  <button [routerLink]="[ './view-header', header.HEADER_HASH ]"
+                    title="view" class="btn btn-sm btn-primary btn-sm ml-1">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  </button>
                 </div>
-            </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div colspan="10" class="text-center p-2 border"
+          *ngIf="!headers || !headers.length">
+          <h6>No Data Available!</h6>
         </div>
+      </div>
     </div>
+  </div>
 </div>

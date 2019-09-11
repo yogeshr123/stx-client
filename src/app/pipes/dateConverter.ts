@@ -6,9 +6,11 @@ import * as momentTZ from 'moment-timezone';
 
 export class DateConvert implements PipeTransform {
     transform(value: string): string {
-        const date = moment(value);
-        if (date.isValid()) {
-            return `${moment(momentTZ(value).tz('America/Chicago')).format('DD MMM YYYY, HH:mm:ss ')} (CST)`;
+        if (value) {
+            const date = moment(value);
+            if (date.isValid()) {
+                return `${moment(momentTZ(value).tz('America/Chicago')).format('DD MMM YYYY, HH:mm:ss ')} (CST)`;
+            }
         }
     }
 }

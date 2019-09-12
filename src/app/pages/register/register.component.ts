@@ -38,10 +38,18 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       USER_NAME: ['', Validators.required],
       PASSWORD: ['', Validators.required],
+      UPDATED_BY: ['User'],
+      UPDATE_DATE: [new Date()]
     });
   }
   get f() {
     return this.registerForm.controls;
+  }
+
+  getUserInfo() {
+    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
+      this.registerForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
+    }
   }
 
   onSubmit() {

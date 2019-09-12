@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
 
     this.appState = this.commonService.getState();
     if (isNullOrUndefined(this.appState.loggedInUser)) {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/superlogin');
       return false;
     }
     const expectedPermission = route.data.expectedPermission;

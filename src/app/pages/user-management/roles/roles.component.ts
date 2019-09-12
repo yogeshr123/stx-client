@@ -65,10 +65,10 @@ export class RolesComponent implements OnInit {
         this.appState = { ...this.appState, selectedRole: role };
         this.commonService.setState(this.appState);
         if (edit) {
-            this.router.navigate(['/user-management/editrole']);
+            this.router.navigate(['/user-management/roles/editrole']);
         }
         else {
-            this.router.navigate(['/user-management/viewrole']);
+            this.router.navigate(['/user-management/roles/viewrole']);
         }
     }
 

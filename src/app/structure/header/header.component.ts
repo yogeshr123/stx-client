@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     localStorage.clear();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/superlogin');
   }
 
   hideSidebar() {

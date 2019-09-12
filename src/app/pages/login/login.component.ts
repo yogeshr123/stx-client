@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
                 this.fetchLoggedInUserDetails();
             }
         }, error => {
-            this.showToast('error', 'user failed to login.');
+            this.showToast('error', 'User failed to login. ' + error.error.message);
         });
     }
 

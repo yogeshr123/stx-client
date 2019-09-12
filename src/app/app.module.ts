@@ -7,11 +7,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Custom components
 import { AppComponent } from './app.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 // import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    RegisterComponent,
+    LogoutComponent,
     // LoginComponent,
   ],
   imports: [

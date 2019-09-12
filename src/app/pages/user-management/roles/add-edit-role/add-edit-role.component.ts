@@ -44,7 +44,7 @@ export class AddEditRoleComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {
     this.route.url.subscribe(params => {
-      this.routeInfo.path = params[0].path;
+      this.routeInfo.path = params[1].path;
       if (this.routeInfo.path.indexOf('viewrole') > -1) {
         this.routeInfo.isViewOnly = true;
       }
@@ -204,7 +204,7 @@ export class AddEditRoleComponent implements OnInit {
             acceptLabel: 'Ok',
             message: 'You have changed the permissions of logged in user. Please login again...',
             accept: () => {
-              this.router.navigateByUrl('/login');
+              this.router.navigateByUrl('/superlogin');
             }
           });
         }

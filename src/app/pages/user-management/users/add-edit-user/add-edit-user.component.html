@@ -1,8 +1,7 @@
 <form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
   <div class="col-md-12">
     <div class="form-group">
-      <label class="control-label">Enter User Name (Eg.
-        varsha)</label>
+      <label class="control-label">Enter User Name</label>
       <input class="form-control" type="text" formControlName="USER_NAME"
         [ngClass]="{ 'is-invalid': submitted && f.USER_NAME.errors }" />
       <div *ngIf="submitted && f.USER_NAME.errors" class="invalid-feedback">

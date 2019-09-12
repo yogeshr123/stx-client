@@ -10,39 +10,40 @@ import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.compon
 const routes: Routes = [
     {
         path: '',
-        component: UserManagementComponent,
-        children: [
-            {
-                path: '',
-                redirectTo: 'users',
-                pathMatch: 'full'
-            },
-            {
-                path: 'roles',
-                component: RolesComponent
-            },
-            {
-                path: 'editrole',
-                component: AddEditRoleComponent,
-            },
-            {
-                path: 'addrole',
-                component: AddEditRoleComponent,
-            },
-            {
-                path: 'viewrole',
-                component: AddEditRoleComponent,
-            },
-            {
-                path: 'users',
-                component: UsersComponent
-            },
-            {
-                path: 'permissions',
-                component: PermissionsComponent
-            }
-        ]
+        component: UserManagementComponent
+    },
+    // children: [
+    {
+        path: '',
+        redirectTo: 'users',
+        // pathMatch: 'full'
+    },
+    {
+        path: 'roles',
+        component: RolesComponent
+    },
+    {
+        path: 'roles/editrole',
+        component: AddEditRoleComponent,
+    },
+    {
+        path: 'roles/addrole',
+        component: AddEditRoleComponent,
+    },
+    {
+        path: 'roles/viewrole',
+        component: AddEditRoleComponent,
+    },
+    {
+        path: 'users',
+        component: UsersComponent
+    },
+    {
+        path: 'permissions',
+        component: PermissionsComponent
     }
+    // ]
+    // }
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ var WildRydes = window.WildRydes || {};
 WildRydes.map = WildRydes.map || {};
 
 (function scopeWrapper($) {
-  var signinUrl = '/login';
+  var signinUrl = '/superlogin';
 
   var poolData = {
     UserPoolId: _config.cognito.userPoolId,
@@ -55,11 +55,11 @@ WildRydes.map = WildRydes.map || {};
       authToken = token;
       // console.log("token:"+authToken);
     } else {
-      window.location.href = '#/login';
+      window.location.href = '#/superlogin';
     }
   }).catch(function handleTokenError(error) {
     alert(error);
-    window.location.href = '#/login';
+    window.location.href = '#/superlogin';
   });
   // }
 

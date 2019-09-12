@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.appState = this.commonService.getState();
     if (isNullOrUndefined(this.appState.loggedInUser)) {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/superlogin');
       return false;
     }
 

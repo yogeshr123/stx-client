@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit {
       //   acceptLabel: 'Ok',
       //   message: 'User profile updated. Please login again...',
       //   accept: () => {
-      //     // this.router.navigateByUrl('/login');
+      //     // this.router.navigateByUrl('/superlogin');
       //   }
       // });
     }, error => {

@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<!-- <p-toast></p-toast> -->
 <section class="material-half-bg">
   <div class="cover"></div>
 </section>
@@ -8,13 +8,13 @@
     <!-- <a class="app-header__logo" href="index.html"></a> -->
   </div>
   <div class="login-box">
-    <form id="signinForm" class="login-form" [formGroup]="loginForm"
+    <form id="registerForm" class="login-form" [formGroup]="registerForm"
       (ngSubmit)="onSubmit()">
       <div class="alert alert-info">
-        Use username admin and password admin to continue.
+        <!-- Use username admin and password admin to continue. -->
       </div>
       <h3 class="login-head">
-        <i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+        <i class="fa fa-lg fa-fw fa-user"></i>Register</h3>
       <div class="form-group">
         <label class="control-label">USER NAME</label>
         <input class="form-control" type="text" formControlName="USER_NAME"

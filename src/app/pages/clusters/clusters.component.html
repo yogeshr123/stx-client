@@ -7,22 +7,35 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
-      <button appPermission expectedPermission="addClustersModule"
-        class="btn btn-sm btn-primary mb-2 float-right"
+      <button appPermission expectedPermission="addClustersModule" class="btn btn-sm btn-primary mb-2 float-right"
         [routerLink]="[ './add-cluster' ]">Add New</button>
       <div class="table-responsive">
-        <p-table #dt1 [columns]="selectedColumns" [value]="clustersArray"
-          [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
-          [tableStyle]="{'table-layout':'auto'}"
-          styleClass="scroll-table-cluster">
+        <p-table #dt [columns]="selectedColumns" [value]="clustersArray" [responsive]="true" dataKey="TABLE_NAME"
+          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-cluster">
+          <ng-template pTemplate="caption">
+            <div class="globalSearch">
+              <input type="text" pInputText size="50" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+              <button class="btn btn-sm btn-primary" type="button">
+                <i class="fa fa-lg fa-fw fa-search"></i>
+              </button>
+            </div>
+          </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field"
-                pReorderableColumn>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
                 {{col.field}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
               </th>
               <th class="fixedcol rightfixedcol">Action</th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" class="ui-flclassuid">
+                <input pInputText *ngIf="col.type !== 'date'" type="text"
+                  (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  [value]="dt.filters[col.field]?.value">
+              </th>
+              <th class="fixedcol rightfixedcol"></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -37,13 +50,11 @@
               </td>
               <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
                 <div>
-                  <button class="btn btn-sm btn-primary" type="button"
-                    (click)="editCluster(rowData, false)">
+                  <button class="btn btn-sm btn-primary" type="button" (click)="editCluster(rowData, false)">
                     <i class="fa fa-eye"></i>
                   </button>
-                  <button appPermission expectedPermission="editClustersModule"
-                    (click)="editCluster(rowData, true)" title="Edit"
-                    class="btn btn-sm btn-primary ml-1">
+                  <button appPermission expectedPermission="editClustersModule" (click)="editCluster(rowData, true)"
+                    title="Edit" class="btn btn-sm btn-primary ml-1">
                     <i class="fa fa-pencil"></i>
                   </button>
                 </div>
@@ -51,8 +62,7 @@
             </tr>
           </ng-template>
         </p-table>
-        <div colspan="10" class="text-center p-2 border"
-          *ngIf="!clustersArray || !clustersArray.length">
+        <div colspan="10" class="text-center p-2 border" *ngIf="!clustersArray || !clustersArray.length">
           <h6>No Data Available!</h6>
         </div>
       </div>

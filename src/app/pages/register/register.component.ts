@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { UsersService } from 'src/app/services/users.service';
+import { RolesService } from 'src/app/services/roles.service';
 
 @Component({
   selector: 'app-register',
@@ -16,21 +17,18 @@ export class RegisterComponent implements OnInit {
   errorMessage: string;
   registerForm: FormGroup;
   submitted = false;
-  currentUser: any;
-  currentUserRole: any;
-  currentUserPermissions: string[] = [];
-  isLoggedIn = false;
-  permissions: any;
-  appState: any;
+  roles: any;
   constructor(
     public router: Router,
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private messageService: MessageService,
+    private rolesService: RolesService
   ) {
   }
   ngOnInit() {
     this.errorMessage = null;
+    this.loadRoles();
     this.formInit();
   }
 
@@ -38,18 +36,13 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       USER_NAME: ['', Validators.required],
       PASSWORD: ['', Validators.required],
+      ROLE: ['', Validators.required],
       UPDATED_BY: ['User'],
       UPDATE_DATE: [new Date()]
     });
   }
   get f() {
     return this.registerForm.controls;
-  }
-
-  getUserInfo() {
-    if (this.appState.loggedInUser && this.appState.loggedInUser.USER_NAME) {
-      this.registerForm.controls.UPDATED_BY.patchValue(this.appState.loggedInUser.USER_NAME);
-    }
   }
 
   onSubmit() {
@@ -59,6 +52,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
     let formValues = Object.assign({}, this.registerForm.value);
+    this.registerForm.controls.UPDATED_BY.patchValue(formValues.USER_NAME);
     const body = {
       user: formValues
     };
@@ -68,6 +62,16 @@ export class RegisterComponent implements OnInit {
       this.router.navigate(['/superlogin']);
     }, error => {
       this.showToast('error', 'User failed to register. ' + error.error.message);
+    });
+  }
+
+  loadRoles() {
+    this.rolesService.getRoles().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.roles = data.data;
+      }
+    }, error => {
+      this.showToast('error', 'Error while fetching data.');
     });
   }
 

@@ -28,6 +28,17 @@
           <div *ngIf="f.PASSWORD.errors.required">PASSWORD is required</div>
         </div>
       </div>
+      <div class="form-group">
+        <label class="control-label">Role</label>
+        <select formControlName="ROLE" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.ROLE.errors }">
+          <option *ngFor="let role of roles" [value]="role.ID">{{role.TITLE}}
+          </option>
+        </select>
+        <div *ngIf="submitted && f.ROLE.errors" class="invalid-feedback">
+          <div *ngIf="f.ROLE.errors.required">ROLE is required</div>
+        </div>
+      </div>
 
       <div class="form-group btn-container">
         <button class="btn btn-primary btn-block" id="signupSubmit"

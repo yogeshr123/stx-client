@@ -5,7 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 const routes: Routes = [
     { path: 'superlogin', loadChildren: './pages/login/login.module#LoginModule' },
-    { path: 'superregister', component: RegisterComponent },
+    { path: 'superregister', loadChildren: './pages/register/register.module#RegisterModule' },
     { path: 'logout', component: LogoutComponent },
     {
         path: '',

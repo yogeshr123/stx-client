@@ -349,8 +349,14 @@
                   </div>
                   <div class="form-group">
                     <label class="control-labelS">ETL DAG RUN URL</label>
-                    <input class="form-control" type="text"
-                      formControlName="ETL_DAG_RUN_URL">
+                    <!-- <input class="form-control" type="text"
+                      formControlName="ETL_DAG_RUN_URL"> -->
+                    <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.ETL_DAG_RUN_URL.value"
+                        target="_blank">
+                        {{ editLoadControlForm.controls.ETL_DAG_RUN_URL.value }}
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -446,13 +452,25 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK UI URL</label>
-                    <input class="form-control" type="number"
-                      formControlName="T1_SPARK_UI_URL">
+                    <!-- <input class="form-control" type="number"
+                      formControlName="T1_SPARK_UI_URL"> -->
+                    <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T1_SPARK_UI_URL.value"
+                        target="_blank">
+                        {{ editLoadControlForm.controls.T1_SPARK_UI_URL.value }}
+                      </a>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK LOG URL</label>
-                    <input class="form-control" type="number"
-                      formControlName="T1_SPARK_LOG_URL">
+                    <!-- <input class="form-control" type="number"
+                      formControlName="T1_SPARK_LOG_URL"> -->
+                    <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T1_SPARK_LOG_URL.value"
+                        target="_blank">
+                        {{ editLoadControlForm.controls.T1_SPARK_LOG_URL.value }}
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -610,13 +628,25 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK UI URL</label>
-                    <input class="form-control" type="text"
-                      formControlName="T2_SPARK_UI_URL">
+                    <!-- <input class="form-control" type="text"
+                      formControlName="T2_SPARK_UI_URL"> -->
+                    <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T2_SPARK_UI_URL.value"
+                        target="_blank">
+                        {{ editLoadControlForm.controls.T2_SPARK_UI_URL.value }}
+                      </a>
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK LOG URL</label>
-                    <input class="form-control" type="text"
-                      formControlName="T2_SPARK_LOG_URL">
+                    <!-- <input class="form-control" type="text"
+                      formControlName="T2_SPARK_LOG_URL"> -->
+                    <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T2_SPARK_LOG_URL.value"
+                        target="_blank">
+                        {{ editLoadControlForm.controls.T2_SPARK_LOG_URL.value }}
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">

@@ -12,7 +12,7 @@
       </ngx-loading>
       <p-table *ngIf="!dataLoader" #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true"
         dataKey="TABLE_NAME" [reorderableColumns]="true" [(selection)]="selectedRecords" stateStorage="local"
-        stateKey="dashboardSelectedColumnsOrder" [(selection)]="selectedRecords" [tableStyle]="{'table-layout':'auto'}">
+        stateKey="dashboardSelectedColumnsOrder" [tableStyle]="{'table-layout':'auto'}">
         <ng-template pTemplate="caption">
           <div style="text-align: left">
             <p-multiSelect [options]="totalCols" [(ngModel)]="selectedColumns" optionLabel="field"

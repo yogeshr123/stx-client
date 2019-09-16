@@ -11,7 +11,7 @@
         [routerLink]="[ './add-cluster' ]">Add New</button>
       <div class="table-responsive">
         <p-table #dt [columns]="selectedColumns" [value]="clustersArray" [responsive]="true" dataKey="TABLE_NAME"
-          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-cluster">
+          [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-cluster">
           <ng-template pTemplate="caption">
             <div class="globalSearch">
               <input type="text" pInputText size="50" placeholder="Global Filter"

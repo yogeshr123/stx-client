@@ -103,9 +103,10 @@
             stateKey="selectedVersionColumnsOrder">
             <ng-template pTemplate="caption">
               <div style="text-align: left">
-                <p-multiSelect appendTo="body" [options]="columnTableColumns" [(ngModel)]="selectedColumns"
-                  optionLabel="field" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
-                  defaultLabel="Choose Columns" (onChange)="saveColumnState()"></p-multiSelect>
+                <p-multiSelect scrollHeight="60vh" appendTo="body" [options]="columnTableColumns"
+                  [(ngModel)]="selectedColumns" optionLabel="field" selectedItemsLabel="{0} columns selected"
+                  [style]="{minWidth: '200px'}" defaultLabel="Choose Columns" (onChange)="saveColumnState()">
+                </p-multiSelect>
                 <button class="btn btn-secondary btn-sm float-right" (click)="resetTable()">Reset
                   Table</button>
               </div>

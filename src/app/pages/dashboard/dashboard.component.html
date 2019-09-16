@@ -15,7 +15,7 @@
         stateKey="dashboardSelectedColumnsOrder" [tableStyle]="{'table-layout':'auto'}">
         <ng-template pTemplate="caption">
           <div style="text-align: left">
-            <p-multiSelect [options]="totalCols" [(ngModel)]="selectedColumns" optionLabel="field"
+            <p-multiSelect scrollHeight="60vh" [options]="totalCols" [(ngModel)]="selectedColumns" optionLabel="field"
               selectedItemsLabel="{0} columns selected" defaultLabel="Choose Columns" (onChange)="saveColumnState()">
             </p-multiSelect>
             <div class="dateNow">

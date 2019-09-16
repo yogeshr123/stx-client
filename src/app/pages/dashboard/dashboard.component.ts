@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit {
 
   resetTable() {
     localStorage.removeItem('dashboardSelectedColumns');
+    localStorage.removeItem('dashboardSelectedColumnsOrder');
     this.initColumnState();
   }
 

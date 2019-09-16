@@ -7,6 +7,20 @@ const EMRTableLoadingStatus = [
     // { field: 'AS_OF', header: 'AS_OF', type: 'dateNow' }
 ];
 
+const loadingStatusSelectedColumns = [
+    { field: 'SCHEMA_NAME' },
+    { field: 'NEW_TABLE' },
+    { field: 'COMPLETE' },
+    { field: 'RUNNING' },
+    { field: 'HOLD' },
+    { field: 'EDW_RETIRED' },
+    { field: 'TODO' },
+    { field: 'T1_FAILED' },
+    { field: 'T1_NO_DATA' },
+    { field: 'T2_FAILED' },
+    { field: 'T2_NO_DATA' }
+];
+
 const loadStatusColumns = [
     { field: 'SCHEMA_NAME' },
     { field: 'NEW_TABLE' },
@@ -39,4 +53,4 @@ const dataLatencySummaryColumns = [
     { field: 'Data <= 26 Week' },
 ];
 
-export { EMRTableLoadingStatus, loadStatusColumns, dataLatencySummaryColumns };
+export { loadingStatusSelectedColumns, EMRTableLoadingStatus, loadStatusColumns, dataLatencySummaryColumns };

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailsPopupComponent } from '../details-popup/details-popup.component';
-import { loadStatusColumns } from '../tableColumns';
+import { loadStatusColumns, loadingStatusSelectedColumns } from '../tableColumns';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { MessageService, DialogService } from 'primeng/api';
 
@@ -38,7 +38,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
   }
 
   initColumnState() {
-    this.selectedColumns = loadStatusColumns;
+    this.selectedColumns = loadingStatusSelectedColumns;
   }
 
   resetTable() {

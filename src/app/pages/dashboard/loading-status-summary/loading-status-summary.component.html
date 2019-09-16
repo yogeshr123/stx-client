@@ -11,11 +11,12 @@
       <h6 class="text-center">
         Load Control Status
       </h6>
-      <div class="table-responsive">
+      <div>
         <ngx-loading [show]="dataLoader" [config]="{ backdropBorderRadius: '3px' }">
         </ngx-loading>
         <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
-          [reorderableColumns]="true" [tableStyle]="{'table-layout':'auto'}">
+          stateStorage="local" stateKey="loadingStatusSelectedColumnsOrder" [reorderableColumns]="true"
+          [tableStyle]="{'table-layout':'auto'}">
           <ng-template pTemplate="caption">
             <div style="text-align: left">
               <p-multiSelect scrollHeight="60vh" [options]="allColumns" [(ngModel)]="selectedColumns"

@@ -67,7 +67,6 @@ export class AddCmvPopupComponent implements OnInit {
       this.saveLoader = false;
       this.showToast('error', 'Could not be added!');
     });
-    this.saveLoader = false;
   }
 
   closePopUp(status) {

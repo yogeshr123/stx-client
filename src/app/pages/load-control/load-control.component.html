@@ -7,6 +7,12 @@
 </div>
 <div class="row">
   <div class="col-md-12">
+    <div class="scrollBtns">
+      <button id="slideBack" type="button"><i
+          class="fa fa-chevron-circle-left  fa-3x"></i></button>
+      <button id="slide" type="button"><i
+          class="fa fa-chevron-circle-right fa-3x"></i></button>
+    </div>
     <div class="tile">
       <p-confirmDialog></p-confirmDialog>
       <div class="row mb-3">
@@ -427,8 +433,6 @@
       <div class="clearfix"></div>
       <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
-      <button id="slideBack" type="button">Prev</button>
-      <button id="slide" type="button">Next</button>
       <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray"
         [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
         [(selection)]="selectedRecords" stateStorage="local"
@@ -470,7 +474,9 @@
               </ng-template>
 
             </th>
-            <th class="fixedcol rightfixedcol"></th>
+            <th class="fixedcol rightfixedcol">
+              Actions
+            </th>
           </tr>
           <tr>
             <th class="fixedcol leftfixedcol">

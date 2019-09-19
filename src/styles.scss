@@ -439,6 +439,25 @@ select.decorated option:checked {
   }
 }
 
+.scrollBtns {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  z-index: 10000000;
+  padding: 7px;
+
+  button {
+    background-color: transparent;
+    border: none;
+  }
+
+  button:focus {
+    outline: none;
+  }
+}
+
 .wmd-view-topscroll,
 .wmd-view {
   overflow-x: scroll;

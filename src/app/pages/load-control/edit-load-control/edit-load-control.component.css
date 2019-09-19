@@ -15,6 +15,8 @@
 .linkInput {
   display: inline-block;
   width: 95%;
+  border-radius: 4px 0 0 4px;
+  border-right: 0;
 }
 
 ::ng-deep a.ext-link {
@@ -26,10 +28,11 @@
   background-color: #e9ecef;
   opacity: 1;
   border: 1px solid #ced4da;
+  border-radius: 0 4px 4px 0;
 }
 
 ::ng-deep a.ext-link i {
-  padding: 25%;
+  padding: 30% 18%;
   display: inline-block;
   font-size: 15px;
 }

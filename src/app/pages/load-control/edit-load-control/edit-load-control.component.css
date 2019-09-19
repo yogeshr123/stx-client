@@ -12,7 +12,7 @@
   position: relative;
 }
 
-.linkFound {
+.linkInput {
   display: inline-block;
   width: 95%;
 }
@@ -21,7 +21,7 @@
   display: inline-block;
   width: 5%;
   text-align: center;
-  height: 29px;
+  height: 30px;
   vertical-align: top;
   background-color: #e9ecef;
   opacity: 1;
@@ -29,6 +29,7 @@
 }
 
 ::ng-deep a.ext-link i {
-  padding: 30%;
+  padding: 25%;
   display: inline-block;
+  font-size: 15px;
 }

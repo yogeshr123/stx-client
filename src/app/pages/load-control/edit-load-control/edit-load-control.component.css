@@ -11,3 +11,24 @@
 .tile-body {
   position: relative;
 }
+
+.linkFound {
+  display: inline-block;
+  width: 95%;
+}
+
+::ng-deep a.ext-link {
+  display: inline-block;
+  width: 5%;
+  text-align: center;
+  height: 29px;
+  vertical-align: top;
+  background-color: #e9ecef;
+  opacity: 1;
+  border: 1px solid #ced4da;
+}
+
+::ng-deep a.ext-link i {
+  padding: 30%;
+  display: inline-block;
+}

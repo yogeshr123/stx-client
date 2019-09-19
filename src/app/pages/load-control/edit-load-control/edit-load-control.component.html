@@ -10,12 +10,9 @@
       <div class="text-right">
         <div class="row">
           <div class="col-md-12">
-            <button *ngIf="isEdit" class="btn btn-sm btn-primary"
-              (click)="onSubmit()">
-              <i
-                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
-              routerLink="/loadcontrol">
+            <button *ngIf="isEdit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-sm btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
         </div>
@@ -25,7 +22,7 @@
         <div *ngIf="!isEdit" class="form-overlay"></div>
         <form [formGroup]="editLoadControlForm" (ngSubmit)="onSubmit()">
           <p-accordion>
-            <p-accordionTab header="General" [selected]="true">
+            <!-- <p-accordionTab header="General" [selected]="true">
               <div class="row mt-2">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -132,8 +129,8 @@
                 </div>
 
               </div>
-            </p-accordionTab>
-            <p-accordionTab header="Table Source" [selected]="true">
+            </p-accordionTab> -->
+            <!-- <p-accordionTab header="Table Source" [selected]="true">
               <div class="row mt-2">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -319,7 +316,7 @@
                   </p-fieldset>
                 </div>
               </div>
-            </p-accordionTab>
+            </p-accordionTab> -->
             <p-accordionTab header="ETL Details" [selected]="true">
               <div class="row mt-2">
                 <div class="col-md-6">
@@ -334,50 +331,42 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL STATUS REASON</label>
-                    <input class="form-control" type="text"
-                      formControlName="ETL_STATUS_REASON">
+                    <input class="form-control" type="text" formControlName="ETL_STATUS_REASON">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL DAG NAME</label>
-                    <input class="form-control" type="text"
-                      formControlName="ETL_DAG_NAME">
+                    <input class="form-control" type="text" formControlName="ETL_DAG_NAME">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL DAG RUN ID</label>
-                    <input class="form-control" type="text"
-                      formControlName="ETL_DAG_RUN_ID">
+                    <input class="form-control" type="text" formControlName="ETL_DAG_RUN_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-labelS">ETL DAG RUN URL</label>
-                    <!-- <input class="form-control" type="text"
-                      formControlName="ETL_DAG_RUN_URL"> -->
-                    <div class="disabledLink">
-                      <a [href]="editLoadControlForm.controls.ETL_DAG_RUN_URL.value"
-                        target="_blank">
+                    <input class="form-control" type="text" formControlName="ETL_DAG_RUN_URL">
+                    <!-- <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.ETL_DAG_RUN_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.ETL_DAG_RUN_URL.value }}
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-labelS">ETL PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ETL_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-labelS">ETL PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ETL_PROCESS_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL EXECUTION STATUS</label>
-                    <select formControlName="ETL_EXECUTION_STATUS"
-                      class="form-control">
+                    <select formControlName="ETL_EXECUTION_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="COMPLETE">COMPLETE</option>
@@ -408,14 +397,12 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 PATH</label>
-                    <input class="form-control" type="text"
-                      formControlName="T1_PATH"
+                    <input class="form-control" type="text" formControlName="T1_PATH"
                       oninput="this.value = this.value.toLowerCase()">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION STRATEGY</label>
-                    <select formControlName="T1_RETENTION_STRATEGY"
-                      class="form-control">
+                    <select formControlName="T1_RETENTION_STRATEGY" class="form-control">
                       <option value="NONE">NONE</option>
                       <option value="GLACIER">GLACIER</option>
                       <option value="DELETE">DELETE</option>
@@ -427,57 +414,47 @@
 
                   <div class="form-group">
                     <label class="control-label">T1 CLUSTER ID</label>
-                    <select class="form-control" type="text"
-                      formControlName="T1_CLUSTER_ID"
+                    <select class="form-control" type="text" formControlName="T1_CLUSTER_ID"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_CLUSTER_ID.errors }">
-                      <option *ngFor="let cluster of clusters"
-                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      <option *ngFor="let cluster of clusters" [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && f.T1_CLUSTER_ID.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_CLUSTER_ID.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_CLUSTER_ID.errors.required">
                         T1 CLUSTER ID is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 LIVY BATCH ID</label>
-                    <input class="form-control" type="number"
-                      formControlName="T1_LIVY_BATCH_ID">
+                    <input class="form-control" type="number" formControlName="T1_LIVY_BATCH_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK APP ID</label>
-                    <input class="form-control" type="number"
-                      formControlName="T1_SPARK_APP_ID">
+                    <input class="form-control" type="number" formControlName="T1_SPARK_APP_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK UI URL</label>
-                    <!-- <input class="form-control" type="number"
-                      formControlName="T1_SPARK_UI_URL"> -->
-                    <div class="disabledLink">
-                      <a [href]="editLoadControlForm.controls.T1_SPARK_UI_URL.value"
-                        target="_blank">
+                    <input class="form-control" type="number" formControlName="T1_SPARK_UI_URL">
+                    <!-- <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T1_SPARK_UI_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T1_SPARK_UI_URL.value }}
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK LOG URL</label>
-                    <!-- <input class="form-control" type="number"
-                      formControlName="T1_SPARK_LOG_URL"> -->
-                    <div class="disabledLink">
-                      <a [href]="editLoadControlForm.controls.T1_SPARK_LOG_URL.value"
-                        target="_blank">
+                    <input class="form-control" type="number" formControlName="T1_SPARK_LOG_URL">
+                    <!-- <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T1_SPARK_LOG_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T1_SPARK_LOG_URL.value }}
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 EXECUTION STATUS</label>
-                    <select formControlName="T1_EXECUTION_STATUS"
-                      class="form-control">
+                    <select formControlName="T1_EXECUTION_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -493,8 +470,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 BATCH IN DAYS</label>
-                    <select formControlName="T1_BATCH_IN_DAYS"
-                      class="form-control"
+                    <select formControlName="T1_BATCH_IN_DAYS" class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_BATCH_IN_DAYS.errors }">
                       <option value="0.1">0.1</option>
                       <option value="0.15">0.15</option>
@@ -517,19 +493,16 @@
                       <option value="14">14</option>
                       <option value="15">15</option>
                     </select>
-                    <div *ngIf="submitted && f.T1_BATCH_IN_DAYS.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_BATCH_IN_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_BATCH_IN_DAYS.errors.required">T1 BATCH
                         IN DAYS is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION DAYS</label>
-                    <input class="form-control" type="number"
-                      formControlName="T1_RETENTION_DAYS"
+                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION
                         DAYS should be greater than 0
                       </div>
@@ -538,30 +511,26 @@
                   <div class="form-group">
                     <label class="control-label">T1 MAX LOAD END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T1_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T1 PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T1_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T1_PROCESS_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T1 ERROR</label>
-                    <input class="form-control" type="text"
-                      formControlName="T1_ERROR">
+                    <input class="form-control" type="text" formControlName="T1_ERROR">
                   </div>
 
                 </div>
@@ -580,8 +549,7 @@
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION
                       STRATEGY</label>
-                    <select formControlName="T2_T3_RETENTION_STRATEGY"
-                      class="form-control">
+                    <select formControlName="T2_T3_RETENTION_STRATEGY" class="form-control">
                       <option value="NONE">NONE</option>
                       <option value="GLACIER">GLACIER</option>
                       <option value="DELETE">DELETE</option>
@@ -592,68 +560,56 @@
                   <div class="form-group">
                     <label class="control-label">T2 INSERT DIR BATCH
                       SIZE</label>
-                    <input class="form-control" type="number"
-                      formControlName="T2_INSERT_DIR_BATCH_SIZE"
+                    <input class="form-control" type="number" formControlName="T2_INSERT_DIR_BATCH_SIZE"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors }">
-                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
                       <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.required">T2
                         INSERT DIR BATCH SIZE is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2_CLUSTER_ID</label>
-                    <select class="form-control" type="text"
-                      formControlName="T2_CLUSTER_ID"
+                    <select class="form-control" type="text" formControlName="T2_CLUSTER_ID"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_CLUSTER_ID.errors }">
-                      <option *ngFor="let cluster of clusters"
-                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      <option *ngFor="let cluster of clusters" [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && f.T2_CLUSTER_ID.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_CLUSTER_ID.errors" class="invalid-feedback">
                       <div *ngIf="f.T2_CLUSTER_ID.errors.required">
                         T2 CLUSTER ID is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 LIVY BATCH ID</label>
-                    <input class="form-control" type="text"
-                      formControlName="T2_LIVY_BATCH_ID">
+                    <input class="form-control" type="text" formControlName="T2_LIVY_BATCH_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK APP ID</label>
-                    <input class="form-control" type="text"
-                      formControlName="T2_SPARK_APP_ID">
+                    <input class="form-control" type="text" formControlName="T2_SPARK_APP_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK UI URL</label>
-                    <!-- <input class="form-control" type="text"
-                      formControlName="T2_SPARK_UI_URL"> -->
-                    <div class="disabledLink">
-                      <a [href]="editLoadControlForm.controls.T2_SPARK_UI_URL.value"
-                        target="_blank">
+                    <input class="form-control" type="text" formControlName="T2_SPARK_UI_URL">
+                    <!-- <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T2_SPARK_UI_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T2_SPARK_UI_URL.value }}
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK LOG URL</label>
-                    <!-- <input class="form-control" type="text"
-                      formControlName="T2_SPARK_LOG_URL"> -->
-                    <div class="disabledLink">
-                      <a [href]="editLoadControlForm.controls.T2_SPARK_LOG_URL.value"
-                        target="_blank">
+                    <input class="form-control" type="text" formControlName="T2_SPARK_LOG_URL">
+                    <!-- <div class="disabledLink">
+                      <a [href]="editLoadControlForm.controls.T2_SPARK_LOG_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T2_SPARK_LOG_URL.value }}
                       </a>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T2 EXECUTION STATUS</label>
-                    <select formControlName="T2_EXECUTION_STATUS"
-                      class="form-control">
+                    <select formControlName="T2_EXECUTION_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -669,11 +625,9 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION DAYS</label>
-                    <input class="form-control" type="number"
-                      formControlName="T2_T3_RETENTION_DAYS"
+                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_T3_RETENTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.T2_T3_RETENTION_DAYS.errors.min">T2_T3
                         RETENTION DAYS should be greater than 0
                       </div>
@@ -681,14 +635,12 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PARTITION JOB TYPE</label>
-                    <select formControlName="T2_PARTITION_JOB_TYPE"
-                      class="form-control"
+                    <select formControlName="T2_PARTITION_JOB_TYPE" class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_PARTITION_JOB_TYPE.errors }">
                       <option value="SINGLE">SINGLE</option>
                       <option value="MULTIPLE">MULTIPLE</option>
                     </select>
-                    <div *ngIf="submitted && f.T2_PARTITION_JOB_TYPE.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_PARTITION_JOB_TYPE.errors" class="invalid-feedback">
                       <div *ngIf="f.T2_PARTITION_JOB_TYPE.errors.required">T2
                         PARTITION JOB TYPE is required</div>
                     </div>
@@ -696,34 +648,29 @@
                   <div class="form-group">
                     <label class="control-label">T2 MAX LOAD END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T2_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 MAX ATLAS VERSION</label>
-                    <input class="form-control" type="number"
-                      formControlName="T2_MAX_ATLAS_VERSION">
+                    <input class="form-control" type="number" formControlName="T2_MAX_ATLAS_VERSION">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T2_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T2_PROCESS_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T2 ERROR</label>
-                    <input class="form-control" type="text"
-                      formControlName="T2_ERROR">
+                    <input class="form-control" type="text" formControlName="T2_ERROR">
                   </div>
                 </div>
               </div>
@@ -733,19 +680,16 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ANALYZE STATUS</label>
-                    <select formControlName="ANALYZE_STATUS"
-                      class="form-control">
+                    <select formControlName="ANALYZE_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="HOLD">HOLD</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE EXECUTION DAYS</label>
-                    <input class="form-control" type="number"
-                      formControlName="ANALYZE_EXECUTION_DAYS"
+                    <input class="form-control" type="number" formControlName="ANALYZE_EXECUTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.ANALYZE_EXECUTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors"
-                      class="invalid-feedback">
+                    <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.ANALYZE_EXECUTION_DAYS.errors.required">
                         ANALYZE EXECUTION DAYS are required</div>
                     </div>
@@ -754,16 +698,14 @@
                     <label class="control-label">ANALYZE LAST SUCCESS
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_LAST_SUCCESS_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE PROCESS START
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_PROCESS_START_DATE"></p-calendar>
                   </div>
                 </div>
@@ -772,15 +714,13 @@
                     <label class="control-label">ANALYZE PROCESS END
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true"
-                      showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_PROCESS_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE EXECUTION
                       STATUS</label>
-                    <select formControlName="ANALYZE_EXECUTION_STATUS"
-                      class="form-control">
+                    <select formControlName="ANALYZE_EXECUTION_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -789,13 +729,11 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE ERROR</label>
-                    <input class="form-control" type="number"
-                      formControlName="ANALYZE_ERROR">
+                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE ERROR TRACE</label>
-                    <input class="form-control" type="number"
-                      formControlName="ANALYZE_ERROR_TRACE">
+                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR_TRACE">
                   </div>
                 </div>
               </div>
@@ -830,12 +768,9 @@
       <div class="tile-footer">
         <div class="row">
           <div class="col-md-8 col-md-offset-3">
-            <button *ngIf="isEdit" class="btn btn-sm btn-primary"
-              (click)="onSubmit()">
-              <i
-                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
-              routerLink="/loadcontrol">
+            <button *ngIf="isEdit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-sm btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
         </div>

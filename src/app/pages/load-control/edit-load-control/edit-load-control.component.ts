@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
 import { ClustersService } from 'src/app/services/clusters.service';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 declare var $: any;
 
 @Component({
@@ -201,9 +202,24 @@ export class EditLoadControlComponent implements OnInit {
           }
         }
         this.getUserInfo();
+        this.checkForLinks();
       }
     }, error => {
       this.showToast('error', 'Error while fetching data.');
+    });
+  }
+
+  checkForLinks() {
+    $('input').each(function () {
+      // tslint:disable-next-line:one-variable-per-declaration
+      const value = $(this).val(),
+        linkRegex1 = 'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+        linkRegex2 = '[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+        linkRegex3 = 'https|http';
+      if (value.match(linkRegex1) || value.match(linkRegex2) || value.match(linkRegex3)) {
+        $(this).addClass('linkFound');
+        $(this).after(`<a class="ext-link" href="${value}" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a>`);
+      }
     });
   }
 

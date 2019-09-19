@@ -38,11 +38,6 @@ export class LoadControlComponent implements OnInit {
 
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
-
-  cars: any;
-
-  cols: any[];
-
   constructor(
     private loadControlService: LoadControlService,
     private recordService: RecordService,
@@ -55,15 +50,6 @@ export class LoadControlComponent implements OnInit {
   }
 
   async ngOnInit() {
-
-    this.cols = [
-      { field: 'TABLE_STATUS', header: 'TABLE STATUS' },
-      { field: 'SCHEMA_NAME', header: 'SCHEMA NAME' },
-      { field: 'TABLE_NAME', header: 'TABLE NAME' },
-      { field: 'ENV_NAME', header: 'ENV NAME' }
-    ];
-
-
     this.formInit();
     this.appState = this.commonService.getState();
     await this.getColumnDataType();
@@ -81,16 +67,42 @@ export class LoadControlComponent implements OnInit {
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
     }
 
-    // $(document).ready(() => {
-    //   $(".wmd-view-topscroll").scroll(function () {
-    //     $(".ui-table-wrapper")
-    //       .scrollLeft($(".wmd-view-topscroll").scrollLeft());
-    //   });
-    //   $(".ui-table-wrapper").scroll(function () {
-    //     $(".wmd-view-topscroll")
-    //       .scrollLeft($(".ui-table-wrapper").scrollLeft());
-    //   });
-    // });
+    $(document).ready(() => {
+      // $(".wmd-view-topscroll").scroll(function () {
+      //   $(".ui-table-wrapper")
+      //     .scrollLeft($(".wmd-view-topscroll").scrollLeft());
+      // });
+      // $(".ui-table-wrapper").scroll(function () {
+      //   $(".wmd-view-topscroll")
+      //     .scrollLeft($(".ui-table-wrapper").scrollLeft());
+      // });
+      var button = document.getElementById('slide');
+      button.onclick = function () {
+        var container = document.getElementsByClassName('ui-table-wrapper')[0];
+        sideScroll(container, 'right', 0, 100, 10);
+      };
+
+      var back = document.getElementById('slideBack');
+      back.onclick = function () {
+        var container = document.getElementsByClassName('ui-table-wrapper')[0];
+        sideScroll(container, 'left', 0, 100, 10);
+      };
+
+      function sideScroll(element, direction, speed, distance, step) {
+        var scrollAmount = 0;
+        var slideTimer = setInterval(function () {
+          if (direction == 'left') {
+            element.scrollLeft -= step;
+          } else {
+            element.scrollLeft += step;
+          }
+          scrollAmount += step;
+          if (scrollAmount >= distance) {
+            window.clearInterval(slideTimer);
+          }
+        }, speed);
+      }
+    });
   }
 
   formInit() {

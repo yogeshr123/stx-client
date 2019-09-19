@@ -427,6 +427,8 @@
       <div class="clearfix"></div>
       <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
+      <button id="slideBack" type="button">Prev</button>
+      <button id="slide" type="button">Next</button>
       <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray"
         [responsive]="true" dataKey="TABLE_NAME" [reorderableColumns]="true"
         [(selection)]="selectedRecords" stateStorage="local"

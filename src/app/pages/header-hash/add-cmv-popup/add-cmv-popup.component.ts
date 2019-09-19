@@ -57,6 +57,7 @@ export class AddCmvPopupComponent implements OnInit {
     }
     this.headerHashService.addToColumnMetadata({ columnData: formValues }).subscribe((resp: any) => {
       if (resp && !resp.error) {
+        localStorage.removeItem('localCopyOfVersion');
         this.showToast('success', 'Successfully Added!');
         this.closePopUp(true);
       } else {
@@ -67,7 +68,6 @@ export class AddCmvPopupComponent implements OnInit {
       this.saveLoader = false;
       this.showToast('error', 'Could not be added!');
     });
-    this.saveLoader = false;
   }
 
   closePopUp(status) {

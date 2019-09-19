@@ -1,5 +1,9 @@
 td {
-    padding: 6px 5px;
-    white-space: nowrap;
-    word-break: break-all;
+  padding: 6px 5px;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+.container {
+  overflow: auto;
 }

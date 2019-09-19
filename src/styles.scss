@@ -438,3 +438,31 @@ select.decorated option:checked {
     word-wrap: break-word;
   }
 }
+
+.wmd-view-topscroll,
+.wmd-view {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 300px;
+  border: none 0px RED;
+}
+
+.wmd-view-topscroll {
+  height: 20px;
+}
+
+.wmd-view {
+  height: 200px;
+}
+
+.scroll-div1 {
+  width: 1000px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 20px;
+}
+
+.scroll-div2 {
+  width: 1000px;
+  height: 20px;
+}

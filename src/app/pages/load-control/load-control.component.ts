@@ -7,6 +7,7 @@ import { Table } from 'primeng/components/table/table';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { CommonService } from 'src/app/services/common.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+declare var $: any;
 
 @Component({
   selector: 'app-loadcontrol',
@@ -37,6 +38,11 @@ export class LoadControlComponent implements OnInit {
 
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
+
+  cars: any;
+
+  cols: any[];
+
   constructor(
     private loadControlService: LoadControlService,
     private recordService: RecordService,
@@ -49,6 +55,15 @@ export class LoadControlComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.cols = [
+      { field: 'TABLE_STATUS', header: 'TABLE STATUS' },
+      { field: 'SCHEMA_NAME', header: 'SCHEMA NAME' },
+      { field: 'TABLE_NAME', header: 'TABLE NAME' },
+      { field: 'ENV_NAME', header: 'ENV NAME' }
+    ];
+
+
     this.formInit();
     this.appState = this.commonService.getState();
     await this.getColumnDataType();
@@ -65,6 +80,17 @@ export class LoadControlComponent implements OnInit {
       // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
     }
+
+    // $(document).ready(() => {
+    //   $(".wmd-view-topscroll").scroll(function () {
+    //     $(".ui-table-wrapper")
+    //       .scrollLeft($(".wmd-view-topscroll").scrollLeft());
+    //   });
+    //   $(".ui-table-wrapper").scroll(function () {
+    //     $(".wmd-view-topscroll")
+    //       .scrollLeft($(".ui-table-wrapper").scrollLeft());
+    //   });
+    // });
   }
 
   formInit() {
@@ -514,8 +540,3 @@ export class LoadControlComponent implements OnInit {
     this.messageService.add({ severity, summary, life: 3000 });
   }
 }
-
-
-
-
-

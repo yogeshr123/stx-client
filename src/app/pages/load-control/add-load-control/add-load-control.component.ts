@@ -47,6 +47,7 @@ export class AddLoadControlComponent implements OnInit {
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
+    this.setLoadStrategyValidators();
     this.getColumnDataType();
     this.getUserInfo();
   }
@@ -221,6 +222,21 @@ export class AddLoadControlComponent implements OnInit {
         }
 
         T2_T3_RETENTION_DAYS.updateValueAndValidity();
+      });
+  }
+
+  setLoadStrategyValidators() {
+    const TABLE_SOURCE = this.addLoadControlForm.get('TABLE_SOURCE');
+
+    this.addLoadControlForm.get('LOAD_STRATEGY').valueChanges
+      .subscribe(LOAD_STRATEGY => {
+
+        if (LOAD_STRATEGY === 'SAMPLED') {
+          TABLE_SOURCE.setValue('RAW_FACTORY');
+        }
+        else {
+          TABLE_SOURCE.setValue('ORACLE');
+        }
       });
   }
 

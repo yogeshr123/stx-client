@@ -49,4 +49,10 @@ export class UsersService {
             .delete(url)
             .pipe(catchError(this.commonService.handleError));
     }
+    getUserByUserName(userName: string) {
+        const url = `${environment.baseUrl}users/${userName}`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
 }

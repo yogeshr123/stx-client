@@ -8,12 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Custom components
 import { AppComponent } from './app.component';
 import { LogoutComponent } from './pages/logout/logout.component';
+import { NotFoundComponent } from './pages/404/404.component';
 // import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogoutComponent,
+    NotFoundComponent
     // LoginComponent,
   ],
   imports: [

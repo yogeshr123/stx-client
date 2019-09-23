@@ -68,24 +68,16 @@ export class LoadControlComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      // $(".wmd-view-topscroll").scroll(function () {
-      //   $(".ui-table-wrapper")
-      //     .scrollLeft($(".wmd-view-topscroll").scrollLeft());
-      // });
-      // $(".ui-table-wrapper").scroll(function () {
-      //   $(".wmd-view-topscroll")
-      //     .scrollLeft($(".ui-table-wrapper").scrollLeft());
-      // });
       var button = document.getElementById('slide');
       button.onclick = function () {
         var container = document.getElementsByClassName('ui-table-wrapper')[0];
-        sideScroll(container, 'right', 0, 100, 10);
+        sideScroll(container, 'right', 0, 200, 100);
       };
 
       var back = document.getElementById('slideBack');
       back.onclick = function () {
         var container = document.getElementsByClassName('ui-table-wrapper')[0];
-        sideScroll(container, 'left', 0, 100, 10);
+        sideScroll(container, 'left', 0, 200, 100);
       };
 
       function sideScroll(element, direction, speed, distance, step) {
@@ -136,6 +128,8 @@ export class LoadControlComponent implements OnInit {
             this.totalcols.push({ field: key, header: key.replace(/_/g, " "), type: 'link' });
           else if (this.checkIfDate(key) === true)
             this.totalcols.push({ field: key, header: key.replace(/_/g, " "), type: 'date' });
+          else if (this.checkIfBit(key) === true)
+            this.totalcols.push({ field: key, header: key.replace(/_/g, " "), type: 'bit' });
           else
             this.totalcols.push({ field: key, header: key.replace(/_/g, " ") });
 
@@ -185,6 +179,24 @@ export class LoadControlComponent implements OnInit {
       if (index) {
         const dataType = this.recordMeta[index].DATA_TYPE;
         if (dataType == "timestamp") {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
+  checkIfBit(key) {
+    if (this.recordMeta) {
+      const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
+      if (index) {
+        const dataType = this.recordMeta[index].DATA_TYPE;
+        if (dataType == "bit") {
           return true;
         }
         else {

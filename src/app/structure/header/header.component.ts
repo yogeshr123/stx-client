@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -18,7 +19,8 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     localStorage.clear();
-    this.router.navigateByUrl('/superlogin');
+    // this.router.navigateByUrl('/logout');
+    window.location.href = environment.ssoLogoutURL;
   }
 
   hideSidebar() {

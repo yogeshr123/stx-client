@@ -8,9 +8,11 @@
 <div class="row">
   <div class="col-md-12">
     <div class="scrollBtns">
-      <button id="slideBack" type="button"><i
-          class="fa fa-chevron-circle-left  fa-3x"></i></button>
-      <button id="slide" type="button"><i
+      <button id="slideBack" type="button" pTooltip="Scroll Table
+      to left" tooltipPosition="bottom"><i
+          class="fa fa-chevron-circle-left fa-3x"></i></button>
+      <button id="slide" type="button" pTooltip="Scroll Table
+      to right" tooltipPosition="bottom"><i
           class="fa fa-chevron-circle-right fa-3x"></i></button>
     </div>
     <div class="tile">
@@ -507,6 +509,11 @@
               </ng-container>
               <ng-container *ngSwitchCase="'date'">
                 <span> {{ rowData[col.field] | dateConvert}} </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="'bit'">
+                <span>
+                  {{rowData[col.field] && rowData[col.field].data && rowData[col.field].data[0] || rowData[col.field] === 1 ||
+                    rowData[col.field] === true ? 'True' : 'False' }}</span>
               </ng-container>
               <ng-container *ngSwitchDefault>
                 <ng-container

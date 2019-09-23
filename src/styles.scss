@@ -441,11 +441,11 @@ select.decorated option:checked {
 
 .scrollBtns {
   position: fixed;
-  right: 14px;
+  right: 0;
   top: 50%;
   background-color: #fff;
   border: 1px solid #ced4da;
-  z-index: 10000000;
+  z-index: 10;
   padding: 7px;
 
   button {
@@ -456,32 +456,4 @@ select.decorated option:checked {
   button:focus {
     outline: none;
   }
-}
-
-.wmd-view-topscroll,
-.wmd-view {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  width: 300px;
-  border: none 0px RED;
-}
-
-.wmd-view-topscroll {
-  height: 20px;
-}
-
-.wmd-view {
-  height: 200px;
-}
-
-.scroll-div1 {
-  width: 1000px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  height: 20px;
-}
-
-.scroll-div2 {
-  width: 1000px;
-  height: 20px;
 }

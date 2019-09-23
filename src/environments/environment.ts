@@ -4,11 +4,13 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3000/api/v1/',
+  baseUrl: 'http://localhost:4200/api/v1/',
   RAW_FACTORY_PATH_DEFAULT_SETTING: 'stx-usw2-ehc-prd-data-factory',
   T1_PATH_DEFAULT_SETTING: 'stx-usw2-ehc-prd-data-t1',
   appModulesList: ['Dashboard', 'Load Control', 'Load Status', 'Column Metadata', 'Header Hash', 'User Management', 'DB Endponits', 'Clusters', 'Spark Config'],
-  defaultPermissions: ['Read', 'Add', 'Edit', 'Delete']
+  defaultPermissions: ['Read', 'Add', 'Edit', 'Delete'],
+  ssoLoginURL: 'https://ssotstlogin.seagate.com/oamfed/idp/initiatesso?providerid=SeagateAtlasManager',
+  ssoLogoutURL: 'https://ssotstlogin.seagate.com/oam/server/logout'
 };
 
 /*

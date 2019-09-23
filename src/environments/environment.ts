@@ -10,7 +10,8 @@ export const environment = {
   appModulesList: ['Dashboard', 'Load Control', 'Load Status', 'Column Metadata', 'Header Hash', 'User Management', 'DB Endponits', 'Clusters', 'Spark Config'],
   defaultPermissions: ['Read', 'Add', 'Edit', 'Delete'],
   ssoLoginURL: 'https://ssotstlogin.seagate.com/oamfed/idp/initiatesso?providerid=SeagateAtlasManager',
-  ssoLogoutURL: 'https://ssotstlogin.seagate.com/oam/server/logout'
+  // ssoLogoutURL: 'https://ssotstlogin.seagate.com/oam/server/logout'
+  ssoLogoutURL: './logout'
 };
 
 /*

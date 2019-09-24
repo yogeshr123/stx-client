@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../model/users.table';
 import { isNullOrUndefined } from 'util';
 import { CommonService } from './common.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class AuthGuard implements CanActivate {
 
     this.appState = this.commonService.getState();
     if (isNullOrUndefined(this.appState.loggedInUser)) {
-      this.router.navigateByUrl('/superlogin');
+      // this.router.navigateByUrl('/superlogin');
+      window.location.href = environment.ssoLoginURL;
       return false;
     }
     const expectedPermission = route.data.expectedPermission;

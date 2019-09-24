@@ -9,6 +9,7 @@ import { Role } from 'src/app/model/roles.table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-add-edit-role',
@@ -204,7 +205,9 @@ export class AddEditRoleComponent implements OnInit {
             acceptLabel: 'Ok',
             message: 'You have changed the permissions of logged in user. Please login again...',
             accept: () => {
-              this.router.navigateByUrl('/superlogin');
+              // this.router.navigateByUrl('/superlogin');
+              window.location.href = environment.ssoLoginURL;
+              return false;
             }
           });
         }

@@ -10,9 +10,12 @@
       <div class="text-right">
         <div class="row">
           <div class="col-md-12">
-            <button *ngIf="isEdit" class="btn btn-sm btn-primary" (click)="onSubmit()">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+            <button *ngIf="isEdit" class="btn btn-sm btn-primary"
+              (click)="onSubmit()">
+              <i
+                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
+              routerLink="/loadcontrol">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
         </div>
@@ -27,22 +30,34 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">SCHEMA NAME</label>
-                    <input class="form-control" type="text" formControlName="SCHEMA_NAME"
+                    <input class="form-control" type="text"
+                      formControlName="SCHEMA_NAME"
                       oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.SCHEMA_NAME.errors }" />
-                    <div *ngIf="submitted && f.SCHEMA_NAME.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.SCHEMA_NAME.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is
                         required</div>
+                      <div *ngIf="f.SCHEMA_NAME.errors?.pattern">SCHEMA NAME
+                        is not valid. Only aplhanumeric and
+                        underscore are allowed.
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">TABLE NAME</label>
-                    <input class="form-control" type="text" formControlName="TABLE_NAME"
+                    <input class="form-control" type="text"
+                      formControlName="TABLE_NAME"
                       oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.TABLE_NAME.errors }" />
-                    <div *ngIf="submitted && f.TABLE_NAME.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.TABLE_NAME.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is
                         required</div>
+                      <div *ngIf="f.TABLE_NAME.errors?.pattern">TABLE NAME
+                        is not valid. Only aplhanumeric and
+                        underscore are allowed.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -55,7 +70,8 @@
                       <option value="DEV">DEV</option>
                       <option value="QA">QA</option>
                     </select>
-                    <div *ngIf="submitted && f.ENV_NAME.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.ENV_NAME.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.ENV_NAME.errors.required">ENV NAME is
                         required</div>
                     </div>
@@ -65,36 +81,56 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">TARGET SCHEMA NAME</label>
-                    <input class="form-control" type="text" formControlName="TARGET_SCHEMA_NAME"
+                    <input class="form-control" type="text"
+                      formControlName="TARGET_SCHEMA_NAME"
                       oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.TARGET_SCHEMA_NAME.errors }">
-                    <div *ngIf="submitted && f.TARGET_SCHEMA_NAME.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.TARGET_SCHEMA_NAME.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.TARGET_SCHEMA_NAME.errors.required">TARGET
                         SCHEMA NAME is required</div>
+                      <div *ngIf="f.TARGET_SCHEMA_NAME.errors?.pattern">TARGET
+                        SCHEMA NAME is not valid. Only aplhanumeric and
+                        underscore are allowed.
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">TARGET TABLE NAME</label>
-                    <input class="form-control" type="text" formControlName="TARGET_TABLE_NAME"
+                    <input class="form-control" type="text"
+                      formControlName="TARGET_TABLE_NAME"
                       oninput="this.value = this.value.toUpperCase()"
                       [ngClass]="{ 'is-invalid': submitted && f.TARGET_TABLE_NAME.errors }">
-                    <div *ngIf="submitted && f.TARGET_TABLE_NAME.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.TARGET_TABLE_NAME.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.TARGET_TABLE_NAME.errors.required">TARGET
                         TABLE NAME is required</div>
+                      <div *ngIf="f.TARGET_TABLE_NAME.errors?.pattern">TARGET
+                        TABLE NAME is not valid. Only aplhanumeric and
+                        underscore are allowed.
+                      </div>
                     </div>
                   </div>
-
-
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">EMAIL ALERTS</label>
-                    <select formControlName="EMAIL_ALERTS" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ALERTS.errors }">
-                      <option value="Y">Yes</option>
-                      <option value="N">No</option>
-                    </select>
-                    <div *ngIf="submitted && f.EMAIL_ALERTS.errors" class="invalid-feedback">
+                    <div class="animated-radio-button">
+                      <label>
+                        <input type="radio" value="Y"
+                          formControlName="EMAIL_ALERTS"><span
+                          class="label-text">Yes
+                        </span>
+                      </label>
+                      <label class="ml-4">
+                        <input type="radio" value="N"
+                          formControlName="EMAIL_ALERTS"><span
+                          class="label-text">No
+                        </span>
+                      </label>
+                    </div>
+                    <div *ngIf="submitted && f.EMAIL_ALERTS.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.EMAIL_ALERTS.errors.required">EMAIL ALERT
                         is
                         required</div>
@@ -109,7 +145,8 @@
                       <option value="REFRESH">REFRESH</option>
                       <option value="SAMPLED">SAMPLED</option>
                     </select>
-                    <div *ngIf="submitted && f.LOAD_STRATEGY.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.LOAD_STRATEGY.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.LOAD_STRATEGY.errors.required">LOAD
                         STRATEGY
                         is required</div>
@@ -129,7 +166,8 @@
                       <option value="RAW_FACTORY">RAW_FACTORY</option>
                       <option value="ORACLE">ORACLE</option>
                     </select>
-                    <div *ngIf="submitted && f.TABLE_SOURCE.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.TABLE_SOURCE.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.TABLE_SOURCE.errors.required">TABLE SOURCE
                         is required</div>
                     </div>
@@ -141,12 +179,15 @@
                   <p-fieldset legend="Data Warehouse Details">
                     <div class="form-group">
                       <label class="control-label">DB ID</label>
-                      <select class="form-control" type="text" formControlName="DB_ID"
+                      <select class="form-control" type="text"
+                        formControlName="DB_ID"
                         [ngClass]="{ 'is-invalid': submitted && f.DB_ID.errors }">
-                        <option *ngFor="let endpoint of dbEndpoints" [value]="endpoint.DB_ID">{{endpoint.DB_ID}}
+                        <option *ngFor="let endpoint of dbEndpoints"
+                          [value]="endpoint.DB_ID">{{endpoint.DB_ID}}
                         </option>
                       </select>
-                      <div *ngIf="submitted && f.DB_ID.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.DB_ID.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.DB_ID.errors.required">DB ID is required
                           for
                           TABLE SOURCE = ORACLE
@@ -155,60 +196,99 @@
                     </div>
                     <div class="form-group">
                       <label class="control-label">DB SCHEMA</label>
-                      <input class="form-control" type="text" formControlName="DB_SCHEMA"
+                      <input class="form-control" type="text"
+                        formControlName="DB_SCHEMA"
                         oninput="this.value = this.value.toUpperCase()"
                         [ngClass]="{ 'is-invalid': submitted && f.DB_SCHEMA.errors }">
-                      <div *ngIf="submitted && f.DB_SCHEMA.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.DB_SCHEMA.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.DB_SCHEMA.errors.required">DB SCHEMA is
                           required for TABLE SOURCE = ORACLE
+                        </div>
+                        <div *ngIf="f.DB_SCHEMA.errors?.pattern">DB
+                          SCHEMA is not valid. Only aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="control-label">DB TABLE</label>
-                      <input class="form-control" type="text" formControlName="DB_TABLE"
+                      <input class="form-control" type="text"
+                        formControlName="DB_TABLE"
                         oninput="this.value = this.value.toUpperCase()"
                         [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE.errors }">
-                      <div *ngIf="submitted && f.DB_TABLE.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.DB_TABLE.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.DB_TABLE.errors.required">DB TABLE is
                           required for TABLE SOURCE = ORACLE
+                        </div>
+                        <div *ngIf="f.DB_TABLE.errors?.pattern">DB
+                          TABLE is not valid. Only aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="control-label">DB TABLE PK COLUMNS</label>
-                      <input class="form-control" type="text" formControlName="DB_TABLE_PK_COLUMNS"
+                      <input class="form-control" type="text"
+                        formControlName="DB_TABLE_PK_COLUMNS"
                         oninput="this.value = this.value.toUpperCase()"
                         [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_PK_COLUMNS.errors }">
-                      <div *ngIf="submitted && f.DB_TABLE_PK_COLUMNS.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.DB_TABLE_PK_COLUMNS.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors.required">DB
                           TABLE PK COLUMNS is required for TABLE
                           SOURCE = ORACLE
+                        </div>
+                        <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors?.pattern">DB
+                          TABLE PK COLUMNS is not valid. Only aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="control-label">DB TABLE UPDATE DATE
                         COLUMN</label>
-                      <input class="form-control" type="text" formControlName="DB_TABLE_UPDATE_DATE_COLUMN"
+                      <input class="form-control" type="text"
+                        formControlName="DB_TABLE_UPDATE_DATE_COLUMN"
                         oninput="this.value = this.value.toUpperCase()"
                         [ngClass]="{ 'is-invalid': submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors }">
-                      <div *ngIf="submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors" class="invalid-feedback">
-                        <div *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors.required">
+                      <div
+                        *ngIf="submitted && f.DB_TABLE_UPDATE_DATE_COLUMN.errors"
+                        class="invalid-feedback">
+                        <div
+                          *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors.required">
                           DB
                           TABLE UPDATE DATE COLUMN is required
                           for TABLE SOURCE = ORACLE
+                        </div>
+                        <div
+                          *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors?.pattern">
+                          DB
+                          TABLE UPDATE DATE COLUMN is not valid. Only
+                          aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="control-label">CHECK INDEX EXIST</label>
-                      <select formControlName="CHECK_INDEX_EXIST" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.CHECK_INDEX_EXIST.errors }">
-                        <option value="TRUE">TRUE</option>
-                        <option value="FALSE">FALSE</option>
-                      </select>
-                      <div *ngIf="submitted && f.CHECK_INDEX_EXIST.errors" class="invalid-feedback">
+                      <div class="animated-radio-button">
+                        <label>
+                          <input type="radio" value="1"
+                            formControlName="CHECK_INDEX_EXIST"><span
+                            class="label-text">True
+                          </span>
+                        </label>
+                        <label class="ml-4">
+                          <input type="radio" value="0"
+                            formControlName="CHECK_INDEX_EXIST"><span
+                            class="label-text">False
+                          </span>
+                        </label>
+                      </div>
+                      <div *ngIf="submitted && f.CHECK_INDEX_EXIST.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.CHECK_INDEX_EXIST.errors.required">CHECK
                           INDEX EXIST is required for
                           TABLE SOURCE = ORACLE
@@ -224,12 +304,15 @@
                     <div class="form-group">
                       <label class="control-label">RAW FACTORY PATH
                       </label>
-                      <div class="float-right autogenerate-btn" (click)="autoGenerateS3Url('RAW_FACTORY_PATH')">Auto
+                      <div class="float-right autogenerate-btn"
+                        (click)="autoGenerateS3Url('RAW_FACTORY_PATH')">Auto
                         Generate</div>
-                      <input class="form-control" type="text" formControlName="RAW_FACTORY_PATH"
+                      <input class="form-control" type="text"
+                        formControlName="RAW_FACTORY_PATH"
                         oninput="this.value = this.value.toLowerCase()"
                         [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_PATH.errors }">
-                      <div *ngIf="submitted && f.RAW_FACTORY_PATH.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.RAW_FACTORY_PATH.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.RAW_FACTORY_PATH.errors.required">RAW
                           FACTORY PATH is required for TABLE SOURCE =
                           RAW_FACTORY
@@ -243,7 +326,8 @@
                     <div class="form-group">
                       <label class="control-label">RAW FACTORY RETENTION
                         STRATEGY</label>
-                      <select formControlName="RAW_FACTORY_RETENTION_STRATEGY" class="form-control">
+                      <select formControlName="RAW_FACTORY_RETENTION_STRATEGY"
+                        class="form-control">
                         <option value="NONE">NONE</option>
                         <option value="GLACIER">GLACIER</option>
                         <option value="DELETE">DELETE</option>
@@ -252,9 +336,12 @@
                     <div class="form-group">
                       <label class="control-label">RAW FACTORY
                         RETENTION_DAYS</label>
-                      <input class="form-control" type="number" formControlName="RAW_FACTORY_RETENTION_DAYS"
+                      <input class="form-control" type="number"
+                        formControlName="RAW_FACTORY_RETENTION_DAYS"
                         [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_RETENTION_DAYS.errors }">
-                      <div *ngIf="submitted && f.RAW_FACTORY_RETENTION_DAYS.errors" class="invalid-feedback">
+                      <div
+                        *ngIf="submitted && f.RAW_FACTORY_RETENTION_DAYS.errors"
+                        class="invalid-feedback">
                         <div *ngIf="f.RAW_FACTORY_RETENTION_DAYS.errors.min">RAW
                           FACTORY RETENTION DAYS should be greater
                           than 0
@@ -265,12 +352,16 @@
                       <label class="control-label">RAW FACTORY MAX LANDING
                         DATE</label>
                       <br />
-                      <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                      <p-calendar inputStyleClass="form-control" showTime="true"
+                        showSeconds="true" hourFormat="24"
                         formControlName="RAW_FACTORY_MAX_LANDING_DATE"
                         [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_MAX_LANDING_DATE.errors }">
                       </p-calendar>
-                      <div *ngIf="submitted && f.RAW_FACTORY_MAX_LANDING_DATE.errors" class="invalid-feedback">
-                        <div *ngIf="f.RAW_FACTORY_MAX_LANDING_DATE.errors.required">
+                      <div
+                        *ngIf="submitted && f.RAW_FACTORY_MAX_LANDING_DATE.errors"
+                        class="invalid-feedback">
+                        <div
+                          *ngIf="f.RAW_FACTORY_MAX_LANDING_DATE.errors.required">
                           RAW FACTORY MAX LANDING DATE is required for TABLE
                           SOURCE =
                           RAW_FACTORY</div>
@@ -290,23 +381,28 @@
                       <option value="HOLD">HOLD</option>
                       <option value="EDW_RETIRED">EDW RETIRED</option>
                       <option value="NO_FACTORY_DATA">NO FACTORY DATA</option>
+                      <option value="NEW_TABLE">NEW TABLE</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL STATUS REASON</label>
-                    <input class="form-control" type="text" formControlName="ETL_STATUS_REASON">
+                    <input class="form-control" type="text"
+                      formControlName="ETL_STATUS_REASON">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL DAG NAME</label>
-                    <input class="form-control" type="text" formControlName="ETL_DAG_NAME">
+                    <input class="form-control" type="text"
+                      formControlName="ETL_DAG_NAME">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL DAG RUN ID</label>
-                    <input class="form-control" type="text" formControlName="ETL_DAG_RUN_ID">
+                    <input class="form-control" type="text"
+                      formControlName="ETL_DAG_RUN_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-labelS">ETL DAG RUN URL</label>
-                    <input class="form-control" type="text" formControlName="ETL_DAG_RUN_URL">
+                    <input class="form-control" type="text"
+                      formControlName="ETL_DAG_RUN_URL">
                     <!-- <div class="disabledLink">
                       <a [href]="editLoadControlForm.controls.ETL_DAG_RUN_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.ETL_DAG_RUN_URL.value }}
@@ -318,18 +414,21 @@
                   <div class="form-group">
                     <label class="control-labelS">ETL PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="ETL_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-labelS">ETL PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="ETL_PROCESS_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ETL EXECUTION STATUS</label>
-                    <select formControlName="ETL_EXECUTION_STATUS" class="form-control">
+                    <select formControlName="ETL_EXECUTION_STATUS"
+                      class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="COMPLETE">COMPLETE</option>
@@ -360,12 +459,14 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 PATH</label>
-                    <input class="form-control" type="text" formControlName="T1_PATH"
+                    <input class="form-control" type="text"
+                      formControlName="T1_PATH"
                       oninput="this.value = this.value.toLowerCase()">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION STRATEGY</label>
-                    <select formControlName="T1_RETENTION_STRATEGY" class="form-control">
+                    <select formControlName="T1_RETENTION_STRATEGY"
+                      class="form-control">
                       <option value="NONE">NONE</option>
                       <option value="GLACIER">GLACIER</option>
                       <option value="DELETE">DELETE</option>
@@ -377,27 +478,33 @@
 
                   <div class="form-group">
                     <label class="control-label">T1 CLUSTER ID</label>
-                    <select class="form-control" type="text" formControlName="T1_CLUSTER_ID"
+                    <select class="form-control" type="text"
+                      formControlName="T1_CLUSTER_ID"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_CLUSTER_ID.errors }">
-                      <option *ngFor="let cluster of clusters" [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      <option *ngFor="let cluster of clusters"
+                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && f.T1_CLUSTER_ID.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_CLUSTER_ID.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T1_CLUSTER_ID.errors.required">
                         T1 CLUSTER ID is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 LIVY BATCH ID</label>
-                    <input class="form-control" type="number" formControlName="T1_LIVY_BATCH_ID">
+                    <input class="form-control" type="number"
+                      formControlName="T1_LIVY_BATCH_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK APP ID</label>
-                    <input class="form-control" type="number" formControlName="T1_SPARK_APP_ID">
+                    <input class="form-control" type="number"
+                      formControlName="T1_SPARK_APP_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK UI URL</label>
-                    <input class="form-control" type="number" formControlName="T1_SPARK_UI_URL">
+                    <input class="form-control" type="number"
+                      formControlName="T1_SPARK_UI_URL">
                     <!-- <div class="disabledLink">
                       <a [href]="editLoadControlForm.controls.T1_SPARK_UI_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T1_SPARK_UI_URL.value }}
@@ -406,7 +513,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 SPARK LOG URL</label>
-                    <input class="form-control" type="number" formControlName="T1_SPARK_LOG_URL">
+                    <input class="form-control" type="number"
+                      formControlName="T1_SPARK_LOG_URL">
                     <!-- <div class="disabledLink">
                       <a [href]="editLoadControlForm.controls.T1_SPARK_LOG_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T1_SPARK_LOG_URL.value }}
@@ -417,7 +525,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 EXECUTION STATUS</label>
-                    <select formControlName="T1_EXECUTION_STATUS" class="form-control">
+                    <select formControlName="T1_EXECUTION_STATUS"
+                      class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -433,7 +542,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 BATCH IN DAYS</label>
-                    <select formControlName="T1_BATCH_IN_DAYS" class="form-control"
+                    <select formControlName="T1_BATCH_IN_DAYS"
+                      class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_BATCH_IN_DAYS.errors }">
                       <option value="0.1">0.1</option>
                       <option value="0.15">0.15</option>
@@ -456,16 +566,19 @@
                       <option value="14">14</option>
                       <option value="15">15</option>
                     </select>
-                    <div *ngIf="submitted && f.T1_BATCH_IN_DAYS.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_BATCH_IN_DAYS.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T1_BATCH_IN_DAYS.errors.required">T1 BATCH
                         IN DAYS is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
+                    <input class="form-control" type="number"
+                      formControlName="T1_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION
                         DAYS should be greater than 0
                       </div>
@@ -474,26 +587,30 @@
                   <div class="form-group">
                     <label class="control-label">T1 MAX LOAD END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T1_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T1 PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T1_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T1_PROCESS_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T1 ERROR</label>
-                    <input class="form-control" type="text" formControlName="T1_ERROR">
+                    <input class="form-control" type="text"
+                      formControlName="T1_ERROR">
                   </div>
 
                 </div>
@@ -512,7 +629,8 @@
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION
                       STRATEGY</label>
-                    <select formControlName="T2_T3_RETENTION_STRATEGY" class="form-control">
+                    <select formControlName="T2_T3_RETENTION_STRATEGY"
+                      class="form-control">
                       <option value="NONE">NONE</option>
                       <option value="GLACIER">GLACIER</option>
                       <option value="DELETE">DELETE</option>
@@ -523,36 +641,44 @@
                   <div class="form-group">
                     <label class="control-label">T2 INSERT DIR BATCH
                       SIZE</label>
-                    <input class="form-control" type="number" formControlName="T2_INSERT_DIR_BATCH_SIZE"
+                    <input class="form-control" type="number"
+                      formControlName="T2_INSERT_DIR_BATCH_SIZE"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors }">
-                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.required">T2
                         INSERT DIR BATCH SIZE is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2_CLUSTER_ID</label>
-                    <select class="form-control" type="text" formControlName="T2_CLUSTER_ID"
+                    <select class="form-control" type="text"
+                      formControlName="T2_CLUSTER_ID"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_CLUSTER_ID.errors }">
-                      <option *ngFor="let cluster of clusters" [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
+                      <option *ngFor="let cluster of clusters"
+                        [value]="cluster.CLUSTER_ID">{{cluster.CLUSTER_ID}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && f.T2_CLUSTER_ID.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_CLUSTER_ID.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T2_CLUSTER_ID.errors.required">
                         T2 CLUSTER ID is required</div>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 LIVY BATCH ID</label>
-                    <input class="form-control" type="text" formControlName="T2_LIVY_BATCH_ID">
+                    <input class="form-control" type="text"
+                      formControlName="T2_LIVY_BATCH_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK APP ID</label>
-                    <input class="form-control" type="text" formControlName="T2_SPARK_APP_ID">
+                    <input class="form-control" type="text"
+                      formControlName="T2_SPARK_APP_ID">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK UI URL</label>
-                    <input class="form-control" type="text" formControlName="T2_SPARK_UI_URL">
+                    <input class="form-control" type="text"
+                      formControlName="T2_SPARK_UI_URL">
                     <!-- <div class="disabledLink">
                       <a [href]="editLoadControlForm.controls.T2_SPARK_UI_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T2_SPARK_UI_URL.value }}
@@ -561,7 +687,8 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 SPARK LOG URL</label>
-                    <input class="form-control" type="text" formControlName="T2_SPARK_LOG_URL">
+                    <input class="form-control" type="text"
+                      formControlName="T2_SPARK_LOG_URL">
                     <!-- <div class="disabledLink">
                       <a [href]="editLoadControlForm.controls.T2_SPARK_LOG_URL.value" target="_blank">
                         {{ editLoadControlForm.controls.T2_SPARK_LOG_URL.value }}
@@ -572,7 +699,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T2 EXECUTION STATUS</label>
-                    <select formControlName="T2_EXECUTION_STATUS" class="form-control">
+                    <select formControlName="T2_EXECUTION_STATUS"
+                      class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -588,9 +716,11 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS"
+                    <input class="form-control" type="number"
+                      formControlName="T2_T3_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_T3_RETENTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T2_T3_RETENTION_DAYS.errors.min">T2_T3
                         RETENTION DAYS should be greater than 0
                       </div>
@@ -598,12 +728,14 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PARTITION JOB TYPE</label>
-                    <select formControlName="T2_PARTITION_JOB_TYPE" class="form-control"
+                    <select formControlName="T2_PARTITION_JOB_TYPE"
+                      class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_PARTITION_JOB_TYPE.errors }">
                       <option value="SINGLE">SINGLE</option>
                       <option value="MULTIPLE">MULTIPLE</option>
                     </select>
-                    <div *ngIf="submitted && f.T2_PARTITION_JOB_TYPE.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.T2_PARTITION_JOB_TYPE.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.T2_PARTITION_JOB_TYPE.errors.required">T2
                         PARTITION JOB TYPE is required</div>
                     </div>
@@ -611,29 +743,34 @@
                   <div class="form-group">
                     <label class="control-label">T2 MAX LOAD END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T2_MAX_LOAD_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 MAX ATLAS VERSION</label>
-                    <input class="form-control" type="number" formControlName="T2_MAX_ATLAS_VERSION">
+                    <input class="form-control" type="number"
+                      formControlName="T2_MAX_ATLAS_VERSION">
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PROCESS START DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T2_PROCESS_START_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 PROCESS END DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="T2_PROCESS_END_DATE"></p-calendar>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label">T2 ERROR</label>
-                    <input class="form-control" type="text" formControlName="T2_ERROR">
+                    <input class="form-control" type="text"
+                      formControlName="T2_ERROR">
                   </div>
                 </div>
               </div>
@@ -643,16 +780,19 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ANALYZE STATUS</label>
-                    <select formControlName="ANALYZE_STATUS" class="form-control">
+                    <select formControlName="ANALYZE_STATUS"
+                      class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="HOLD">HOLD</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE EXECUTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="ANALYZE_EXECUTION_DAYS"
+                    <input class="form-control" type="number"
+                      formControlName="ANALYZE_EXECUTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.ANALYZE_EXECUTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors"
+                      class="invalid-feedback">
                       <div *ngIf="f.ANALYZE_EXECUTION_DAYS.errors.required">
                         ANALYZE EXECUTION DAYS are required</div>
                     </div>
@@ -661,14 +801,16 @@
                     <label class="control-label">ANALYZE LAST SUCCESS
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_LAST_SUCCESS_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE PROCESS START
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_PROCESS_START_DATE"></p-calendar>
                   </div>
                 </div>
@@ -677,13 +819,15 @@
                     <label class="control-label">ANALYZE PROCESS END
                       DATE</label>
                     <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                    <p-calendar inputStyleClass="form-control" showTime="true"
+                      showSeconds="true" hourFormat="24"
                       formControlName="ANALYZE_PROCESS_END_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE EXECUTION
                       STATUS</label>
-                    <select formControlName="ANALYZE_EXECUTION_STATUS" class="form-control">
+                    <select formControlName="ANALYZE_EXECUTION_STATUS"
+                      class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
@@ -692,11 +836,13 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE ERROR</label>
-                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR">
+                    <input class="form-control" type="number"
+                      formControlName="ANALYZE_ERROR">
                   </div>
                   <div class="form-group">
                     <label class="control-label">ANALYZE ERROR TRACE</label>
-                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR_TRACE">
+                    <input class="form-control" type="number"
+                      formControlName="ANALYZE_ERROR_TRACE">
                   </div>
                 </div>
               </div>
@@ -731,9 +877,12 @@
       <div class="tile-footer">
         <div class="row">
           <div class="col-md-8 col-md-offset-3">
-            <button *ngIf="isEdit" class="btn btn-sm btn-primary" (click)="onSubmit()">
-              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active" routerLink="/loadcontrol">
+            <button *ngIf="isEdit" class="btn btn-sm btn-primary"
+              (click)="onSubmit()">
+              <i
+                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
+              routerLink="/loadcontrol">
               <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
           </div>
         </div>

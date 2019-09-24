@@ -37,6 +37,9 @@
                       class="invalid-feedback">
                       <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is
                         required</div>
+                      <div *ngIf="f.SCHEMA_NAME.errors?.pattern">SCHEMA NAME is
+                        not valid. Only aplhanumeric and underscore are allowed.
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -49,6 +52,9 @@
                       class="invalid-feedback">
                       <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is
                         required</div>
+                      <div *ngIf="f.TABLE_NAME.errors?.pattern">TABLE NAME is
+                        not valid. Only aplhanumeric and underscore are allowed.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -80,6 +86,10 @@
                       class="invalid-feedback">
                       <div *ngIf="f.TARGET_SCHEMA_NAME.errors.required">TARGET
                         SCHEMA NAME is required</div>
+                      <div *ngIf="f.TARGET_SCHEMA_NAME.errors?.pattern">TARGET
+                        SCHEMA NAME is not valid. Only aplhanumeric and
+                        underscore are allowed.
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -92,17 +102,30 @@
                       class="invalid-feedback">
                       <div *ngIf="f.TARGET_TABLE_NAME.errors.required">TARGET
                         TABLE NAME is required</div>
+                      <div *ngIf="f.TARGET_TABLE_NAME.errors?.pattern">TARGET
+                        TABLE NAME is
+                        not valid. Only aplhanumeric and underscore are allowed.
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">EMAIL ALERTS</label>
-                    <select formControlName="EMAIL_ALERTS" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ALERTS.errors }">
-                      <option value="Y">Yes</option>
-                      <option value="N">No</option>
-                    </select>
+                    <div class="animated-radio-button">
+                      <label>
+                        <input type="radio" value="Y"
+                          formControlName="EMAIL_ALERTS"><span
+                          class="label-text">Yes
+                        </span>
+                      </label>
+                      <label class="ml-4">
+                        <input type="radio" value="N"
+                          formControlName="EMAIL_ALERTS"><span
+                          class="label-text">No
+                        </span>
+                      </label>
+                    </div>
                     <div *ngIf="submitted && f.EMAIL_ALERTS.errors"
                       class="invalid-feedback">
                       <div *ngIf="f.EMAIL_ALERTS.errors.required">EMAIL ALERT is
@@ -174,6 +197,10 @@
                         <div *ngIf="f.DB_SCHEMA.errors.required">DB SCHEMA is
                           required for TABLE SOURCE = ORACLE
                         </div>
+                        <div *ngIf="f.DB_SCHEMA.errors?.pattern">DB
+                          SCHEMA is not valid. Only aplhanumeric and
+                          underscore are allowed.
+                        </div>
                       </div>
                     </div>
                     <div class="form-group">
@@ -186,6 +213,10 @@
                         class="invalid-feedback">
                         <div *ngIf="f.DB_TABLE.errors.required">DB TABLE is
                           required for TABLE SOURCE = ORACLE
+                        </div>
+                        <div *ngIf="f.DB_TABLE.errors?.pattern">DB
+                          TABLE is not valid. Only aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
@@ -200,6 +231,10 @@
                         <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors.required">DB
                           TABLE PK COLUMNS is required for TABLE
                           SOURCE = ORACLE
+                        </div>
+                        <div *ngIf="f.DB_TABLE_PK_COLUMNS.errors?.pattern">DB
+                          TABLE PK COLUMN is not valid. Only aplhanumeric and
+                          underscore are allowed.
                         </div>
                       </div>
                     </div>
@@ -219,16 +254,30 @@
                           TABLE UPDATE DATE COLUMN is required
                           for TABLE SOURCE = ORACLE
                         </div>
+                        <div
+                          *ngIf="f.DB_TABLE_UPDATE_DATE_COLUMN.errors?.pattern">
+                          DB TABLE UPDATE DATE
+                          COLUMN is not valid. Only aplhanumeric and
+                          underscore are allowed.
+                        </div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="control-label">CHECK INDEX EXIST</label>
-                      <select formControlName="CHECK_INDEX_EXIST"
-                        class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.CHECK_INDEX_EXIST.errors }">
-                        <option value="TRUE">TRUE</option>
-                        <option value="FALSE">FALSE</option>
-                      </select>
+                      <div class="animated-radio-button">
+                        <label>
+                          <input type="radio" value="1"
+                            formControlName="CHECK_INDEX_EXIST"><span
+                            class="label-text">True
+                          </span>
+                        </label>
+                        <label class="ml-4">
+                          <input type="radio" value="0"
+                            formControlName="CHECK_INDEX_EXIST"><span
+                            class="label-text">False
+                          </span>
+                        </label>
+                      </div>
                       <div *ngIf="submitted && f.CHECK_INDEX_EXIST.errors"
                         class="invalid-feedback">
                         <div *ngIf="f.CHECK_INDEX_EXIST.errors.required">CHECK
@@ -321,6 +370,7 @@
                       <option value="HOLD">HOLD</option>
                       <option value="EDW_RETIRED">EDW RETIRED</option>
                       <option value="NO_FACTORY_DATA">NO FACTORY DATA</option>
+                      <option value="NEW_TABLE">NEW TABLE</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -332,12 +382,12 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ETL EXECUTION STATUS</label>
-                    <select formControlName="ETL_EXECUTION_STATUS"
-                      class="form-control">
-                      <option selected value="TODO">TODO</option>
-                      <option value="RUNNING">RUNNING</option>
-                      <option value="COMPLETE">COMPLETE</option>
-                    </select>
+                    <input formControlName="ETL_EXECUTION_STATUS"
+                      class="form-control" readonly />
+                    <!-- <option selected value="TODO">TODO</option> -->
+                    <!-- <option value="RUNNING">RUNNING</option> -->
+                    <!-- <option value="COMPLETE">COMPLETE</option> -->
+                    <!-- </select> -->
                   </div>
                 </div>
               </div>
@@ -394,10 +444,10 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 EXECUTION STATUS</label>
-                    <select formControlName="T1_EXECUTION_STATUS"
-                      class="form-control">
-                      <option value="TODO">TODO</option>
-                      <option value="RUNNING">RUNNING</option>
+                    <input formControlName="T1_EXECUTION_STATUS"
+                      class="form-control" readonly />
+                    <!-- <option value="TODO">TODO</option> -->
+                    <!-- <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
                       <option value="COMPLETE">COMPLETE</option>
                       <option value="NO_TS_INDEX">NO TS INDEX</option>
@@ -406,8 +456,8 @@
                       <option value="T2_METADATA_UPDATING">T2 METADATA UPDATING
                       </option>
                       <option value="EHC_METADATA_MISMATCH">EHC METADATA
-                        MISMATCH</option>
-                    </select>
+                        MISMATCH</option> -->
+                    <!-- </select> -->
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 BATCH IN DAYS</label>
@@ -525,10 +575,10 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T2 EXECUTION STATUS</label>
-                    <select formControlName="T2_EXECUTION_STATUS"
-                      class="form-control">
-                      <option value="TODO">TODO</option>
-                      <option value="RUNNING">RUNNING</option>
+                    <input formControlName="T2_EXECUTION_STATUS"
+                      class="form-control" readonly />
+                    <!-- <option value="TODO">TODO</option> -->
+                    <!-- <option value="RUNNING">RUNNING</option>
                       <option value="FAILED">FAILED</option>
                       <option value="COMPLETE">COMPLETE</option>
                       <option value="NO_DATA">NO_DATA</option>
@@ -537,8 +587,8 @@
                       <option value="T2_METADATA_UPDATING">T2 METADATA UPDATING
                       </option>
                       <option value="EHC_METADATA_MISMATCH">EHC METADATA
-                        MISMATCH</option>
-                    </select>
+                        MISMATCH</option> -->
+                    <!-- </select> -->
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION DAYS</label>

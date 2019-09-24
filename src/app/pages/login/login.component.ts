@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'primeng/api';
@@ -7,17 +7,12 @@ import { PermissionsService } from 'src/app/services/permissions.service';
 import { RolesService } from 'src/app/services/roles.service';
 import { Permission } from 'src/app/model/permissions.table';
 import { CommonService } from 'src/app/services/common.service';
+import { UsersService } from 'src/app/services/users.service';
 // import { UserLoginService } from "../service/user-login.service";
 // import { ChallengeParameters, CognitoCallback, LoggedInCallback } from "../service/cognito.service";
 // import { NgxSpinnerService } from 'ngx-spinner';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 declare var $: any;
-
-const DEMO_PARAMS = {
-    EMAIL: 'admin@demo.com',
-    PASSWORD: 'demo'
-};
-
 
 @Component({
     selector: 'app-login',
@@ -37,6 +32,7 @@ export class LoginComponent implements OnInit {
     isLoggedIn = false;
     permissions: any;
     appState: any;
+    gid = null;
     constructor(
         public router: Router,
         private formBuilder: FormBuilder,
@@ -44,16 +40,30 @@ export class LoginComponent implements OnInit {
         private messageService: MessageService,
         private permissionsService: PermissionsService,
         private rolesService: RolesService,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private route: ActivatedRoute,
+        private usersService: UsersService
     ) {
     }
     ngOnInit() {
-        this.errorMessage = null;
-        this.formInit();
         this.appState = this.commonService.getState();
         this.loadPermissions();
-        // // console.log("Checking if the user is already authenticated. If so, then redirect to the secure site");
-        // this.userService.isAuthenticated(this);
+
+        this.gid = this.route.snapshot.queryParamMap.get("gid");
+        if (this.gid) {
+            this.usersService.getUserByUserName(this.gid).subscribe((data: any) => {
+                if (data.data) {
+                    this.currentUser = data.data;
+                    this.fetchLoggedInUserDetails();
+                }
+            }, error => {
+                this.showToast('error', 'Failed to get user data. ');
+            });
+        }
+        else {
+            this.errorMessage = null;
+            this.formInit();
+        }
     }
 
     formInit() {

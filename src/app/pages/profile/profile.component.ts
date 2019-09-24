@@ -86,14 +86,6 @@ export class ProfileComponent implements OnInit {
       this.usersService.toggleProfile();
       this.saveLoader = false;
       this.showToast('success', 'Successfully updated user.');
-      // this.confirmationService.confirm({
-      //   rejectVisible: false,
-      //   acceptLabel: 'Ok',
-      //   message: 'User profile updated. Please login again...',
-      //   accept: () => {
-      //     // this.router.navigateByUrl('/superlogin');
-      //   }
-      // });
     }, error => {
       this.saveLoader = false;
       this.showToast('error', 'Could not update user profile.');

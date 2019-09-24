@@ -27,6 +27,7 @@ export class AddLoadControlComponent implements OnInit {
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   recordMeta: any;
   appState: any;
+  tableRegex = "[A-Za-z][A-Za-z0-9_]*"; //"[A-Za-z0-9_]+";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,6 +48,8 @@ export class AddLoadControlComponent implements OnInit {
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
+    this.setSchemaAndTableValues();
+    this.setLoadStrategyValidators();
     this.getColumnDataType();
     this.getUserInfo();
   }
@@ -63,12 +66,12 @@ export class AddLoadControlComponent implements OnInit {
 
   formInit() {
     this.addLoadControlForm = this.formBuilder.group({
-      SCHEMA_NAME: ['', Validators.required],
-      TABLE_NAME: ['', Validators.required],
+      SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
+      TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       ENV_NAME: ['', Validators.required],
-      TARGET_SCHEMA_NAME: ['', Validators.required],
-      TARGET_TABLE_NAME: ['', Validators.required],
-      EMAIL_ALERTS: ['', Validators.required],
+      TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
+      TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
+      EMAIL_ALERTS: ['Y', Validators.required],
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       RAW_FACTORY_PATH: ['', Validators.pattern(this.s3UrlPattern)],
@@ -80,21 +83,21 @@ export class AddLoadControlComponent implements OnInit {
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
-      CHECK_INDEX_EXIST: ['TRUE'],
-      ETL_STATUS: [''],
+      CHECK_INDEX_EXIST: ['1'],
+      ETL_STATUS: ['NEW_TABLE'],
       ETL_STATUS_REASON: [''],
       ETL_EXECUTION_STATUS: ['TODO'],
       T1_PATH: ['', Validators.pattern(this.s3UrlPattern)],
       T1_RETENTION_STRATEGY: [''],
       T1_RETENTION_DAYS: [0],
-      T1_STATUS: [''],
+      T1_STATUS: ['TODO'],
       T1_BATCH_IN_DAYS: ['', Validators.required],
       T1_MAX_LOAD_END_DATE: [null],
       T1_CLUSTER_ID: ['', Validators.required],
       T1_EXECUTION_STATUS: ['TODO'],
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
-      T2_STATUS: [''],
+      T2_STATUS: ['TODO'],
       T2_INSERT_DIR_BATCH_SIZE: [0, Validators.required],
       T2_PARTITION_JOB_TYPE: ['SINGLE', Validators.required],
       T2_MAX_LOAD_END_DATE: [null],
@@ -113,7 +116,7 @@ export class AddLoadControlComponent implements OnInit {
     const DB_ID = this.addLoadControlForm.get('DB_ID');
     const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');
     const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
-    const DBDB_TABLE_PK_COLUMNS_SCHEMA = this.addLoadControlForm.get('DB_TABLE_PK_COLUMNS');
+    const DB_TABLE_PK_COLUMNS_SCHEMA = this.addLoadControlForm.get('DB_TABLE_PK_COLUMNS');
     const DB_TABLE_UPDATE_DATE_COLUMN = this.addLoadControlForm.get('DB_TABLE_UPDATE_DATE_COLUMN');
     const CHECK_INDEX_EXIST = this.addLoadControlForm.get('CHECK_INDEX_EXIST');
     const RAW_FACTORY_PATH = this.addLoadControlForm.get('RAW_FACTORY_PATH');
@@ -126,16 +129,16 @@ export class AddLoadControlComponent implements OnInit {
 
         if (TABLE_SOURCE === 'ORACLE') {
           DB_ID.setValidators([Validators.required]);
-          DB_SCHEMA.setValidators([Validators.required]);
-          DB_TABLE.setValidators([Validators.required]);
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required]);
-          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required]);
+          DB_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           CHECK_INDEX_EXIST.setValidators([Validators.required]);
 
           DB_ID.enable();
           DB_SCHEMA.enable();
           DB_TABLE.enable();
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.enable();
+          DB_TABLE_PK_COLUMNS_SCHEMA.enable();
           DB_TABLE_UPDATE_DATE_COLUMN.enable();
           CHECK_INDEX_EXIST.enable();
 
@@ -150,14 +153,14 @@ export class AddLoadControlComponent implements OnInit {
           DB_ID.setValidators(null);
           DB_SCHEMA.setValidators(null);
           DB_TABLE.setValidators(null);
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators(null);
           CHECK_INDEX_EXIST.setValidators(null);
 
           DB_ID.disable();
           DB_SCHEMA.disable();
           DB_TABLE.disable();
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.disable();
+          DB_TABLE_PK_COLUMNS_SCHEMA.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();
           CHECK_INDEX_EXIST.disable();
 
@@ -171,7 +174,7 @@ export class AddLoadControlComponent implements OnInit {
         DB_ID.updateValueAndValidity();
         DB_SCHEMA.updateValueAndValidity();
         DB_TABLE.updateValueAndValidity();
-        DBDB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
+        DB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
         DB_TABLE_UPDATE_DATE_COLUMN.updateValueAndValidity();
         RAW_FACTORY_PATH.updateValueAndValidity();
       });
@@ -221,6 +224,50 @@ export class AddLoadControlComponent implements OnInit {
         }
 
         T2_T3_RETENTION_DAYS.updateValueAndValidity();
+      });
+  }
+
+  setSchemaAndTableValues() {
+    const TARGET_SCHEMA_NAME = this.addLoadControlForm.get('TARGET_SCHEMA_NAME');
+    const TARGET_TABLE_NAME = this.addLoadControlForm.get('TARGET_TABLE_NAME');
+    const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');
+    const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
+    let prevSchemaName = "", prevTableName = "";
+
+    this.addLoadControlForm.get('SCHEMA_NAME').valueChanges
+      .subscribe(SCHEMA_NAME => {
+        if (TARGET_SCHEMA_NAME.value.trim() == "" || TARGET_SCHEMA_NAME.value == prevSchemaName || TARGET_SCHEMA_NAME.untouched) {
+          TARGET_SCHEMA_NAME.setValue(SCHEMA_NAME);
+        }
+        if (DB_SCHEMA.value.trim() == "" || DB_SCHEMA.value == prevSchemaName || DB_SCHEMA.untouched) {
+          DB_SCHEMA.setValue(SCHEMA_NAME);
+        }
+        prevSchemaName = SCHEMA_NAME;
+      });
+    this.addLoadControlForm.get('TABLE_NAME').valueChanges
+      .subscribe(TABLE_NAME => {
+        if (TARGET_TABLE_NAME.value.trim() == "" || TARGET_TABLE_NAME.value == prevSchemaName || TARGET_TABLE_NAME.untouched) {
+          TARGET_TABLE_NAME.setValue(TABLE_NAME);
+        }
+        if (DB_TABLE.value.trim() == "" || DB_TABLE.value == prevSchemaName || DB_TABLE.untouched) {
+          DB_TABLE.setValue(TABLE_NAME);
+        }
+        prevSchemaName = TABLE_NAME;
+      });
+  }
+
+  setLoadStrategyValidators() {
+    const TABLE_SOURCE = this.addLoadControlForm.get('TABLE_SOURCE');
+
+    this.addLoadControlForm.get('LOAD_STRATEGY').valueChanges
+      .subscribe(LOAD_STRATEGY => {
+
+        if (LOAD_STRATEGY === 'SAMPLED') {
+          TABLE_SOURCE.setValue('RAW_FACTORY');
+        }
+        else {
+          TABLE_SOURCE.setValue('ORACLE');
+        }
       });
   }
 

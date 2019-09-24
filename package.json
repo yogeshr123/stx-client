@@ -30,6 +30,7 @@
     "moment-timezone": "^0.5.26",
     "ngx-loading": "^3.0.1",
     "ngx-spinner": "^1.1.0",
+    "passport-saml": "^1.2.0",
     "primeicons": "^1.0.0",
     "primeng": "8.0.0",
     "rxjs": "~6.3.3",

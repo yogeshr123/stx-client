@@ -30,7 +30,7 @@ export class EditLoadControlComponent implements OnInit {
   clusters: any[];
   isEdit = false;
   appState: any;
-
+  tableRegex = "[A-Za-z][A-Za-z0-9_]*";
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -76,9 +76,9 @@ export class EditLoadControlComponent implements OnInit {
       SCHEMA_NAME: [{ value: '', disabled: true }],
       TABLE_NAME: [{ value: '', disabled: true }],
       ENV_NAME: [{ value: '', disabled: true }],
-      TARGET_SCHEMA_NAME: ['', Validators.required],
-      TARGET_TABLE_NAME: ['', Validators.required],
-      EMAIL_ALERTS: ['', Validators.required],
+      TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
+      TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
+      EMAIL_ALERTS: ['Y', Validators.required],
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       RAW_FACTORY_PATH: [''],
@@ -90,7 +90,7 @@ export class EditLoadControlComponent implements OnInit {
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
-      CHECK_INDEX_EXIST: ['TRUE'],
+      CHECK_INDEX_EXIST: ['1'],
       T1_PATH: [''],
       T1_RETENTION_STRATEGY: [''],
       T1_RETENTION_DAYS: [0],
@@ -196,6 +196,15 @@ export class EditLoadControlComponent implements OnInit {
             if (dataType == "timestamp") {
               element.patchValue(new Date(this.record[key]));
             }
+            else if (dataType == "bit") {
+              if (this.record[key] && this.record[key].data && this.record[key].data[0] || this.record[key] === 1 ||
+                this.record[key] === true) {
+                element.patchValue('1');
+              }
+              else {
+                element.patchValue('0');
+              }
+            }
             else {
               element.patchValue(this.record[key]);
             }
@@ -236,7 +245,7 @@ export class EditLoadControlComponent implements OnInit {
     const DB_ID = this.editLoadControlForm.get('DB_ID');
     const DB_SCHEMA = this.editLoadControlForm.get('DB_SCHEMA');
     const DB_TABLE = this.editLoadControlForm.get('DB_TABLE');
-    const DBDB_TABLE_PK_COLUMNS_SCHEMA = this.editLoadControlForm.get('DB_TABLE_PK_COLUMNS');
+    const DB_TABLE_PK_COLUMNS_SCHEMA = this.editLoadControlForm.get('DB_TABLE_PK_COLUMNS');
     const DB_TABLE_UPDATE_DATE_COLUMN = this.editLoadControlForm.get('DB_TABLE_UPDATE_DATE_COLUMN');
     const CHECK_INDEX_EXIST = this.editLoadControlForm.get('CHECK_INDEX_EXIST');
     const RAW_FACTORY_PATH = this.editLoadControlForm.get('RAW_FACTORY_PATH');
@@ -249,17 +258,19 @@ export class EditLoadControlComponent implements OnInit {
       .subscribe(TABLE_SOURCE => {
 
         if (TABLE_SOURCE === 'ORACLE') {
+
+
           DB_ID.setValidators([Validators.required]);
-          DB_SCHEMA.setValidators([Validators.required]);
-          DB_TABLE.setValidators([Validators.required]);
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required]);
-          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required]);
+          DB_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           CHECK_INDEX_EXIST.setValidators([Validators.required]);
 
           DB_ID.enable();
           DB_SCHEMA.enable();
           DB_TABLE.enable();
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.enable();
+          DB_TABLE_PK_COLUMNS_SCHEMA.enable();
           DB_TABLE_UPDATE_DATE_COLUMN.enable();
           CHECK_INDEX_EXIST.enable();
 
@@ -274,14 +285,14 @@ export class EditLoadControlComponent implements OnInit {
           DB_ID.setValidators(null);
           DB_SCHEMA.setValidators(null);
           DB_TABLE.setValidators(null);
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators(null);
           CHECK_INDEX_EXIST.setValidators(null);
 
           DB_ID.disable();
           DB_SCHEMA.disable();
           DB_TABLE.disable();
-          DBDB_TABLE_PK_COLUMNS_SCHEMA.disable();
+          DB_TABLE_PK_COLUMNS_SCHEMA.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();
           CHECK_INDEX_EXIST.disable();
 
@@ -295,7 +306,7 @@ export class EditLoadControlComponent implements OnInit {
         DB_ID.updateValueAndValidity();
         DB_SCHEMA.updateValueAndValidity();
         DB_TABLE.updateValueAndValidity();
-        DBDB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
+        DB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
         DB_TABLE_UPDATE_DATE_COLUMN.updateValueAndValidity();
         CHECK_INDEX_EXIST.updateValueAndValidity();
         RAW_FACTORY_PATH.updateValueAndValidity();

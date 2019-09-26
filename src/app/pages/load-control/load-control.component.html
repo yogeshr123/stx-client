@@ -18,418 +18,432 @@
     <div class="tile">
       <p-confirmDialog></p-confirmDialog>
       <div class="row mb-3">
-        <div class="col-md-10">
-          <div appPermission expectedPermission="editLoadControlModule">
-            <button class="btn btn-sm btn-primary mr-2" pTooltip="Trigger ETL"
-              tooltipPosition="bottom" type="button"
-              (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')"
-              [disabled]="selectedRecords.length === 0">
-              <i class="fa fa-bolt"></i>
-            </button>
-            <button class="btn btn-sm btn-danger mr-2" pTooltip="Kill ETL"
-              tooltipPosition="bottom" type="button"
-              (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')"
-              [disabled]="selectedRecords.length === 0">
-              <i class="fa fa-ban"></i>
-            </button>
-            <button class="btn btn-sm btn-primary" pTooltip="Schedule DAG"
-              tooltipPosition="bottom" type="button" (click)="showScheduler()"
-              [disabled]="selectedRecords.length === 0">
-              <i class="fa fa-calendar"></i>
-            </button>
-            <p-dialog modal="true" [(visible)]="schedulerDisplay"
-              styleClass="schedulerModal"
-              [style]="{'width': '600px', 'z-index': '10001'}">
-              <p-header>
-                Scheduling Recurrence
-              </p-header>
-              <form [formGroup]="schedulerForm"
-                (ngSubmit)="onSchedulerSubmit()">
-                <p-fieldset legend="Recurrence pattern">
-                  <p-tabView orientation="left"
-                    [(activeIndex)]="recurrencePatterIndex">
-                    <p-tabPanel header="Once">
-                      Schedule once and only once
-                    </p-tabPanel>
-                    <p-tabPanel header="Hourly">
-                      <span class="label-text mr-2">Minute</span>
-                      <input class="form-input mr-2" type="number" min="0"
-                        max="59" name="hourlyRecurrencePatternMinute"
-                        formControlName="hourlyRecurrencePatternMinute" />
-                      <span class="label-text">of every hour</span>
-                    </p-tabPanel>
-                    <p-tabPanel header="Daily">
-                      <div class="form-group row p-2">
-                        <label class="control-label col-md-3">Start
-                          Time:</label>
-                        <div class="col-md-6">
-                          <p-calendar formControlName="scheduleStartTime"
-                            [timeOnly]="true"></p-calendar>
+        <div class="col-md-12">
+          <div class="row" appPermission
+            expectedPermission="editLoadControlModule">
+            <div class="col-md-5">
+              <button class="btn btn-sm btn-primary mr-2" pTooltip="Trigger ETL"
+                tooltipPosition="bottom" type="button"
+                (click)="confirmAction('TRIGGER ETL', 'changeETLStatus', 'TRIGGER')"
+                [disabled]="selectedRecords.length === 0">
+                <i class="fa fa-bolt"></i>
+              </button>
+              <button class="btn btn-sm btn-danger mr-2" pTooltip="Kill ETL"
+                tooltipPosition="bottom" type="button"
+                (click)="confirmAction('KILL ETL', 'changeETLStatus', 'KILL')"
+                [disabled]="selectedRecords.length === 0">
+                <i class="fa fa-ban"></i>
+              </button>
+              <button class="btn btn-sm btn-primary" pTooltip="Schedule DAG"
+                tooltipPosition="bottom" type="button" (click)="showScheduler()"
+                [disabled]="selectedRecords.length === 0">
+                <i class="fa fa-calendar"></i>
+              </button>
+              <p-dialog modal="true" [(visible)]="schedulerDisplay"
+                styleClass="schedulerModal"
+                [style]="{'width': '600px', 'z-index': '10001'}">
+                <p-header>
+                  Scheduling Recurrence
+                </p-header>
+                <form [formGroup]="schedulerForm"
+                  (ngSubmit)="onSchedulerSubmit()">
+                  <p-fieldset legend="Recurrence pattern">
+                    <p-tabView orientation="left"
+                      [(activeIndex)]="recurrencePatterIndex">
+                      <p-tabPanel header="Once">
+                        Schedule once and only once
+                      </p-tabPanel>
+                      <p-tabPanel header="Hourly">
+                        <span class="label-text mr-2">Minute</span>
+                        <input class="form-input mr-2" type="number" min="0"
+                          max="59" name="hourlyRecurrencePatternMinute"
+                          formControlName="hourlyRecurrencePatternMinute" />
+                        <span class="label-text">of every hour</span>
+                      </p-tabPanel>
+                      <p-tabPanel header="Daily">
+                        <div class="form-group row p-2">
+                          <label class="control-label col-md-3">Start
+                            Time:</label>
+                          <div class="col-md-6">
+                            <p-calendar formControlName="scheduleStartTime"
+                              [timeOnly]="true"></p-calendar>
+                          </div>
                         </div>
-                      </div>
-                      <div class="animated-radio-button m-2">
-                        <label>
-                          <input type="radio" name="dailyRecurrencePattern"
-                            formControlName="dailyRecurrencePattern"
-                            value="selectedday">
-                          <span class="label-text mr-2">Every</span>
-                          <input class="form-input mr-2" type="number" min="1"
-                            max="31" name="dailyRecurrencePatternDay"
-                            formControlName="dailyRecurrencePatternDay">
-                          <span class="label-text">day(s)</span>
-                        </label>
-                      </div>
-                      <div class="animated-radio-button m-2">
-                        <label>
-                          <input type="radio" name="dailyRecurrencePattern"
-                            formControlName="dailyRecurrencePattern"
-                            value="everyweekday">
-                          <span class="label-text">Every Weekday</span>
-                        </label>
-                      </div>
-                    </p-tabPanel>
-                    <p-tabPanel header="Weekly">
-                      <div class="form-group row p-2">
-                        <label class="control-label col-md-3">Start
-                          Time:</label>
-                        <div class="col-md-6">
-                          <p-calendar formControlName="scheduleStartTime"
-                            [timeOnly]="true"></p-calendar>
-                        </div>
-                      </div>
-                      <div class="animated-checkbox row">
-                        <div class="col-md-3">
+                        <div class="animated-radio-button m-2">
                           <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="SUN" label="Sunday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Sunday"></p-checkbox>
-                          </label>
-                          <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="THU" label="Thursday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Thursday"></p-checkbox>
+                            <input type="radio" name="dailyRecurrencePattern"
+                              formControlName="dailyRecurrencePattern"
+                              value="selectedday">
+                            <span class="label-text mr-2">Every</span>
+                            <input class="form-input mr-2" type="number" min="1"
+                              max="31" name="dailyRecurrencePatternDay"
+                              formControlName="dailyRecurrencePatternDay">
+                            <span class="label-text">day(s)</span>
                           </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="animated-radio-button m-2">
                           <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="MON" label="Monday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Monday"></p-checkbox>
-                          </label>
-                          <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="FRI" label="Friday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Friday"></p-checkbox>
+                            <input type="radio" name="dailyRecurrencePattern"
+                              formControlName="dailyRecurrencePattern"
+                              value="everyweekday">
+                            <span class="label-text">Every Weekday</span>
                           </label>
                         </div>
-                        <div class="col-md-3">
-                          <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="TUE" label="Tuesday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Tuesday"></p-checkbox>
-                          </label>
-                          <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="SAT" label="Saturday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Saturday"></p-checkbox>
-                          </label>
+                      </p-tabPanel>
+                      <p-tabPanel header="Weekly">
+                        <div class="form-group row p-2">
+                          <label class="control-label col-md-3">Start
+                            Time:</label>
+                          <div class="col-md-6">
+                            <p-calendar formControlName="scheduleStartTime"
+                              [timeOnly]="true"></p-calendar>
+                          </div>
+                        </div>
+                        <div class="animated-checkbox row">
+                          <div class="col-md-3">
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="SUN" label="Sunday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Sunday"></p-checkbox>
+                            </label>
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="THU" label="Thursday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Thursday"></p-checkbox>
+                            </label>
+                          </div>
+                          <div class="col-md-3">
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="MON" label="Monday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Monday"></p-checkbox>
+                            </label>
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="FRI" label="Friday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Friday"></p-checkbox>
+                            </label>
+                          </div>
+                          <div class="col-md-3">
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="TUE" label="Tuesday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Tuesday"></p-checkbox>
+                            </label>
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="SAT" label="Saturday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Saturday"></p-checkbox>
+                            </label>
 
+                          </div>
+                          <div class="col-md-3">
+                            <label>
+                              <p-checkbox name="weeklyRecurrencePattern"
+                                value="WED" label="Wednesday"
+                                formControlName="weeklyRecurrencePattern"
+                                inputId="Wednesday"></p-checkbox>
+                            </label>
+                          </div>
                         </div>
-                        <div class="col-md-3">
+                      </p-tabPanel>
+                      <p-tabPanel header="Monthly">
+                        <div class="form-group row p-2">
+                          <label class="control-label col-md-3">Start
+                            Time:</label>
+                          <div class="col-md-6">
+                            <p-calendar formControlName="scheduleStartTime"
+                              [timeOnly]="true"></p-calendar>
+                          </div>
+                        </div>
+                        <div class="animated-radio-button m-2">
                           <label>
-                            <p-checkbox name="weeklyRecurrencePattern"
-                              value="WED" label="Wednesday"
-                              formControlName="weeklyRecurrencePattern"
-                              inputId="Wednesday"></p-checkbox>
+                            <input type="radio" name="monthlyRecurrencePattern"
+                              formControlName="monthlyRecurrencePattern"
+                              value="selectedmonthday">
+                            <span class="label-text mr-2">Day</span>
+                            <input class="form-input mr-2" type="number" min="1"
+                              max="31" name="monthlyRecurrencePatternDay"
+                              formControlName="monthlyRecurrencePatternDay">
+                            <span class="label-text mr-2">of every</span>
+                            <input class="form-input mr-2" type="number" min="1"
+                              max="12" name="monthlyRecurrencePatternMonth"
+                              formControlName="monthlyRecurrencePatternMonth">
+                            <span class="label-text mr-2">Month(s)</span>
                           </label>
                         </div>
-                      </div>
-                    </p-tabPanel>
-                    <p-tabPanel header="Monthly">
-                      <div class="form-group row p-2">
-                        <label class="control-label col-md-3">Start
-                          Time:</label>
-                        <div class="col-md-6">
-                          <p-calendar formControlName="scheduleStartTime"
-                            [timeOnly]="true"></p-calendar>
+                        <div class="animated-radio-button m-2">
+                          <label>
+                            <input type="radio" name="monthlyRecurrencePattern"
+                              formControlName="monthlyRecurrencePattern"
+                              value="selectedmonthformat">
+                            <span class="label-text mr-2">The</span>
+                            <select class="mr-2"
+                              name="monthlyRecurrencePatternDayFormat"
+                              formControlName="monthlyRecurrencePatternDayFormat">
+                              <option value="1">first</option>
+                              <option value="2">second</option>
+                              <option value="3">third</option>
+                              <option value="4">fourth</option>
+                              <option value="5">last</option>
+                            </select>
+                            <select class="mr-2"
+                              name="monthlyRecurrencePatternWeekFormat"
+                              formControlName="monthlyRecurrencePatternWeekFormat">
+                              <!-- <option value="day">Day</option> -->
+                              <!-- <option value="weekday">Weekday</option> -->
+                              <!-- <option value="weekendday">Weekend day</option> -->
+                              <option value="SUN">Sunday</option>
+                              <option value="MON">Monday</option>
+                              <option value="TUE">Tuesday</option>
+                              <option value="WED">Wednesday</option>
+                              <option value="THU">Thursday</option>
+                              <option value="FRI">Friday</option>
+                              <option value="SAT">Saturday</option>
+                            </select>
+                            <span class="label-text mr-2">of every</span>
+                            <input class="form-input mr-2" type="number" min="1"
+                              max="12" name="monthlyRecurrencePatternMonth"
+                              formControlName="monthlyRecurrencePatternMonth">
+                            <span class="label-text">Month(s)</span>
+                          </label>
+                        </div>
+                      </p-tabPanel>
+                      <p-tabPanel header="Yearly">
+                        <div class="form-group row p-2">
+                          <label class="control-label col-md-3">Start
+                            Time:</label>
+                          <div class="col-md-6">
+                            <p-calendar formControlName="scheduleStartTime"
+                              [timeOnly]="true"></p-calendar>
+                          </div>
+                        </div>
+                        <div class="animated-radio-button m-2">
+                          <label>
+                            <input type="radio" name="yearlyRecurrencePattern"
+                              formControlName="yearlyRecurrencePattern"
+                              value="selectedyearmonth">
+                            <span class="label-text mr-2">on:</span>
+                            <select class="mr-2"
+                              name="yearlyRecurrencePatternMonth"
+                              formControlName="yearlyRecurrencePatternMonth">
+                              <option value="1">January</option>
+                              <option value="2">February</option>
+                              <option value="3">March</option>
+                              <option value="4">April</option>
+                              <option value="5">May</option>
+                              <option value="6">June</option>
+                              <option value="7">July</option>
+                              <option value="8">August</option>
+                              <option value="9">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                            </select>
+                            <input class="form-input mr-2" type="number" min="1"
+                              max="31" name="yearlyRecurrencePatternDay"
+                              formControlName="yearlyRecurrencePatternDay">
+                          </label>
+                        </div>
+                        <div class="animated-radio-button ml-2">
+                          <label>
+                            <input type="radio" name="yearlyRecurrencePattern"
+                              formControlName="yearlyRecurrencePattern"
+                              value="selectedyearformat">
+                            <span class="label-text mr-2">on the:</span>
+                            <select class="mr-2"
+                              name="yearlyRecurrencePatternDayFormat"
+                              formControlName="yearlyRecurrencePatternDayFormat">
+                              <option value="1">first</option>
+                              <option value="2">second</option>
+                              <option value="3">third</option>
+                              <option value="4">fourth</option>
+                              <option value="5">last</option>
+                            </select>
+                            <select class="mr-2"
+                              name="yearlyRecurrencePatternWeekFormat"
+                              formControlName="yearlyRecurrencePatternWeekFormat">
+                              <!-- <option value="day">Day</option> -->
+                              <!-- <option value="weekday">Weekday</option> -->
+                              <!-- <option value="weekendday">Weekend day</option> -->
+                              <option value="SUN">Sunday</option>
+                              <option value="MON">Monday</option>
+                              <option value="TUE">Tuesday</option>
+                              <option value="WED">Wednesday</option>
+                              <option value="THU">Thursday</option>
+                              <option value="FRI">Friday</option>
+                              <option value="SAT">Saturday</option>
+                            </select>
+                            <span class="label-text mr-2">of</span>
+                            <select class="mr-2"
+                              name="yearlyRecurrencePatternMonth"
+                              formControlName="yearlyRecurrencePatternMonth">
+                              <option value="1">January</option>
+                              <option value="2">February</option>
+                              <option value="3">March</option>
+                              <option value="4">April</option>
+                              <option value="5">May</option>
+                              <option value="6">June</option>
+                              <option value="7">July</option>
+                              <option value="8">August</option>
+                              <option value="9">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                            </select>
+                          </label>
+                        </div>
+                      </p-tabPanel>
+                    </p-tabView>
+                  </p-fieldset>
+                  <p-footer>
+                    <div class="text-right mt-2">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button class="btn btn-sm btn-primary">
+                            <i
+                              class="fa fa-fw fa-lg fa-check-circle"></i>Schedule</button>&nbsp;&nbsp;&nbsp;
+                          <button class="btn btn-sm btn-secondary"
+                            (click)="schedulerDisplay=false">
+                            <i
+                              class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</button>
                         </div>
                       </div>
-                      <div class="animated-radio-button m-2">
-                        <label>
-                          <input type="radio" name="monthlyRecurrencePattern"
-                            formControlName="monthlyRecurrencePattern"
-                            value="selectedmonthday">
-                          <span class="label-text mr-2">Day</span>
-                          <input class="form-input mr-2" type="number" min="1"
-                            max="31" name="monthlyRecurrencePatternDay"
-                            formControlName="monthlyRecurrencePatternDay">
-                          <span class="label-text mr-2">of every</span>
-                          <input class="form-input mr-2" type="number" min="1"
-                            max="12" name="monthlyRecurrencePatternMonth"
-                            formControlName="monthlyRecurrencePatternMonth">
-                          <span class="label-text mr-2">Month(s)</span>
-                        </label>
-                      </div>
-                      <div class="animated-radio-button m-2">
-                        <label>
-                          <input type="radio" name="monthlyRecurrencePattern"
-                            formControlName="monthlyRecurrencePattern"
-                            value="selectedmonthformat">
-                          <span class="label-text mr-2">The</span>
-                          <select class="mr-2"
-                            name="monthlyRecurrencePatternDayFormat"
-                            formControlName="monthlyRecurrencePatternDayFormat">
-                            <option value="1">first</option>
-                            <option value="2">second</option>
-                            <option value="3">third</option>
-                            <option value="4">fourth</option>
-                            <option value="5">last</option>
-                          </select>
-                          <select class="mr-2"
-                            name="monthlyRecurrencePatternWeekFormat"
-                            formControlName="monthlyRecurrencePatternWeekFormat">
-                            <!-- <option value="day">Day</option> -->
-                            <!-- <option value="weekday">Weekday</option> -->
-                            <!-- <option value="weekendday">Weekend day</option> -->
-                            <option value="SUN">Sunday</option>
-                            <option value="MON">Monday</option>
-                            <option value="TUE">Tuesday</option>
-                            <option value="WED">Wednesday</option>
-                            <option value="THU">Thursday</option>
-                            <option value="FRI">Friday</option>
-                            <option value="SAT">Saturday</option>
-                          </select>
-                          <span class="label-text mr-2">of every</span>
-                          <input class="form-input mr-2" type="number" min="1"
-                            max="12" name="monthlyRecurrencePatternMonth"
-                            formControlName="monthlyRecurrencePatternMonth">
-                          <span class="label-text">Month(s)</span>
-                        </label>
-                      </div>
-                    </p-tabPanel>
-                    <p-tabPanel header="Yearly">
-                      <div class="form-group row p-2">
-                        <label class="control-label col-md-3">Start
-                          Time:</label>
-                        <div class="col-md-6">
-                          <p-calendar formControlName="scheduleStartTime"
-                            [timeOnly]="true"></p-calendar>
-                        </div>
-                      </div>
-                      <div class="animated-radio-button m-2">
-                        <label>
-                          <input type="radio" name="yearlyRecurrencePattern"
-                            formControlName="yearlyRecurrencePattern"
-                            value="selectedyearmonth">
-                          <span class="label-text mr-2">on:</span>
-                          <select class="mr-2"
-                            name="yearlyRecurrencePatternMonth"
-                            formControlName="yearlyRecurrencePatternMonth">
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                          </select>
-                          <input class="form-input mr-2" type="number" min="1"
-                            max="31" name="yearlyRecurrencePatternDay"
-                            formControlName="yearlyRecurrencePatternDay">
-                        </label>
-                      </div>
-                      <div class="animated-radio-button ml-2">
-                        <label>
-                          <input type="radio" name="yearlyRecurrencePattern"
-                            formControlName="yearlyRecurrencePattern"
-                            value="selectedyearformat">
-                          <span class="label-text mr-2">on the:</span>
-                          <select class="mr-2"
-                            name="yearlyRecurrencePatternDayFormat"
-                            formControlName="yearlyRecurrencePatternDayFormat">
-                            <option value="1">first</option>
-                            <option value="2">second</option>
-                            <option value="3">third</option>
-                            <option value="4">fourth</option>
-                            <option value="5">last</option>
-                          </select>
-                          <select class="mr-2"
-                            name="yearlyRecurrencePatternWeekFormat"
-                            formControlName="yearlyRecurrencePatternWeekFormat">
-                            <!-- <option value="day">Day</option> -->
-                            <!-- <option value="weekday">Weekday</option> -->
-                            <!-- <option value="weekendday">Weekend day</option> -->
-                            <option value="SUN">Sunday</option>
-                            <option value="MON">Monday</option>
-                            <option value="TUE">Tuesday</option>
-                            <option value="WED">Wednesday</option>
-                            <option value="THU">Thursday</option>
-                            <option value="FRI">Friday</option>
-                            <option value="SAT">Saturday</option>
-                          </select>
-                          <span class="label-text mr-2">of</span>
-                          <select class="mr-2"
-                            name="yearlyRecurrencePatternMonth"
-                            formControlName="yearlyRecurrencePatternMonth">
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                          </select>
-                        </label>
-                      </div>
-                    </p-tabPanel>
-                  </p-tabView>
-                </p-fieldset>
+                    </div>
+                  </p-footer>
+                </form>
+              </p-dialog>
+              <p-dialog modal="true" [(visible)]="changeStatusDisplay"
+                styleClass="schedulerModal"
+                [style]="{'width': '600px', 'z-index': '10001'}">
+                <p-header>
+                  Change Status
+                </p-header>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label">Select status</label>
+                    <select [(ngModel)]="statusValue" class="form-control">
+                      <option value="TODO">TODO</option>
+                      <option value="HOLD">HOLD</option>
+                    </select>
+                  </div>
+                  <div class="form-group"
+                    *ngIf="statusType === 'ETL' && statusValue === 'HOLD'">
+                    <label class="control-label">ETL HOLD REASON</label>
+                    <input class="form-control" [(ngModel)]="statusValueReason"
+                      type="text" />
+                  </div>
+                </div>
                 <p-footer>
-                  <div class="text-right mt-2">
+                  <div class="text-right">
                     <div class="row">
                       <div class="col-md-12">
-                        <button class="btn btn-sm btn-primary">
+                        <button class="btn btn-sm btn-primary"
+                          (click)="confirmAction('Are you sure?', 'changeStatus', null)">
                           <i
-                            class="fa fa-fw fa-lg fa-check-circle"></i>Schedule</button>&nbsp;&nbsp;&nbsp;
+                            class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-sm btn-secondary"
-                          (click)="schedulerDisplay=false">
+                          (click)="changeStatusDisplay=false">
                           <i
                             class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</button>
                       </div>
                     </div>
                   </div>
                 </p-footer>
-              </form>
-            </p-dialog>
-            <p-dialog modal="true" [(visible)]="changeStatusDisplay"
-              styleClass="schedulerModal"
-              [style]="{'width': '600px', 'z-index': '10001'}">
-              <p-header>
-                Change Status
-              </p-header>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="control-label">Select status</label>
-                  <select [(ngModel)]="statusValue" class="form-control">
-                    <option value="TODO">TODO</option>
-                    <option value="HOLD">HOLD</option>
-                  </select>
-                </div>
-                <div class="form-group"
-                  *ngIf="statusType === 'ETL' && statusValue === 'HOLD'">
-                  <label class="control-label">ETL HOLD REASON</label>
-                  <input class="form-control" [(ngModel)]="statusValueReason"
-                    type="text" />
-                </div>
-              </div>
-              <p-footer>
-                <div class="text-right">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <button class="btn btn-sm btn-primary"
-                        (click)="confirmAction('Are you sure?', 'changeStatus', null)">
-                        <i
-                          class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-                      <button class="btn btn-sm btn-secondary"
-                        (click)="changeStatusDisplay=false">
-                        <i
-                          class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </p-footer>
-            </p-dialog>
-            <div class="separator-vertical"></div>
-            <!-- <button class="dropdown-item" (click)="resetTable()">Reset Table
+              </p-dialog>
+              <div class="separator-vertical"></div>
+              <!-- <button class="dropdown-item" (click)="resetTable()">Reset Table
                 State</button> -->
-            <button class="btn btn-sm btn-outline-primary" pTooltip="Reset Table
+              <button class="btn btn-sm btn-outline-primary" pTooltip="Reset Table
                 State" tooltipPosition="bottom" type="button"
-              (click)="resetTable()">
-              <i class="fa fa-refresh"></i>
-            </button>
-            <div class="separator-vertical"></div>
-            <div class="btn-group">
-              <button type="button"
-                class="btn btn-sm btn-outline-primary dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" [disabled]="selectedRecords.length === 0">
-                More Actions
+                (click)="resetTable()">
+                <i class="fa fa-refresh"></i>
               </button>
-              <div class="dropdown-menu">
-                <button class="dropdown-item"
-                  (click)="confirmAction('Reset ETL Execution Status', 'resetExecutionStatus', 'ETL')">Reset
-                  ETL Execution
-                  Status</button>
-                <button class="dropdown-item"
-                  (click)="confirmAction('Reset T1 Execution Status', 'resetExecutionStatus', 'T1')">Reset
-                  T1 Execution
-                  Status</button>
-                <button class="dropdown-item"
-                  (click)="confirmAction('Reset T2 Execution Status', 'resetExecutionStatus', 'T2')">Reset
-                  T2 Execution
-                  Status</button>
-                <button class="dropdown-item"
-                  (click)="confirmAction('Reset All Execution Statuses', 'resetExecutionStatus', 'All')">Reset
-                  All Execution
-                  Statuses</button>
-                <div class="dropdown-divider"></div>
-                <button class="dropdown-item"
-                  (click)="showStatusDialog('ETL')">Change ETL STATUS
+              <div class="separator-vertical"></div>
+              <div class="btn-group">
+                <button type="button"
+                  class="btn btn-sm btn-outline-primary dropdown-toggle"
+                  data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"
+                  [disabled]="selectedRecords.length === 0">
+                  More Actions
                 </button>
-                <button class="dropdown-item"
-                  (click)="showStatusDialog('T1')">Change T1 STATUS
-                </button>
-                <button class="dropdown-item"
-                  (click)="showStatusDialog('T2')">Change T2 STATUS
-                </button>
+                <div class="dropdown-menu">
+                  <button class="dropdown-item"
+                    (click)="confirmAction('Reset ETL Execution Status', 'resetExecutionStatus', 'ETL')">Reset
+                    ETL Execution
+                    Status</button>
+                  <button class="dropdown-item"
+                    (click)="confirmAction('Reset T1 Execution Status', 'resetExecutionStatus', 'T1')">Reset
+                    T1 Execution
+                    Status</button>
+                  <button class="dropdown-item"
+                    (click)="confirmAction('Reset T2 Execution Status', 'resetExecutionStatus', 'T2')">Reset
+                    T2 Execution
+                    Status</button>
+                  <button class="dropdown-item"
+                    (click)="confirmAction('Reset All Execution Statuses', 'resetExecutionStatus', 'All')">Reset
+                    All Execution
+                    Statuses</button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item"
+                    (click)="showStatusDialog('ETL')">Change ETL STATUS
+                  </button>
+                  <button class="dropdown-item"
+                    (click)="showStatusDialog('T1')">Change T1 STATUS
+                  </button>
+                  <button class="dropdown-item"
+                    (click)="showStatusDialog('T2')">Change T2 STATUS
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="separator-vertical"></div>
-            <span class="border p-2 border-info">
-              <span class="table-status">
-                Status legend:
-                <span class="mr-2">
-                  <i class="fa fa-circle TODO" aria-hidden="true"></i>
-                  TODO
+            <div class="col-md-7">
+              <div class="border p-2 border-info float-left">
+                <span class="table-status">
+                  Status legend:
+                  <span class="mr-2">
+                    <i class="fa fa-circle TODO" aria-hidden="true"></i>
+                    TODO
+                  </span>
+                  <span class="mr-2">
+                    <i class="fa fa-circle RUNNING" aria-hidden="true"></i>
+                    RUNNING
+                  </span>
+                  <span class="mr-2">
+                    <i class="fa fa-circle COMPLETE" aria-hidden="true"></i>
+                    COMPLETE
+                  </span>
+                  <span class="mr-2">
+                    <i class="fa fa-circle FAILED" aria-hidden="true"></i>
+                    FAILED
+                  </span>
+                  <span class="mr-2">
+                    <i class="fa fa-circle HOLD" aria-hidden="true"></i>
+                    HOLD
+                  </span>
+                  <span class="mr-2">
+                    <i class="fa fa-circle" aria-hidden="true"></i>
+                    OTHER
+                  </span>
                 </span>
-                <span class="mr-2">
-                  <i class="fa fa-circle RUNNING" aria-hidden="true"></i>
-                  RUNNING
-                </span>
-                <span class="mr-2">
-                  <i class="fa fa-circle COMPLETE" aria-hidden="true"></i>
-                  COMPLETE
-                </span>
-                <span class="mr-2">
-                  <i class="fa fa-circle FAILED" aria-hidden="true"></i>
-                  FAILED
-                </span>
-              </span>
-            </span>
+              </div>
+              <div class="btn-group float-right" appPermission
+                expectedPermission="addLoadControlModule">
+                <a class="btn btn-sm btn-primary" routerLinkActive="active"
+                  routerLink="/loadcontrol/add">Add new</a>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-2">
-          <div class="btn-group float-right" appPermission
-            expectedPermission="addLoadControlModule">
-            <a class="btn btn-sm btn-primary" routerLinkActive="active"
-              routerLink="/loadcontrol/add">Add new</a>
-          </div>
+
         </div>
       </div>
       <div class="clearfix"></div>

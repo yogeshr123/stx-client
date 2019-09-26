@@ -273,20 +273,39 @@ export class LoadControlComponent implements OnInit {
     if (this.selectedRecords.length > 0) {
       let records = [];
       for (var _i = 0; _i < this.selectedRecords.length; _i++) {
-        records.push({
-          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-        })
+        if (status === "TRIGGER") {
+          if ((this.selectedRecords[_i].TABLE_STATUS === "TODO" || this.selectedRecords[_i].TABLE_STATUS === "COMPLETE")
+            && this.selectedRecords[_i].DAG_AVAILABLE_STATUS === "COMPLETE") {
+            records.push({
+              SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+              TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+              ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+            })
+          }
+        }
+        else if (status === "KILL") {
+          if (this.selectedRecords[_i].TABLE_STATUS === "RUNNING" && this.selectedRecords[_i].DAG_AVAILABLE_STATUS === "COMPLETE") {
+            records.push({
+              SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+              TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+              ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+            })
+          }
+        }
       }
-      const body: any = {
-        records: records,
-        status: status,
-      };
-      this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
-        console.log(data);
-        this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
-      });
+      if (records.length > 0) {
+        const body: any = {
+          records: records,
+          status: status,
+        };
+        this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
+          console.log(data);
+          this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
+        });
+      }
+      else {
+        this.showToast('info', 'No record found for the valid criteria');
+      }
     }
   }
 

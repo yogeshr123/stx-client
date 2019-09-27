@@ -551,29 +551,31 @@ export class LoadControlComponent implements OnInit {
       alert(`cronexpression is none`);
     }
 
-    if (this.selectedRecords && this.selectedRecords.length > 0 && isValidCronExpression) {
-      let records = [];
-      for (var _i = 0; _i < this.selectedRecords.length; _i++) {
-        records.push({
-          SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-          TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-          ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-          DAG_SCHEDULE_INTERVAL: cronExpression,
-          UPDATED_BY: this.appState.loggedInUser.USER_NAME,
-          UPDATE_DATE: `${new Date()}`
-        })
-      }
-      const body: any = {
-        records: records
-      };
+    if (this.selectedRecords && this.selectedRecords.length > 0) {
+      if (isValidCronExpression) {
+        let records = [];
+        for (var _i = 0; _i < this.selectedRecords.length; _i++) {
+          records.push({
+            SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
+            TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
+            ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+            DAG_SCHEDULE_INTERVAL: cronExpression,
+            UPDATED_BY: this.appState.loggedInUser.USER_NAME,
+            UPDATE_DATE: `${new Date()}`
+          })
+        }
+        const body: any = {
+          records: records
+        };
 
-      this.loadControlService.setSchedulerInterval(body).subscribe((data: any) => {
-        this.loadAllRecords();
-        this.schedulerDisplay = false;
-        this.showToast('success', 'Scheduler interval saved');
-      }, error => {
-        this.showToast('error', 'Could not save Scheduler interval.');
-      });
+        this.loadControlService.setSchedulerInterval(body).subscribe((data: any) => {
+          this.loadAllRecords();
+          this.schedulerDisplay = false;
+          this.showToast('success', 'Scheduler interval saved');
+        }, error => {
+          this.showToast('error', 'Could not save Scheduler interval.');
+        });
+      }
     }
     else {
       this.showToast('info', 'Please select records first');

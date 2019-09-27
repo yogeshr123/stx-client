@@ -534,6 +534,10 @@ export class LoadControlComponent implements OnInit {
       }
 
     }
+    else if (this.recurrencePatterIndex == 6) {
+      cronExpression = "none";
+      alert(`cronexpression is none`);
+    }
 
     if (this.selectedRecords && this.selectedRecords.length > 0) {
       let records = [];

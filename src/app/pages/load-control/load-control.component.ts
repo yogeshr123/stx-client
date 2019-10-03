@@ -35,6 +35,7 @@ export class LoadControlComponent implements OnInit {
   statusValue: string;
   statusValueReason: string;
   loader = false;
+  weekelyRecurrenceCheckedDays = [];
 
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
@@ -266,7 +267,7 @@ export class LoadControlComponent implements OnInit {
   }
 
   onStateSave(event: any) {
-    console.log(event);
+    // console.log(event);
   }
 
   changeETLStatus(status: string) {
@@ -299,7 +300,6 @@ export class LoadControlComponent implements OnInit {
           status: status,
         };
         this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
-          console.log(data);
           this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
         });
       }
@@ -416,6 +416,14 @@ export class LoadControlComponent implements OnInit {
     this.schedulerDisplay = true;
   }
 
+  onCheckWeeklyRecurrencePattern(event, inputId) {
+    if (event) {
+      this.weekelyRecurrenceCheckedDays.push(inputId);
+    } else {
+      this.weekelyRecurrenceCheckedDays = this.weekelyRecurrenceCheckedDays.filter(i => i !== inputId);
+    }
+  }
+
   onSchedulerSubmit() {
     // this.schedulerDisplay = false;
     let cronExpression = "";
@@ -440,7 +448,6 @@ export class LoadControlComponent implements OnInit {
       let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
       let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
       //  Set daily recucrrence pattern
-      console.log(this.schedulerForm.controls.dailyRecurrencePattern.value);
       if (this.schedulerForm.controls.dailyRecurrencePattern.value == "selectedday") {
         const dailyRecurrencePatternDay = this.schedulerForm.controls.dailyRecurrencePatternDay.value;
         if (dailyRecurrencePatternDay > 0) {
@@ -457,18 +464,14 @@ export class LoadControlComponent implements OnInit {
       }
     } else if (this.recurrencePatterIndex == 3) {
       const scheduleStartTime = this.schedulerForm.controls.scheduleStartTime.value;
-      let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
-      let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
+      const scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
+      const scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
       //  Set weekly recucrrence pattern
-
-      const weeklyRecurrencePattern = this.schedulerForm.controls.weeklyRecurrencePattern.value;
-      console.log(weeklyRecurrencePattern);
-      if (weeklyRecurrencePattern.length > 0) {
-        let weekString = weeklyRecurrencePattern.join(',');
+      if (this.weekelyRecurrenceCheckedDays.length > 0) {
+        const weekString = this.weekelyRecurrenceCheckedDays.join(',');
         cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * * ${weekString} *`;
         isValidCronExpression = true;
         alert(`Generated cronexpression is ${cronExpression}`);
-        //   // 0 10 * * MON,TUE
       } else {
         this.showToast('warn', 'Recurrence pattern is not valid');
       }

@@ -425,20 +425,17 @@ export class LoadControlComponent implements OnInit {
       cronExpression = "@daily";
       isValidCronExpression = true;
       alert(`cronexpression is @daily`);
-    }
-    else if (this.recurrencePatterIndex == 1) {
+    } else if (this.recurrencePatterIndex == 1) {
       //  Set hourly recucrrence pattern
       const hourlyRecurrencePatternMinute = this.schedulerForm.controls.hourlyRecurrencePatternMinute.value;
       if (hourlyRecurrencePatternMinute >= 0 && hourlyRecurrencePatternMinute <= 59) {
-        cronExpression = `${hourlyRecurrencePatternMinute} * * * *`;
+        cronExpression = `${hourlyRecurrencePatternMinute} * * * * *`;
         isValidCronExpression = true;
         alert(`Generated cronexpression is ${cronExpression}`);
-      }
-      else {
+      } else {
         this.showToast('warn', 'Recurrence pattern is not valid');
       }
-    }
-    else if (this.recurrencePatterIndex == 2) {
+    } else if (this.recurrencePatterIndex == 2) {
       const scheduleStartTime = this.schedulerForm.controls.scheduleStartTime.value;
       let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
       let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
@@ -447,21 +444,18 @@ export class LoadControlComponent implements OnInit {
       if (this.schedulerForm.controls.dailyRecurrencePattern.value == "selectedday") {
         const dailyRecurrencePatternDay = this.schedulerForm.controls.dailyRecurrencePatternDay.value;
         if (dailyRecurrencePatternDay > 0) {
-          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} 1/${dailyRecurrencePatternDay} * *`;
+          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} 1/${dailyRecurrencePatternDay} * * *`;
           isValidCronExpression = true;
           alert(`Generated cronexpression is ${cronExpression}`);
-        }
-        else {
+        } else {
           this.showToast('warn', 'Recurrence pattern is not valid');
         }
-      }
-      else if (this.schedulerForm.controls.dailyRecurrencePattern.value == "everyweekday") {
-        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * * MON-FRI`;
+      } else if (this.schedulerForm.controls.dailyRecurrencePattern.value == "everyweekday") {
+        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * * MON-FRI *`;
         isValidCronExpression = true;
         alert(`Generated cronexpression is ${cronExpression}`);
       }
-    }
-    else if (this.recurrencePatterIndex == 3) {
+    } else if (this.recurrencePatterIndex == 3) {
       const scheduleStartTime = this.schedulerForm.controls.scheduleStartTime.value;
       let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
       let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
@@ -471,17 +465,14 @@ export class LoadControlComponent implements OnInit {
       console.log(weeklyRecurrencePattern);
       if (weeklyRecurrencePattern.length > 0) {
         let weekString = weeklyRecurrencePattern.join(',');
-        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * * ${weekString}`;
+        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * * ${weekString} *`;
         isValidCronExpression = true;
         alert(`Generated cronexpression is ${cronExpression}`);
         //   // 0 10 * * MON,TUE
-      }
-      else {
+      } else {
         this.showToast('warn', 'Recurrence pattern is not valid');
       }
-
-    }
-    else if (this.recurrencePatterIndex == 4) {
+    } else if (this.recurrencePatterIndex == 4) {
       const scheduleStartTime = this.schedulerForm.controls.scheduleStartTime.value;
       let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
       let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
@@ -490,31 +481,27 @@ export class LoadControlComponent implements OnInit {
         const monthlyRecurrencePatternDay = this.schedulerForm.controls.monthlyRecurrencePatternDay.value;
         const monthlyRecurrencePatternMonth = this.schedulerForm.controls.monthlyRecurrencePatternMonth.value;
         if (monthlyRecurrencePatternDay > 0 && monthlyRecurrencePatternDay <= 31 && monthlyRecurrencePatternMonth > 0 && monthlyRecurrencePatternMonth <= 12) {
-          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} ${monthlyRecurrencePatternDay} 1/${monthlyRecurrencePatternMonth} *`;
+          // tslint:disable-next-line:max-line-length
+          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} ${monthlyRecurrencePatternDay} 1/${monthlyRecurrencePatternMonth} * *`;
           isValidCronExpression = true;
           alert(`Generated cronexpression is ${cronExpression}`);
-          //0 10 10 1/5 *  
-        }
-        else {
+        } else {
           this.showToast('warn', 'Recurrence pattern is not valid');
         }
-      }
-      else if (this.schedulerForm.controls.monthlyRecurrencePattern.value == "selectedmonthformat") {
+      } else if (this.schedulerForm.controls.monthlyRecurrencePattern.value == "selectedmonthformat") {
         const monthlyRecurrencePatternDayFormat = this.schedulerForm.controls.monthlyRecurrencePatternDayFormat.value;
         const monthlyRecurrencePatternWeekFormat = this.schedulerForm.controls.monthlyRecurrencePatternWeekFormat.value;
         const monthlyRecurrencePatternMonth = this.schedulerForm.controls.monthlyRecurrencePatternMonth.value;
         if (monthlyRecurrencePatternMonth > 0 && monthlyRecurrencePatternMonth <= 12) {
-          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * 1/${monthlyRecurrencePatternMonth} ${monthlyRecurrencePatternWeekFormat}#${monthlyRecurrencePatternDayFormat}`;
+          // tslint:disable-next-line:max-line-length
+          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * 1/${monthlyRecurrencePatternMonth} ${monthlyRecurrencePatternWeekFormat}#${monthlyRecurrencePatternDayFormat} *`;
           isValidCronExpression = true;
           alert(`Generated cronexpression is ${cronExpression}`);
-          //0 12 * 1/2 MON#3
-        }
-        else {
+        } else {
           this.showToast('warn', 'Recurrence pattern is not valid');
         }
       }
-    }
-    else if (this.recurrencePatterIndex == 5) {
+    } else if (this.recurrencePatterIndex == 5) {
       const scheduleStartTime = this.schedulerForm.controls.scheduleStartTime.value;
       let scheduleStartTimeHour = new Date(scheduleStartTime).getHours();
       let scheduleStartTimeMin = new Date(scheduleStartTime).getMinutes();
@@ -523,29 +510,22 @@ export class LoadControlComponent implements OnInit {
         const yearlyRecurrencePatternMonth = this.schedulerForm.controls.yearlyRecurrencePatternMonth.value;
         const yearlyRecurrencePatternDay = this.schedulerForm.controls.yearlyRecurrencePatternDay.value;
         if (yearlyRecurrencePatternDay > 0 && yearlyRecurrencePatternDay <= 31) {
-          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} ${yearlyRecurrencePatternDay} ${yearlyRecurrencePatternMonth} *`;
+          cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} ${yearlyRecurrencePatternDay} ${yearlyRecurrencePatternMonth} * *`;
           isValidCronExpression = true;
           alert(`Generated cronexpression is ${cronExpression}`);
-          //0 10 20 1 *
-
-
-        }
-        else {
+        } else {
           this.showToast('warn', 'Recurrence pattern is not valid');
         }
-      }
-      else if (this.schedulerForm.controls.yearlyRecurrencePattern.value == "selectedyearformat") {
+      } else if (this.schedulerForm.controls.yearlyRecurrencePattern.value == "selectedyearformat") {
         const yearlyRecurrencePatternDayFormat = this.schedulerForm.controls.yearlyRecurrencePatternDayFormat.value;
         const yearlyRecurrencePatternWeekFormat = this.schedulerForm.controls.yearlyRecurrencePatternWeekFormat.value;
         const yearlyRecurrencePatternMonth = this.schedulerForm.controls.yearlyRecurrencePatternMonth.value;
-        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * ${yearlyRecurrencePatternMonth} ${yearlyRecurrencePatternWeekFormat}#${yearlyRecurrencePatternDayFormat}`;
+        // tslint:disable-next-line:max-line-length
+        cronExpression = `${scheduleStartTimeMin} ${scheduleStartTimeHour} * ${yearlyRecurrencePatternMonth} ${yearlyRecurrencePatternWeekFormat}#${yearlyRecurrencePatternDayFormat} *`;
         isValidCronExpression = true;
         alert(`Generated cronexpression is ${cronExpression}`);
-        //0 12 * 5 WED#2
       }
-
-    }
-    else if (this.recurrencePatterIndex == 6) {
+    } else if (this.recurrencePatterIndex == 6) {
       cronExpression = "none";
       isValidCronExpression = true;
       alert(`cronexpression is none`);

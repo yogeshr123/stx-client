@@ -38,8 +38,8 @@ export class AllVersionsComponent implements OnInit {
   getAllTables() {
     this.versionsLoader = true;
     this.columnMetadataService.getAllTablesInVersions({ queryString: this.globalQuery }).subscribe((resp: any) => {
+      this.tables = resp.data;
       if (resp.data && resp.data.length) {
-        this.tables = resp.data;
         this.tables.forEach(element => {
           if (element.STATUS.toLowerCase() === 'new') {
             this.statusDefaultFilter = 'NEW';
@@ -48,9 +48,9 @@ export class AllVersionsComponent implements OnInit {
         // Trigger New Filter After some Time
         setTimeout(() => {
           this.triggerDefaultFilter();
-          this.versionsLoader = false;
         }, 0);
       }
+      this.versionsLoader = false;
     }, error => {
       this.showToast('error', 'Could not get table versions.');
       this.versionsLoader = false;

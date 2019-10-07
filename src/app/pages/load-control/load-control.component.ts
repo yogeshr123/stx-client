@@ -371,7 +371,7 @@ export class LoadControlComponent implements OnInit {
         query: this.globalQuery
       };
       this.loadControlService.getSearchQueryResult(body).subscribe((data: any) => {
-        if (data.data && data.data.length > 0) {
+        if (data && data.data) {
           this.recordsArray = data.data;
         }
       }, error => {

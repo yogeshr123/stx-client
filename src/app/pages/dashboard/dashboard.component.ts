@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
     if (this.globalQuery) {
       this.dataLoader = true;
       this.loadControlService.getSearchQueryResult({ query: this.globalQuery }).subscribe((data: any) => {
-        if (data.data && data.data.length > 0) {
+        if (data && data.data) {
           this.recordsArray = data.data;
           this.dataLoader = false;
         }

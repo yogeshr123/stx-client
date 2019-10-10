@@ -91,6 +91,26 @@ export class LoadingStatusSummaryComponent implements OnInit {
             }
           }
           this.recordsArray = dataArray;
+          // To Get Total Records
+          const onlyStatusesAll = dataLatency.map(i => i.TABLE_STATUS);
+          const onlyStatuses = onlyStatusesAll.filter(this.onlyUniqueFromArray);
+          const totalObject = {
+            SCHEMA_NAME: 'Total'
+          };
+          dataLatency.map(i => {
+            for (const key in onlyStatuses) {
+              if (onlyStatuses.hasOwnProperty(key)) {
+                if (i.TABLE_STATUS === onlyStatuses[key]) {
+                  if (totalObject[i.TABLE_STATUS]) {
+                    totalObject[i.TABLE_STATUS] += i.TABLE_COUNT;
+                  } else {
+                    totalObject[i.TABLE_STATUS] = i.TABLE_COUNT;
+                  }
+                }
+              }
+            }
+          });
+          this.recordsArray.push(totalObject);
         }
       } else {
         this.showToast('error', 'Could not get data.');
@@ -100,6 +120,10 @@ export class LoadingStatusSummaryComponent implements OnInit {
       this.dataLoader = false;
       this.showToast('error', 'Could not get data.');
     });
+  }
+
+  onlyUniqueFromArray(value, index, self) {
+    return self.indexOf(value) === index;
   }
 
   showToast(severity, summary) {

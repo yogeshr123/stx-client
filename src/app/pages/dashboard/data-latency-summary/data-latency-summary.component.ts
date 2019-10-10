@@ -78,7 +78,6 @@ export class DataLatencySummaryComponent implements OnInit {
               }
             }
           });
-          // console.log("totalObject ", totalObject);
           this.recordsArray.push(totalObject);
         }
       } else {

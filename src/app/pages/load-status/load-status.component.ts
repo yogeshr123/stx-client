@@ -66,6 +66,7 @@ export class LoadStatusComponent implements OnInit {
       }
       i.id = i.DAG_RUN_ID;
       i.name = `${i.TABLE_NAME}`;
+      i.startTime = i.START_TIME;
       i.start = new Date(`${year}-${month}-${date} ${i.START_TIME}`);
       i.end = calculatedEndTime;
       i.progress = (i.T1_EXEC / i.EXEC_TIME) * 100;
@@ -85,6 +86,7 @@ export class LoadStatusComponent implements OnInit {
           return `
             <div class="details-container">
               <h5>${task.name}</h5>
+              <span>Start Time: ${task.startTime}</span>
               <span>T1 Time: ${task.htmlRight.t1}</span>
               <span>T2 Time: ${task.htmlRight.t2}</span>
               <span>Avg. Time: ${task.htmlRight.avg}</span>

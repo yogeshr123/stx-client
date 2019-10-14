@@ -30,8 +30,7 @@ export class LoadStatusComponent implements OnInit {
   };
   autocomplete = {
     SCHEMA_NAME: [],
-    TABLE_NAME: [],
-    DAG_NAME: []
+    TABLE_NAME: []
   };
   toogleButtonPeriod = 7;
   frappeGanttChart: any;
@@ -66,7 +65,7 @@ export class LoadStatusComponent implements OnInit {
         calculatedEndTime = new Date(`${year}-${month}-${date} ${this.secondsToHMS(this.hmsToSeconds(i.START_TIME) + i.EXEC_TIME)}`);
       }
       i.id = i.DAG_RUN_ID;
-      i.name = `${i.SCHEMA_NAME}.${i.DAG_NAME}`;
+      i.name = `${i.TABLE_NAME}`;
       i.start = new Date(`${year}-${month}-${date} ${i.START_TIME}`);
       i.end = calculatedEndTime;
       i.progress = (i.T1_EXEC / i.EXEC_TIME) * 100;
@@ -117,7 +116,6 @@ export class LoadStatusComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       SCHEMA_NAME: '',
       TABLE_NAME: '',
-      DAG_NAME: '',
       AVG_TIME: '',
       START_TIME: '',
       ENV_NAME: 'PRD'
@@ -148,9 +146,7 @@ export class LoadStatusComponent implements OnInit {
         if (!formValues[propName]) {
           delete formValues[propName];
         } else {
-          if (propName !== 'DAG_NAME') {
-            formValues[propName] = formValues[propName].toUpperCase();
-          }
+          formValues[propName] = formValues[propName].toUpperCase();
         }
       }
       this.taskData = this.getSearchResult(formValues);

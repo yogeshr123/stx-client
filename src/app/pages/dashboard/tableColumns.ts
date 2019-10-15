@@ -43,6 +43,7 @@ const loadStatusColumns = [
 
 const dataLatencySummaryColumns = [
     { field: 'SCHEMA_NAME' },
+    { field: 'Never run' },
     { field: 'Current' },
     { field: 'Data <= 1 Week' },
     { field: 'Data <= 2 Week' },
@@ -52,6 +53,9 @@ const dataLatencySummaryColumns = [
     { field: 'Data <= 13 Week' },
     { field: 'Data <= 18 Week' },
     { field: 'Data <= 26 Week' },
+    { field: 'Data <= 36 Week' },
+    { field: 'Data <= 52 Week' },
+    { field: 'Data >= 1 Year' },
 ];
 
 export { loadingStatusSelectedColumns, EMRTableLoadingStatus, loadStatusColumns, dataLatencySummaryColumns };

@@ -16,8 +16,8 @@ export class DashboardService {
   ) {
   }
 
-  getDataLatency() {
-    const url = `${environment.baseUrl}dashboard/data-latency`;
+  getDataLatency(env) {
+    const url = `${environment.baseUrl}dashboard/data-latency?env=${env}`;
     return this.http
       .get(url)
       .pipe(catchError(this.commonService.handleError));

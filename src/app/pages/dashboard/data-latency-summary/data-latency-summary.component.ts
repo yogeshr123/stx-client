@@ -15,6 +15,7 @@ export class DataLatencySummaryComponent implements OnInit {
   selectedColumns = dataLatencySummaryColumns;
   recordsArray: any;
   dataLoader = false;
+  envName = 'PRD';
 
   constructor(
     public dialogService: DialogService,
@@ -28,7 +29,7 @@ export class DataLatencySummaryComponent implements OnInit {
 
   getLatency() {
     this.dataLoader = true;
-    this.dashboardService.getDataLatency().subscribe((resp: any) => {
+    this.dashboardService.getDataLatency(this.envName).subscribe((resp: any) => {
       if (resp && !resp.error) {
         if (resp.data.length) {
           const dataLatency = resp.data;
@@ -79,6 +80,8 @@ export class DataLatencySummaryComponent implements OnInit {
             }
           });
           this.recordsArray.push(totalObject);
+        } else {
+          this.recordsArray = [];
         }
       } else {
         this.showToast('error', 'Could not get latency data.');
@@ -101,6 +104,7 @@ export class DataLatencySummaryComponent implements OnInit {
       data: {
         SCHEMA_NAME: tableInfo.SCHEMA_NAME,
         status,
+        env: this.envName,
         latency: true,
         rowData
       }

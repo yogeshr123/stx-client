@@ -109,6 +109,10 @@ export class LoadStatusComponent implements OnInit {
   getElementInfo() {
     $('span.space').css('height', $('.grid-header').height());
     $('span.dag-name').css('height', $('.grid-row').height());
+    if (!$('.grid-header').height()) {
+      $('span.space').css('height', 50);
+      $('span.dag-name').css('height', 33);
+    }
     $('.bar').on('click', () => {
       this.tasksMoved = true;
     });

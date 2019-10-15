@@ -23,8 +23,8 @@ export class DashboardService {
       .pipe(catchError(this.commonService.handleError));
   }
 
-  getLoadControlStatus() {
-    const url = `${environment.baseUrl}dashboard/load-control-status`;
+  getLoadControlStatus(env) {
+    const url = `${environment.baseUrl}dashboard/load-control-status?env=${env}`;
     return this.http
       .get(url)
       .pipe(catchError(this.commonService.handleError));

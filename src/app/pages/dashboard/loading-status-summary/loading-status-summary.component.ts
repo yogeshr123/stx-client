@@ -15,6 +15,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
   selectedColumns: any;
   allColumns = loadStatusColumns;
   recordsArray: any;
+  envName = 'PRD';
   dataLoader = false;
 
   constructor(
@@ -53,6 +54,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
       data: {
         SCHEMA_NAME: tableInfo.SCHEMA_NAME,
         status,
+        env: this.envName,
         rowData
       }
     });
@@ -60,7 +62,7 @@ export class LoadingStatusSummaryComponent implements OnInit {
 
   getLoadStatus() {
     this.dataLoader = true;
-    this.dashboardService.getLoadControlStatus().subscribe((resp: any) => {
+    this.dashboardService.getLoadControlStatus(this.envName).subscribe((resp: any) => {
       if (resp && !resp.error) {
         if (resp.data.length) {
           const dataLatency = resp.data;
@@ -111,6 +113,8 @@ export class LoadingStatusSummaryComponent implements OnInit {
             }
           });
           this.recordsArray.push(totalObject);
+        } else {
+          this.recordsArray = [];
         }
       } else {
         this.showToast('error', 'Could not get data.');

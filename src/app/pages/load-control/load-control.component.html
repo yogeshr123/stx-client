@@ -421,7 +421,9 @@
             </th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
               <ng-container *ngIf="col.field === 'TABLE_STATUS'; else elseTemplate1">
-                <img width="35" src="assets/images/status.png" alt="{{col.field}}">
+                <span pTooltip="TABLE_STATUS" tooltipPosition="top">
+                  <img width="35" src="assets/images/status.png" alt="{{col.field}}">
+                </span>
               </ng-container>
               <ng-template #elseTemplate1>
                 <span> {{col.field}} </span>
@@ -469,7 +471,7 @@
               </ng-container>
               <ng-container *ngSwitchDefault>
                 <ng-container *ngIf="col.field === 'TABLE_STATUS'; else elseTemplate">
-                  <div class="table-status text-center">
+                  <div class="table-status text-center" [pTooltip]="rowData[col.field]" tooltipPosition="top">
                     <i class="fa fa-circle {{rowData[col.field]}}" aria-hidden="true"></i>
                   </div>
                 </ng-container>

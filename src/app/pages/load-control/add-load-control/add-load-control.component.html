@@ -135,7 +135,7 @@
             </p-accordionTab>
             <p-accordionTab header="Table Source" [selected]="true">
               <div class="row mt-2">
-                <div class="col-md-6">
+                <div class="col-md-6" [ngClass]="{'disabled': addLoadControlForm.value.LOAD_STRATEGY}">
                   <div class="form-group">
                     <label class="control-label">TABLE SOURCE</label>
                     <select formControlName="TABLE_SOURCE" class="form-control"

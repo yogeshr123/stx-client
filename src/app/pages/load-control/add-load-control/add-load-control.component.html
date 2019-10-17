@@ -386,11 +386,15 @@
                       <option value="NEW_TABLE">NEW TABLE</option>
                     </select>
                   </div>
-                  <!-- <div class="form-group">
+                  <div class="form-group" [ngClass]="{'disabled': addLoadControlForm.value.ETL_STATUS !== 'HOLD'}">
                     <label class="control-label">ETL STATUS REASON</label>
-                    <input class="form-control" type="text"
-                      formControlName="ETL_STATUS_REASON">
-                  </div> -->
+                    <input class="form-control" type="text" formControlName="ETL_STATUS_REASON"
+                      [required]="addLoadControlForm.value.ETL_STATUS === 'HOLD'">
+                    <div *ngIf="submitted && f.ETL_STATUS_REASON.errors" class="invalid-feedback">
+                      <div *ngIf="f.ETL_STATUS_REASON.errors?.required === 'true'">ETL STATUS REASON is required
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
@@ -495,7 +499,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">T1 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
+                    <input min="1" max="10000" class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
                     <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION
@@ -534,7 +538,7 @@
                       <option value="HOLD">HOLD</option>
                     </select>
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION
                       STRATEGY</label>
                     <select formControlName="T2_T3_RETENTION_STRATEGY" class="form-control">
@@ -542,17 +546,17 @@
                       <option value="GLACIER">GLACIER</option>
                       <option value="DELETE">DELETE</option>
                     </select>
-                  </div>
+                  </div> -->
                   <div class="form-group">
-                    <label class="control-label">T2 INSERT DIR BATCH
-                      SIZE</label>
-                    <input class="form-control" type="number" formControlName="T2_INSERT_DIR_BATCH_SIZE"
-                      [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors }">
-                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
-                      <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.required">T2
+                    <label class="control-label">T2 INSERT BATCH FILE SIZE GB</label>
+                    <input class="form-control" type="number" formControlName="T2_INSERT_BATCH_FILE_SIZE_GB"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_BATCH_FILE_SIZE_GB.errors }">
+                    <div *ngIf="submitted && f.T2_INSERT_BATCH_FILE_SIZE_GB.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_INSERT_BATCH_FILE_SIZE_GB.errors.required">T2
                         INSERT DIR BATCH SIZE is required</div>
                     </div>
                   </div>
+
                   <div class="form-group">
                     <label class="control-label">T2_CLUSTER_ID</label>
                     <select class="form-control" type="text" formControlName="T2_CLUSTER_ID"
@@ -586,6 +590,16 @@
                     <!-- </select> -->
                   </div>
                   <div class="form-group">
+                    <label class="control-label">T2 INSERT DIR BATCH
+                      SIZE</label>
+                    <input class="form-control" type="number" formControlName="T2_INSERT_DIR_BATCH_SIZE"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors }">
+                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.required">T2
+                        INSERT DIR BATCH SIZE is required</div>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group">
                     <label class="control-label">T2 T3 RETENTION DAYS</label>
                     <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_T3_RETENTION_DAYS.errors }">
@@ -594,7 +608,7 @@
                         RETENTION DAYS should be greater than 0
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- <div class="form-group">
                     <label class="control-label">T2 PARTITION JOB TYPE</label>
@@ -618,7 +632,11 @@
                     </label>
                     <br />
                     <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="T2_MAX_LOAD_END_DATE"></p-calendar>
+                      formControlName="T2_MAX_LOAD_END_DATE" [ngClass]="{'ng-touched': submitted}"></p-calendar>
+                    <div *ngIf="submitted && f.T2_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_MAX_LOAD_END_DATE.errors">T2 MAX LOAD END DATE is required
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -654,7 +672,7 @@
                       <option value="COMPLETE">COMPLETE</option>
                     </select>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group disabled">
                     <label class="control-label">ANALYZE LAST SUCCESS
                       DATE</label>
                     <br />

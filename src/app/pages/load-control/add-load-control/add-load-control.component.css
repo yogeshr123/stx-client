@@ -1,5 +1,7 @@
 p-calendar.is-invalid input,
-.was-validated .form-control:invalid {
+.was-validated .form-control:invalid,
+p-calendar.ng-invalid.ng-touched .form-control,
+.ng-invalid.ng-touched.form-control {
   border-color: #dc3545;
 }
 

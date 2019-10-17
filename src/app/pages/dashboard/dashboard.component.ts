@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
         this.recordMeta = data.data;
         this.setTotalCols();
       }
+      this.dataLoader = false;
     }, error => {
       this.dataLoader = false;
       this.showToast('error', 'Error while fetching data.');
@@ -81,6 +82,7 @@ export class DashboardComponent implements OnInit {
         this.recordsArray = data.data;
         this.setTotalCols();
       }
+      this.dataLoader = false;
     }, error => {
       this.dataLoader = false;
       this.showToast('error', 'Error while fetching data.');

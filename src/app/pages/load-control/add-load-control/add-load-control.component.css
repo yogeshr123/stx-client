@@ -3,6 +3,10 @@ p-calendar.is-invalid input,
   border-color: #dc3545;
 }
 
+.fa-info-circle {
+  color: #6ebe49;
+}
+
 div.disabled {
   pointer-events: none;
 

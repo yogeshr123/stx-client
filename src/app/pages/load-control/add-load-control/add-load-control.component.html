@@ -119,11 +119,13 @@
                   <div class="form-group">
                     <label class="control-label">LOAD STRATEGY</label>
                     <select formControlName="LOAD_STRATEGY" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
+                      [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }"
+                      (change)="loadStrategyUpdated()">
                       <option value="INSERT">INSERT</option>
                       <option value="UPDATE">UPDATE</option>
                       <option value="REFRESH">REFRESH</option>
                       <option value="SAMPLED">SAMPLED</option>
+                      <option value="FLAT">FLAT</option>
                     </select>
                     <div *ngIf="submitted && f.LOAD_STRATEGY.errors" class="invalid-feedback">
                       <div *ngIf="f.LOAD_STRATEGY.errors.required">LOAD STRATEGY
@@ -131,6 +133,62 @@
                     </div>
                   </div>
                 </div>
+                <div class="separator"></div>
+                <div class="col-md-6" [ngClass]="{'disabled': addLoadControlForm.value.LOAD_STRATEGY !== 'FLAT'}">
+                  <div class="form-group">
+                    <label class="control-label">FACT ENV NAME</label>
+                    <select (change)="factENVSelected()" formControlName="FACT_ENV_NAME" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.FACT_ENV_NAME.errors }">
+                      <option value="PRD">PRD</option>
+                      <option value="DEV">DEV</option>
+                      <option value="QA">QA</option>
+                    </select>
+                    <div *ngIf="submitted && f.FACT_ENV_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.FACT_ENV_NAME.errors.required">FACT ENV NAME is
+                        required</div>
+                    </div>
+                  </div>
+                  <div class="form-group"
+                    [ngClass]="{'disabled': !addLoadControlForm.value.FACT_ENV_NAME || !addLoadControlForm.value.FACT_SCHEMA_NAME }">
+                    <label class="control-label">FACT TABLE NAME </label>
+                    <select formControlName="FACT_TABLE_NAME" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.FACT_TABLE_NAME.errors }">
+                      <option *ngFor="let item of factTablesNames" value="{{item.TABLE_NAME}}">{{item.TABLE_NAME}}
+                      </option>
+                    </select>
+                    <!-- <input class="form-control" type="text" formControlName="FACT_TABLE_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.FACT_TABLE_NAME.errors }" /> -->
+                    <div *ngIf="submitted && f.FACT_TABLE_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.FACT_TABLE_NAME.errors.required">FACT TABLE NAME is
+                        required</div>
+                      <div *ngIf="f.FACT_TABLE_NAME.errors?.pattern">FACT TABLE NAME is
+                        not valid. Only aplhanumeric and underscore are allowed.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6" [ngClass]="{'disabled': addLoadControlForm.value.LOAD_STRATEGY !== 'FLAT'}">
+                  <div class="form-group" [ngClass]="{'disabled': !addLoadControlForm.value.FACT_ENV_NAME}">
+                    <label class="control-label">FACT SCHEMA NAME</label>
+                    <select (change)="factSchemaSelected()" formControlName="FACT_SCHEMA_NAME" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.FACT_SCHEMA_NAME.errors }">
+                      <option *ngFor="let item of factSchemaNames" value="{{item.SCHEMA_NAME}}">{{item.SCHEMA_NAME}}
+                      </option>
+                    </select>
+                    <!-- <input class="form-control" type="text" formControlName="FACT_SCHEMA_NAME"
+                      oninput="this.value = this.value.toUpperCase()"
+                      [ngClass]="{ 'is-invalid': submitted && f.FACT_SCHEMA_NAME.errors }" /> -->
+                    <div *ngIf="submitted && f.FACT_SCHEMA_NAME.errors" class="invalid-feedback">
+                      <div *ngIf="f.FACT_SCHEMA_NAME.errors.required">FACT SCHEMA NAME is
+                        required</div>
+                      <div *ngIf="f.FACT_SCHEMA_NAME.errors?.pattern">FACT SCHEMA NAME is
+                        not valid. Only aplhanumeric and underscore are allowed.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </p-accordionTab>
             <p-accordionTab header="Table Source" [selected]="true">

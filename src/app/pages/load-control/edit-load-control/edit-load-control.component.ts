@@ -31,6 +31,10 @@ export class EditLoadControlComponent implements OnInit {
   isEdit = false;
   appState: any;
   tableRegex = "[A-Za-z][A-Za-z0-9_]*";
+  factSchemaNamesBackup: any;
+  factSchemaNames: any;
+  factTablesNames: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -58,6 +62,7 @@ export class EditLoadControlComponent implements OnInit {
     else {
       this.router.navigate(['/loadcontrol/add']);
     }
+    this.getFactTablesData();
   }
 
   ngOnDestroy() {
@@ -81,6 +86,9 @@ export class EditLoadControlComponent implements OnInit {
       EMAIL_ALERTS: ['Y', Validators.required],
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
+      FACT_SCHEMA_NAME: [''],
+      FACT_TABLE_NAME: [''],
+      FACT_ENV_NAME: [''],
       RAW_FACTORY_PATH: [''],
       RAW_FACTORY_MAX_LANDING_DATE: [null],
       RAW_FACTORY_RETENTION_STRATEGY: [''],
@@ -148,6 +156,51 @@ export class EditLoadControlComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() { return this.editLoadControlForm.controls; }
+
+  getFactTablesData() {
+    this.loadControlService.getRecords().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        const factSchemaNames = data.data;
+        this.factSchemaNamesBackup = factSchemaNames.filter(i => i.LOAD_STRATEGY === 'INSERT' || i.LOAD_STRATEGY === 'UPDATE');
+        this.factENVSelected();
+        this.factSchemaSelected();
+      }
+    }, error => {
+      this.showToast('error', 'Fact Table data Load Failed.');
+    });
+  }
+
+  factENVSelected() {
+    const factSchemas = this.factSchemaNamesBackup.filter(i => i.ENV_NAME === this.editLoadControlForm.value.FACT_ENV_NAME);
+    this.factSchemaNames = this.removeDuplicates(factSchemas, 'SCHEMA_NAME');
+  }
+
+  factSchemaSelected() {
+    const factTables = this.factSchemaNamesBackup.filter(i => i.SCHEMA_NAME === this.editLoadControlForm.value.FACT_SCHEMA_NAME);
+    this.factTablesNames = this.removeDuplicates(factTables, 'TABLE_NAME');
+  }
+
+  loadStrategyUpdated() {
+    const formControl = this.editLoadControlForm.controls;
+    if (this.editLoadControlForm.value.LOAD_STRATEGY !== 'FLAT') {
+      formControl.FACT_ENV_NAME.patchValue('');
+      formControl.FACT_SCHEMA_NAME.patchValue('');
+      formControl.FACT_TABLE_NAME.patchValue('');
+    } else {
+      formControl.FACT_ENV_NAME.setValidators([Validators.required]);
+      formControl.FACT_ENV_NAME.updateValueAndValidity();
+      formControl.FACT_SCHEMA_NAME.setValidators([Validators.required]);
+      formControl.FACT_SCHEMA_NAME.updateValueAndValidity();
+      formControl.FACT_TABLE_NAME.setValidators([Validators.required]);
+      formControl.FACT_TABLE_NAME.updateValueAndValidity();
+    }
+  }
+
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+  }
 
   onSubmit() {
     this.submitted = true;

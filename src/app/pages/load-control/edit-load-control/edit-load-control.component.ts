@@ -97,7 +97,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
       ETL_STATUS: [''],
-      ETL_STATUS_REASON: [''],
+      // ETL_STATUS_REASON: [''],
       ETL_DAG_NAME: [{ value: '', disabled: true }],
       ETL_DAG_RUN_ID: [{ value: '', disabled: true }],
       ETL_DAG_RUN_URL: [{ value: '', disabled: true }],

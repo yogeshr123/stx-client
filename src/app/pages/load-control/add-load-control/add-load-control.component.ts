@@ -85,7 +85,7 @@ export class AddLoadControlComponent implements OnInit {
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
       CHECK_INDEX_EXIST: ['1'],
       ETL_STATUS: ['NEW_TABLE'],
-      ETL_STATUS_REASON: [''],
+      // ETL_STATUS_REASON: [''],
       ETL_EXECUTION_STATUS: ['TODO'],
       T1_PATH: ['', Validators.pattern(this.s3UrlPattern)],
       T1_RETENTION_STRATEGY: [''],

@@ -286,20 +286,20 @@ export class AddLoadControlComponent implements OnInit {
 
     this.addLoadControlForm.get('SCHEMA_NAME').valueChanges
       .subscribe(SCHEMA_NAME => {
-        if (TARGET_SCHEMA_NAME.value.trim() == "" || TARGET_SCHEMA_NAME.value == prevSchemaName || TARGET_SCHEMA_NAME.untouched) {
+        if (TARGET_SCHEMA_NAME.value.trim() == "" || TARGET_SCHEMA_NAME.untouched) {
           TARGET_SCHEMA_NAME.setValue(SCHEMA_NAME);
         }
-        if (DB_SCHEMA.value.trim() == "" || DB_SCHEMA.value == prevSchemaName || DB_SCHEMA.untouched) {
+        if (DB_SCHEMA.value.trim() == "" || DB_SCHEMA.untouched) {
           DB_SCHEMA.setValue(SCHEMA_NAME);
         }
         prevSchemaName = SCHEMA_NAME;
       });
     this.addLoadControlForm.get('TABLE_NAME').valueChanges
       .subscribe(TABLE_NAME => {
-        if (TARGET_TABLE_NAME.value.trim() == "" || TARGET_TABLE_NAME.value == prevSchemaName || TARGET_TABLE_NAME.untouched) {
+        if (TARGET_TABLE_NAME.value.trim() == "" || TARGET_TABLE_NAME.untouched) {
           TARGET_TABLE_NAME.setValue(TABLE_NAME);
         }
-        if (DB_TABLE.value.trim() == "" || DB_TABLE.value == prevSchemaName || DB_TABLE.untouched) {
+        if (DB_TABLE.value.trim() == "" || DB_TABLE.untouched) {
           DB_TABLE.setValue(TABLE_NAME);
         }
         prevSchemaName = TABLE_NAME;

@@ -169,7 +169,7 @@ export class EditLoadControlComponent implements OnInit {
       query: `SCHEMA_NAME = '${this.record.SCHEMA_NAME}'
     AND TABLE_NAME = '${this.record.TABLE_NAME}' AND ENV_NAME = '${this.record.ENV_NAME}'`
     };
-    this.loadControlService.getSearchQueryResult(request).subscribe((resp) => {
+    this.loadControlService.getSearchQueryResult(request).subscribe((resp: any) => {
       this.tableInfo = resp.data[0];
     });
   }

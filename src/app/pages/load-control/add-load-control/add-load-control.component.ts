@@ -362,6 +362,8 @@ export class AddLoadControlComponent implements OnInit {
           T1_STATUS.setValue('HOLD');
           TABLE_SOURCE.setValidators(null);
           TABLE_SOURCE.updateValueAndValidity();
+          T1_MAX_LOAD_END_DATE.setValidators(null);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
           T1_BATCH_IN_DAYS.setValidators(null);
           T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);

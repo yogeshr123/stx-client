@@ -11,11 +11,13 @@ import { CommonService } from 'src/app/services/common.service';
 import { ClustersService } from 'src/app/services/clusters.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 declare var $: any;
+import { DialogService, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-load-control',
   templateUrl: './edit-load-control.component.html',
-  styleUrls: ['./edit-load-control.component.css']
+  styleUrls: ['./edit-load-control.component.css'],
+  providers: [DialogService, ConfirmationService]
 })
 
 export class EditLoadControlComponent implements OnInit {
@@ -31,11 +33,14 @@ export class EditLoadControlComponent implements OnInit {
   isEdit = false;
   appState: any;
   tableRegex = "[A-Za-z][A-Za-z0-9_]*";
+  tableColumnRegex = "[A-Za-z][A-Za-z0-9_,]*";
   factSchemaNamesBackup: any;
   factSchemaNames: any;
   factTablesNames: any;
+  tableInfo: any;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
     private recordService: RecordService,
     private router: Router,
@@ -58,6 +63,7 @@ export class EditLoadControlComponent implements OnInit {
       this.record = this.appState.selectedRecord.record;
       this.isEdit = this.appState.selectedRecord.edit;
       this.getColumnDataTypeAndSetFormValues();
+      this.getTableData();
     }
     else {
       this.router.navigate(['/loadcontrol/add']);
@@ -98,7 +104,7 @@ export class EditLoadControlComponent implements OnInit {
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
-      CHECK_INDEX_EXIST: ['1'],
+      CHECK_INDEX_EXIST: [1],
       T1_PATH: [''],
       T1_RETENTION_STRATEGY: ['GLACIER'],
       T1_RETENTION_DAYS: [180, Validators.compose([Validators.min(1), Validators.max(10000)])],
@@ -150,13 +156,23 @@ export class EditLoadControlComponent implements OnInit {
       ANALYZE_EXECUTION_STATUS: [{ value: null, disabled: true }],
       ANALYZE_ERROR: [{ value: '', disabled: true }],
       ANALYZE_ERROR_TRACE: [{ value: '', disabled: true }],
-      UPDATE_DATE: [{ value: null, disabled: true }, Validators.required],
+      UPDATE_DATE: [new Date(), Validators.required],
       UPDATED_BY: ['', Validators.required]
     });
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.editLoadControlForm.controls; }
+
+  getTableData() {
+    const request = {
+      query: `SCHEMA_NAME = '${this.record.SCHEMA_NAME}'
+    AND TABLE_NAME = '${this.record.TABLE_NAME}' AND ENV_NAME = '${this.record.ENV_NAME}'`
+    };
+    this.loadControlService.getSearchQueryResult(request).subscribe((resp) => {
+      this.tableInfo = resp.data[0];
+    });
+  }
 
   getFactTablesData() {
     this.loadControlService.getRecords().subscribe((data: any) => {
@@ -181,26 +197,95 @@ export class EditLoadControlComponent implements OnInit {
     this.factTablesNames = this.removeDuplicates(factTables, 'TABLE_NAME');
   }
 
-  loadStrategyUpdated() {
-    const formControl = this.editLoadControlForm.controls;
-    if (this.editLoadControlForm.value.LOAD_STRATEGY !== 'FLAT') {
-      formControl.FACT_ENV_NAME.patchValue('');
-      formControl.FACT_SCHEMA_NAME.patchValue('');
-      formControl.FACT_TABLE_NAME.patchValue('');
-    } else {
-      formControl.FACT_ENV_NAME.setValidators([Validators.required]);
-      formControl.FACT_ENV_NAME.updateValueAndValidity();
-      formControl.FACT_SCHEMA_NAME.setValidators([Validators.required]);
-      formControl.FACT_SCHEMA_NAME.updateValueAndValidity();
-      formControl.FACT_TABLE_NAME.setValidators([Validators.required]);
-      formControl.FACT_TABLE_NAME.updateValueAndValidity();
-    }
-  }
-
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
+  }
+
+  loadStrategyUpdated() {
+    this.setLoadStrategyValidators();
+    if (this.record.LOAD_STRATEGY !== this.editLoadControlForm.value.LOAD_STRATEGY) {
+      this.confirmationService.confirm({
+        header: 'Confirmation for LOAD STRATEGY Change',
+        // tslint:disable-next-line:max-line-length
+        message: `<span class="mb-1 d-inline-block"><b>Are you sure you want to change LOAD STRATEGY?</b></span> <br>If YES then click 'YES' else 'NO'. <br>Changes will be saved in browser, it will be parmantly saved when you click 'SAVE'. When you change LOAD STRATEGY, table will be put on HOLD & DAG will be generated with new LOAD STRATEGY. You will have to verify TABLE SOURCE, T1, T2 & CMV details before changing ETL_STATUS from HOLD to TODO.`,
+        accept: () => {
+          this.editLoadControlForm.controls.ETL_STATUS.patchValue('HOLD');
+          this.editLoadControlForm.controls.ETL_STATUS.disable();
+          this.editLoadControlForm.controls.ETL_STATUS_REASON.disable();
+          // tslint:disable-next-line:max-line-length
+          this.editLoadControlForm.controls.ETL_STATUS_REASON.patchValue(`LOAD_STRATEGY is changed from ${this.record.LOAD_STRATEGY} to ${this.editLoadControlForm.value.LOAD_STRATEGY}`);
+        },
+        reject: () => {
+          this.editLoadControlForm.controls.LOAD_STRATEGY.patchValue(this.record.LOAD_STRATEGY);
+        }
+      });
+    } else {
+      this.editLoadControlForm.controls.ETL_STATUS.enable();
+      this.editLoadControlForm.controls.ETL_STATUS.patchValue(this.record.ETL_STATUS);
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.patchValue(this.record.ETL_STATUS_REASON);
+    }
+  }
+
+  setLoadStrategyValidators() {
+    const TABLE_SOURCE = this.editLoadControlForm.get('TABLE_SOURCE');
+    const T1_STATUS = this.editLoadControlForm.get('T1_STATUS');
+    const DB_TABLE_UPDATE_DATE_COLUMN = this.editLoadControlForm.get('DB_TABLE_UPDATE_DATE_COLUMN');
+    const DB_TABLE_PK_COLUMNS = this.editLoadControlForm.get('DB_TABLE_PK_COLUMNS');
+    const CHECK_INDEX_EXIST = this.editLoadControlForm.get('CHECK_INDEX_EXIST');
+    const T1_MAX_LOAD_END_DATE = this.editLoadControlForm.get('T1_MAX_LOAD_END_DATE');
+    const T1_CLUSTER_ID = this.editLoadControlForm.get('T1_CLUSTER_ID');
+    const T2_INSERT_DIR_BATCH_SIZE = this.editLoadControlForm.get('T2_INSERT_DIR_BATCH_SIZE');
+    const T2_INSERT_BATCH_FILE_SIZE_GB = this.editLoadControlForm.get('T2_INSERT_BATCH_FILE_SIZE_GB');
+    const T1_BATCH_IN_DAYS = this.editLoadControlForm.get('T1_BATCH_IN_DAYS');
+
+    this.editLoadControlForm.get('LOAD_STRATEGY').valueChanges
+      .subscribe(LOAD_STRATEGY => {
+
+        // Default
+        DB_TABLE_PK_COLUMNS.enable();
+        DB_TABLE_UPDATE_DATE_COLUMN.enable();
+        T2_INSERT_BATCH_FILE_SIZE_GB.enable();
+        T2_INSERT_DIR_BATCH_SIZE.enable();
+        CHECK_INDEX_EXIST.enable();
+
+        if (LOAD_STRATEGY === 'UPDATE') {
+          T2_INSERT_BATCH_FILE_SIZE_GB.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'INSERT') {
+          T2_INSERT_BATCH_FILE_SIZE_GB.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'SAMPLED') {
+          TABLE_SOURCE.setValue('RAW_FACTORY');
+          T1_STATUS.setValue('HOLD');
+          T2_INSERT_DIR_BATCH_SIZE.disable();
+          T1_BATCH_IN_DAYS.setValidators(null);
+          T1_BATCH_IN_DAYS.updateValueAndValidity();
+          T1_CLUSTER_ID.setValidators(null);
+          T1_CLUSTER_ID.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'FLAT') {
+          T1_STATUS.setValue('HOLD');
+          TABLE_SOURCE.setValidators(null);
+          TABLE_SOURCE.updateValueAndValidity();
+          T1_MAX_LOAD_END_DATE.setValidators(null);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+          T1_BATCH_IN_DAYS.setValidators(null);
+          T1_BATCH_IN_DAYS.updateValueAndValidity();
+          T1_CLUSTER_ID.setValidators(null);
+          T1_CLUSTER_ID.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'REFRESH') {
+          DB_TABLE_PK_COLUMNS.disable();
+          DB_TABLE_UPDATE_DATE_COLUMN.disable();
+          CHECK_INDEX_EXIST.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else {
+          TABLE_SOURCE.setValue('ORACLE');
+        }
+      });
   }
 
   etlStatusChanged() {
@@ -236,16 +321,36 @@ export class EditLoadControlComponent implements OnInit {
     formValues.SCHEMA_NAME = this.record.SCHEMA_NAME;
     formValues.TABLE_NAME = this.record.TABLE_NAME;
     formValues.ENV_NAME = this.record.ENV_NAME;
+    formValues.CHECK_INDEX_EXIST = formValues.CHECK_INDEX_EXIST === '1' ? true : false;
 
     const body = {
       record: formValues
     };
     this.loadControlService.updateRecord(body).subscribe((data: any) => {
-      this.showToast('success', 'record updated.');
+      setTimeout(() => {
+        this.showToast('success', 'record updated.');
+      });
       this.router.navigate(['/loadcontrol']);
     }, error => {
       this.showToast('error', 'Could not update record.');
     });
+    if (this.record.LOAD_STRATEGY !== this.editLoadControlForm.value.LOAD_STRATEGY) {
+      const request = { records: [formValues] };
+      request.records[0].SCHEMA_NAME = this.record.SCHEMA_NAME;
+      request.records[0].SCHEMA_NAME = this.record.SCHEMA_NAME;
+      request.records[0].TABLE_NAME = this.record.TABLE_NAME;
+      request.records[0].DAG_SCHEDULE_INTERVAL = this.tableInfo.DAG_SCHEDULE_INTERVAL;
+      request.records[0].DAG_AVAILABLE_STATUS = 'TODO';
+      this.loadControlService.setSchedulerInterval(request).subscribe((data: any) => {
+        if (!data.error) {
+          setTimeout(() => {
+            this.showToast('success', 'Dag Scheduled!');
+          }, 500);
+        }
+      }, error => {
+        this.showToast('error', 'Dag Schedule failed.');
+      });
+    }
   }
 
   getColumnDataTypeAndSetFormValues() {
@@ -328,7 +433,7 @@ export class EditLoadControlComponent implements OnInit {
           DB_ID.setValidators([Validators.required]);
           DB_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           DB_TABLE.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
-          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableColumnRegex)]);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           CHECK_INDEX_EXIST.setValidators([Validators.required]);
 

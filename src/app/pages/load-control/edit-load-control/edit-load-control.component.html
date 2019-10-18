@@ -1,3 +1,12 @@
+<p-toast></p-toast>
+<p-confirmDialog #cd header="Column Delete" icon="pi pi-exclamation-triangle">
+  <p-footer>
+    <button class="btn-danger btn btn-sm" type="button" icon="pi pi-check" label="Yes"
+      (click)="cd.accept()">Yes</button>
+    <button class="btn-primary btn btn-sm" type="button" icon="pi pi-check" label="No" (click)="cd.reject()">No</button>
+  </p-footer>
+</p-confirmDialog>
+
 <div class="app-title">
   <h1>
     <i class="app-title-icon fa fa-cogs"></i>
@@ -121,7 +130,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label">LOAD STRATEGY</label>
-                    <select formControlName="LOAD_STRATEGY" class="form-control"
+                    <select (change)="loadStrategyUpdated()" formControlName="LOAD_STRATEGY" class="form-control"
                       [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
                       <option value="INSERT">INSERT</option>
                       <option value="UPDATE">UPDATE</option>

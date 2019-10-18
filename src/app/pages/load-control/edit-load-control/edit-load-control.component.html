@@ -775,6 +775,7 @@
                       <option value="HOLD">HOLD</option>
                     </select>
                   </div>
+
                   <div class="form-group">
                     <label class="control-label">ANALYZE EXECUTION DAYS</label>
                     <input min="1" max="30" class="form-control" type="number" formControlName="ANALYZE_EXECUTION_DAYS"
@@ -788,6 +789,20 @@
                         ANALYZE EXECUTION DAYS should be greater than 0 and less than equal to 30 </div>
                     </div>
                   </div>
+
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE PROCESS START
+                      DATE</label>
+                    <br />
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                      formControlName="ANALYZE_PROCESS_START_DATE"></p-calendar>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">ANALYZE ERROR</label>
+                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR">
+                  </div>
+                </div>
+                <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label disabled">ANALYZE EXECUTION STATUS</label>
                     <select formControlName="ANALYZE_EXECUTION_STATUS" class="form-control">
@@ -797,22 +812,6 @@
                       <option value="COMPLETE">COMPLETE</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label">ANALYZE PROCESS START
-                      DATE</label>
-                    <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="ANALYZE_PROCESS_START_DATE"></p-calendar>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label">ANALYZE PROCESS END
-                      DATE</label>
-                    <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="ANALYZE_PROCESS_END_DATE"></p-calendar>
-                  </div>
                   <div class="form-group disabled">
                     <label class="control-label">ANALYZE LAST SUCCESS
                       DATE</label>
@@ -821,8 +820,11 @@
                       formControlName="ANALYZE_LAST_SUCCESS_DATE"></p-calendar>
                   </div>
                   <div class="form-group">
-                    <label class="control-label">ANALYZE ERROR</label>
-                    <input class="form-control" type="number" formControlName="ANALYZE_ERROR">
+                    <label class="control-label">ANALYZE PROCESS END
+                      DATE</label>
+                    <br />
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                      formControlName="ANALYZE_PROCESS_END_DATE"></p-calendar>
                   </div>
                   <!-- <div class="form-group">
                     <label class="control-label">ANALYZE ERROR TRACE</label>

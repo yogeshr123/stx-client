@@ -163,6 +163,17 @@ export class AddLoadControlComponent implements OnInit {
     });
   }
 
+  etlStatusChanged() {
+    if (this.addLoadControlForm.value.ETL_STATUS !== 'HOLD') {
+      this.addLoadControlForm.controls.ETL_STATUS_REASON.patchValue('');
+      this.addLoadControlForm.controls.ETL_STATUS_REASON.setValidators(null);
+      this.addLoadControlForm.controls.ETL_STATUS_REASON.updateValueAndValidity();
+    } else {
+      this.addLoadControlForm.controls.ETL_STATUS_REASON.setValidators([Validators.required]);
+      this.addLoadControlForm.controls.ETL_STATUS_REASON.updateValueAndValidity();
+    }
+  }
+
   setTableSourceValidators() {
     const DB_ID = this.addLoadControlForm.get('DB_ID');
     const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');

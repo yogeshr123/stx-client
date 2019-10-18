@@ -378,7 +378,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">ETL STATUS</label>
-                    <select formControlName="ETL_STATUS" class="form-control">
+                    <select (change)="etlStatusChanged()" formControlName="ETL_STATUS" class="form-control">
                       <option value="TODO">TODO</option>
                       <option value="HOLD">HOLD</option>
                       <option value="EDW_RETIRED">EDW RETIRED</option>
@@ -390,8 +390,9 @@
                     <label class="control-label">ETL STATUS REASON</label>
                     <input class="form-control" type="text" formControlName="ETL_STATUS_REASON"
                       [required]="addLoadControlForm.value.ETL_STATUS === 'HOLD'">
-                    <div *ngIf="submitted && f.ETL_STATUS_REASON.errors" class="invalid-feedback">
-                      <div *ngIf="f.ETL_STATUS_REASON.errors?.required === 'true'">ETL STATUS REASON is required
+                    <div *ngIf="submitted && f.ETL_STATUS_REASON.errors" class="invalid-feedback"
+                      [ngClass]="{'etl_status_reason': submitted}">
+                      <div *ngIf="f.ETL_STATUS_REASON.errors?.required">ETL STATUS REASON is required
                       </div>
                     </div>
                   </div>

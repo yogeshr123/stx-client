@@ -9,6 +9,10 @@ p-calendar.ng-invalid.ng-touched .form-control,
   color: #6ebe49;
 }
 
+.form-control.ng-invalid ~ .invalid-feedback.etl_status_reason {
+  display: block;
+}
+
 div.disabled {
   pointer-events: none;
 

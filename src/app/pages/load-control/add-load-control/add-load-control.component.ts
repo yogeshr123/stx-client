@@ -141,22 +141,6 @@ export class AddLoadControlComponent implements OnInit {
     this.factTablesNames = this.removeDuplicates(factTables, 'TABLE_NAME');
   }
 
-  loadStrategyUpdated() {
-    const formControl = this.addLoadControlForm.controls;
-    if (this.addLoadControlForm.value.LOAD_STRATEGY !== 'FLAT') {
-      formControl.FACT_ENV_NAME.patchValue('');
-      formControl.FACT_SCHEMA_NAME.patchValue('');
-      formControl.FACT_TABLE_NAME.patchValue('');
-    } else {
-      formControl.FACT_ENV_NAME.setValidators([Validators.required]);
-      formControl.FACT_ENV_NAME.updateValueAndValidity();
-      formControl.FACT_SCHEMA_NAME.setValidators([Validators.required]);
-      formControl.FACT_SCHEMA_NAME.updateValueAndValidity();
-      formControl.FACT_TABLE_NAME.setValidators([Validators.required]);
-      formControl.FACT_TABLE_NAME.updateValueAndValidity();
-    }
-  }
-
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
@@ -318,16 +302,77 @@ export class AddLoadControlComponent implements OnInit {
       });
   }
 
+  loadStrategyUpdated() {
+    const formControl = this.addLoadControlForm.controls;
+    if (this.addLoadControlForm.value.LOAD_STRATEGY !== 'FLAT') {
+      formControl.FACT_ENV_NAME.patchValue('');
+      formControl.FACT_SCHEMA_NAME.patchValue('');
+      formControl.FACT_TABLE_NAME.patchValue('');
+    } else if (this.addLoadControlForm.value.LOAD_STRATEGY !== 'REFRESH') {
+
+    } else {
+      formControl.FACT_ENV_NAME.setValidators([Validators.required]);
+      formControl.FACT_ENV_NAME.updateValueAndValidity();
+      formControl.FACT_SCHEMA_NAME.setValidators([Validators.required]);
+      formControl.FACT_SCHEMA_NAME.updateValueAndValidity();
+      formControl.FACT_TABLE_NAME.setValidators([Validators.required]);
+      formControl.FACT_TABLE_NAME.updateValueAndValidity();
+    }
+  }
+
   setLoadStrategyValidators() {
     const TABLE_SOURCE = this.addLoadControlForm.get('TABLE_SOURCE');
+    const T1_STATUS = this.addLoadControlForm.get('T1_STATUS');
+    const DB_TABLE_UPDATE_DATE_COLUMN = this.addLoadControlForm.get('DB_TABLE_UPDATE_DATE_COLUMN');
+    const DB_TABLE_PK_COLUMNS = this.addLoadControlForm.get('DB_TABLE_PK_COLUMNS');
+    const CHECK_INDEX_EXIST = this.addLoadControlForm.get('CHECK_INDEX_EXIST');
+    const T1_MAX_LOAD_END_DATE = this.addLoadControlForm.get('T1_MAX_LOAD_END_DATE');
+    const T1_CLUSTER_ID = this.addLoadControlForm.get('T1_CLUSTER_ID');
+    const T2_INSERT_DIR_BATCH_SIZE = this.addLoadControlForm.get('T2_INSERT_DIR_BATCH_SIZE');
+    const T2_INSERT_BATCH_FILE_SIZE_GB = this.addLoadControlForm.get('T2_INSERT_BATCH_FILE_SIZE_GB');
+    const T1_BATCH_IN_DAYS = this.addLoadControlForm.get('T1_BATCH_IN_DAYS');
 
     this.addLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {
 
-        if (LOAD_STRATEGY === 'SAMPLED') {
+        // Default
+        DB_TABLE_PK_COLUMNS.enable();
+        DB_TABLE_UPDATE_DATE_COLUMN.enable();
+        T2_INSERT_BATCH_FILE_SIZE_GB.enable();
+        T2_INSERT_DIR_BATCH_SIZE.enable();
+        CHECK_INDEX_EXIST.enable();
+
+        if (LOAD_STRATEGY === 'UPDATE') {
+          T2_INSERT_BATCH_FILE_SIZE_GB.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'INSERT') {
+          T2_INSERT_BATCH_FILE_SIZE_GB.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'SAMPLED') {
           TABLE_SOURCE.setValue('RAW_FACTORY');
-        }
-        else {
+          T1_STATUS.setValue('HOLD');
+          T2_INSERT_DIR_BATCH_SIZE.disable();
+          T1_BATCH_IN_DAYS.setValidators(null);
+          T1_BATCH_IN_DAYS.updateValueAndValidity();
+          T1_CLUSTER_ID.setValidators(null);
+          T1_CLUSTER_ID.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'FLAT') {
+          T1_STATUS.setValue('HOLD');
+          TABLE_SOURCE.setValidators(null);
+          TABLE_SOURCE.updateValueAndValidity();
+          T1_BATCH_IN_DAYS.setValidators(null);
+          T1_BATCH_IN_DAYS.updateValueAndValidity();
+          T1_CLUSTER_ID.setValidators(null);
+          T1_CLUSTER_ID.updateValueAndValidity();
+        } else if (LOAD_STRATEGY === 'REFRESH') {
+          DB_TABLE_PK_COLUMNS.disable();
+          DB_TABLE_UPDATE_DATE_COLUMN.disable();
+          CHECK_INDEX_EXIST.disable();
+          T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        } else {
           TABLE_SOURCE.setValue('ORACLE');
         }
       });

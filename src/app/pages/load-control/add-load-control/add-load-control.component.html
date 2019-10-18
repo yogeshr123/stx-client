@@ -502,9 +502,8 @@
                     <input min="1" max="10000" class="form-control" type="number" formControlName="T1_RETENTION_DAYS"
                       [ngClass]="{ 'is-invalid': submitted && f.T1_RETENTION_DAYS.errors }">
                     <div *ngIf="submitted && f.T1_RETENTION_DAYS.errors" class="invalid-feedback">
-                      <div *ngIf="f.T1_RETENTION_DAYS.errors.min">T1 RETENTION
-                        DAYS should be greater than 0
-                      </div>
+                      <div *ngIf="f.T1_RETENTION_DAYS.errors.min || f.T1_RETENTION_DAYS.errors.max">T1 RETENTION
+                        DAYS should be greater than 0 and less than equal to 10000 </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -549,11 +548,13 @@
                   </div> -->
                   <div class="form-group">
                     <label class="control-label">T2 INSERT BATCH FILE SIZE GB</label>
-                    <input class="form-control" type="number" formControlName="T2_INSERT_BATCH_FILE_SIZE_GB"
+                    <input min="1" max="10000" class="form-control" type="number"
+                      formControlName="T2_INSERT_BATCH_FILE_SIZE_GB"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_BATCH_FILE_SIZE_GB.errors }">
                     <div *ngIf="submitted && f.T2_INSERT_BATCH_FILE_SIZE_GB.errors" class="invalid-feedback">
-                      <div *ngIf="f.T2_INSERT_BATCH_FILE_SIZE_GB.errors.required">T2
-                        INSERT DIR BATCH SIZE is required</div>
+                      <div
+                        *ngIf="f.T2_INSERT_BATCH_FILE_SIZE_GB.errors.min || f.T2_INSERT_BATCH_FILE_SIZE_GB.errors.max">
+                        T2 INSERT BATCH FILE SIZE GB should be greater than 0 and less than equal to 10000 </div>
                     </div>
                   </div>
 
@@ -590,13 +591,17 @@
                     <!-- </select> -->
                   </div>
                   <div class="form-group">
-                    <label class="control-label">T2 INSERT DIR BATCH
-                      SIZE</label>
-                    <input class="form-control" type="number" formControlName="T2_INSERT_DIR_BATCH_SIZE"
+                    <label class="control-label">T2 INSERT DIR BATCH SIZE</label>
+                    <input min="1" max="10000" class="form-control" type="number"
+                      formControlName="T2_INSERT_DIR_BATCH_SIZE"
                       [ngClass]="{ 'is-invalid': submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors }">
                     <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
                       <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.required">T2
                         INSERT DIR BATCH SIZE is required</div>
+                    </div>
+                    <div *ngIf="submitted && f.T2_INSERT_DIR_BATCH_SIZE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_INSERT_DIR_BATCH_SIZE.errors.min || f.T2_INSERT_DIR_BATCH_SIZE.errors.max">T2
+                        INSERT DIR BATCH SIZE should be greater than 0 and less than equal to 10000 </div>
                     </div>
                   </div>
                   <!-- <div class="form-group">
@@ -659,6 +664,10 @@
                     <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors" class="invalid-feedback">
                       <div *ngIf="f.ANALYZE_EXECUTION_DAYS.errors.required">
                         ANALYZE EXECUTION DAYS are required</div>
+                    </div>
+                    <div *ngIf="submitted && f.ANALYZE_EXECUTION_DAYS.errors" class="invalid-feedback">
+                      <div *ngIf="f.ANALYZE_EXECUTION_DAYS.errors.min || f.ANALYZE_EXECUTION_DAYS.errors.max">
+                        ANALYZE EXECUTION DAYS should be greater than 0 and less than equal to 30 </div>
                     </div>
                   </div>
                 </div>

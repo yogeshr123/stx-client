@@ -203,6 +203,17 @@ export class EditLoadControlComponent implements OnInit {
     });
   }
 
+  etlStatusChanged() {
+    if (this.editLoadControlForm.value.ETL_STATUS !== 'HOLD') {
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.patchValue('');
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.setValidators(null);
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.updateValueAndValidity();
+    } else {
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.setValidators([Validators.required]);
+      this.editLoadControlForm.controls.ETL_STATUS_REASON.updateValueAndValidity();
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid

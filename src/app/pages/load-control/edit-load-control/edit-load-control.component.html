@@ -110,22 +110,31 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label">EMAIL ALERTS</label>
-                    <div class="animated-radio-button">
-                      <label>
-                        <input type="radio" value="Y" formControlName="EMAIL_ALERTS"><span class="label-text">Yes
-                        </span>
-                      </label>
-                      <label class="ml-4">
-                        <input type="radio" value="N" formControlName="EMAIL_ALERTS"><span class="label-text">No
-                        </span>
-                      </label>
+                  <div class="form-group row">
+                    <div class="col-3">
+
+                      <label class="control-label">EMAIL ALERTS</label>
+                      <div class="animated-radio-button">
+                        <label>
+                          <input type="radio" value="Y" formControlName="EMAIL_ALERTS"><span class="label-text">Yes
+                          </span>
+                        </label>
+                        <label class="ml-4">
+                          <input type="radio" value="N" formControlName="EMAIL_ALERTS"><span class="label-text">No
+                          </span>
+                        </label>
+                      </div>
+                      <div *ngIf="submitted && f.EMAIL_ALERTS.errors" class="invalid-feedback">
+                        <div *ngIf="f.EMAIL_ALERTS.errors.required">EMAIL ALERT
+                          is
+                          required</div>
+                      </div>
                     </div>
-                    <div *ngIf="submitted && f.EMAIL_ALERTS.errors" class="invalid-feedback">
-                      <div *ngIf="f.EMAIL_ALERTS.errors.required">EMAIL ALERT
-                        is
-                        required</div>
+                    <div class="col-8">
+                      <label class="control-label">Choose Email Group</label>
+                      <select class="form-control" formControlName="EMAIL_GROUP">
+                        <option *ngFor="let item of emails" value="{{item.EMAIL_GROUP}}">{{item.EMAIL_GROUP}}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="form-group">

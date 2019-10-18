@@ -31,6 +31,7 @@ export class AddLoadControlComponent implements OnInit {
   factSchemaNamesBackup: any;
   factSchemaNames: any;
   factTablesNames: any;
+  emails: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,6 +57,7 @@ export class AddLoadControlComponent implements OnInit {
     this.getColumnDataType();
     this.getUserInfo();
     this.getFactTablesData();
+    this.getEmails();
   }
 
   ngOnDestroy() {
@@ -76,7 +78,8 @@ export class AddLoadControlComponent implements OnInit {
       TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
-      TABLE_SOURCE: ['', Validators.required],
+      EMAIL_GROUP: [''],
+      TABLE_SOURCE: ['ORACLE', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       FACT_SCHEMA_NAME: [''],
       FACT_TABLE_NAME: [''],
@@ -90,7 +93,7 @@ export class AddLoadControlComponent implements OnInit {
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
-      CHECK_INDEX_EXIST: ['1'],
+      CHECK_INDEX_EXIST: [1],
       ETL_STATUS: ['NEW_TABLE'],
       ETL_STATUS_REASON: [''],
       ETL_EXECUTION_STATUS: ['TODO'],
@@ -117,6 +120,14 @@ export class AddLoadControlComponent implements OnInit {
       ANALYZE_EXECUTION_STATUS: ['TODO'],
       UPDATE_DATE: [{ value: null, disabled: true }, Validators.required],
       UPDATED_BY: ['', Validators.required]
+    });
+  }
+
+  getEmails() {
+    this.loadControlService.getEmails().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.emails = data.data;
+      }
     });
   }
 
@@ -396,7 +407,7 @@ export class AddLoadControlComponent implements OnInit {
     formValues.UPDATE_DATE = new Date();
     for (const key in formValues) {
       const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
-      const dataType = this.recordMeta[index].DATA_TYPE;
+      const dataType = this.recordMeta[index] && this.recordMeta[index].DATA_TYPE;
       if (formValues[key]) {
         if (dataType == "timestamp") {
           formValues[key] = `${formValues[key]}`;

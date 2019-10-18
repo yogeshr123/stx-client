@@ -38,6 +38,7 @@ export class EditLoadControlComponent implements OnInit {
   factSchemaNames: any;
   factTablesNames: any;
   tableInfo: any;
+  emails: any;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -64,11 +65,11 @@ export class EditLoadControlComponent implements OnInit {
       this.isEdit = this.appState.selectedRecord.edit;
       this.getColumnDataTypeAndSetFormValues();
       this.getTableData();
-    }
-    else {
+    } else {
       this.router.navigate(['/loadcontrol/add']);
     }
     this.getFactTablesData();
+    this.getEmails();
   }
 
   ngOnDestroy() {
@@ -90,6 +91,7 @@ export class EditLoadControlComponent implements OnInit {
       TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
+      EMAIL_GROUP: [''],
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       FACT_SCHEMA_NAME: [''],
@@ -163,6 +165,15 @@ export class EditLoadControlComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() { return this.editLoadControlForm.controls; }
+
+  getEmails() {
+    this.loadControlService.getEmails().subscribe((data: any) => {
+      if (data.data && data.data.length > 0) {
+        this.emails = data.data;
+        this.editLoadControlForm.controls.EMAIL_GROUP.patchValue(this.record && this.record.EMAIL_GROUP ? this.record.EMAIL_GROUP : '');
+      }
+    });
+  }
 
   getTableData() {
     const request = {

@@ -50,6 +50,13 @@ export class LoadControlService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    getEmails() {
+        const url = `${environment.baseUrl}table_load_control/emails`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     getSearchQueryResult(body: any) {
         const url = `${environment.baseUrl}table_load_control/searchQuery`;
         return this.http

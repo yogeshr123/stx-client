@@ -77,6 +77,12 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { expectedPermission: 'accessSparkConfigModule' }
             },
+            {
+                path: 'email-config',
+                loadChildren: '../../pages/email-config/email-config.module#EmailConfigModule',
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'accessDBEndponitsModule' }
+            },
             // {
             // 	path: 'error/403',
             // 	component: ErrorPageComponent,

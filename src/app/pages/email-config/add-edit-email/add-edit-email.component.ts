@@ -118,7 +118,7 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
     if (this.emailList.length) {
       formValues.EMAIL_ADDRESSES = `'${this.emailList.join("','")}'`;
       if (this.addEditEmailForm.value.EMAIL_ADDRESSES) {
-        formValues.EMAIL_ADDRESSES = `${this.emailList},'${this.addEditEmailForm.value.EMAIL_ADDRESSES}'`;
+        formValues.EMAIL_ADDRESSES = `${formValues.EMAIL_ADDRESSES},'${this.addEditEmailForm.value.EMAIL_ADDRESSES}'`;
       }
     } else {
       formValues.EMAIL_ADDRESSES = `'${formValues.EMAIL_ADDRESSES}'`;

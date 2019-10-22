@@ -9,28 +9,39 @@ import { catchError } from 'rxjs/internal/operators/catchError';
     providedIn: 'root'
 })
 export class EmailConfigService {
+
+    emailObject: any;
+
     constructor(
         private commonService: CommonService,
         private http: HttpClient
     ) {
     }
 
-    getSparkConfig() {
+    getEmailObject() {
+        return this.emailObject;
+    }
+
+    setEmailObject(emailObject) {
+        this.emailObject = emailObject;
+    }
+
+    getEmailConfig() {
         const url = `${environment.baseUrl}email_config`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));
     }
 
-    addemailConfig(endpoint: any) {
-        const url = `${environment.baseUrl}email_config`;
+    addEmailConfig(endpoint: any) {
+        const url = `${environment.baseUrl}email_config/addEmail`;
         return this.http
             .post(url, endpoint)
             .pipe(catchError(this.commonService.handleError));
     }
 
-    updateemailConfig(endpoint: any) {
-        const url = `${environment.baseUrl}email_config`;
+    updateEmailConfig(endpoint: any) {
+        const url = `${environment.baseUrl}email_config/updateEmail`;
         return this.http
             .put(url, endpoint)
             .pipe(catchError(this.commonService.handleError));

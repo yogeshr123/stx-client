@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
-      <button appPermission expectedPermission="addClustersModule" class="btn btn-sm btn-primary mb-2 float-right"
+      <button appPermission expectedPermission="addEmailConfigModule" class="btn btn-sm btn-primary mb-2 float-right"
         [routerLink]="[ './add-cluster' ]">Add New</button>
       <div class="table-responsive">
         <p-table #dt [columns]="selectedColumns" [value]="clustersArray" [responsive]="true" dataKey="TABLE_NAME"
@@ -69,7 +69,7 @@
                   <button class="btn btn-sm btn-primary" type="button" (click)="editCluster(rowData, false)">
                     <i class="fa fa-eye"></i>
                   </button>
-                  <button appPermission expectedPermission="editClustersModule" (click)="editCluster(rowData, true)"
+                  <button appPermission expectedPermission="editEmailConfigModule" (click)="editCluster(rowData, true)"
                     title="Edit" class="btn btn-sm btn-primary ml-1">
                     <i class="fa fa-pencil"></i>
                   </button>

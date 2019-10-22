@@ -1,0 +1,100 @@
+<p-toast></p-toast>
+<div class="app-title">
+  <h1>
+    <i class="app-title-icon fa fa-envelope"></i>
+    <span *ngIf="routeInfo">{{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
+      Email</span>
+  </h1>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tile">
+      <ngx-loading [show]="loader.formData" [config]="{ backdropBorderRadius: '3px' }">
+      </ngx-loading>
+
+      <form [formGroup]="addEditEmailForm" (ngSubmit)="onSubmit()" class="form-horizontal">
+        <div class="text-right">
+          <div class="row">
+            <div class="col-md-12">
+              <button *ngIf="!routeInfo.isViewOnly"
+                [ngClass]="{'disabled': !addEditEmailForm.valid || loader.saveEmail}" class="btn btn-sm btn-primary"
+                type="button" (click)="onSubmit()">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                Save
+              </button>
+              <img *ngIf="loader.saveEmail" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                alt="Loader Image">
+              <button type="button" class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="separator"></div>
+        <div class="tile-body position-relative">
+
+          <div class="row mt-2 col-6">
+            <div class="form-group col-12 row">
+              <label class="control-label col-md-4">EMAIL GROUP NAME <span class="required">*</span></label>
+              <div class="col-md-8" [ngClass]="{'disabled': routeInfo.isViewOnly}">
+                <input formControlName="EMAIL_GROUP" class="form-control" type="text"
+                  [ngClass]="{ 'is-invalid': submitted && f.EMAIL_GROUP.errors }" />
+                <div *ngIf="submitted && f.EMAIL_GROUP.errors" class="invalid-feedback">
+                  <div *ngIf="f.EMAIL_GROUP.errors.required">EMAIL_GROUP NAME is
+                    required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-12 row">
+              <div class="col-4"></div>
+              <div class="col-8">
+                <label>Added Emails:</label>
+                <span class="d-inline-block ml-2">
+                  <span *ngFor="let item of emailList" class="email_id">
+                    {{item}}
+                    <i class="fa fa-times closeItem" aria-hidden="true" (click)="deleteEmail(item)"></i>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-12 row">
+              <label class="control-label col-4">EMAIL ID <span class="required">*</span></label>
+              <div class="col-6" [ngClass]="{'disabled': routeInfo.isViewOnly}">
+                <input formControlName="EMAIL_ADDRESSES" class="form-control" type="text"
+                  [ngClass]="{ 'is-invalid': submitted && f.EMAIL_ADDRESSES.errors }" />
+                <div *ngIf="submitted && f.EMAIL_ADDRESSES.errors" class="invalid-feedback">
+                  <div *ngIf="f.EMAIL_ADDRESSES.errors.required">EMAIL ID is
+                    required</div>
+                </div>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-secondary btn-sm"
+                  [ngClass]="{'disabled': f.EMAIL_ADDRESSES.errors || !addEditEmailForm.value.EMAIL_ADDRESSES  }"
+                  (click)="addEmailAdd()">Add</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tile-footer">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-3">
+              <button *ngIf="!routeInfo.isViewOnly" class="btn btn-sm btn-primary" type="submit"
+                [ngClass]="{'disabled': !addEditEmailForm.valid || (!emailList.length && !addEditEmailForm.value.EMAIL_ADDRESSES) || loader.saveEmail }">
+                <i class="fa fa-fw fa-lg fa-check-circle"></i>
+                Save
+              </button>
+              <img *ngIf="loader.saveEmail" class="ml-2" width="40" src="assets/images/green_loader.gif"
+                alt="Loader Image">
+              <button type="button" class="btn btn-sm btn-secondary ml-2" (click)="goBack()">
+                <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

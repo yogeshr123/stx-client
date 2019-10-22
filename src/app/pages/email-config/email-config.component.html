@@ -60,11 +60,11 @@
             </td>
             <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
               <button appPermission expectedPermission="editSparkConfigModule" class="btn btn-sm btn-primary mr-2"
-                type="button" (click)="selectSparkConfig(rowData, true)">
+                type="button" (click)="editConfig(rowData, true)">
                 <i class="fa fa-pencil"></i>
               </button>
               <button appPermission expectedPermission="readSparkConfigModule" class="btn btn-sm btn-primary"
-                type="button" (click)="selectSparkConfig(rowData, false)">
+                type="button" (click)="editConfig(rowData, false)">
                 <i class="fa fa-eye"></i>
               </button>
             </td>

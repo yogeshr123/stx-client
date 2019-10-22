@@ -12,10 +12,12 @@ import { SparkConfigPropertiesService } from 'src/app/services/spark-config-prop
 import { CommonService } from 'src/app/services/common.service';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { EmailConfigComponent } from './email-config.component';
+import { AddEditEmailComponent } from './add-edit-email/add-edit-email.component';
 
 @NgModule({
   declarations: [
-    EmailConfigComponent
+    EmailConfigComponent,
+    AddEditEmailComponent
   ],
   imports: [
     DateConvertModule,
@@ -29,6 +31,18 @@ import { EmailConfigComponent } from './email-config.component';
       {
         path: '',
         component: EmailConfigComponent
+      },
+      {
+        path: 'add',
+        component: AddEditEmailComponent
+      },
+      {
+        path: 'view',
+        component: AddEditEmailComponent
+      },
+      {
+        path: 'edit',
+        component: AddEditEmailComponent
       }
     ]),
   ],

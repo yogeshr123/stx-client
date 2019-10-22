@@ -2,7 +2,8 @@
 <div class="app-title">
   <h1>
     <i class="app-title-icon fa fa-server"></i>
-    <span>Add Cluster</span>
+    <span *ngIf="routeInfo">{{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
+      Cluster</span>
   </h1>
 </div>
 <div class="row">

@@ -13,7 +13,7 @@ import { EmailConfigService } from 'src/app/services/email-config.service';
 export class EmailConfigComponent implements OnInit {
 
   emailConfig: any[];
-  selectedSparkConfig: any;
+  selectedEmailConfig: any;
   emailConfigColumns: any;
   appState: any;
 
@@ -50,7 +50,7 @@ export class EmailConfigComponent implements OnInit {
   }
 
   loadSparkConfig() {
-    this.emailConfigService.getSparkConfig().subscribe((data: any) => {
+    this.emailConfigService.getEmailConfig().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.emailConfig = data.data;
       }
@@ -59,18 +59,19 @@ export class EmailConfigComponent implements OnInit {
     });
   }
 
-  showToast(severity, summary) {
-    this.messageService.add({ severity, summary, life: 3000 });
+  editConfig(email, isEdit) {
+    let appState = this.commonService.getState();
+    appState = { ...appState, selectedEmailConfig: email };
+    this.commonService.setState(appState);
+    if (isEdit) {
+      return this.router.navigate(['email-config/edit']);
+    } else {
+      return this.router.navigate(['email-config/view']);
+    }
   }
 
-  selectSparkConfig(emailConfig: any, edit: boolean) {
-    this.appState = { ...this.appState, selectedSparkConfig: emailConfig };
-    this.commonService.setState(this.appState);
-    if (edit) {
-      this.router.navigate(['email-config/edit']);
-    } else {
-      this.router.navigate(['email-config/view']);
-    }
+  showToast(severity, summary) {
+    this.messageService.add({ severity, summary, life: 3000 });
   }
 
 }

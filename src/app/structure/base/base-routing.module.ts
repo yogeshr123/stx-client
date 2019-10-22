@@ -81,7 +81,7 @@ const routes: Routes = [
                 path: 'email-config',
                 loadChildren: '../../pages/email-config/email-config.module#EmailConfigModule',
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'accessDBEndponitsModule' }
+                data: { expectedPermission: 'accessEmailConfigModule' }
             },
             // {
             // 	path: 'error/403',

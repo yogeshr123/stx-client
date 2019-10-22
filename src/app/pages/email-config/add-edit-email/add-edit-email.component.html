@@ -33,8 +33,8 @@
         <div class="separator"></div>
         <div class="tile-body position-relative">
 
-          <div class="row mt-2 col-6">
-            <div class="form-group col-12 row">
+          <div class="row mt-2 col-12">
+            <div class="form-group col-6 row">
               <label class="control-label col-md-4">EMAIL GROUP NAME <span class="required">*</span></label>
               <div class="col-md-8" [ngClass]="{'disabled': routeInfo.isViewOnly}">
                 <input formControlName="EMAIL_GROUP" class="form-control" type="text"
@@ -46,10 +46,10 @@
               </div>
             </div>
             <div class="form-group col-12 row">
-              <div class="col-4"></div>
+              <div class="col-2"></div>
               <div class="col-8">
-                <label>Added Emails:</label>
-                <span class="d-inline-block ml-2">
+                <span>Added Emails:</span>
+                <span>
                   <span *ngFor="let item of emailList" class="email_id">
                     {{item}}
                     <i class="fa fa-times closeItem" aria-hidden="true" (click)="deleteEmail(item)"></i>
@@ -57,7 +57,7 @@
                 </span>
               </div>
             </div>
-            <div class="form-group col-12 row">
+            <div class="form-group col-6 row">
               <label class="control-label col-4">EMAIL ID <span class="required">*</span></label>
               <div class="col-6" [ngClass]="{'disabled': routeInfo.isViewOnly}">
                 <input formControlName="EMAIL_ADDRESSES" class="form-control" type="text"

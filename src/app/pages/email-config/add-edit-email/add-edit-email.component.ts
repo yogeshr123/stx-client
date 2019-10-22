@@ -75,9 +75,9 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
   setFormValues() {
     this.oldEmailInfo = this.emailService.getEmailObject();
     const appState: any = this.commonService.getState();
-    if (appState && appState.selectedCluster) {
-      const cluster = appState.selectedCluster;
-      this.oldEmailInfo = appState.selectedCluster;
+    if (appState && appState.selectedEmailConfig) {
+      const cluster = appState.selectedEmailConfig;
+      this.oldEmailInfo = appState.selectedEmailConfig;
       const formControls = this.addEditEmailForm.controls;
       if (cluster) {
         for (const key in formControls) {

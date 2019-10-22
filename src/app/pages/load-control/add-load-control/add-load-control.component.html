@@ -117,7 +117,7 @@
                           required</div>
                       </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8" [ngClass]="{'disabled': f.EMAIL_ALERTS.value === 'N' }">
                       <label class="control-label">Choose Email Group</label>
                       <select class="form-control" formControlName="EMAIL_GROUP">
                         <option *ngFor="let item of emails" value="{{item.EMAIL_GROUP}}">{{item.EMAIL_GROUP}}</option>

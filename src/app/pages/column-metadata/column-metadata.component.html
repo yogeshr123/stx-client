@@ -90,10 +90,10 @@
             *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add
             Column</button>
           <button appPermission expectedPermission="addColumnMetadataModule"
-            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
+            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'flat'"
             class="mb-2 btn btn-sm btn-info float-right ml-2" (click)="dimLookUp()">DIM LookUp</button>
           <button appPermission expectedPermission="addColumnMetadataModule"
-            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'update'"
+            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'flat'"
             class="mb-2 btn btn-sm btn-warning float-right" (click)="showFactColumns()">Fact Column</button>
         </h6>
         <div class="table-responsive">

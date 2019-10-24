@@ -430,9 +430,9 @@ export class LoadControlComponent implements OnInit {
     let isValidCronExpression = false;
 
     if (this.recurrencePatterIndex == 0) {
-      cronExpression = "@daily";
+      cronExpression = "@once";
       isValidCronExpression = true;
-      alert(`cronexpression is @daily`);
+      alert(`cronexpression is @once`);
     } else if (this.recurrencePatterIndex == 1) {
       //  Set hourly recucrrence pattern
       const hourlyRecurrencePatternMinute = this.schedulerForm.controls.hourlyRecurrencePatternMinute.value;

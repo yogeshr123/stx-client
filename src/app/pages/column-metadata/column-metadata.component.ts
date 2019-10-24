@@ -536,6 +536,7 @@ export class ColumnMetadataComponent implements OnInit {
     this.columnMetadataService.generateNewVersion(request).subscribe((resp: any) => {
       if (resp && !resp.error) {
         this.showToast('success', 'Version Created!');
+        localStorage.removeItem('localCopyOfVersion');
         this.ngOnInit();
       } else {
         this.showToast('error', 'Could not create version.');

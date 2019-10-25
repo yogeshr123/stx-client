@@ -145,7 +145,7 @@ export class FactColumnComponent implements OnInit {
   saveColumns() {
     this.saveLoader = true;
     const appState = JSON.parse(localStorage.getItem('appState'));
-    let selectedColumns = this.columns.filter(i => i.checked);
+    let selectedColumns = this.columns.filter(i => i.checked && !i.isOld);
     selectedColumns = selectedColumns.map(i => {
       i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
       i.TABLE_NAME = this.existingTable.TABLE_NAME;
@@ -175,6 +175,7 @@ export class FactColumnComponent implements OnInit {
     this.removedColumns = this.removedColumns.map(i => {
       i.SCHEMA_NAME = this.existingTable.SCHEMA_NAME;
       i.TABLE_NAME = this.existingTable.TABLE_NAME;
+      i.METADATA_VERSION = this.existingTable.METADATA_VERSION;
       return i;
     });
     const request = {

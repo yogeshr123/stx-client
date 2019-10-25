@@ -28,6 +28,7 @@ export class AddLoadControlComponent implements OnInit {
   recordMeta: any;
   appState: any;
   tableRegex = "[A-Za-z][A-Za-z0-9_]*"; //"[A-Za-z0-9_]+";
+  tableColumnRegex = "[A-Za-z][A-Za-z0-9_, ]*";
   factSchemaNamesBackup: any;
   factSchemaNames: any;
   factTablesNames: any;
@@ -78,7 +79,7 @@ export class AddLoadControlComponent implements OnInit {
       TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
-      EMAIL_GROUP: [''],
+      EMAIL_GROUP: ['', Validators.required],
       TABLE_SOURCE: ['ORACLE', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       FACT_SCHEMA_NAME: [''],
@@ -180,6 +181,7 @@ export class AddLoadControlComponent implements OnInit {
     const RAW_FACTORY_RETENTION_STRATEGY = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_STRATEGY');
     const RAW_FACTORY_RETENTION_DAYS = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_DAYS');
     const RAW_FACTORY_MAX_LANDING_DATE = this.addLoadControlForm.get('RAW_FACTORY_MAX_LANDING_DATE');
+    const EMAIL_GROUP = this.addLoadControlForm.get('EMAIL_GROUP');
 
     this.addLoadControlForm.get('TABLE_SOURCE').valueChanges
       .subscribe(TABLE_SOURCE => {
@@ -188,7 +190,7 @@ export class AddLoadControlComponent implements OnInit {
           DB_ID.setValidators([Validators.required]);
           DB_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           DB_TABLE.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
-          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableColumnRegex)]);
           DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           CHECK_INDEX_EXIST.setValidators([Validators.required]);
 
@@ -234,6 +236,20 @@ export class AddLoadControlComponent implements OnInit {
         DB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
         DB_TABLE_UPDATE_DATE_COLUMN.updateValueAndValidity();
         RAW_FACTORY_PATH.updateValueAndValidity();
+      });
+
+
+    this.addLoadControlForm.get('EMAIL_ALERTS').valueChanges
+      .subscribe(EMAIL_ALERTS => {
+        if (EMAIL_ALERTS === 'Y') {
+          EMAIL_GROUP.setValidators([Validators.required]);
+          EMAIL_GROUP.updateValueAndValidity();
+          EMAIL_GROUP.enable();
+        } else {
+          EMAIL_GROUP.setValidators(null);
+          EMAIL_GROUP.updateValueAndValidity();
+          EMAIL_GROUP.disable();
+        }
       });
   }
 

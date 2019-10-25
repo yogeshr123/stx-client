@@ -33,7 +33,7 @@ export class EditLoadControlComponent implements OnInit {
   isEdit = false;
   appState: any;
   tableRegex = "[A-Za-z][A-Za-z0-9_]*";
-  tableColumnRegex = "[A-Za-z][A-Za-z0-9_,]*";
+  tableColumnRegex = "[A-Za-z][A-Za-z0-9_, ]*";
   factSchemaNamesBackup: any;
   factSchemaNames: any;
   factTablesNames: any;
@@ -91,7 +91,7 @@ export class EditLoadControlComponent implements OnInit {
       TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
-      EMAIL_GROUP: [''],
+      EMAIL_GROUP: ['', Validators.required],
       TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       FACT_SCHEMA_NAME: [''],
@@ -433,6 +433,7 @@ export class EditLoadControlComponent implements OnInit {
     const RAW_FACTORY_RETENTION_STRATEGY = this.editLoadControlForm.get('RAW_FACTORY_RETENTION_STRATEGY');
     const RAW_FACTORY_RETENTION_DAYS = this.editLoadControlForm.get('RAW_FACTORY_RETENTION_DAYS');
     const RAW_FACTORY_MAX_LANDING_DATE = this.editLoadControlForm.get('RAW_FACTORY_MAX_LANDING_DATE');
+    const EMAIL_GROUP = this.editLoadControlForm.get('EMAIL_GROUP');
 
 
     this.editLoadControlForm.get('TABLE_SOURCE').valueChanges
@@ -491,6 +492,19 @@ export class EditLoadControlComponent implements OnInit {
         DB_TABLE_UPDATE_DATE_COLUMN.updateValueAndValidity();
         CHECK_INDEX_EXIST.updateValueAndValidity();
         RAW_FACTORY_PATH.updateValueAndValidity();
+      });
+
+    this.editLoadControlForm.get('EMAIL_ALERTS').valueChanges
+      .subscribe(EMAIL_ALERTS => {
+        if (EMAIL_ALERTS === 'Y') {
+          EMAIL_GROUP.setValidators([Validators.required]);
+          EMAIL_GROUP.updateValueAndValidity();
+          EMAIL_GROUP.enable();
+        } else {
+          EMAIL_GROUP.setValidators(null);
+          EMAIL_GROUP.updateValueAndValidity();
+          EMAIL_GROUP.disable();
+        }
       });
   }
 

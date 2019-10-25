@@ -121,7 +121,7 @@
                       <label class="control-label">Choose Email Group</label>
                       <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EMAIL_GROUP.errors }"
                         formControlName="EMAIL_GROUP">
-                        <option *ngFor="let item of emails" value="{{item.EMAIL_GROUP}}">{{item.EMAIL_GROUP}}</option>
+                        <option *ngFor="let item of emails" value="{{item.ID}}">{{item.EMAIL_GROUP}}</option>
                       </select>
                     </div>
                     <div *ngIf="submitted && f.EMAIL_GROUP.errors" class="invalid-feedback">

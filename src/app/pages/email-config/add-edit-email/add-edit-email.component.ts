@@ -23,7 +23,6 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
     formData: false,
     saveEmail: false
   };
-  oldEmailInfo: any;
   emailList = [];
   submitted = false;
 
@@ -56,6 +55,7 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
 
   formInit() {
     this.addEditEmailForm = this.formBuilder.group({
+      ID: [''],
       EMAIL_GROUP: ['', Validators.required],
       EMAIL_ADDRESSES: ['', Validators.compose([Validators.email])],
       UPDATE_DATE: [new Date(), Validators.required],
@@ -73,11 +73,9 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
   }
 
   setFormValues() {
-    this.oldEmailInfo = this.emailService.getEmailObject();
     const appState: any = this.commonService.getState();
     if (appState && appState.selectedEmailConfig) {
       const cluster = appState.selectedEmailConfig;
-      this.oldEmailInfo = appState.selectedEmailConfig;
       const formControls = this.addEditEmailForm.controls;
       if (cluster) {
         for (const key in formControls) {
@@ -123,12 +121,11 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
     } else {
       formValues.EMAIL_ADDRESSES = `'${formValues.EMAIL_ADDRESSES}'`;
     }
-    const request = { email: formValues, oldEmailInfo: '' };
+    const request = { email: formValues };
     request.email.UPDATE_DATE = `${new Date()}`;
     let functionToCall = 'addEmailConfig';
     if (this.routeInfo.isEditMode) {
       functionToCall = 'updateEmailConfig';
-      request.oldEmailInfo = this.oldEmailInfo;
     }
     this.emailService[functionToCall](request).subscribe((resp: any) => {
       if (resp && !resp.error) {

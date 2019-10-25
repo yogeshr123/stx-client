@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { DynamicDialogConfig, MessageService, DynamicDialogRef } from 'primeng/api';
+import { LoadControlService } from 'src/app/services/load-control.service';
 
 @Component({
   selector: 'app-fact-column',
@@ -25,25 +26,24 @@ export class FactColumnComponent implements OnInit {
     public config: DynamicDialogConfig,
     private messageService: MessageService,
     private columnMetadataService: ColumnMetadataService,
+    private loadControlService: LoadControlService,
   ) { }
 
   ngOnInit() {
     this.existingTable = this.config.data;
-    this.getAllTables();
     this.getColumns(this.existingTable.TABLE_NAME, this.existingTable.METADATA_VERSION, true);
+    this.getFactTableInfo();
   }
 
-  getAllTables() {
+  getFactTableInfo() {
     this.dataLoader = true;
-    this.columnMetadataService.getAllLoadControlTables().subscribe((resp: any) => {
+    const request = {
+      query: `SCHEMA_NAME = '${this.existingTable.SCHEMA_NAME}' AND TABLE_NAME = '${this.existingTable.TABLE_NAME}'`
+    };
+    this.loadControlService.getSearchQueryResult(request).subscribe((resp: any) => {
       if (resp.data && resp.data.length) {
-        this.tables = resp.data;
-        this.tables = this.tables.filter(i => i.LOAD_STRATEGY === 'UPDATE');
-        this.tables = this.tables.map(i => {
-          i.schemaTableName = `${i.SCHEMA_NAME}-${i.TABLE_NAME}`;
-          return i;
-        });
-        this.tables = this.removeDuplicates(this.tables, 'schemaTableName');
+        this.tables = resp.data[0];
+        this.getTableVersions(this.tables.FACT_TABLE_NAME);
       }
       this.dataLoader = false;
     });
@@ -92,9 +92,10 @@ export class FactColumnComponent implements OnInit {
     if (this.columns && this.columns.length && this.alreadyAddedColumns && this.alreadyAddedColumns.length) {
       this.columns.forEach(e1 => {
         this.alreadyAddedColumns.forEach(e2 => {
-          if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
+          if (e1.TARGET_COLUMN_NAME === e2.TARGET_COLUMN_NAME) {
             e1.checked = true;
-            this.columnsSavedInPrev.push(e1.SRC_COLUMN_NAME);
+            e1.isOld = true;
+            this.columnsSavedInPrev.push(e1.TARGET_COLUMN_NAME);
           }
         });
       });
@@ -134,7 +135,7 @@ export class FactColumnComponent implements OnInit {
     const uncheckedItems = this.columns.filter(i => i.checked === false);
     const itemsToRemove = [];
     uncheckedItems.forEach(element => {
-      if (this.columnsSavedInPrev.indexOf(element.SRC_COLUMN_NAME) > -1) {
+      if (this.columnsSavedInPrev.indexOf(element.TARGET_COLUMN_NAME) > -1) {
         itemsToRemove.push(element);
       }
     });
@@ -150,6 +151,8 @@ export class FactColumnComponent implements OnInit {
       i.TABLE_NAME = this.existingTable.TABLE_NAME;
       i.METADATA_VERSION = this.existingTable.METADATA_VERSION;
       i.SRC_COLUMN_TYPE = 'MAPPED';
+      i.SRC_COLUMN_NAME = i.TARGET_COLUMN_NAME;
+      i.SRC_DATA_TYPE = i.TARGET_DATA_TYPE;
       i.UPDATE_DATE = `${new Date()}`;
       i.INTERNAL_COLUMN = i.INTERNAL_COLUMN.data ? i.INTERNAL_COLUMN.data[0] : i.INTERNAL_COLUMN;
       i.IS_DATATYPE_CHANGED =

@@ -52,6 +52,7 @@ export class AddComponent implements OnInit {
     this.formInit();
     if (this.action === 'view' || this.action === 'edit') {
       this.setValuesInViewEdit();
+      // this.getEditDIMColumns();
     }
     this.getUserInfo();
   }
@@ -126,12 +127,12 @@ export class AddComponent implements OnInit {
         let dimColumnArray = [];
         this.oldVersionColumns = [];
         selectedColumns.forEach(e1 => {
-          if (e1.IS_NEW.data[0] === 0) {
+          if (e1.IS_NEW && e1.IS_NEW.data && e1.IS_NEW.data[0] === 0) {
             this.oldVersionColumns.push(e1.TARGET_COLUMN_NAME);
           }
           this.dimensionTableColumns.forEach(e2 => {
             if (e1.SRC_COLUMN_NAME === e2.SRC_COLUMN_NAME) {
-              e2.IS_NEW = e1.IS_NEW.data[0];
+              e2.IS_NEW = e1.IS_NEW && e1.IS_NEW.data ? e1.IS_NEW.data[0] : e1.IS_NEW;
               dimColumnArray.push(e2);
             }
           });
@@ -232,7 +233,7 @@ export class AddComponent implements OnInit {
     delete lookUpObject.LOOKUP_JOIN_KEYS2;
     delete lookUpObject.LOOKUP_COLUMNS;
 
-    let columnsToAdd = Object.assign({}, this.addForm.value);
+    let columnsToAdd = JSON.parse(JSON.stringify(this.addForm.value));
     columnsToAdd.LOOKUP_COLUMNS = this.LOOKUP_COLUMNS;
     columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
       i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;

@@ -55,7 +55,6 @@ export class AddEditEmailComponent implements OnInit, OnDestroy {
 
   formInit() {
     this.addEditEmailForm = this.formBuilder.group({
-      ID: [''],
       EMAIL_GROUP: ['', Validators.required],
       EMAIL_ADDRESSES: ['', Validators.compose([Validators.email])],
       UPDATE_DATE: [new Date(), Validators.required],

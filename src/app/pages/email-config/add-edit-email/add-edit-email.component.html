@@ -36,7 +36,7 @@
           <div class="row mt-2 col-12">
             <div class="form-group col-6 row">
               <label class="control-label col-md-4">EMAIL GROUP NAME <span class="required">*</span></label>
-              <div class="col-md-8" [ngClass]="{'disabled': routeInfo.isViewOnly}">
+              <div class="col-md-8" [ngClass]="{'disabled': routeInfo.isViewOnly || routeInfo.isEditMode}">
                 <input formControlName="EMAIL_GROUP" class="form-control" type="text"
                   [ngClass]="{ 'is-invalid': submitted && f.EMAIL_GROUP.errors }" />
                 <div *ngIf="submitted && f.EMAIL_GROUP.errors" class="invalid-feedback">

@@ -15,6 +15,7 @@ import { LoadControlService } from 'src/app/services/load-control.service';
 import { SparkConfigPropertiesService } from 'src/app/services/spark-config-properties.service';
 import { CommonService } from 'src/app/services/common.service';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
     AddEditSparkconfigComponent
   ],
   imports: [
+    PermissionModule,
     DateConvertModule,
     CommonModule,
     ToastModule,

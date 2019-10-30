@@ -15,9 +15,11 @@ import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbend
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CommonService } from 'src/app/services/common.service';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
     imports: [
+        PermissionModule,
         DateConvertModule,
         DbEndpointsRouting,
         CommonModule,

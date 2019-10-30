@@ -13,6 +13,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { EmailConfigComponent } from './email-config.component';
 import { AddEditEmailComponent } from './add-edit-email/add-edit-email.component';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddEditEmailComponent } from './add-edit-email/add-edit-email.component
     AddEditEmailComponent
   ],
   imports: [
+    PermissionModule,
     DateConvertModule,
     CommonModule,
     ToastModule,

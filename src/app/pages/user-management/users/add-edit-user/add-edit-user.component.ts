@@ -40,7 +40,7 @@ export class AddEditUserComponent implements OnInit {
   formInit() {
     this.addEditForm = this.formBuilder.group({
       USER_NAME: [this.selectedUser.USER_NAME, Validators.required],
-      EMAIL_ID: [this.selectedUser.EMAIL_ID, Validators.required],
+      EMAIL_ID: [this.selectedUser.EMAIL_ID],
       ROLE: [this.selectedUser.ROLE, Validators.required],
     });
   }

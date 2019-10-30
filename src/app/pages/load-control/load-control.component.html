@@ -7,7 +7,7 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <div class="scrollBtns">
+    <div class="scrollBtns" *ngIf="showSideArrows">
       <button id="slideBack" type="button" pTooltip="Scroll Table
       to left" tooltipPosition="bottom"><i class="fa fa-chevron-circle-left fa-3x"></i></button>
       <button id="slide" type="button" pTooltip="Scroll Table
@@ -397,7 +397,7 @@
       <div class="clearfix"></div>
       <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '3px' }">
       </ngx-loading>
-      <p-table #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
+      <p-table (onFilter)="checkSideArrows()" #dt1 [columns]="selectedColumns" [value]="recordsArray" [responsive]="true" dataKey="TABLE_NAME"
         [reorderableColumns]="true" [(selection)]="selectedRecords" stateStorage="local" stateKey="statedemo-local"
         [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table">
         <ng-template pTemplate="caption">

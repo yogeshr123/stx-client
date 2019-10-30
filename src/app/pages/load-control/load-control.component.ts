@@ -36,6 +36,7 @@ export class LoadControlComponent implements OnInit {
   statusValueReason: string;
   loader = false;
   weekelyRecurrenceCheckedDays = [];
+  showSideArrows = true;
 
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
@@ -118,6 +119,18 @@ export class LoadControlComponent implements OnInit {
     });
   }
 
+  checkSideArrows() {
+    setTimeout(() => {
+      const tableHeight = $('.scroll-table').height();
+      const windowHeight = $(window).height();
+      if (tableHeight + 150 > windowHeight) {
+        this.showSideArrows = true;
+      } else {
+        this.showSideArrows = false;
+      }
+    }, 500);
+  }
+
   loadAllRecords() {
     this.loader = true;
     this.loadControlService.getRecords().subscribe((data: any) => {
@@ -137,6 +150,7 @@ export class LoadControlComponent implements OnInit {
         }
       }
       this.loader = false;
+      this.checkSideArrows();
     }, error => {
       this.loader = false;
       this.showToast('error', 'Error while fetching data.');
@@ -373,6 +387,7 @@ export class LoadControlComponent implements OnInit {
       this.loadControlService.getSearchQueryResult(body).subscribe((data: any) => {
         if (data && data.data) {
           this.recordsArray = data.data;
+          this.checkSideArrows();
         }
       }, error => {
         this.showToast('error', 'Error while fetching data');

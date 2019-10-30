@@ -103,9 +103,10 @@ export class AddEditSparkconfigComponent implements OnInit {
 
   formInit() {
     this.addEditForm = this.formBuilder.group({
-      SCHEMA_NAME: [{ value: '', disabled: true }, Validators.required],
-      TABLE_NAME: [{ value: '', disabled: true }, Validators.required],
-      ENV_NAME: ['', Validators.required],
+      // SCHEMA_NAME: [{ value: '', disabled: true }, Validators.required],
+      // TABLE_NAME: [{ value: '', disabled: true }, Validators.required],
+      // ENV_NAME: ['', Validators.required],
+      SPARK_ID: ['', Validators.required],
       LOAD_TYPE: ['', Validators.required],
       UPDATE_DATE: [new Date(), Validators.required],
       UPDATED_BY: ['', Validators.required],
@@ -118,14 +119,12 @@ export class AddEditSparkconfigComponent implements OnInit {
     if (type === "ENV_NAME") {
       this.loadSchemaNames(value);
       this.addEditForm.get('SCHEMA_NAME').enable();
-    }
-    else if (type === "SCHEMA_NAME") {
+    } else if (type === "SCHEMA_NAME") {
       if (value !== "*") {
         const ENV_NAME = this.addEditForm.get('ENV_NAME').value;
         this.addEditForm.get('TABLE_NAME').enable();
         this.loadTableNames(ENV_NAME, value);
-      }
-      else {
+      } else {
         this.addEditForm.get('TABLE_NAME').disable();
         this.addEditForm.get('TABLE_NAME').patchValue("*")
       }

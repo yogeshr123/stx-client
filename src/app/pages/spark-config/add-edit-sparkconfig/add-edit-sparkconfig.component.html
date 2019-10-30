@@ -2,22 +2,27 @@
 <div class="app-title">
   <h1>
     <i class="app-title-icon fa fa-gear"></i>
-    <span
-      *ngIf="routeInfo">{{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
-      Spark Config</span>
+    <span *ngIf="routeInfo"
+      >{{
+        routeInfo.isEditMode ? 'Edit' : routeInfo.isViewOnly ? 'View' : 'Add'
+      }}
+      Spark Config</span
+    >
   </h1>
 </div>
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
-      <ngx-loading [show]="loader.formData"
-        [config]="{ backdropBorderRadius: '3px' }">
+      <ngx-loading
+        [show]="loader.formData"
+        [config]="{ backdropBorderRadius: '3px' }"
+      >
       </ngx-loading>
       <div class="tile-body form-overlay-parent">
         <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
         <form class="row p-0" [formGroup]="addEditForm" (ngSubmit)="submit()">
           <div class="col-md-6">
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">ENV NAME</label>
               <select formControlName="ENV_NAME" class="form-control"
                 (change)="loadData($event.target.value, 'ENV_NAME')"
@@ -54,10 +59,27 @@
                 <div *ngIf="f.TABLE_NAME.errors.required">TABLE NAME is
                   required</div>
               </div>
+            </div> -->
+            <div class="form-group">
+              <label class="control-label">SPARK ID</label>
+              <input
+                type="text"
+                formControlName="SPARK_ID"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.SPARK_ID.errors }"
+              />
+              <div
+                *ngIf="submitted && f.SPARK_ID.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.SPARK_ID.errors.required">
+                  SPARK ID is required
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">SCHEMA NAME </label>
               <ng-template
                 [ngIf]="!routeInfo.isEditMode && !routeInfo.isViewOnly"
@@ -80,18 +102,24 @@
                 <div *ngIf="f.SCHEMA_NAME.errors.required">SCHEMA NAME is
                   required</div>
               </div>
-            </div>
+            </div> -->
             <div class="form-group">
               <label class="control-label">LOAD TYPE</label>
-              <select formControlName="LOAD_TYPE" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.LOAD_TYPE.errors }">
+              <select
+                formControlName="LOAD_TYPE"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.LOAD_TYPE.errors }"
+              >
                 <option value="T1">T1</option>
                 <option value="T2">T2</option>
               </select>
-              <div *ngIf="submitted && f.LOAD_TYPE.errors"
-                class="invalid-feedback">
-                <div *ngIf="f.LOAD_TYPE.errors.required">LOAD TYPE is
-                  required</div>
+              <div
+                *ngIf="submitted && f.LOAD_TYPE.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.LOAD_TYPE.errors.required">
+                  LOAD TYPE is required
+                </div>
               </div>
             </div>
           </div>
@@ -99,9 +127,13 @@
             <div class="form-group">
               <label class="control-label">SPARK CONFIG</label>
               <br />
-              <button type="button" class="btn btn-sm btn-primary mb-2"
-                (click)="addItem()">
-                <i class="fa fa-fw fa-lg fa-plus-circle"></i></button>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary mb-2"
+                (click)="addItem()"
+              >
+                <i class="fa fa-fw fa-lg fa-plus-circle"></i>
+              </button>
 
               <div>
                 <table class="table" formArrayName="SPARK_CONF">
@@ -115,77 +147,180 @@
                   </thead>
                   <tbody>
                     <tr
-                      *ngFor="let config of SparkConfigFormGroup.controls; let i = index;"
-                      [ngSwitch]="sparkConfigList.controls[i].controls['DATA_TYPE'].value"
-                      [formGroupName]="i">
+                      *ngFor="
+                        let config of SparkConfigFormGroup.controls;
+                        let i = index
+                      "
+                      [ngSwitch]="
+                        sparkConfigList.controls[i].controls['DATA_TYPE'].value
+                      "
+                      [formGroupName]="i"
+                    >
                       <td>
                         <ng-template
-                          [ngIf]="!sparkConfigList.controls[i].controls['CONFIG_KEY'].value"
-                          [ngIfElse]="elsetemplate">
+                          [ngIf]="
+                            !sparkConfigList.controls[i].controls['CONFIG_KEY']
+                              .value
+                          "
+                          [ngIfElse]="elsetemplate"
+                        >
                           <select
-                            (change)="onSparkConfigKeySelected($event.target.value, i, '')"
-                            class="form-control">
+                            (change)="
+                              onSparkConfigKeySelected(
+                                $event.target.value,
+                                i,
+                                ''
+                              )
+                            "
+                            class="form-control"
+                          >
                             <option disabled>Select key</option>
-                            <option [value]="sparkConfigProperty.CONFIG_KEY"
-                              *ngFor="let sparkConfigProperty of sparkConfigProperties; let i = index">
-                              {{sparkConfigProperty.CONFIG_KEY}}</option>
+                            <option
+                              [value]="sparkConfigProperty.CONFIG_KEY"
+                              *ngFor="
+                                let sparkConfigProperty of sparkConfigProperties;
+                                let i = index
+                              "
+                            >
+                              {{ sparkConfigProperty.CONFIG_KEY }}</option
+                            >
                           </select>
                         </ng-template>
                         <ng-template #elsetemplate>
-                          <input type="text" class="form-control"
+                          <input
+                            type="text"
+                            class="form-control"
                             placeholder="Config Key"
-                            formControlName="CONFIG_KEY" />
+                            formControlName="CONFIG_KEY"
+                          />
                         </ng-template>
                       </td>
                       <td>
                         <ng-container *ngSwitchCase="'VALUE_SET'">
-                          <select class="form-control" formControlName="VALUE"
-                            [ngClass]="{ 'is-invalid': submitted && getSparkConfigFormGroup(i).controls['VALUE'].errors }">
-                            <option [value]="value"
-                              *ngFor="let value of sparkConfigList.controls[i].controls['VALUE_SET'].value.split(','); let i = index">
-                              {{value}}</option>
+                          <select
+                            class="form-control"
+                            formControlName="VALUE"
+                            [ngClass]="{
+                              'is-invalid':
+                                submitted &&
+                                getSparkConfigFormGroup(i).controls['VALUE']
+                                  .errors
+                            }"
+                          >
+                            <option
+                              [value]="value"
+                              *ngFor="
+                                let value of sparkConfigList.controls[
+                                  i
+                                ].controls['VALUE_SET'].value.split(',');
+                                let i = index
+                              "
+                            >
+                              {{ value }}</option
+                            >
                           </select>
                         </ng-container>
                         <ng-container *ngSwitchCase="'RANGE'">
-                          <input type="number" class="form-control"
-                            [min]="sparkConfigList.controls[i].controls['VALUE_SET'].value.split('-')[0]"
-                            [max]="sparkConfigList.controls[i].controls['VALUE_SET'].value.split('-')[1]"
-                            placeholder="Config value" formControlName="VALUE"
-                            [ngClass]="{ 'is-invalid': submitted && getSparkConfigFormGroup(i).controls['VALUE'].errors }" />
+                          <input
+                            type="number"
+                            class="form-control"
+                            [min]="
+                              sparkConfigList.controls[i].controls[
+                                'VALUE_SET'
+                              ].value.split('-')[0]
+                            "
+                            [max]="
+                              sparkConfigList.controls[i].controls[
+                                'VALUE_SET'
+                              ].value.split('-')[1]
+                            "
+                            placeholder="Config value"
+                            formControlName="VALUE"
+                            [ngClass]="{
+                              'is-invalid':
+                                submitted &&
+                                getSparkConfigFormGroup(i).controls['VALUE']
+                                  .errors
+                            }"
+                          />
                         </ng-container>
                         <ng-container *ngSwitchDefault>
-                          <input type="text" class="form-control"
-                            placeholder="Config value" formControlName="VALUE"
-                            [ngClass]="{ 'is-invalid': submitted && getSparkConfigFormGroup(i).controls['VALUE'].errors }" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Config value"
+                            formControlName="VALUE"
+                            [ngClass]="{
+                              'is-invalid':
+                                submitted &&
+                                getSparkConfigFormGroup(i).controls['VALUE']
+                                  .errors
+                            }"
+                          />
                         </ng-container>
                         <div
-                          *ngIf="submitted && getSparkConfigFormGroup(i).controls['VALUE'].errors"
-                          class="invalid-feedback">
+                          *ngIf="
+                            submitted &&
+                            getSparkConfigFormGroup(i).controls['VALUE'].errors
+                          "
+                          class="invalid-feedback"
+                        >
                           <div
-                            *ngIf="getSparkConfigFormGroup(i).controls['VALUE'].errors.required">
-                            VALUE is
-                            required</div>
+                            *ngIf="
+                              getSparkConfigFormGroup(i).controls['VALUE']
+                                .errors.required
+                            "
+                          >
+                            VALUE is required
+                          </div>
                           <div
-                            *ngIf="getSparkConfigFormGroup(i).controls['VALUE'].errors?.pattern">
-                            Please provide
-                            valid VALUE</div>
+                            *ngIf="
+                              getSparkConfigFormGroup(i).controls['VALUE']
+                                .errors?.pattern
+                            "
+                          >
+                            Please provide valid VALUE
+                          </div>
                           <div
-                            *ngIf="getSparkConfigFormGroup(i).controls['VALUE'].errors?.min || getSparkConfigFormGroup(i).controls['VALUE'].errors?.max">
-                            Please select value from valid range</div>
+                            *ngIf="
+                              getSparkConfigFormGroup(i).controls['VALUE']
+                                .errors?.min ||
+                              getSparkConfigFormGroup(i).controls['VALUE']
+                                .errors?.max
+                            "
+                          >
+                            Please select value from valid range
+                          </div>
                         </div>
                       </td>
                       <td>
                         <span>
-                          {{sparkConfigList.controls[i].controls['EXAMPLE'].value}}
+                          {{
+                            sparkConfigList.controls[i].controls['EXAMPLE']
+                              .value
+                          }}
                         </span>
                       </td>
                       <td>
                         <span style="display: flex;">
                           <button
-                            *ngIf="sparkConfigList.controls[i].controls['CONFIG_KEY'].value!=null || sparkConfigList.controls[i].controls['CONFIG_KEY'].value!=undefined"
+                            *ngIf="
+                              sparkConfigList.controls[i].controls['CONFIG_KEY']
+                                .value != null ||
+                              sparkConfigList.controls[i].controls['CONFIG_KEY']
+                                .value != undefined
+                            "
                             class="btn btn-primary btn-sm btn-icon"
                             type="button"
-                            (click)="removeItem(i, sparkConfigList.controls[i].controls['CONFIG_KEY'].value);">
+                            (click)="
+                              removeItem(
+                                i,
+                                sparkConfigList.controls[i].controls[
+                                  'CONFIG_KEY'
+                                ].value
+                              )
+                            "
+                          >
                             <i class="fa fa-trash-o"></i>
                           </button>
                         </span>
@@ -201,13 +336,20 @@
       <div class="tile-footer">
         <div class="row">
           <div class="col-md-12 text-right">
-            <button *ngIf="!routeInfo.isReadMode" class="btn btn-sm btn-primary"
-              (click)="submit()">
-              <i
-                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
-              routerLink="/spark-config">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+            <button
+              *ngIf="!routeInfo.isReadMode"
+              class="btn btn-sm btn-primary"
+              (click)="submit()"
+            >
+              <i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button
+            >&nbsp;&nbsp;&nbsp;
+            <a
+              class="btn btn-sm btn-secondary"
+              routerLinkActive="active"
+              routerLink="/spark-config"
+            >
+              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a
+            >
           </div>
         </div>
       </div>

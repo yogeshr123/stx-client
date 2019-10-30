@@ -27,16 +27,8 @@ export class SparkConfigComponent implements OnInit {
     this.appState = this.commonService.getState();
     this.sparkConfigColumns = [
       {
-        header: 'SCHEMA_NAME',
-        field: 'SCHEMA_NAME'
-      },
-      {
-        header: 'TABLE_NAME',
-        field: 'TABLE_NAME'
-      },
-      {
-        header: 'ENV_NAME',
-        field: 'ENV_NAME'
+        header: 'SPARK_ID',
+        field: 'SPARK_ID'
       },
       {
         header: 'LOAD_TYPE',

@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { AddEditClusterComponent } from './add-edit-cluster/add-edit-cluster.component';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 @NgModule({
     declarations: [
@@ -34,19 +35,27 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
         RouterModule.forChild([
             {
                 path: '',
-                component: ClustersComponent
+                component: ClustersComponent,
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'accessClustersModule' }
             },
             {
                 path: 'add-cluster',
-                component: AddEditClusterComponent
+                component: AddEditClusterComponent,
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'addClustersModule' }
             },
             {
                 path: 'edit-cluster',
-                component: AddEditClusterComponent
+                component: AddEditClusterComponent,
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'editClustersModule' }
             },
             {
                 path: 'view-cluster',
-                component: AddEditClusterComponent
+                component: AddEditClusterComponent,
+                canActivate: [AuthGuard],
+                data: { expectedPermission: 'readClustersModule' }
             }
         ]),
         DropdownModule,

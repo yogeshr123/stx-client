@@ -14,6 +14,7 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { EmailConfigComponent } from './email-config.component';
 import { AddEditEmailComponent } from './add-edit-email/add-edit-email.component';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -32,19 +33,27 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
     RouterModule.forChild([
       {
         path: '',
-        component: EmailConfigComponent
+        component: EmailConfigComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessEmailConfigModule' }
       },
       {
         path: 'add',
-        component: AddEditEmailComponent
+        component: AddEditEmailComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'readEmailConfigModule' }
       },
       {
         path: 'view',
-        component: AddEditEmailComponent
+        component: AddEditEmailComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessDBEndponitsModule' }
       },
       {
         path: 'edit',
-        component: AddEditEmailComponent
+        component: AddEditEmailComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editEmailConfigModule' }
       }
     ]),
   ],

@@ -9,19 +9,27 @@ import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbend
 const routes: Routes = [
     {
         path: '',
-        component: DbEndpointsComponent
+        component: DbEndpointsComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessDBEndponitsModule' }
     },
     {
         path: 'edit',
         component: AddEditDbendpointComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editDBEndponitsModule' }
     },
     {
         path: 'add',
         component: AddEditDbendpointComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'addDBEndponitsModule' }
     },
     {
         path: 'view',
         component: AddEditDbendpointComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'readDBEndponitsModule' }
     },
 ];
 

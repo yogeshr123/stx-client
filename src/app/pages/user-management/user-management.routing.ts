@@ -6,44 +6,57 @@ import { RolesComponent } from './roles/roles.component';
 import { UsersComponent } from './users/users.component';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 const routes: Routes = [
     {
         path: '',
-        component: UserManagementComponent
+        component: UserManagementComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessUserManagementModule' }
     },
-    // children: [
     {
         path: '',
         redirectTo: 'users',
-        // pathMatch: 'full'
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessUserManagementModule' }
     },
     {
         path: 'roles',
-        component: RolesComponent
+        component: RolesComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessUserManagementModule' }
     },
     {
         path: 'roles/editrole',
         component: AddEditRoleComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editUserManagementModule' }
     },
     {
         path: 'roles/addrole',
         component: AddEditRoleComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'addUserManagementModule' }
     },
     {
         path: 'roles/viewrole',
         component: AddEditRoleComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'readUserManagementModule' }
     },
     {
         path: 'users',
-        component: UsersComponent
+        component: UsersComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessUserManagementModule' }
     },
     {
         path: 'permissions',
-        component: PermissionsComponent
+        component: PermissionsComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessUserManagementModule' }
     }
-    // ]
-    // }
 ];
 
 @NgModule({

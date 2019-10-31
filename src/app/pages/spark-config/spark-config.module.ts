@@ -16,6 +16,7 @@ import { SparkConfigPropertiesService } from 'src/app/services/spark-config-prop
 import { CommonService } from 'src/app/services/common.service';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -34,19 +35,27 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
     RouterModule.forChild([
       {
         path: '',
-        component: SparkConfigComponent
+        component: SparkConfigComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'accessSparkConfigModule' }
       },
       {
         path: 'edit',
         component: AddEditSparkconfigComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'editSparkConfigModule' }
       },
       {
         path: 'add',
         component: AddEditSparkconfigComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'addSparkConfigModule' }
       },
       {
         path: 'view',
         component: AddEditSparkconfigComponent,
+        canActivate: [AuthGuard],
+        data: { expectedPermission: 'readSparkConfigModule' }
       }
     ]),
   ],

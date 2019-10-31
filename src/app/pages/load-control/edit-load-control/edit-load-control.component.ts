@@ -12,6 +12,7 @@ import { ClustersService } from 'src/app/services/clusters.service';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 declare var $: any;
 import { DialogService, ConfirmationService } from 'primeng/api';
+import { SparkConfigService } from 'src/app/services/spark-config.service';
 
 @Component({
   selector: 'app-edit-load-control',
@@ -30,6 +31,7 @@ export class EditLoadControlComponent implements OnInit {
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   dbEndpoints: any[];
   clusters: any[];
+  sparkConfigId: any[];
   isEdit = false;
   appState: any;
   tableRegex = "[A-Za-z][A-Za-z0-9_]*";
@@ -41,6 +43,7 @@ export class EditLoadControlComponent implements OnInit {
   emails: any;
 
   constructor(
+    private sparkConfigService: SparkConfigService,
     private confirmationService: ConfirmationService,
     private formBuilder: FormBuilder,
     private recordService: RecordService,
@@ -57,6 +60,7 @@ export class EditLoadControlComponent implements OnInit {
     this.appState = this.commonService.getState();
     this.loadDBEndpoints();
     this.getClusters();
+    this.getSparkConfig();
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
@@ -125,6 +129,7 @@ export class EditLoadControlComponent implements OnInit {
       T1_BATCH_IN_DAYS: [1, Validators.required],
       T1_MAX_LOAD_END_DATE: [null],
       T1_CLUSTER_ID: ['', Validators.required],
+      T1_SPARK_CONFIG_ID: ['', Validators.required],
       T1_LIVY_BATCH_ID: [{ value: '', disabled: true }],
       T1_SPARK_APP_ID: [{ value: '', disabled: true }],
       T1_SPARK_UI_URL: [{ value: '', disabled: true }],
@@ -141,6 +146,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_MAX_LOAD_END_DATE: [null, Validators.required],
       T2_MAX_ATLAS_VERSION: [{ value: 0, disabled: true }],
       T2_CLUSTER_ID: ['', Validators.required],
+      T2_SPARK_CONFIG_ID: ['', Validators.required],
       T2_LIVY_BATCH_ID: [{ value: '', disabled: true }],
       T2_SPARK_APP_ID: [{ value: '', disabled: true }],
       T2_SPARK_UI_URL: [{ value: '', disabled: true }],
@@ -170,7 +176,6 @@ export class EditLoadControlComponent implements OnInit {
     this.loadControlService.getEmails().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.emails = data.data;
-        this.editLoadControlForm.controls.EMAIL_GROUP.patchValue(this.record && this.record.EMAIL_GROUP ? this.record.EMAIL_GROUP : '');
       }
     });
   }
@@ -570,6 +575,12 @@ export class EditLoadControlComponent implements OnInit {
       this.clusters = resp.data;
     }, error => {
       console.log('error ', error);
+    });
+  }
+
+  getSparkConfig() {
+    this.sparkConfigService.getSparkConfig().subscribe((resp: any) => {
+      this.sparkConfigId = resp.data;
     });
   }
 

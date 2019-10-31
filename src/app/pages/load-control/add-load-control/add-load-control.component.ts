@@ -9,6 +9,7 @@ import { DBEndpointsService } from '../../../services/db-endpoints.service';
 import { environment } from '../../../../environments/environment';
 import { ClustersService } from 'src/app/services/clusters.service';
 import { CommonService } from 'src/app/services/common.service';
+import { SparkConfigService } from 'src/app/services/spark-config.service';
 declare var $: any;
 
 @Component({
@@ -24,6 +25,7 @@ export class AddLoadControlComponent implements OnInit {
   loadControl: any;
   dbEndpoints: any[];
   clusters: any[];
+  sparkConfigId: any[];
   s3UrlPattern = "^s3://([^/]+)/(.*?([^/]+)/?)$";
   recordMeta: any;
   appState: any;
@@ -35,6 +37,7 @@ export class AddLoadControlComponent implements OnInit {
   emails: any;
 
   constructor(
+    private sparkConfigService: SparkConfigService,
     private formBuilder: FormBuilder,
     private recordService: RecordService,
     private router: Router,
@@ -50,6 +53,7 @@ export class AddLoadControlComponent implements OnInit {
     this.appState = this.commonService.getState();
     this.loadDBEndpoints();
     this.getClusters();
+    this.getSparkConfig();
     this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
@@ -105,6 +109,7 @@ export class AddLoadControlComponent implements OnInit {
       T1_BATCH_IN_DAYS: ['1', Validators.required],
       T1_MAX_LOAD_END_DATE: [null],
       T1_CLUSTER_ID: ['', Validators.required],
+      T1_SPARK_CONFIG_ID: ['', Validators.required],
       T1_EXECUTION_STATUS: ['TODO'],
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
@@ -114,6 +119,7 @@ export class AddLoadControlComponent implements OnInit {
       T2_PARTITION_JOB_TYPE: ['SINGLE', Validators.required],
       T2_MAX_LOAD_END_DATE: [null, Validators.required],
       T2_CLUSTER_ID: ['', Validators.required],
+      T2_SPARK_CONFIG_ID: ['', Validators.required],
       T2_EXECUTION_STATUS: ['TODO'],
       ANALYZE_STATUS: ['TODO'],
       ANALYZE_EXECUTION_DAYS: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(30)])],
@@ -457,6 +463,12 @@ export class AddLoadControlComponent implements OnInit {
       this.clusters = resp.data;
     }, error => {
       console.log('error ', error);
+    });
+  }
+
+  getSparkConfig() {
+    this.sparkConfigService.getSparkConfig().subscribe((resp: any) => {
+      this.sparkConfigId = resp.data;
     });
   }
 

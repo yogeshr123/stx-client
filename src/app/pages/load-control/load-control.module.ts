@@ -31,6 +31,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { ClustersService } from 'src/app/services/clusters.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SparkConfigFilter } from './sparkConfig.pipe';
 
 @NgModule({
     imports: [
@@ -64,6 +65,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         ClustersService
     ],
     declarations: [
+        SparkConfigFilter,
         LoadControlComponent,
         AddLoadControlComponent,
         EditLoadControlComponent

@@ -464,6 +464,22 @@
                         T1 CLUSTER ID is required</div>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label class="control-label">
+                      T1 MAX LOAD END DATE
+                      <i pTooltip="Next delta run will be greater than (<) T1 MAX LOAD END DATE" tooltipPosition="top"
+                        class="fa fa-info-circle ml-1" aria-hidden="true"></i>
+                    </label>
+                    <br />
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                      formControlName="T1_MAX_LOAD_END_DATE"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_MAX_LOAD_END_DATE.errors }">
+                    </p-calendar>
+                    <div *ngIf="submitted && f.T1_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T1_MAX_LOAD_END_DATE.errors.required">T1 MAX
+                        LOAD END DATE is required</div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
@@ -508,20 +524,16 @@
                         DAYS should be greater than 0 and less than equal to 10000 </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label">
-                      T1 MAX LOAD END DATE
-                      <i pTooltip="Next delta run will be greater than (<) T1 MAX LOAD END DATE" tooltipPosition="top"
-                        class="fa fa-info-circle ml-1" aria-hidden="true"></i>
-                    </label>
-                    <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="T1_MAX_LOAD_END_DATE"
-                      [ngClass]="{ 'is-invalid': submitted && f.T1_MAX_LOAD_END_DATE.errors }">
-                    </p-calendar>
-                    <div *ngIf="submitted && f.T1_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
-                      <div *ngIf="f.T1_MAX_LOAD_END_DATE.errors.required">T1 MAX
-                        LOAD END DATE is required</div>
+                  <div class="form-group" *ngIf="sparkConfigId?.length">
+                    <label class="control-label">T1 SPARK CONFIG ID</label>
+                    <select class="form-control" formControlName="T1_SPARK_CONFIG_ID"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_SPARK_CONFIG_ID.errors }">
+                      <option *ngFor="let item of sparkConfigId | sparkConfigFilter : { LOAD_TYPE : 'T1'} " value="{{item.SPARK_ID}}">{{item.SPARK_ID}}</option>
+                    </select>
+                      <div *ngIf="submitted && f.T1_SPARK_CONFIG_ID.errors" class="invalid-feedback">
+                        <div *ngIf="f.T1_SPARK_CONFIG_ID.errors.required">
+                          T1 SPARK CONFIG ID is required
+                        </div>
                     </div>
                   </div>
 
@@ -572,6 +584,20 @@
                         T2 CLUSTER ID is required</div>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label class="control-label">
+                      T2 MAX LOAD END DATE
+                      <i pTooltip="Next delta run will be greater than (<) T2 MAX LOAD END DATE" tooltipPosition="top"
+                        class="fa fa-info-circle ml-1" aria-hidden="true"></i>
+                    </label>
+                    <br />
+                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
+                      formControlName="T2_MAX_LOAD_END_DATE" [ngClass]="{'ng-touched': submitted}"></p-calendar>
+                    <div *ngIf="submitted && f.T2_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
+                      <div *ngIf="f.T2_MAX_LOAD_END_DATE.errors">T2 MAX LOAD END DATE is required
+                      </div>
+                    </div>
+                  </div>
 
 
                 </div>
@@ -579,18 +605,6 @@
                   <div class="form-group">
                     <label class="control-label">T2 EXECUTION STATUS</label>
                     <input formControlName="T2_EXECUTION_STATUS" class="form-control" readonly />
-                    <!-- <option value="TODO">TODO</option> -->
-                    <!-- <option value="RUNNING">RUNNING</option>
-                      <option value="FAILED">FAILED</option>
-                      <option value="COMPLETE">COMPLETE</option>
-                      <option value="NO_DATA">NO_DATA</option>
-                      <option value="FILE_HEADER_UPDATING">FILE HEADER UPDATING
-                      </option>
-                      <option value="T2_METADATA_UPDATING">T2 METADATA UPDATING
-                      </option>
-                      <option value="EHC_METADATA_MISMATCH">EHC METADATA
-                        MISMATCH</option> -->
-                    <!-- </select> -->
                   </div>
                   <div class="form-group">
                     <label class="control-label">T2 INSERT DIR BATCH SIZE</label>
@@ -606,43 +620,17 @@
                         INSERT DIR BATCH SIZE should be greater than 0 and less than equal to 10000 </div>
                     </div>
                   </div>
-                  <!-- <div class="form-group">
-                    <label class="control-label">T2 T3 RETENTION DAYS</label>
-                    <input class="form-control" type="number" formControlName="T2_T3_RETENTION_DAYS"
-                      [ngClass]="{ 'is-invalid': submitted && f.T2_T3_RETENTION_DAYS.errors }">
-                    <div *ngIf="submitted && f.T2_T3_RETENTION_DAYS.errors" class="invalid-feedback">
-                      <div *ngIf="f.T2_T3_RETENTION_DAYS.errors.min">T2_T3
-                        RETENTION DAYS should be greater than 0
-                      </div>
-                    </div>
-                  </div> -->
 
-                  <!-- <div class="form-group">
-                    <label class="control-label">T2 PARTITION JOB TYPE</label>
-                    <select formControlName="T2_PARTITION_JOB_TYPE"
-                      class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.T2_PARTITION_JOB_TYPE.errors }">
-                      <option value="SINGLE">SINGLE</option>
-                      <option value="MULTIPLE">MULTIPLE</option>
+                  <div class="form-group" *ngIf="sparkConfigId?.length">
+                    <label class="control-label">T2 SPARK CONFIG ID</label>
+                    <select class="form-control" formControlName="T2_SPARK_CONFIG_ID"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_SPARK_CONFIG_ID.errors }">
+                      <option *ngFor="let item of sparkConfigId | sparkConfigFilter : { LOAD_TYPE : 'T2'} " value="{{item.SPARK_ID}}">{{item.SPARK_ID}}</option>
                     </select>
-                    <div *ngIf="submitted && f.T2_PARTITION_JOB_TYPE.errors"
-                      class="invalid-feedback">
-                      <div *ngIf="f.T2_PARTITION_JOB_TYPE.errors.required">T2
-                        PARTITION JOB TYPE is required</div>
-                    </div>
-                  </div> -->
-                  <div class="form-group">
-                    <label class="control-label">
-                      T2 MAX LOAD END DATE
-                      <i pTooltip="Next delta run will be greater than (<) T2 MAX LOAD END DATE" tooltipPosition="top"
-                        class="fa fa-info-circle ml-1" aria-hidden="true"></i>
-                    </label>
-                    <br />
-                    <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
-                      formControlName="T2_MAX_LOAD_END_DATE" [ngClass]="{'ng-touched': submitted}"></p-calendar>
-                    <div *ngIf="submitted && f.T2_MAX_LOAD_END_DATE.errors" class="invalid-feedback">
-                      <div *ngIf="f.T2_MAX_LOAD_END_DATE.errors">T2 MAX LOAD END DATE is required
-                      </div>
+                      <div *ngIf="submitted && f.T2_SPARK_CONFIG_ID.errors" class="invalid-feedback">
+                        <div *ngIf="f.T2_SPARK_CONFIG_ID.errors.required">
+                          T2 SPARK CONFIG ID is required
+                        </div>
                     </div>
                   </div>
 

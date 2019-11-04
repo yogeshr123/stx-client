@@ -373,16 +373,24 @@ export class AddLoadControlComponent implements OnInit {
     const T2_INSERT_DIR_BATCH_SIZE = this.addLoadControlForm.get('T2_INSERT_DIR_BATCH_SIZE');
     const T2_INSERT_BATCH_FILE_SIZE_GB = this.addLoadControlForm.get('T2_INSERT_BATCH_FILE_SIZE_GB');
     const T1_BATCH_IN_DAYS = this.addLoadControlForm.get('T1_BATCH_IN_DAYS');
+    const T1_SPARK_CONFIG_ID = this.addLoadControlForm.get('T1_SPARK_CONFIG_ID');
+    const DB_ID = this.addLoadControlForm.get('DB_ID');
+    const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');
+    const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
 
     this.addLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {
 
         // Default
+        DB_ID.enable();
+        DB_SCHEMA.enable();
+        DB_TABLE.enable();
         DB_TABLE_PK_COLUMNS.enable();
         DB_TABLE_UPDATE_DATE_COLUMN.enable();
         T2_INSERT_BATCH_FILE_SIZE_GB.enable();
         T2_INSERT_DIR_BATCH_SIZE.enable();
         CHECK_INDEX_EXIST.enable();
+        TABLE_SOURCE.setValue('ORACLE');
 
         if (LOAD_STRATEGY === 'UPDATE') {
           T2_INSERT_BATCH_FILE_SIZE_GB.disable();
@@ -400,7 +408,17 @@ export class AddLoadControlComponent implements OnInit {
           T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
           T1_CLUSTER_ID.updateValueAndValidity();
+          T1_SPARK_CONFIG_ID.setValidators(null);
+          T1_SPARK_CONFIG_ID.updateValueAndValidity();
+          T1_MAX_LOAD_END_DATE.setValidators(null);
+          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'FLAT') {
+          TABLE_SOURCE.patchValue('');
+          DB_ID.disable();
+          DB_SCHEMA.disable();
+          DB_TABLE.disable();
+          DB_TABLE_PK_COLUMNS.disable();
+          DB_TABLE_UPDATE_DATE_COLUMN.disable();
           T1_STATUS.setValue('HOLD');
           TABLE_SOURCE.setValidators(null);
           TABLE_SOURCE.updateValueAndValidity();
@@ -410,6 +428,8 @@ export class AddLoadControlComponent implements OnInit {
           T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
           T1_CLUSTER_ID.updateValueAndValidity();
+          T1_SPARK_CONFIG_ID.setValidators(null);
+          T1_SPARK_CONFIG_ID.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'REFRESH') {
           DB_TABLE_PK_COLUMNS.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();

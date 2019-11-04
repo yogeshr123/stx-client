@@ -259,6 +259,7 @@ export class EditLoadControlComponent implements OnInit {
     const T2_INSERT_DIR_BATCH_SIZE = this.editLoadControlForm.get('T2_INSERT_DIR_BATCH_SIZE');
     const T2_INSERT_BATCH_FILE_SIZE_GB = this.editLoadControlForm.get('T2_INSERT_BATCH_FILE_SIZE_GB');
     const T1_BATCH_IN_DAYS = this.editLoadControlForm.get('T1_BATCH_IN_DAYS');
+    const T1_SPARK_CONFIG_ID = this.editLoadControlForm.get('T1_SPARK_CONFIG_ID');
 
     this.editLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {
@@ -286,6 +287,8 @@ export class EditLoadControlComponent implements OnInit {
           T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
           T1_CLUSTER_ID.updateValueAndValidity();
+          T1_SPARK_CONFIG_ID.setValidators(null);
+          T1_SPARK_CONFIG_ID.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'FLAT') {
           T1_STATUS.setValue('HOLD');
           TABLE_SOURCE.setValidators(null);
@@ -296,6 +299,8 @@ export class EditLoadControlComponent implements OnInit {
           T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
           T1_CLUSTER_ID.updateValueAndValidity();
+          T1_SPARK_CONFIG_ID.setValidators(null);
+          T1_SPARK_CONFIG_ID.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'REFRESH') {
           DB_TABLE_PK_COLUMNS.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();

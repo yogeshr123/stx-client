@@ -179,6 +179,7 @@ export class EditLoadControlComponent implements OnInit {
     this.loadControlService.getEmails().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
         this.emails = data.data;
+        this.editLoadControlForm.controls.EMAIL_GROUP.patchValue(this.emails[0].EMAIL_GROUP);
       }
     });
   }

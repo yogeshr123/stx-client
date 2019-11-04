@@ -79,7 +79,7 @@ export class AddLoadControlComponent implements OnInit {
     this.addLoadControlForm = this.formBuilder.group({
       SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
-      ENV_NAME: ['', Validators.required],
+      ENV_NAME: ['PRD', Validators.required],
       TARGET_SCHEMA_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
@@ -91,15 +91,15 @@ export class AddLoadControlComponent implements OnInit {
       FACT_ENV_NAME: [''],
       RAW_FACTORY_PATH: ['', Validators.pattern(this.s3UrlPattern)],
       RAW_FACTORY_MAX_LANDING_DATE: [null],
-      RAW_FACTORY_RETENTION_STRATEGY: [''],
-      RAW_FACTORY_RETENTION_DAYS: [0],
+      RAW_FACTORY_RETENTION_STRATEGY: ['GLACIER'],
+      RAW_FACTORY_RETENTION_DAYS: [180],
       RAW_FACTORY_SYNC_STATUS: ['TODO'],
       DB_ID: [''],
       DB_SCHEMA: [''],
       DB_TABLE: [''],
       DB_TABLE_PK_COLUMNS: [''],
       DB_TABLE_UPDATE_DATE_COLUMN: [''],
-      CHECK_INDEX_EXIST: [1],
+      CHECK_INDEX_EXIST: ['1'],
       ETL_STATUS: ['NEW_TABLE'],
       ETL_STATUS_REASON: [''],
       ETL_EXECUTION_STATUS: ['TODO'],
@@ -201,7 +201,7 @@ export class AddLoadControlComponent implements OnInit {
           DB_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           DB_TABLE.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
           DB_TABLE_PK_COLUMNS_SCHEMA.setValidators([Validators.required, Validators.pattern(this.tableColumnRegex)]);
-          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableRegex)]);
+          DB_TABLE_UPDATE_DATE_COLUMN.setValidators([Validators.required, Validators.pattern(this.tableColumnRegex)]);
           CHECK_INDEX_EXIST.setValidators([Validators.required]);
 
           DB_ID.enable();
@@ -492,7 +492,7 @@ export class AddLoadControlComponent implements OnInit {
         else {
           TABLE_NAMEString = TABLE_NAMEString.toLowerCase();
         }
-        const url = `s3://${environment.RAW_FACTORY_PATH_DEFAULT_SETTING}/${TABLE_NAMEString}/t0/`;
+        const url = `s3://${environment.RAW_FACTORY_PATH_DEFAULT_SETTING}/${TABLE_NAMEString.toUpperCase()}/t0/`;
         RAW_FACTORY_PATH.setValue(url);
       }
       else {

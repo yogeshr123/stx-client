@@ -260,9 +260,9 @@ export class EditLoadControlComponent implements OnInit {
     const T2_INSERT_BATCH_FILE_SIZE_GB = this.editLoadControlForm.get('T2_INSERT_BATCH_FILE_SIZE_GB');
     const T1_BATCH_IN_DAYS = this.editLoadControlForm.get('T1_BATCH_IN_DAYS');
     const T1_SPARK_CONFIG_ID = this.editLoadControlForm.get('T1_SPARK_CONFIG_ID');
-    const DB_ID = this.addLoadControlForm.get('DB_ID');
-    const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');
-    const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
+    const DB_ID = this.editLoadControlForm.get('DB_ID');
+    const DB_SCHEMA = this.editLoadControlForm.get('DB_SCHEMA');
+    const DB_TABLE = this.editLoadControlForm.get('DB_TABLE');
 
     this.editLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {

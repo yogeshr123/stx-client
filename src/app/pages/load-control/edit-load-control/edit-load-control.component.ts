@@ -105,6 +105,7 @@ export class EditLoadControlComponent implements OnInit {
       RAW_FACTORY_MAX_LANDING_DATE: [null],
       RAW_FACTORY_RETENTION_STRATEGY: [''],
       RAW_FACTORY_RETENTION_DAYS: [0],
+      RAW_FACTORY_SYNC_STATUS: ['TODO'],
       DB_ID: [''],
       DB_SCHEMA: [''],
       DB_TABLE: [''],
@@ -139,6 +140,7 @@ export class EditLoadControlComponent implements OnInit {
       T1_EXECUTION_STATUS: [{ value: '', disabled: true }],
       T1_ERROR: [{ value: '', disabled: true }],
       T1_ERROR_TRACE: [{ value: '', disabled: true }],
+      T1_S3_CLEANUP_STATUS: ['TODO'],
       T2_STATUS: [''],
       T2_INSERT_DIR_BATCH_SIZE: [1000, Validators.compose([Validators.required, Validators.min(1), Validators.max(10000)])],
       T2_INSERT_BATCH_FILE_SIZE_GB: [1000, Validators.compose([Validators.required, Validators.min(1), Validators.max(10000)])],
@@ -156,6 +158,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_EXECUTION_STATUS: [{ value: '', disabled: true }],
       T2_ERROR: [{ value: '', disabled: true }],
       T2_ERROR_TRACE: [{ value: '', disabled: true }],
+      T2_S3_CLEANUP_STATUS: ['TODO'],
       ANALYZE_STATUS: ['TODO'],
       ANALYZE_EXECUTION_DAYS: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(30)])],
       ANALYZE_LAST_SUCCESS_DATE: [new Date()],
@@ -438,6 +441,7 @@ export class EditLoadControlComponent implements OnInit {
     const RAW_FACTORY_RETENTION_STRATEGY = this.editLoadControlForm.get('RAW_FACTORY_RETENTION_STRATEGY');
     const RAW_FACTORY_RETENTION_DAYS = this.editLoadControlForm.get('RAW_FACTORY_RETENTION_DAYS');
     const RAW_FACTORY_MAX_LANDING_DATE = this.editLoadControlForm.get('RAW_FACTORY_MAX_LANDING_DATE');
+    const RAW_FACTORY_SYNC_STATUS = this.editLoadControlForm.get('RAW_FACTORY_SYNC_STATUS');
     const EMAIL_GROUP = this.editLoadControlForm.get('EMAIL_GROUP');
 
 
@@ -466,6 +470,7 @@ export class EditLoadControlComponent implements OnInit {
           RAW_FACTORY_RETENTION_STRATEGY.disable();
           RAW_FACTORY_RETENTION_DAYS.disable();
           RAW_FACTORY_MAX_LANDING_DATE.disable();
+          RAW_FACTORY_SYNC_STATUS.disable();
         }
 
         if (TABLE_SOURCE === 'RAW_FACTORY') {
@@ -488,6 +493,7 @@ export class EditLoadControlComponent implements OnInit {
           RAW_FACTORY_RETENTION_STRATEGY.enable();
           RAW_FACTORY_RETENTION_DAYS.enable();
           RAW_FACTORY_MAX_LANDING_DATE.enable();
+          RAW_FACTORY_SYNC_STATUS.enable();
         }
 
         DB_ID.updateValueAndValidity();

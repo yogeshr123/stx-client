@@ -84,7 +84,7 @@ export class AddLoadControlComponent implements OnInit {
       TARGET_TABLE_NAME: ['', Validators.compose([Validators.required, Validators.pattern(this.tableRegex)])],
       EMAIL_ALERTS: ['Y', Validators.required],
       EMAIL_GROUP: ['', Validators.required],
-      TABLE_SOURCE: ['ORACLE', Validators.required],
+      TABLE_SOURCE: ['', Validators.required],
       LOAD_STRATEGY: ['', Validators.required],
       FACT_SCHEMA_NAME: [''],
       FACT_TABLE_NAME: [''],
@@ -93,6 +93,7 @@ export class AddLoadControlComponent implements OnInit {
       RAW_FACTORY_MAX_LANDING_DATE: [null],
       RAW_FACTORY_RETENTION_STRATEGY: [''],
       RAW_FACTORY_RETENTION_DAYS: [0],
+      RAW_FACTORY_SYNC_STATUS: ['TODO'],
       DB_ID: [''],
       DB_SCHEMA: [''],
       DB_TABLE: [''],
@@ -111,6 +112,7 @@ export class AddLoadControlComponent implements OnInit {
       T1_CLUSTER_ID: ['', Validators.required],
       T1_SPARK_CONFIG_ID: ['', Validators.required],
       T1_EXECUTION_STATUS: ['TODO'],
+      T1_S3_CLEANUP_STATUS: ['TODO'],
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
       T2_STATUS: ['TODO'],
@@ -121,6 +123,7 @@ export class AddLoadControlComponent implements OnInit {
       T2_CLUSTER_ID: ['', Validators.required],
       T2_SPARK_CONFIG_ID: ['', Validators.required],
       T2_EXECUTION_STATUS: ['TODO'],
+      T2_S3_CLEANUP_STATUS: ['TODO'],
       ANALYZE_STATUS: ['TODO'],
       ANALYZE_EXECUTION_DAYS: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(30)])],
       ANALYZE_LAST_SUCCESS_DATE: [new Date()],
@@ -187,6 +190,7 @@ export class AddLoadControlComponent implements OnInit {
     const RAW_FACTORY_RETENTION_STRATEGY = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_STRATEGY');
     const RAW_FACTORY_RETENTION_DAYS = this.addLoadControlForm.get('RAW_FACTORY_RETENTION_DAYS');
     const RAW_FACTORY_MAX_LANDING_DATE = this.addLoadControlForm.get('RAW_FACTORY_MAX_LANDING_DATE');
+    const RAW_FACTORY_SYNC_STATUS = this.addLoadControlForm.get('RAW_FACTORY_SYNC_STATUS');
     const EMAIL_GROUP = this.addLoadControlForm.get('EMAIL_GROUP');
 
     this.addLoadControlForm.get('TABLE_SOURCE').valueChanges
@@ -212,6 +216,7 @@ export class AddLoadControlComponent implements OnInit {
           RAW_FACTORY_RETENTION_STRATEGY.disable();
           RAW_FACTORY_RETENTION_DAYS.disable();
           RAW_FACTORY_MAX_LANDING_DATE.disable();
+          RAW_FACTORY_SYNC_STATUS.disable();
         }
 
         if (TABLE_SOURCE === 'RAW_FACTORY') {
@@ -234,6 +239,7 @@ export class AddLoadControlComponent implements OnInit {
           RAW_FACTORY_RETENTION_STRATEGY.enable();
           RAW_FACTORY_RETENTION_DAYS.enable();
           RAW_FACTORY_MAX_LANDING_DATE.enable();
+          RAW_FACTORY_SYNC_STATUS.enable();
         }
 
         DB_ID.updateValueAndValidity();
@@ -257,6 +263,8 @@ export class AddLoadControlComponent implements OnInit {
           EMAIL_GROUP.disable();
         }
       });
+
+    this.addLoadControlForm.get('TABLE_SOURCE').patchValue('ORACLE');
   }
 
   setRetentionStrategyValidators() {

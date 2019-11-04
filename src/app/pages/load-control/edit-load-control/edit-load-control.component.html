@@ -399,6 +399,14 @@
                           RAW_FACTORY</div>
                       </div>
                     </div>
+                    <div class="form-group">
+                      <label class="control-label">RAW FACTORY SYNC STATUS</label>
+                      <select class="form-control" type="text" formControlName="RAW_FACTORY_SYNC_STATUS"
+                        [ngClass]="{ 'is-invalid': submitted && f.RAW_FACTORY_SYNC_STATUS.errors }">
+                        <option value="TODO">TODO</option>
+                        <option value="HOLD">HOLD</option>
+                      </select>
+                    </div>
                   </p-fieldset>
                 </div>
               </div>
@@ -542,6 +550,14 @@
                         {{ editLoadControlForm.controls.T1_SPARK_LOG_URL.value }}
                       </a>
                     </div> -->
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T1 S3 CLEANUP STATUS</label>
+                    <select class="form-control" type="text" formControlName="T1_S3_CLEANUP_STATUS"
+                      [ngClass]="{ 'is-invalid': submitted && f.T1_S3_CLEANUP_STATUS.errors }">
+                    <option value="TODO">TODO</option>
+                    <option value="HOLD">HOLD</option>
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -706,6 +722,14 @@
                   <div class="form-group">
                     <label class="control-label">T2 ERROR</label>
                     <input class="form-control" type="text" formControlName="T2_ERROR">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">T2 S3 CLEANUP STATUS</label>
+                    <select class="form-control" type="text" formControlName="T2_S3_CLEANUP_STATUS"
+                      [ngClass]="{ 'is-invalid': submitted && f.T2_S3_CLEANUP_STATUS.errors }">
+                    <option value="TODO">TODO</option>
+                    <option value="HOLD">HOLD</option>
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-6">

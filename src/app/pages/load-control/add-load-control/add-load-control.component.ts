@@ -116,6 +116,7 @@ export class AddLoadControlComponent implements OnInit {
       T2_T3_RETENTION_STRATEGY: [''],
       T2_T3_RETENTION_DAYS: [0],
       T2_STATUS: ['TODO'],
+      T1_BROADCAST: ['1', Validators.required],
       T2_INSERT_DIR_BATCH_SIZE: [1000, Validators.compose([Validators.required, Validators.min(1), Validators.max(10000)])],
       T2_INSERT_BATCH_FILE_SIZE_GB: [1000, Validators.compose([Validators.required, Validators.min(1), Validators.max(10000)])],
       T2_PARTITION_JOB_TYPE: ['SINGLE', Validators.required],
@@ -465,6 +466,9 @@ export class AddLoadControlComponent implements OnInit {
         }
       }
     }
+
+    formValues.CHECK_INDEX_EXIST = formValues.CHECK_INDEX_EXIST === '1' ? true : false;
+    formValues.T1_BROADCAST = formValues.T1_BROADCAST === '1' ? true : false;
 
     const body = {
       record: formValues

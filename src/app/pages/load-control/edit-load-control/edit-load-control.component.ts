@@ -159,6 +159,7 @@ export class EditLoadControlComponent implements OnInit {
       T2_ERROR: [{ value: '', disabled: true }],
       T2_ERROR_TRACE: [{ value: '', disabled: true }],
       T2_S3_CLEANUP_STATUS: ['TODO'],
+      T1_BROADCAST: ['1', Validators.required],
       ANALYZE_STATUS: ['TODO'],
       ANALYZE_EXECUTION_DAYS: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(30)])],
       ANALYZE_LAST_SUCCESS_DATE: [new Date()],
@@ -364,6 +365,7 @@ export class EditLoadControlComponent implements OnInit {
     formValues.TABLE_NAME = this.record.TABLE_NAME;
     formValues.ENV_NAME = this.record.ENV_NAME;
     formValues.CHECK_INDEX_EXIST = formValues.CHECK_INDEX_EXIST === '1' ? true : false;
+    formValues.T1_BROADCAST = formValues.T1_BROADCAST === '1' ? true : false;
 
     const body = {
       record: formValues
@@ -376,8 +378,6 @@ export class EditLoadControlComponent implements OnInit {
     }, error => {
       this.showToast('error', 'Could not update record.');
     });
-    console.log("this.record.LOAD_STRATEGY ", this.record.LOAD_STRATEGY, this.editLoadControlForm.value.LOAD_STRATEGY);
-    console.log("this.record.EMAIL_GROUP ", this.record.EMAIL_GROUP, this.editLoadControlForm.value.EMAIL_GROUP);
     if (
       this.record.LOAD_STRATEGY !== this.editLoadControlForm.value.LOAD_STRATEGY
       || this.record.EMAIL_GROUP !== this.editLoadControlForm.value.EMAIL_GROUP

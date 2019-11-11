@@ -583,7 +583,7 @@
                       [ngClass]="{ 'is-invalid': submitted && f.T1_BATCH_IN_DAYS.errors }">
                       <option value="0.04">0.04</option>
                       <option value="0.08">0.08</option>
-                      <option value="0.125">0.125</option>
+                      <option value="0.125">0.12</option>
                       <option value="0.25">0.25</option>
                       <option value="0.5">0.5</option>
                       <option value="0.75">0.75</option>
@@ -826,6 +826,26 @@
                     <p-calendar inputStyleClass="form-control" showTime="true" showSeconds="true" hourFormat="24"
                       formControlName="T2_PROCESS_END_DATE"></p-calendar>
                   </div>
+                  <div class="form-group">
+                      <label class="control-label">T1 BROADCAST</label>
+                      <div class="animated-radio-button">
+                        <label>
+                          <input type="radio" value="1" formControlName="T1_BROADCAST"><span
+                            class="label-text">True
+                          </span>
+                        </label>
+                        <label class="ml-4">
+                          <input type="radio" value="0" formControlName="T1_BROADCAST"><span
+                            class="label-text">False
+                          </span>
+                        </label>
+                      </div>
+                      <div *ngIf="submitted && f.T1_BROADCAST.errors" class="invalid-feedback">
+                        <div *ngIf="f.T1_BROADCAST.errors.required">
+                          T1 BROADCAST is required
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
             </p-accordionTab>

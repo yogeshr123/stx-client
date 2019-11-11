@@ -243,6 +243,7 @@ export class AddLoadControlComponent implements OnInit {
           CHECK_INDEX_EXIST.disable();
 
           RAW_FACTORY_PATH.setValidators([Validators.required, Validators.pattern(this.s3UrlPattern)]);
+          RAW_FACTORY_MAX_LANDING_DATE.setValidators([Validators.required]);
           RAW_FACTORY_PATH.enable();
           RAW_FACTORY_RETENTION_STRATEGY.enable();
           RAW_FACTORY_RETENTION_DAYS.enable();
@@ -256,6 +257,7 @@ export class AddLoadControlComponent implements OnInit {
         DB_TABLE_PK_COLUMNS_SCHEMA.updateValueAndValidity();
         DB_TABLE_UPDATE_DATE_COLUMN.updateValueAndValidity();
         RAW_FACTORY_PATH.updateValueAndValidity();
+        RAW_FACTORY_MAX_LANDING_DATE.updateValueAndValidity();
       });
 
 
@@ -263,13 +265,12 @@ export class AddLoadControlComponent implements OnInit {
       .subscribe(EMAIL_ALERTS => {
         if (EMAIL_ALERTS === 'Y') {
           EMAIL_GROUP.setValidators([Validators.required]);
-          EMAIL_GROUP.updateValueAndValidity();
           EMAIL_GROUP.enable();
         } else {
           EMAIL_GROUP.setValidators(null);
-          EMAIL_GROUP.updateValueAndValidity();
           EMAIL_GROUP.disable();
         }
+        EMAIL_GROUP.updateValueAndValidity();
       });
 
     this.addLoadControlForm.get('TABLE_SOURCE').patchValue('ORACLE');
@@ -351,24 +352,6 @@ export class AddLoadControlComponent implements OnInit {
       });
   }
 
-  loadStrategyUpdated() {
-    const formControl = this.addLoadControlForm.controls;
-    if (this.addLoadControlForm.value.LOAD_STRATEGY !== 'FLAT') {
-      formControl.FACT_ENV_NAME.patchValue('');
-      formControl.FACT_SCHEMA_NAME.patchValue('');
-      formControl.FACT_TABLE_NAME.patchValue('');
-    } else if (this.addLoadControlForm.value.LOAD_STRATEGY !== 'REFRESH') {
-
-    } else {
-      formControl.FACT_ENV_NAME.setValidators([Validators.required]);
-      formControl.FACT_ENV_NAME.updateValueAndValidity();
-      formControl.FACT_SCHEMA_NAME.setValidators([Validators.required]);
-      formControl.FACT_SCHEMA_NAME.updateValueAndValidity();
-      formControl.FACT_TABLE_NAME.setValidators([Validators.required]);
-      formControl.FACT_TABLE_NAME.updateValueAndValidity();
-    }
-  }
-
   setLoadStrategyValidators() {
     const TABLE_SOURCE = this.addLoadControlForm.get('TABLE_SOURCE');
     const T1_STATUS = this.addLoadControlForm.get('T1_STATUS');
@@ -384,6 +367,9 @@ export class AddLoadControlComponent implements OnInit {
     const DB_ID = this.addLoadControlForm.get('DB_ID');
     const DB_SCHEMA = this.addLoadControlForm.get('DB_SCHEMA');
     const DB_TABLE = this.addLoadControlForm.get('DB_TABLE');
+    const FACT_ENV_NAME = this.addLoadControlForm.get('FACT_ENV_NAME');
+    const FACT_SCHEMA_NAME = this.addLoadControlForm.get('FACT_SCHEMA_NAME');
+    const FACT_TABLE_NAME = this.addLoadControlForm.get('FACT_TABLE_NAME');
 
     this.addLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {
@@ -398,54 +384,57 @@ export class AddLoadControlComponent implements OnInit {
         T2_INSERT_DIR_BATCH_SIZE.enable();
         CHECK_INDEX_EXIST.enable();
         TABLE_SOURCE.setValue('ORACLE');
+        FACT_ENV_NAME.patchValue('');
+        FACT_SCHEMA_NAME.patchValue('');
+        FACT_TABLE_NAME.patchValue('');
 
         if (LOAD_STRATEGY === 'UPDATE') {
           T2_INSERT_BATCH_FILE_SIZE_GB.disable();
           T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
-          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'INSERT') {
           T2_INSERT_BATCH_FILE_SIZE_GB.disable();
           T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
-          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'SAMPLED') {
           TABLE_SOURCE.setValue('RAW_FACTORY');
           T1_STATUS.setValue('HOLD');
           T2_INSERT_DIR_BATCH_SIZE.disable();
           T1_BATCH_IN_DAYS.setValidators(null);
-          T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
-          T1_CLUSTER_ID.updateValueAndValidity();
           T1_SPARK_CONFIG_ID.setValidators(null);
-          T1_SPARK_CONFIG_ID.updateValueAndValidity();
           T1_MAX_LOAD_END_DATE.setValidators(null);
-          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
         } else if (LOAD_STRATEGY === 'FLAT') {
           TABLE_SOURCE.patchValue('');
           DB_ID.disable();
+          CHECK_INDEX_EXIST.disable();
           DB_SCHEMA.disable();
           DB_TABLE.disable();
           DB_TABLE_PK_COLUMNS.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();
           T1_STATUS.setValue('HOLD');
           TABLE_SOURCE.setValidators(null);
-          TABLE_SOURCE.updateValueAndValidity();
           T1_MAX_LOAD_END_DATE.setValidators(null);
-          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
           T1_BATCH_IN_DAYS.setValidators(null);
-          T1_BATCH_IN_DAYS.updateValueAndValidity();
           T1_CLUSTER_ID.setValidators(null);
-          T1_CLUSTER_ID.updateValueAndValidity();
           T1_SPARK_CONFIG_ID.setValidators(null);
-          T1_SPARK_CONFIG_ID.updateValueAndValidity();
+          FACT_ENV_NAME.setValidators([Validators.required]);
+          FACT_SCHEMA_NAME.setValidators([Validators.required]);
+          FACT_TABLE_NAME.setValidators([Validators.required]);
         } else if (LOAD_STRATEGY === 'REFRESH') {
           DB_TABLE_PK_COLUMNS.disable();
           DB_TABLE_UPDATE_DATE_COLUMN.disable();
           CHECK_INDEX_EXIST.disable();
           T1_MAX_LOAD_END_DATE.setValidators([Validators.required]);
-          T1_MAX_LOAD_END_DATE.updateValueAndValidity();
         } else {
           TABLE_SOURCE.setValue('ORACLE');
         }
+        T1_MAX_LOAD_END_DATE.updateValueAndValidity();
+        T1_CLUSTER_ID.updateValueAndValidity();
+        T1_SPARK_CONFIG_ID.updateValueAndValidity();
+        TABLE_SOURCE.updateValueAndValidity();
+        T1_BATCH_IN_DAYS.updateValueAndValidity();
+        FACT_ENV_NAME.updateValueAndValidity();
+        FACT_SCHEMA_NAME.updateValueAndValidity();
+        FACT_TABLE_NAME.updateValueAndValidity();
       });
   }
 

@@ -132,8 +132,7 @@
                   <div class="form-group">
                     <label class="control-label">LOAD STRATEGY</label>
                     <select formControlName="LOAD_STRATEGY" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }"
-                      (change)="loadStrategyUpdated()">
+                      [ngClass]="{ 'is-invalid': submitted && f.LOAD_STRATEGY.errors }">
                       <option value="INSERT">INSERT</option>
                       <option value="UPDATE">UPDATE</option>
                       <option value="REFRESH">REFRESH</option>

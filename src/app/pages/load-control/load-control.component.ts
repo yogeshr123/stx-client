@@ -304,7 +304,7 @@ export class LoadControlComponent implements OnInit {
               SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
               TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
               ENV_NAME: this.selectedRecords[_i].ENV_NAME,
-            })
+            });
           }
         }
       }
@@ -313,6 +313,9 @@ export class LoadControlComponent implements OnInit {
           records: records,
           status: status,
         };
+        if (status === "KILL") {
+          this.showToast('error', 'Kill DAG functionality is not implemented!');
+        }
         this.loadControlService.changeETLStatus(body).subscribe((data: any) => {
           this.messageService.add({ severity: 'success', summary: 'ETL status changed', life: 3000 });
         });

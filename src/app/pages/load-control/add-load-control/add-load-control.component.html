@@ -189,9 +189,6 @@
                       <option *ngFor="let item of factSchemaNames" value="{{item.SCHEMA_NAME}}">{{item.SCHEMA_NAME}}
                       </option>
                     </select>
-                    <!-- <input class="form-control" type="text" formControlName="FACT_SCHEMA_NAME"
-                      oninput="this.value = this.value.toUpperCase()"
-                      [ngClass]="{ 'is-invalid': submitted && f.FACT_SCHEMA_NAME.errors }" /> -->
                     <div *ngIf="submitted && f.FACT_SCHEMA_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.FACT_SCHEMA_NAME.errors.required">FACT SCHEMA NAME is
                         required</div>

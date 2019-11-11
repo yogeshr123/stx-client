@@ -183,9 +183,6 @@
                       <option *ngFor="let item of factTablesNames" value="{{item.TABLE_NAME}}">{{item.TABLE_NAME}}
                       </option>
                     </select>
-                    <!-- <input class="form-control" type="text" formControlName="FACT_TABLE_NAME"
-                                      oninput="this.value = this.value.toUpperCase()"
-                                      [ngClass]="{ 'is-invalid': submitted && f.FACT_TABLE_NAME.errors }" /> -->
                     <div *ngIf="submitted && f.FACT_TABLE_NAME.errors" class="invalid-feedback">
                       <div *ngIf="f.FACT_TABLE_NAME.errors.required">FACT TABLE NAME is
                         required</div>

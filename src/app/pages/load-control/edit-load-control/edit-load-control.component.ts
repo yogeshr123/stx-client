@@ -216,8 +216,12 @@ export class EditLoadControlComponent implements OnInit {
   }
 
   factSchemaSelected() {
-    const factTables = this.factSchemaNamesBackup.filter(i => i.SCHEMA_NAME === this.editLoadControlForm.value.FACT_SCHEMA_NAME);
+    const factTables = this.factSchemaNamesBackup.filter(i =>
+      i.SCHEMA_NAME === this.editLoadControlForm.value.FACT_SCHEMA_NAME
+      && i.ENV_NAME === this.editLoadControlForm.value.FACT_ENV_NAME
+    );
     this.factTablesNames = this.removeDuplicates(factTables, 'TABLE_NAME');
+    this.editLoadControlForm.controls.FACT_TABLE_NAME.patchValue('');
   }
 
   removeDuplicates(myArr, prop) {

@@ -160,8 +160,14 @@ export class AddLoadControlComponent implements OnInit {
   }
 
   factSchemaSelected() {
-    const factTables = this.factSchemaNames.filter(i => i.SCHEMA_NAME === this.addLoadControlForm.value.FACT_SCHEMA_NAME);
+    const factTables = this.factSchemaNamesBackup.filter(i =>
+      i.SCHEMA_NAME === this.addLoadControlForm.value.FACT_SCHEMA_NAME
+      && i.ENV_NAME === this.addLoadControlForm.value.FACT_ENV_NAME
+    );
     this.factTablesNames = this.removeDuplicates(factTables, 'TABLE_NAME');
+    // setTimeout(() => {
+    this.addLoadControlForm.controls.FACT_TABLE_NAME.patchValue('');
+    // }, 0);
   }
 
   removeDuplicates(myArr, prop) {

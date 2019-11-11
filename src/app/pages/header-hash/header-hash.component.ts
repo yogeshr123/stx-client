@@ -26,6 +26,7 @@ export class HeaderHashComponent implements OnInit {
   state: any;
   dataLoader = false;
   showMismatchToggle = false;
+  allHeaderHashTables: any;
   @ViewChild(Table, { static: false }) tableComponent: Table;
 
   constructor(
@@ -104,6 +105,17 @@ export class HeaderHashComponent implements OnInit {
   toggleTablesList() {
     if (this.showMismatchToggle) {
       this.uniqueTables = this.fileHeaderHashErrorTableData;
+      let nonApprovedTables = this.allHeaderHashTables.filter(i => i.STATUS !== 'APPROVED');
+      nonApprovedTables = this.removeDuplicates(nonApprovedTables, 'TABLE_NAME');
+      const filteredTables = [];
+      nonApprovedTables.map(i => {
+        this.uniqueTables.map(j => {
+          if (i.TABLE_NAME === j.TABLE_NAME) {
+            filteredTables.push(j);
+          }
+        });
+      });
+      this.uniqueTables = filteredTables;
     } else {
       this.uniqueTables = this.uniqueTablesBackUp;
     }
@@ -112,6 +124,11 @@ export class HeaderHashComponent implements OnInit {
   }
 
   getAllTables() {
+    this.headerHashService.getAllTables().subscribe((res: any) => {
+      this.allHeaderHashTables = res.data;
+    }, error => {
+      console.error('error ', error);
+    });
     this.columnMetadataService.getAllTablesInVersions({ queryString: '' }).subscribe((res: any) => {
       const allTables = res.data;
       this.uniqueTables = this.removeDuplicates(allTables, 'TABLE_NAME');

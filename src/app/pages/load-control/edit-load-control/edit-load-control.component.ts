@@ -475,7 +475,7 @@ export class EditLoadControlComponent implements OnInit {
 
   setTableSourceValidators() {
     const DB_ID = this.editLoadControlForm.get('DB_ID');
-    const LOAD_STRATEGY = this.addLoadControlForm.get('LOAD_STRATEGY');
+    const LOAD_STRATEGY = this.editLoadControlForm.get('LOAD_STRATEGY');
     const DB_SCHEMA = this.editLoadControlForm.get('DB_SCHEMA');
     const DB_TABLE = this.editLoadControlForm.get('DB_TABLE');
     const DB_TABLE_PK_COLUMNS_SCHEMA = this.editLoadControlForm.get('DB_TABLE_PK_COLUMNS');

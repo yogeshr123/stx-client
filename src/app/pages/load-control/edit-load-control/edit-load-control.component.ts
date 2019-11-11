@@ -290,6 +290,10 @@ export class EditLoadControlComponent implements OnInit {
         FACT_ENV_NAME.patchValue('');
         FACT_SCHEMA_NAME.patchValue('');
         FACT_TABLE_NAME.patchValue('');
+        FACT_ENV_NAME.setValidators(null);
+        FACT_SCHEMA_NAME.setValidators(null);
+        FACT_TABLE_NAME.setValidators(null);
+        T1_MAX_LOAD_END_DATE.setValidators(null);
 
         if (LOAD_STRATEGY === 'UPDATE') {
           T2_INSERT_BATCH_FILE_SIZE_GB.disable();
@@ -471,6 +475,7 @@ export class EditLoadControlComponent implements OnInit {
 
   setTableSourceValidators() {
     const DB_ID = this.editLoadControlForm.get('DB_ID');
+    const LOAD_STRATEGY = this.addLoadControlForm.get('LOAD_STRATEGY');
     const DB_SCHEMA = this.editLoadControlForm.get('DB_SCHEMA');
     const DB_TABLE = this.editLoadControlForm.get('DB_TABLE');
     const DB_TABLE_PK_COLUMNS_SCHEMA = this.editLoadControlForm.get('DB_TABLE_PK_COLUMNS');
@@ -533,6 +538,15 @@ export class EditLoadControlComponent implements OnInit {
           RAW_FACTORY_RETENTION_DAYS.enable();
           RAW_FACTORY_MAX_LANDING_DATE.enable();
           RAW_FACTORY_SYNC_STATUS.enable();
+        }
+
+        if (LOAD_STRATEGY.value === 'REFRESH') {
+          DB_TABLE_PK_COLUMNS_SCHEMA.setValidators(null);
+          DB_TABLE_UPDATE_DATE_COLUMN.setValidators(null);
+          CHECK_INDEX_EXIST.setValidators(null);
+          DB_TABLE_PK_COLUMNS_SCHEMA.disable();
+          DB_TABLE_UPDATE_DATE_COLUMN.disable();
+          CHECK_INDEX_EXIST.disable();
         }
 
         DB_ID.updateValueAndValidity();

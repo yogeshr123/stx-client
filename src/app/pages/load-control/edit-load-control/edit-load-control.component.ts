@@ -74,6 +74,7 @@ export class EditLoadControlComponent implements OnInit {
     }
     this.getFactTablesData();
     this.getEmails();
+    this.setLoadStrategyValidators();
   }
 
   ngOnDestroy() {
@@ -231,7 +232,6 @@ export class EditLoadControlComponent implements OnInit {
   }
 
   loadStrategyUpdated() {
-    this.setLoadStrategyValidators();
     if (this.record.LOAD_STRATEGY !== this.editLoadControlForm.value.LOAD_STRATEGY) {
       this.confirmationService.confirm({
         header: 'Confirmation for LOAD STRATEGY Change',

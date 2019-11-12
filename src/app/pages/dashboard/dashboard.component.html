@@ -122,7 +122,9 @@
               <ng-container *ngSwitchCase="'date'">
                 <!-- <span> {{ parseDateToGMT(rowData[col.field]) }} </span> -->
                 <!-- <span class="ml-2"> {{ parseDateToCEST(rowData[col.field]) }} CEST</span> -->
-                <span> {{ rowData[col.field] | dateConvert }} </span>
+                <span>
+                  {{ rowData[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }}
+                </span>
               </ng-container>
               <ng-container *ngSwitchDefault>
                 <span> {{ rowData[col.field] || 'NULL' }} </span>

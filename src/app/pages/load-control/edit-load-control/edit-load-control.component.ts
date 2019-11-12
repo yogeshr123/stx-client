@@ -439,7 +439,7 @@ export class EditLoadControlComponent implements OnInit {
           const dataType = this.recordMeta[index].DATA_TYPE;
           if (this.record[key]) {
             if (dataType == "timestamp") {
-              element.patchValue(this.convertDate(this.record[key]));
+              element.patchValue(new Date(this.record[key]));
             }
             else if (dataType == "bit") {
               if (this.record[key] && this.record[key].data && this.record[key].data[0] || this.record[key] === 1 ||

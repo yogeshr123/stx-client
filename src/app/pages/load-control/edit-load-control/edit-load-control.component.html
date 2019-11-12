@@ -484,7 +484,7 @@
               </div>
             </p-accordionTab>
             <p-accordionTab header="T1 Details" [selected]="true">
-              <div class="row mt-2">
+              <div class="row mt-2" [ngClass]="{'disabled': editLoadControlForm.value.LOAD_STRATEGY === 'FLAT' || editLoadControlForm.value.LOAD_STRATEGY === 'SAMPLED' }">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label">T1 STATUS</label>

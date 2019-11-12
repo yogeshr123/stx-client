@@ -57,11 +57,11 @@ export class EditLoadControlComponent implements OnInit {
     this.loadControl = LoadControl;
   }
   ngOnInit() {
+    this.formInit();
     this.appState = this.commonService.getState();
     this.loadDBEndpoints();
     this.getClusters();
     this.getSparkConfig();
-    this.formInit();
     this.setTableSourceValidators();
     this.setRetentionStrategyValidators();
     if (this.appState.selectedRecord && this.appState.selectedRecord.record) {
@@ -74,6 +74,7 @@ export class EditLoadControlComponent implements OnInit {
     }
     this.getFactTablesData();
     this.getEmails();
+    this.setLoadStrategyValidators();
   }
 
   ngOnDestroy() {
@@ -231,7 +232,6 @@ export class EditLoadControlComponent implements OnInit {
   }
 
   loadStrategyUpdated() {
-    this.setLoadStrategyValidators();
     if (this.record.LOAD_STRATEGY !== this.editLoadControlForm.value.LOAD_STRATEGY) {
       this.confirmationService.confirm({
         header: 'Confirmation for LOAD STRATEGY Change',
@@ -276,6 +276,7 @@ export class EditLoadControlComponent implements OnInit {
 
     this.editLoadControlForm.get('LOAD_STRATEGY').valueChanges
       .subscribe(LOAD_STRATEGY => {
+        console.log("LOAD_STRATEGY ", LOAD_STRATEGY);
 
         // Default
         DB_ID.enable();

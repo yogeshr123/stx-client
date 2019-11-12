@@ -462,7 +462,7 @@
                   {{ rowData[col.field] }} </a>
               </ng-container>
               <ng-container *ngSwitchCase="'date'">
-                <span> {{ rowData[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }} (CST)</span>
+                <span> {{ rowData[col.field] | dateConvert }}</span>
               </ng-container>
               <ng-container *ngSwitchCase="'bit'">
                 <span>

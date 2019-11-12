@@ -9,7 +9,9 @@ export class DateConvert implements PipeTransform {
         if (value) {
             const date = moment(value);
             if (date.isValid()) {
-                return `${moment(momentTZ(value)).format('YYYY-MM-DD HH:mm:ss')} (CST)`;
+                const newDate = value.replace('T', ' ').replace('.000Z', '');
+                return newDate;
+                // return `${moment(momentTZ(value)).format('YYYY-MM-DD HH:mm:ss')} (CST)`;
             }
         }
     }

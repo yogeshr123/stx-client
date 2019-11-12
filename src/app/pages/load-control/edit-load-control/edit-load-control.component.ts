@@ -418,6 +418,16 @@ export class EditLoadControlComponent implements OnInit {
     }
   }
 
+  convertDate(value) {
+    if (value) {
+      const date = moment(value);
+      if (date.isValid()) {
+        const newDate = value.replace('T', ' ').replace('.000Z', '');
+        return new Date(newDate);
+      }
+    }
+  }
+
   getColumnDataTypeAndSetFormValues() {
     this.loadControlService.getColumnDataType().subscribe((data: any) => {
       if (data.data && data.data.length > 0) {
@@ -429,7 +439,7 @@ export class EditLoadControlComponent implements OnInit {
           const dataType = this.recordMeta[index].DATA_TYPE;
           if (this.record[key]) {
             if (dataType == "timestamp") {
-              element.patchValue(new Date(this.record[key]));
+              element.patchValue(this.convertDate(this.record[key]));
             }
             else if (dataType == "bit") {
               if (this.record[key] && this.record[key].data && this.record[key].data[0] || this.record[key] === 1 ||

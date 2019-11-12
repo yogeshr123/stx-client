@@ -13,6 +13,8 @@ import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 declare var $: any;
 import { DialogService, ConfirmationService } from 'primeng/api';
 import { SparkConfigService } from 'src/app/services/spark-config.service';
+import * as moment from 'moment';
+import * as momentTZ from 'moment-timezone';
 
 @Component({
   selector: 'app-edit-load-control',
@@ -363,14 +365,15 @@ export class EditLoadControlComponent implements OnInit {
       return;
     }
 
-    let formValues = Object.assign({}, this.editLoadControlForm.value);
+    const formValues = Object.assign({}, this.editLoadControlForm.value);
     formValues.UPDATE_DATE = new Date();
+    // tslint:disable-next-line:forin
     for (const key in formValues) {
       const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
-      const dataType = this.recordMeta[index].DATA_TYPE;
+      const dataType = this.recordMeta[index] && this.recordMeta[index].DATA_TYPE;
       if (formValues[key]) {
-        if (dataType == "timestamp") {
-          formValues[key] = `${formValues[key]}`;
+        if (dataType === 'timestamp') {
+          formValues[key] = `${moment(momentTZ(formValues[key])).format('YYYY-MM-DD HH:mm:ss')}`;
         }
       }
     }

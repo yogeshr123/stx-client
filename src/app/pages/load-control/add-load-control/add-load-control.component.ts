@@ -11,6 +11,8 @@ import { ClustersService } from 'src/app/services/clusters.service';
 import { CommonService } from 'src/app/services/common.service';
 import { SparkConfigService } from 'src/app/services/spark-config.service';
 declare var $: any;
+import * as moment from 'moment';
+import * as momentTZ from 'moment-timezone';
 
 @Component({
   selector: 'app-add-load-control',
@@ -464,14 +466,15 @@ export class AddLoadControlComponent implements OnInit {
       return;
     }
 
-    let formValues = Object.assign({}, this.addLoadControlForm.value);
+    const formValues = Object.assign({}, this.addLoadControlForm.value);
     formValues.UPDATE_DATE = new Date();
+    // tslint:disable-next-line:forin
     for (const key in formValues) {
       const index = Object.keys(this.recordMeta).find(k => this.recordMeta[k].COLUMN_NAME === key);
       const dataType = this.recordMeta[index] && this.recordMeta[index].DATA_TYPE;
       if (formValues[key]) {
-        if (dataType == "timestamp") {
-          formValues[key] = `${formValues[key]}`;
+        if (dataType === 'timestamp') {
+          formValues[key] = `${moment(momentTZ(formValues[key])).format('YYYY-MM-DD HH:mm:ss')}`;
         }
       }
     }

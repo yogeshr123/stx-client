@@ -373,7 +373,7 @@ export class EditLoadControlComponent implements OnInit {
       const dataType = this.recordMeta[index] && this.recordMeta[index].DATA_TYPE;
       if (formValues[key]) {
         if (dataType === 'timestamp') {
-          formValues[key] = `${moment(momentTZ(formValues[key])).format('YYYY-MM-DD HH:mm:ss')}`;
+          formValues[key] = `${new Date(formValues[key])}`;
         }
       }
     }

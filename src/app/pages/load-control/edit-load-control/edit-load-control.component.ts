@@ -366,7 +366,6 @@ export class EditLoadControlComponent implements OnInit {
     }
 
     const formValues = Object.assign({}, this.editLoadControlForm.getRawValue());
-    console.log("this.editLoadControlForm.value ", this.editLoadControlForm.getRawValue());
     formValues.UPDATE_DATE = new Date();
     // tslint:disable-next-line:forin
     for (const key in formValues) {

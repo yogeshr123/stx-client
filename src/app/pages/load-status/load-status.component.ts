@@ -167,7 +167,8 @@ export class LoadStatusComponent implements OnInit {
     onSubmit(event?, isAutoComplete?) {
         if (
             (event && event.keyCode === 8 && !event.target.value) ||
-            isAutoComplete
+            isAutoComplete ||
+            event.target.value.length >= 3
         ) {
             const formValues = Object.assign({}, this.searchForm.value);
             delete formValues.AVG_TIME;

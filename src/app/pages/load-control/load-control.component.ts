@@ -31,6 +31,7 @@ export class LoadControlComponent implements OnInit {
   recurrencePatterIndex: number = 0;
   recordMeta: any;
   appState: any;
+  timeZoneString: any;
   statusType: string;
   statusValue: string;
   statusValueReason: string;
@@ -97,6 +98,9 @@ export class LoadControlComponent implements OnInit {
         }, speed);
       }
     });
+    this.timeZoneString = String(String(new Date()).split('(')[1]).split(')')[0];
+    this.timeZoneString = this.timeZoneString.match(/\b(\w)/g);
+    this.timeZoneString = this.timeZoneString.join('');
   }
 
   formInit() {

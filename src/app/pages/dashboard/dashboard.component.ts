@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   selectedColumns: any;
   recordMeta: any;
   totalCols: any;
+  timeZoneString: any;
   currentDate = new Date();
   dataLoader = false;
   @ViewChild(Table, { static: false }) tableComponent: Table;
@@ -45,6 +46,9 @@ export class DashboardComponent implements OnInit {
       // get selected columns from local storage
       this.selectedColumns = JSON.parse(localStorage.getItem('dashboardSelectedColumns'));
     }
+    this.timeZoneString = String(String(new Date()).split('(')[1]).split(')')[0];
+    this.timeZoneString = this.timeZoneString.match(/\b(\w)/g);
+    this.timeZoneString = this.timeZoneString.join('');
   }
 
   saveColumnState() {

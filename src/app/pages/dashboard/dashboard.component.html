@@ -43,6 +43,7 @@
                 Data As Of -
                 {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}
               </span>
+              <!-- <span *ngIf="timeZoneString">({{ timeZoneString }})</span> -->
             </div>
             <button
               class="btn btn-secondary btn-sm float-right"
@@ -124,6 +125,7 @@
                 <!-- <span class="ml-2"> {{ parseDateToCEST(rowData[col.field]) }} CEST</span> -->
                 <span>
                   {{ rowData[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }}
+                  <!-- <span *ngIf="timeZoneString">({{ timeZoneString }})</span> -->
                 </span>
               </ng-container>
               <ng-container *ngSwitchDefault>

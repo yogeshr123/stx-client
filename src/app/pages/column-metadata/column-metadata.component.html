@@ -142,7 +142,7 @@
                   <input placeholder="1 or 0" pInputText *ngSwitchCase="'icon'" type="text"
                     (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
                     [value]="dt2.filters[col.field]?.value" class="icon">
-                  <span *ngSwitchCase="'date'"></span>
+                  <!-- <span *ngSwitchCase="'date'"></span> -->
                   <input pInputText *ngSwitchDefault type="text"
                     (input)="dt2.filter($event.target.value, col.field, col.filterMatchMode)"
                     [value]="dt2.filters[col.field]?.value">

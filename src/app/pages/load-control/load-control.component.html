@@ -444,7 +444,7 @@
                 [panelStyle]="{width:'200px'}"
                 (onChange)="dt1.filter($event.value, col.field, 'in')">
               </p-multiSelect> -->
-              <input pInputText type="text" *ngIf="col.type !== 'date' && col.field !== 'TABLE_STATUS'"
+              <input pInputText type="text" *ngIf=" col.field !== 'TABLE_STATUS'"
                 (input)="dt1.filter($event.target.value, col.field, col.filterMatchMode)"
                 [value]="dt1.filters[col.field]?.value">
             </th>

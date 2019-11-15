@@ -1,89 +1,130 @@
 <p-toast></p-toast>
 <div class="app-title">
-  <h1>
-    <i class="app-title-icon fa fa-users"></i>
-    <span>Roles</span>
-  </h1>
+    <h1>
+        <i class="app-title-icon fa fa-users"></i>
+        <span>Roles</span>
+    </h1>
 </div>
 <div class="row">
-  <div class="col-md-12">
-    <div class="tile">
-      <div class="row mb-3">
-        <div class="col-md-12">
-          <div class="btn-group">
-          </div>
-          <div class="btn-group float-right">
-            <a appPermission expectedPermission="addUserManagementModule"
-              class="btn btn-sm btn-primary"
-              routerLink="/user-management/roles/addrole">New
-              Role</a>
-          </div>
-        </div>
-      </div>
-      <p-table #dt [value]="roles" [columns]="roleTableColumns"
-        [reorderableColumns]="true">
-        <ng-template pTemplate="caption">
-          <div class="globalSearch">
-            <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')"
-              style="width:auto">
-            <button class="btn btn-sm btn-primary" type="button">
-              <i class="fa fa-lg fa-fw fa-search"></i>
-            </button>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order"
-                ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-            <th>Action</th>
-          </tr>
-          <tr>
-            <th *ngFor="let col of columns" class="ui-flclassuid">
-              <input pInputText *ngIf="col.type !== 'date'" type="text"
-                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                [value]="dt.filters[col.field]?.value">
-            </th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr height="35px" [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
-              <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                <span> {{ rowData[col.field] | dateConvert }} </span>
-              </ng-container>
-              <ng-template #elseTemplate>
-                <span> {{ rowData[col.field] }} </span>
-              </ng-template>
-            </td>
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="btn-group"></div>
+                    <div class="btn-group float-right">
+                        <a
+                            appPermission
+                            expectedPermission="addUserManagementModule"
+                            class="btn btn-sm btn-primary"
+                            routerLink="/user-management/roles/addrole"
+                            >New Role</a
+                        >
+                    </div>
+                </div>
+            </div>
+            <p-table
+                #dt
+                [value]="roles"
+                [columns]="roleTableColumns"
+                [reorderableColumns]="true"
+            >
+                <ng-template pTemplate="caption">
+                    <div class="globalSearch">
+                        <input
+                            type="text"
+                            pInputText
+                            size="50"
+                            placeholder="Global Filter"
+                            (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                            "
+                            style="width:auto"
+                        />
+                        <button class="btn btn-sm btn-primary" type="button">
+                            <i class="fa fa-lg fa-fw fa-search"></i>
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th
+                            *ngFor="let col of columns"
+                            [pSortableColumn]="col.field"
+                        >
+                            {{ col.header }}
+                            <p-sortIcon
+                                [field]="col.field"
+                                ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"
+                            >
+                            </p-sortIcon>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th *ngFor="let col of columns" class="ui-flclassuid">
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                    dt.filter(
+                                        $event.target.value,
+                                        col.field,
+                                        col.filterMatchMode
+                                    )
+                                "
+                                [value]="dt.filters[col.field]?.value"
+                            />
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr height="35px" [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                            <ng-container
+                                *ngIf="col.type === 'date'; else elseTemplate"
+                            >
+                                <span>
+                                    {{ rowData[col.field] | dateConvert }}
+                                </span>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <span> {{ rowData[col.field] }} </span>
+                            </ng-template>
+                        </td>
 
-            <td>
-              <button appPermission
-                expectedPermission="editUserManagementModule"
-                class="btn btn-sm btn-primary mr-2" type="button"
-                (click)="selectRole(rowData, true)">
-                <i class="fa fa-pencil"></i>
-              </button>
-              <button appPermission
-                expectedPermission="deleteUserManagementModule"
-                class="btn btn-primary btn-sm" type="button"
-                (click)="deleteRole(rowData)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <div colspan="10" class="text-center p-2 border"
-        *ngIf="!roles || !roles.length">
-        <h6>No Data Available!</h6>
-      </div>
+                        <td>
+                            <button
+                                appPermission
+                                expectedPermission="editUserManagementModule"
+                                class="btn btn-sm btn-primary mr-2"
+                                type="button"
+                                (click)="selectRole(rowData, true)"
+                            >
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button
+                                appPermission
+                                expectedPermission="deleteUserManagementModule"
+                                class="btn btn-primary btn-sm"
+                                type="button"
+                                (click)="deleteRole(rowData)"
+                            >
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div
+                colspan="10"
+                class="text-center p-2 border"
+                *ngIf="!roles || !roles.length"
+            >
+                <h6>No Data Available!</h6>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

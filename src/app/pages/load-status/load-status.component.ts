@@ -249,6 +249,7 @@ export class LoadStatusComponent implements OnInit {
         const updatedTasks = this.taskData.filter(
             item => item.updated === true
         );
+        const appState = JSON.parse(localStorage.getItem('appState'));
         updatedTasks.map(i => {
             if (i.DAG_SCHEDULE_INTERVAL && i._start) {
                 let updatedInterval = i.DAG_SCHEDULE_INTERVAL.split(' ');
@@ -257,6 +258,8 @@ export class LoadStatusComponent implements OnInit {
                 updatedInterval[0] = generateInterval.getMinutes();
                 updatedInterval = updatedInterval.join(' ');
                 i.DAG_SCHEDULE_INTERVAL = updatedInterval;
+                i.UPDATED_BY = appState.loggedInUser.USER_NAME || 'User';
+                i.UPDATE_DATE = `${new Date()}`;
             }
             return i;
         });

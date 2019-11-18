@@ -19,17 +19,13 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { TabViewModule } from 'primeng/tabview';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { RecordService } from '../../services/record.service';
 import { MessageService } from 'primeng/api';
 import { AddLoadControlComponent } from './add-load-control/add-load-control.component';
 import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
 import { LoadControlRouting } from './load-control.routing';
-import { DBEndpointsService } from '../../services/db-endpoints.service';
-import { LoadControlService } from 'src/app/services/load-control.service';
 import { PermissionModule } from 'src/app/directives/permission/permission.module';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DateConvertModule } from 'src/app/pipes/date-convert.module';
-import { ClustersService } from 'src/app/services/clusters.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { SparkConfigFilter } from './sparkConfig.pipe';
 
@@ -54,22 +50,14 @@ import { SparkConfigFilter } from './sparkConfig.pipe';
         PermissionModule,
         NgxLoadingModule.forRoot({}),
         DateConvertModule,
-        OverlayPanelModule
+        OverlayPanelModule,
     ],
-    providers: [
-        LoadControlService,
-        RecordService,
-        MessageService,
-        ConfirmationService,
-        DBEndpointsService,
-        ClustersService
-    ],
+    providers: [MessageService, ConfirmationService],
     declarations: [
         SparkConfigFilter,
         LoadControlComponent,
         AddLoadControlComponent,
-        EditLoadControlComponent
-    ]
+        EditLoadControlComponent,
+    ],
 })
-export class LoadControlModule {
-}
+export class LoadControlModule {}

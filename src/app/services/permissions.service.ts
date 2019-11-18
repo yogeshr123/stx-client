@@ -5,13 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class PermissionsService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getPermissions() {
         const url = `${environment.baseUrl}user_permissions`;

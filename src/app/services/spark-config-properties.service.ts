@@ -5,13 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class SparkConfigPropertiesService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getSparkConfigProperties() {
         const url = `${environment.baseUrl}spark_config_properties`;

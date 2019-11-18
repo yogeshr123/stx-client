@@ -14,9 +14,6 @@ import { AddEditPermissionComponent } from './permissions/add-edit-permission/ad
 import { ToastModule } from 'primeng/toast';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { UsersService } from 'src/app/services/users.service';
-import { PermissionsService } from 'src/app/services/permissions.service';
-import { RolesService } from 'src/app/services/roles.service';
 import { TableModule } from 'primeng/table';
 import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
 import { AddEditUserComponent } from './users/add-edit-user/add-edit-user.component';
@@ -40,16 +37,9 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
         TableModule,
         ConfirmDialogModule,
         PermissionModule,
-        NgxLoadingModule.forRoot({})
+        NgxLoadingModule.forRoot({}),
     ],
-    providers: [
-        MessageService,
-        UsersService,
-        PermissionsService,
-        RolesService,
-        ConfirmationService,
-        CommonService
-    ],
+    providers: [MessageService, ConfirmationService, CommonService],
     declarations: [
         UserManagementComponent,
         UsersComponent,
@@ -59,7 +49,6 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
         AddEditRoleComponent,
         AddEditUserComponent,
     ],
-    entryComponents: [AddEditPermissionComponent, AddEditUserComponent]
+    entryComponents: [AddEditPermissionComponent, AddEditUserComponent],
 })
-export class UserManagementModule {
-}
+export class UserManagementModule {}

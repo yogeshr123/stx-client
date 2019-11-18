@@ -9,7 +9,6 @@ import { DialogService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { NgxLoadingModule } from 'ngx-loading';
 import { DbEndpointsComponent } from './db-endpoints.component';
-import { DBEndpointsService } from 'src/app/services/db-endpoints.service';
 import { DbEndpointsRouting } from './db-endpoints.routing';
 import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbendpoint.component';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
@@ -27,19 +26,10 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         TableModule,
         ReactiveFormsModule,
         NgxLoadingModule.forRoot({}),
-        DynamicDialogModule
+        DynamicDialogModule,
     ],
-    providers: [
-        DBEndpointsService,
-        MessageService,
-        DialogService,
-        CommonService
-    ],
-    declarations: [
-        DbEndpointsComponent,
-        AddEditDbendpointComponent,
-    ],
+    providers: [MessageService, DialogService, CommonService],
+    declarations: [DbEndpointsComponent, AddEditDbendpointComponent],
     // entryComponents: [AddEditDbendpointComponent]
 })
-export class DbEndpointsModule {
-}
+export class DbEndpointsModule {}

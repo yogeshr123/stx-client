@@ -5,13 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class DBEndpointsService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getEndpoints() {
         const url = `${environment.baseUrl}db_endpoints`;

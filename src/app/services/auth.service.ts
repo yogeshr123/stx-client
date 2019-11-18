@@ -6,14 +6,15 @@ import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { User } from '../model/users.table';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthService {
     isLoggedIn = false;
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     login(user: any) {
         const url = `${environment.baseUrl}users/login`;

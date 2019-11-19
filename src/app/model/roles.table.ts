@@ -1,22 +1,22 @@
 const roleTableColumns = [
     {
         header: 'ID',
-        field: 'ID'
+        field: 'ID',
     },
 
     {
         header: 'TITLE',
-        field: 'TITLE'
+        field: 'TITLE',
     },
     {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
-        type: 'date'
+        type: 'date',
     },
     {
         header: 'UPDATED_BY',
-        field: 'UPDATED_BY'
-    }
+        field: 'UPDATED_BY',
+    },
 ];
 
 class Role {
@@ -24,7 +24,7 @@ class Role {
     TITLE: string;
     PERMISSIONSARRAY: number[];
     PERMISSIONS: string;
-    ISCOREROLE: boolean = false;
+    ISCOREROLE = false;
     UPDATE_DATE: string;
     UPDATED_BY: string;
 

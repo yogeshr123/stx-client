@@ -10,8 +10,7 @@ export class SparkConfigPropertiesService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getSparkConfigProperties() {
         const url = `${environment.baseUrl}spark_config_properties`;

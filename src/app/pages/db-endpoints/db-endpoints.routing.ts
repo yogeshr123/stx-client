@@ -5,36 +5,35 @@ import { AuthGuard } from 'src/app/services/auth.guard';
 import { DbEndpointsComponent } from './db-endpoints.component';
 import { AddEditDbendpointComponent } from './add-edit-dbendpoint/add-edit-dbendpoint.component';
 
-
 const routes: Routes = [
     {
         path: '',
         component: DbEndpointsComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessDBEndponitsModule' }
+        data: { expectedPermission: 'accessDBEndponitsModule' },
     },
     {
         path: 'edit',
         component: AddEditDbendpointComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'editDBEndponitsModule' }
+        data: { expectedPermission: 'editDBEndponitsModule' },
     },
     {
         path: 'add',
         component: AddEditDbendpointComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'addDBEndponitsModule' }
+        data: { expectedPermission: 'addDBEndponitsModule' },
     },
     {
         path: 'view',
         component: AddEditDbendpointComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'readDBEndponitsModule' }
+        data: { expectedPermission: 'readDBEndponitsModule' },
     },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class DbEndpointsRouting { }
+export class DbEndpointsRouting {}

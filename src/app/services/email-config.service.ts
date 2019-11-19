@@ -6,17 +6,15 @@ import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class EmailConfigService {
-
     emailObject: any;
 
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getEmailObject() {
         return this.emailObject;

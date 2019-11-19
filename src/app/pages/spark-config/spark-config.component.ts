@@ -5,75 +5,76 @@ import { CommonService } from 'src/app/services/common.service';
 import { Router } from '@angular/router';
 import { SparkConfigService } from 'src/app/services/spark-config.service';
 @Component({
-  selector: 'app-spark-config',
-  templateUrl: './spark-config.component.html',
-  styleUrls: ['./spark-config.component.scss']
+    selector: 'app-spark-config',
+    templateUrl: './spark-config.component.html',
+    styleUrls: ['./spark-config.component.scss'],
 })
 export class SparkConfigComponent implements OnInit {
+    sparkConfig: any[];
+    selectedSparkConfig: any;
+    sparkConfigColumns: any;
+    appState: any;
 
-  sparkConfig: any[];
-  selectedSparkConfig: any;
-  sparkConfigColumns: any;
-  appState: any;
+    constructor(
+        private sparkConfigService: SparkConfigService,
+        private messageService: MessageService,
+        private commonService: CommonService,
+        private router: Router
+    ) {}
 
-  constructor(
-    private sparkConfigService: SparkConfigService,
-    private messageService: MessageService,
-    private commonService: CommonService,
-    private router: Router
-  ) { }
+    ngOnInit() {
+        this.appState = this.commonService.getState();
+        this.sparkConfigColumns = [
+            {
+                header: 'SPARK_ID',
+                field: 'SPARK_ID',
+            },
+            {
+                header: 'LOAD_TYPE',
+                field: 'LOAD_TYPE',
+            },
+            {
+                header: 'SPARK_CONF',
+                field: 'SPARK_CONF',
+            },
+            {
+                header: 'UPDATE_DATE',
+                field: 'UPDATE_DATE',
+                type: 'date',
+            },
+            {
+                header: 'UPDATED_BY',
+                field: 'UPDATED_BY',
+            },
+        ];
 
-  ngOnInit() {
-    this.appState = this.commonService.getState();
-    this.sparkConfigColumns = [
-      {
-        header: 'SPARK_ID',
-        field: 'SPARK_ID'
-      },
-      {
-        header: 'LOAD_TYPE',
-        field: 'LOAD_TYPE'
-      },
-      {
-        header: 'SPARK_CONF',
-        field: 'SPARK_CONF'
-      },
-      {
-        header: 'UPDATE_DATE',
-        field: 'UPDATE_DATE',
-        type: 'date'
-      },
-      {
-        header: 'UPDATED_BY',
-        field: 'UPDATED_BY',
-      }
-    ];
-
-    this.loadSparkConfig();
-  }
-
-  loadSparkConfig() {
-    this.sparkConfigService.getSparkConfig().subscribe((data: any) => {
-      if (data.data && data.data.length > 0) {
-        this.sparkConfig = data.data;
-      }
-    }, error => {
-      this.showToast('error', 'Error while fetching data.');
-    });
-  }
-
-  showToast(severity, summary) {
-    this.messageService.add({ severity, summary, life: 3000 });
-  }
-
-  selectSparkConfig(sparkConfig: any, edit: boolean) {
-    this.appState = { ...this.appState, selectedSparkConfig: sparkConfig };
-    this.commonService.setState(this.appState);
-    if (edit) {
-      this.router.navigate(['spark-config/edit']);
+        this.loadSparkConfig();
     }
-    else {
-      this.router.navigate(['spark-config/view']);
+
+    loadSparkConfig() {
+        this.sparkConfigService.getSparkConfig().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.sparkConfig = data.data;
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
+            }
+        );
     }
-  }
+
+    showToast(severity, summary) {
+        this.messageService.add({ severity, summary, life: 3000 });
+    }
+
+    selectSparkConfig(sparkConfig: any, edit: boolean) {
+        this.appState = { ...this.appState, selectedSparkConfig: sparkConfig };
+        this.commonService.setState(this.appState);
+        if (edit) {
+            this.router.navigate(['spark-config/edit']);
+        } else {
+            this.router.navigate(['spark-config/view']);
+        }
+    }
 }

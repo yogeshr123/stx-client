@@ -4,54 +4,55 @@ import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: 'app-clusters',
-  templateUrl: './clusters.component.html',
-  styleUrls: ['./clusters.component.scss']
+    selector: 'app-clusters',
+    templateUrl: './clusters.component.html',
+    styleUrls: ['./clusters.component.scss'],
 })
 export class ClustersComponent implements OnInit {
+    selectedColumns = [
+        { field: 'CLUSTER_ID' },
+        { field: 'ENV_NAME' },
+        { field: 'CLUSTER_FOR' },
+        { field: 'MASTER_IP_ADD' },
+        { field: 'LIVY_URL', type: 'link' },
+        { field: 'YARN_URL', type: 'link' },
+        { field: 'SPARK_URL', type: 'link' },
+        { field: 'GANGLIA_URL', type: 'link' },
+        { field: 'SPARK_SCRIPT_PATH' },
+        { field: 'UPDATE_DATE', type: 'date' },
+        { field: 'UPDATED_BY' },
+    ];
+    clustersArray = [];
 
-  selectedColumns = [
-    { field: 'CLUSTER_ID' },
-    { field: 'ENV_NAME' },
-    { field: 'CLUSTER_FOR' },
-    { field: 'MASTER_IP_ADD' },
-    { field: 'LIVY_URL', type: 'link' },
-    { field: 'YARN_URL', type: 'link' },
-    { field: 'SPARK_URL', type: 'link' },
-    { field: 'GANGLIA_URL', type: 'link' },
-    { field: 'SPARK_SCRIPT_PATH' },
-    { field: 'UPDATE_DATE', type: 'date' },
-    { field: 'UPDATED_BY' },
-  ];
-  clustersArray = [];
+    constructor(
+        private router: Router,
+        private clustersService: ClustersService,
+        private commonService: CommonService
+    ) {}
 
-  constructor(
-    private router: Router,
-    private clustersService: ClustersService,
-    private commonService: CommonService,
-  ) { }
-
-  ngOnInit() {
-    this.getClusters();
-  }
-
-  editCluster(cluster, isEdit) {
-    let appState = this.commonService.getState();
-    appState = { ...appState, selectedCluster: cluster };
-    this.commonService.setState(appState);
-    if (isEdit) {
-      return this.router.navigate(['clusters/edit-cluster']);
-    } else {
-      return this.router.navigate(['clusters/view-cluster']);
+    ngOnInit() {
+        this.getClusters();
     }
-  }
 
-  getClusters() {
-    this.clustersService.getClusters().subscribe((resp: any) => {
-      this.clustersArray = resp.data;
-    }, error => {
-      console.log('error ', error);
-    });
-  }
+    editCluster(cluster, isEdit) {
+        let appState = this.commonService.getState();
+        appState = { ...appState, selectedCluster: cluster };
+        this.commonService.setState(appState);
+        if (isEdit) {
+            return this.router.navigate(['clusters/edit-cluster']);
+        } else {
+            return this.router.navigate(['clusters/view-cluster']);
+        }
+    }
 
+    getClusters() {
+        this.clustersService.getClusters().subscribe(
+            (resp: any) => {
+                this.clustersArray = resp.data;
+            },
+            error => {
+                console.log('error ', error);
+            }
+        );
+    }
 }

@@ -18,10 +18,7 @@ import { DateConvertModule } from 'src/app/pipes/date-convert.module';
 import { AuthGuard } from 'src/app/services/auth.guard';
 
 @NgModule({
-    declarations: [
-        ClustersComponent,
-        AddEditClusterComponent
-    ],
+    declarations: [ClustersComponent, AddEditClusterComponent],
     imports: [
         DateConvertModule,
         PermissionModule,
@@ -37,32 +34,32 @@ import { AuthGuard } from 'src/app/services/auth.guard';
                 path: '',
                 component: ClustersComponent,
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'accessClustersModule' }
+                data: { expectedPermission: 'accessClustersModule' },
             },
             {
                 path: 'add-cluster',
                 component: AddEditClusterComponent,
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'addClustersModule' }
+                data: { expectedPermission: 'addClustersModule' },
             },
             {
                 path: 'edit-cluster',
                 component: AddEditClusterComponent,
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'editClustersModule' }
+                data: { expectedPermission: 'editClustersModule' },
             },
             {
                 path: 'view-cluster',
                 component: AddEditClusterComponent,
                 canActivate: [AuthGuard],
-                data: { expectedPermission: 'readClustersModule' }
-            }
+                data: { expectedPermission: 'readClustersModule' },
+            },
         ]),
         DropdownModule,
         TabViewModule,
         ToastModule,
     ],
     providers: [MessageService],
-    entryComponents: []
+    entryComponents: [],
 })
-export class ClustersModule { }
+export class ClustersModule {}

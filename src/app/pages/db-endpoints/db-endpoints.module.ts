@@ -27,19 +27,15 @@ import { PermissionModule } from 'src/app/directives/permission/permission.modul
         TableModule,
         ReactiveFormsModule,
         NgxLoadingModule.forRoot({}),
-        DynamicDialogModule
+        DynamicDialogModule,
     ],
     providers: [
         DBEndpointsService,
         MessageService,
         DialogService,
-        CommonService
+        CommonService,
     ],
-    declarations: [
-        DbEndpointsComponent,
-        AddEditDbendpointComponent,
-    ],
+    declarations: [DbEndpointsComponent, AddEditDbendpointComponent],
     // entryComponents: [AddEditDbendpointComponent]
 })
-export class DbEndpointsModule {
-}
+export class DbEndpointsModule {}

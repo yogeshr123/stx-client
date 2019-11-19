@@ -5,24 +5,22 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable(
-    {
-        providedIn: 'root'
-    }
-)
+@Injectable({
+    providedIn: 'root',
+})
 export class ColumnMetadataService {
-
     constructor(
         private commonService: CommonService,
-        private http: HttpClient,
-    ) {
-    }
+        private http: HttpClient
+    ) {}
 
     localCopyOfVersion: any;
     columnInfo: any;
 
     getLocalCopyOfVersion() {
-        const localCopyOfVersion = JSON.parse(localStorage.getItem('localCopyOfVersion'));
+        const localCopyOfVersion = JSON.parse(
+            localStorage.getItem('localCopyOfVersion')
+        );
         if (localCopyOfVersion) {
             return localCopyOfVersion;
         }

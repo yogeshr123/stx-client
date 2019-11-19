@@ -17,22 +17,14 @@ import { UsersService } from 'src/app/services/users.service';
         RouterModule.forChild([
             {
                 path: '',
-                component: RegisterComponent
+                component: RegisterComponent,
             },
         ]),
         FormsModule,
         ReactiveFormsModule,
         ToastModule,
     ],
-    providers: [
-        UsersService,
-        MessageService,
-        PermissionsService,
-        RolesService
-    ],
-    declarations: [
-        RegisterComponent,
-    ]
+    providers: [UsersService, MessageService, PermissionsService, RolesService],
+    declarations: [RegisterComponent],
 })
-export class RegisterModule {
-}
+export class RegisterModule {}

@@ -10,8 +10,7 @@ export class PermissionsService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getPermissions() {
         const url = `${environment.baseUrl}user_permissions`;

@@ -10,8 +10,7 @@ export class RolesService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getRoles() {
         const url = `${environment.baseUrl}user_roles`;

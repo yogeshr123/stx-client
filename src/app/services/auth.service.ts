@@ -12,8 +12,7 @@ export class AuthService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     login(user: any) {
         const url = `${environment.baseUrl}users/login`;

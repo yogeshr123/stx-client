@@ -10,20 +10,21 @@ import { each, find } from 'lodash';
     selector: 'app-user',
     templateUrl: './users.component.html',
     styles: [],
-    providers: [DialogService]
+    providers: [DialogService],
 })
 export class UsersComponent implements OnInit {
-    count: number = 1;
+    count = 1;
     userTableColumns = userTableColumns;
     selectedUser: any;
     users: any[];
     roles: any;
+
     constructor(
         private messageService: MessageService,
         public dialogService: DialogService,
         private usersService: UsersService,
         private rolesService: RolesService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.loadRoles();
@@ -31,23 +32,29 @@ export class UsersComponent implements OnInit {
     }
 
     loadUsers() {
-        this.usersService.getUsers().subscribe((data: any) => {
-            if (data.data && data.data.length > 0) {
-                this.users = data.data;
+        this.usersService.getUsers().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.users = data.data;
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
             }
-        }, error => {
-            this.showToast('error', 'Error while fetching data.');
-        });
+        );
     }
 
     loadRoles() {
-        this.rolesService.getRoles().subscribe((data: any) => {
-            if (data.data && data.data.length > 0) {
-                this.roles = data.data;
+        this.rolesService.getRoles().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.roles = data.data;
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
             }
-        }, error => {
-            this.showToast('error', 'Error while fetching data.');
-        });
+        );
     }
 
     addNew(isNew) {
@@ -55,27 +62,27 @@ export class UsersComponent implements OnInit {
         if (isNew) {
             this.selectedUser = {};
             header = 'Add User';
-        }
-        else {
+        } else {
             header = 'Edit User';
         }
         const ref = this.dialogService.open(AddEditUserComponent, {
-            header: header,
+            header,
             width: '55%',
             data: {
                 selectedUser: this.selectedUser,
                 users: this.users,
                 roles: this.roles,
-                isNew: isNew
-            }
+                isNew,
+            },
         });
 
-        ref.onClose.subscribe((reason) => {
+        ref.onClose.subscribe(reason => {
             if (reason) {
                 this.ngOnInit();
             }
         });
     }
+
     showToast(severity, summary) {
         this.messageService.add({ severity, summary, life: 3000 });
     }
@@ -87,12 +94,15 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user: any) {
         if (user.ID) {
-            this.usersService.deleteUser(user.ID).subscribe((data: any) => {
-                this.showToast('success', 'User deleted.');
-                this.ngOnInit();
-            }, error => {
-                this.showToast('error', 'Could not delete user.');
-            });
+            this.usersService.deleteUser(user.ID).subscribe(
+                (data: any) => {
+                    this.showToast('success', 'User deleted.');
+                    this.ngOnInit();
+                },
+                error => {
+                    this.showToast('error', 'Could not delete user.');
+                }
+            );
         }
     }
 
@@ -100,9 +110,9 @@ export class UsersComponent implements OnInit {
         // this.count++;
         let title: string;
         // console.log("test" + this.count);
-        const _role = find(this.roles, (role: any) => role.ID === id);
-        if (_role) {
-            title = _role.TITLE;
+        const role = find(this.roles, (Role: any) => Role.ID === id);
+        if (role) {
+            title = role.TITLE;
         }
         return title;
     }

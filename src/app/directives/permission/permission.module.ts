@@ -7,6 +7,5 @@ import { PermissionDirective } from './permission.directive';
     imports: [CommonModule],
     exports: [PermissionDirective],
     providers: [],
-
 })
-export class PermissionModule { }
+export class PermissionModule {}

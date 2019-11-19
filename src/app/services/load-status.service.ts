@@ -5,18 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable(
-    {
-        providedIn: 'root'
-    }
-)
+@Injectable({
+    providedIn: 'root',
+})
 export class LoadStatusService {
-
     constructor(
         private commonService: CommonService,
-        private http: HttpClient,
-    ) {
-    }
+        private http: HttpClient
+    ) {}
 
     getTasks(dayLimit = 7) {
         const url = `${environment.baseUrl}table_load_status?dayLimit=${dayLimit}`;

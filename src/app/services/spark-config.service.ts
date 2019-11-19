@@ -6,14 +6,13 @@ import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class SparkConfigService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getSparkConfig() {
         const url = `${environment.baseUrl}spark_config`;

@@ -13,54 +13,54 @@ const routes: Routes = [
         path: '',
         component: UserManagementComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessUserManagementModule' }
+        data: { expectedPermission: 'accessUserManagementModule' },
     },
     {
         path: '',
         redirectTo: 'users',
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessUserManagementModule' }
+        data: { expectedPermission: 'accessUserManagementModule' },
     },
     {
         path: 'roles',
         component: RolesComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessUserManagementModule' }
+        data: { expectedPermission: 'accessUserManagementModule' },
     },
     {
         path: 'roles/editrole',
         component: AddEditRoleComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'editUserManagementModule' }
+        data: { expectedPermission: 'editUserManagementModule' },
     },
     {
         path: 'roles/addrole',
         component: AddEditRoleComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'addUserManagementModule' }
+        data: { expectedPermission: 'addUserManagementModule' },
     },
     {
         path: 'roles/viewrole',
         component: AddEditRoleComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'readUserManagementModule' }
+        data: { expectedPermission: 'readUserManagementModule' },
     },
     {
         path: 'users',
         component: UsersComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessUserManagementModule' }
+        data: { expectedPermission: 'accessUserManagementModule' },
     },
     {
         path: 'permissions',
         component: PermissionsComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'accessUserManagementModule' }
-    }
+        data: { expectedPermission: 'accessUserManagementModule' },
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class UserManagementRouting { }
+export class UserManagementRouting {}

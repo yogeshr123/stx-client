@@ -1,20 +1,26 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, AfterViewInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 
 @Directive({
-  selector: '[appPermission]'
+    selector: '[appPermission]',
 })
-export class PermissionDirective {
-  @Input() expectedPermission: string;
-  appState: any;
+export class PermissionDirective implements AfterViewInit {
+    @Input() expectedPermission: string;
+    appState: any;
 
-  constructor(private elRef: ElementRef,
-    private commonService: CommonService) {
-  }
-  ngAfterViewInit(): void {
-    this.appState = this.commonService.getState();
-    if (!this.appState.loggedInUserPermissions.includes(this.expectedPermission)) {
-      this.elRef.nativeElement.style.display = 'none';
+    constructor(
+        private elRef: ElementRef,
+        private commonService: CommonService
+    ) {}
+
+    ngAfterViewInit(): void {
+        this.appState = this.commonService.getState();
+        if (
+            !this.appState.loggedInUserPermissions.includes(
+                this.expectedPermission
+            )
+        ) {
+            this.elRef.nativeElement.style.display = 'none';
+        }
     }
-  }
 }

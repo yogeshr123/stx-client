@@ -5,18 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable(
-    {
-        providedIn: 'root'
-    }
-)
+@Injectable({
+    providedIn: 'root',
+})
 export class HeaderHashService {
-
     constructor(
         private commonService: CommonService,
-        private http: HttpClient,
-    ) {
-    }
+        private http: HttpClient
+    ) {}
 
     getHeaders(tableData) {
         const url = `${environment.baseUrl}header-hash`;
@@ -66,5 +62,4 @@ export class HeaderHashService {
             .post(url, columnData)
             .pipe(catchError(this.commonService.handleError));
     }
-
 }

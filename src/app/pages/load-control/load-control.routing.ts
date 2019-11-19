@@ -6,34 +6,33 @@ import { AddLoadControlComponent } from './add-load-control/add-load-control.com
 import { EditLoadControlComponent } from './edit-load-control/edit-load-control.component';
 import { AuthGuard } from 'src/app/services/auth.guard';
 
-
 const routes: Routes = [
     {
         path: '',
-        component: LoadControlComponent
+        component: LoadControlComponent,
     },
     {
         path: 'edit',
         component: EditLoadControlComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'editLoadControlModule' }
+        data: { expectedPermission: 'editLoadControlModule' },
     },
     {
         path: 'view',
         component: EditLoadControlComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'readLoadControlModule' }
+        data: { expectedPermission: 'readLoadControlModule' },
     },
     {
         path: 'add',
         component: AddLoadControlComponent,
         canActivate: [AuthGuard],
-        data: { expectedPermission: 'addLoadControlModule' }
-    }
+        data: { expectedPermission: 'addLoadControlModule' },
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class LoadControlRouting { }
+export class LoadControlRouting {}

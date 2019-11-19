@@ -17,13 +17,14 @@ export class RolesComponent implements OnInit {
     permissions: any[];
     roles: any[];
     appState: any;
+
     constructor(
         private messageService: MessageService,
         private rolesService: RolesService,
         private permissionsService: PermissionsService,
         private commonService: CommonService,
-        private router: Router,
-    ) { }
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.appState = this.commonService.getState();
@@ -32,29 +33,33 @@ export class RolesComponent implements OnInit {
     }
 
     loadRoles() {
-        this.rolesService.getRoles().subscribe((data: any) => {
-            if (data.data && data.data.length > 0) {
-                this.roles = data.data;
+        this.rolesService.getRoles().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.roles = data.data;
+                } else {
+                    this.roles = [];
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
             }
-            else {
-                this.roles = [];
-            }
-        }, error => {
-            this.showToast('error', 'Error while fetching data.');
-        });
+        );
     }
 
     loadPermissions() {
-        this.permissionsService.getPermissions().subscribe((data: any) => {
-            if (data.data && data.data.length > 0) {
-                this.permissions = data.data;
+        this.permissionsService.getPermissions().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.permissions = data.data;
+                } else {
+                    this.permissions = [];
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
             }
-            else {
-                this.permissions = [];
-            }
-        }, error => {
-            this.showToast('error', 'Error while fetching data.');
-        });
+        );
     }
 
     showToast(severity, summary) {
@@ -66,21 +71,22 @@ export class RolesComponent implements OnInit {
         this.commonService.setState(this.appState);
         if (edit) {
             this.router.navigate(['/user-management/roles/editrole']);
-        }
-        else {
+        } else {
             this.router.navigate(['/user-management/roles/viewrole']);
         }
     }
 
     deleteRole(role: any) {
         if (role.ID) {
-            this.rolesService.deleteRoleById(role.ID).subscribe((data: any) => {
-                this.showToast('success', 'Role deleted.');
-                this.ngOnInit();
-            }, error => {
-                this.showToast('error', 'Could not delete role.');
-            });
+            this.rolesService.deleteRoleById(role.ID).subscribe(
+                (data: any) => {
+                    this.showToast('success', 'Role deleted.');
+                    this.ngOnInit();
+                },
+                error => {
+                    this.showToast('error', 'Could not delete role.');
+                }
+            );
         }
     }
 }
-

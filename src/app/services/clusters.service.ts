@@ -5,20 +5,16 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable(
-    {
-        providedIn: 'root'
-    }
-)
+@Injectable({
+    providedIn: 'root',
+})
 export class ClustersService {
-
     clusterObject: any;
 
     constructor(
         private commonService: CommonService,
-        private http: HttpClient,
-    ) {
-    }
+        private http: HttpClient
+    ) {}
 
     getClusterObject() {
         return this.clusterObject;

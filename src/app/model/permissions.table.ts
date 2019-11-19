@@ -6,11 +6,11 @@ const permissionTableColumns = [
 
     {
         header: 'TITLE',
-        field: 'TITLE'
+        field: 'TITLE',
     },
     {
         header: 'NAME',
-        field: 'NAME'
+        field: 'NAME',
     },
     // {
     //     header: 'PARENT',
@@ -19,12 +19,12 @@ const permissionTableColumns = [
     {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
-        type: 'date'
+        type: 'date',
     },
     {
         header: 'UPDATED_BY',
-        field: 'UPDATED_BY'
-    }
+        field: 'UPDATED_BY',
+    },
 ];
 
 class Permission {

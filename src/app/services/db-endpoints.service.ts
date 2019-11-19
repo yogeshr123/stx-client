@@ -10,8 +10,7 @@ export class DBEndpointsService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getEndpoints() {
         const url = `${environment.baseUrl}db_endpoints`;

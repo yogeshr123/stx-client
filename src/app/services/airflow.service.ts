@@ -10,6 +10,5 @@ export class AirflowService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 }

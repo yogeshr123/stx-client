@@ -6,14 +6,13 @@ import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class LoadControlService {
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     getRecords() {
         const url = `${environment.baseUrl}table_load_control`;

@@ -353,6 +353,7 @@ export class LoadControlComponent implements OnInit {
                 this.loadControlService
                     .changeETLStatus(body)
                     .subscribe((data: any) => {
+                        this.selectedRecords = [];
                         this.messageService.add({
                             severity: 'success',
                             summary: 'ETL status changed',
@@ -424,6 +425,7 @@ export class LoadControlComponent implements OnInit {
 
             this.loadControlService.resetExecutionStatus(body).subscribe(
                 (data: any) => {
+                    this.selectedRecords = [];
                     this.loadAllRecords();
                     this.showToast(
                         'success',
@@ -702,6 +704,7 @@ export class LoadControlComponent implements OnInit {
 
                 this.loadControlService.setSchedulerInterval(body).subscribe(
                     (data: any) => {
+                        this.selectedRecords = [];
                         this.loadAllRecords();
                         this.schedulerDisplay = false;
                         this.showToast('success', 'Scheduler interval saved');

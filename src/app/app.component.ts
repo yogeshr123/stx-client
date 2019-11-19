@@ -24,7 +24,11 @@ export class AppComponent implements OnInit {
 
     authenticateUser() {
         const appState = JSON.parse(localStorage.getItem('appState'));
-        if (appState.loggedInUser && appState.loggedInUser.USER_NAME) {
+        if (
+            appState &&
+            appState.loggedInUser &&
+            appState.loggedInUser.USER_NAME
+        ) {
             this.commonService
                 .authenticate({
                     userName: appState.loggedInUser.USER_NAME,

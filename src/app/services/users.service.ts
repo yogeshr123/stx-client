@@ -6,17 +6,15 @@ import { CommonService } from './common.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsersService {
-
     @Output() changeProfile: EventEmitter<boolean> = new EventEmitter();
 
     constructor(
         private commonService: CommonService,
         private http: HttpClient
-    ) {
-    }
+    ) {}
 
     toggleProfile() {
         this.changeProfile.emit();
@@ -51,6 +49,12 @@ export class UsersService {
     }
     getUserByUserName(userName: string) {
         const url = `${environment.baseUrl}users/${userName}`;
+        return this.http
+            .get(url)
+            .pipe(catchError(this.commonService.handleError));
+    }
+    getPermissions() {
+        const url = `${environment.baseUrl}users/permissions`;
         return this.http
             .get(url)
             .pipe(catchError(this.commonService.handleError));

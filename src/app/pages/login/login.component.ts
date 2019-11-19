@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'primeng/api';
@@ -17,7 +17,7 @@ declare var $: any;
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: []
+    styles: [],
     //   styleUrls: ['./Login.component.css']
 })
 export class LoginComponent implements OnInit {
@@ -43,24 +43,25 @@ export class LoginComponent implements OnInit {
         private commonService: CommonService,
         private route: ActivatedRoute,
         private usersService: UsersService
-    ) {
-    }
+    ) {}
     ngOnInit() {
         this.appState = this.commonService.getState();
         this.loadPermissions();
 
-        this.gid = this.route.snapshot.queryParamMap.get("gid");
+        this.gid = this.route.snapshot.queryParamMap.get('gid');
         if (this.gid) {
-            this.usersService.getUserByUserName(this.gid).subscribe((data: any) => {
-                if (data.data) {
-                    this.currentUser = data.data;
-                    this.fetchLoggedInUserDetails();
+            this.usersService.getUserByUserName(this.gid).subscribe(
+                (data: any) => {
+                    if (data.data) {
+                        this.currentUser = data.data;
+                        this.fetchLoggedInUserDetails();
+                    }
+                },
+                error => {
+                    this.showToast('error', 'Failed to get user data. ');
                 }
-            }, error => {
-                this.showToast('error', 'Failed to get user data. ');
-            });
-        }
-        else {
+            );
+        } else {
             this.errorMessage = null;
             this.formInit();
         }
@@ -85,72 +86,103 @@ export class LoginComponent implements OnInit {
         let formValues = Object.assign({}, this.loginForm.value);
 
         const body = {
-            user: formValues
+            user: formValues,
         };
-        this.authService.login(body).subscribe((data: any) => {
-            if (data.data) {
-                this.currentUser = data.data;
-                this.fetchLoggedInUserDetails();
+        this.authService.login(body).subscribe(
+            (data: any) => {
+                if (data.data) {
+                    this.currentUser = data.data;
+                    this.fetchLoggedInUserDetails();
+                }
+            },
+            error => {
+                this.showToast('error', 'User failed to login. ');
             }
-        }, error => {
-            this.showToast('error', 'User failed to login. ' + error.error.message);
-        });
+        );
     }
 
     fetchLoggedInUserDetails() {
-        if (this.currentUser.ID != null && this.currentUser.ID != undefined && this.currentUser.ID != '0') {
+        if (
+            this.currentUser.ID != null &&
+            this.currentUser.ID != undefined &&
+            this.currentUser.ID != '0'
+        ) {
             this.isLoggedIn = true;
         } else {
             this.isLoggedIn = false;
         }
         if (this.isLoggedIn) {
-            this.appState = { ...this.appState, loggedInUser: this.currentUser };
+            this.appState = {
+                ...this.appState,
+                loggedInUser: this.currentUser,
+            };
             this.commonService.setState(this.appState);
-            this.rolesService.getRoleById(this.currentUser.ROLE).subscribe((data: any) => {
-                if (data.data) {
-                    this.currentUserRole = data.data;
-                    this.currentUserRole.PERMISSIONSARRAY = this.currentUserRole.PERMISSIONS.split(',').map(Number);
-                    this.appState = { ...this.appState, loggedInUserRole: this.currentUserRole.TITLE };
-                    this.commonService.setState(this.appState);
-                    const mainPermissions = this.permissions.filter(el => !el.PARENT);
-                    mainPermissions.forEach((element: Permission) => {
-                        const hasUserPermission = this.currentUserRole.PERMISSIONSARRAY.some(t => t === element.ID);
-                        if (hasUserPermission)
-                            this.currentUserPermissions.push(element.NAME);
-                        const children = this.permissions.filter(el => el.PARENT && el.PARENT === element.ID);
-                        children.forEach(child => {
-                            const hasUserChildPermission = this.currentUserRole.PERMISSIONSARRAY.some(t => t === child.ID);
-                            if (hasUserChildPermission)
-                                this.currentUserPermissions.push(child.NAME);
+            this.rolesService.getRoleById(this.currentUser.ROLE).subscribe(
+                (data: any) => {
+                    if (data.data) {
+                        this.currentUserRole = data.data;
+                        this.currentUserRole.PERMISSIONSARRAY = this.currentUserRole.PERMISSIONS.split(
+                            ','
+                        ).map(Number);
+                        this.appState = {
+                            ...this.appState,
+                            loggedInUserRole: this.currentUserRole.TITLE,
+                        };
+                        this.commonService.setState(this.appState);
+                        const mainPermissions = this.permissions.filter(
+                            el => !el.PARENT
+                        );
+                        mainPermissions.forEach((element: Permission) => {
+                            const hasUserPermission = this.currentUserRole.PERMISSIONSARRAY.some(
+                                t => t === element.ID
+                            );
+                            if (hasUserPermission)
+                                this.currentUserPermissions.push(element.NAME);
+                            const children = this.permissions.filter(
+                                el => el.PARENT && el.PARENT === element.ID
+                            );
+                            children.forEach(child => {
+                                const hasUserChildPermission = this.currentUserRole.PERMISSIONSARRAY.some(
+                                    t => t === child.ID
+                                );
+                                if (hasUserChildPermission)
+                                    this.currentUserPermissions.push(
+                                        child.NAME
+                                    );
+                            });
                         });
-                    });
-                    this.appState = { ...this.appState, loggedInUserPermissions: this.currentUserPermissions };
-                    this.commonService.setState(this.appState);
-                    this.router.navigateByUrl('/dashboard');
+                        this.appState = {
+                            ...this.appState,
+                            loggedInUserPermissions: this
+                                .currentUserPermissions,
+                        };
+                        this.commonService.setState(this.appState);
+                        this.router.navigateByUrl('/dashboard');
+                    }
+                },
+                error => {
+                    this.showToast('error', 'Error while fetching data.');
                 }
-            }, error => {
-                this.showToast('error', 'Error while fetching data.');
-            });
-
+            );
         }
     }
 
     loadPermissions() {
-        this.permissionsService.getPermissions().subscribe((data: any) => {
-            if (data.data && data.data.length > 0) {
-                this.permissions = data.data;
+        this.usersService.getPermissions().subscribe(
+            (data: any) => {
+                if (data.data && data.data.length > 0) {
+                    this.permissions = data.data;
+                }
+            },
+            error => {
+                this.showToast('error', 'Error while fetching data.');
             }
-        }, error => {
-            this.showToast('error', 'Error while fetching data.');
-        });
+        );
     }
 
-    getUserPermissions() {
-
-    }
+    getUserPermissions() {}
 
     showToast(severity, summary) {
         this.messageService.add({ severity, summary, life: 3000 });
     }
 }
-

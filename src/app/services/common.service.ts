@@ -38,7 +38,14 @@ export class CommonService {
         return this.http.post(url, user).pipe(catchError(this.handleError));
     }
 
+    updateToken(user) {
+        const apiUrl = environment.baseUrl.replace('/api/v1/', '');
+        const url = `${apiUrl}/profile/updateToken`;
+        return this.http.post(url, user).pipe(catchError(this.handleError));
+    }
+
     handleError(error: HttpErrorResponse) {
+        console.log('error ', error);
         if (error.error instanceof ErrorEvent) {
             console.error('An error occurred:', error.error.message);
         } else {

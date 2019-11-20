@@ -288,6 +288,14 @@
                   Change Status
                 </p-header>
                 <div class="col-md-12">
+                  <div>
+                    <div class="ml-4 mt-1">Following tables are selected:</div>
+                    <ul>
+                      <li *ngFor="let item of selectedRecords">
+                        <b>{{ item.TABLE_NAME }}</b>
+                      </li>
+                    </ul>
+                  </div>
                   <div class="form-group">
                     <label class="control-label">Select status</label>
                     <select [(ngModel)]="statusValue" class="form-control">

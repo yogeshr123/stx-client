@@ -354,6 +354,7 @@ export class LoadControlComponent implements OnInit {
                 this.loadControlService
                     .changeETLStatus(body)
                     .subscribe((data: any) => {
+                        this.selectedRecords = [];
                         this.messageService.add({
                             severity: 'success',
                             summary: 'ETL status changed',
@@ -392,6 +393,7 @@ export class LoadControlComponent implements OnInit {
 
             this.loadControlService.changeStatus(body).subscribe(
                 (data: any) => {
+                    this.selectedRecords = [];
                     this.loadAllRecords();
                     this.showToast(
                         'success',
@@ -425,6 +427,7 @@ export class LoadControlComponent implements OnInit {
 
             this.loadControlService.resetExecutionStatus(body).subscribe(
                 (data: any) => {
+                    this.selectedRecords = [];
                     this.loadAllRecords();
                     this.showToast(
                         'success',
@@ -476,16 +479,28 @@ export class LoadControlComponent implements OnInit {
 
     confirmAction(message: string, functionName: string, action: string) {
         if (this.selectedRecords && this.selectedRecords.length > 0) {
+            const selectedRecords = this.selectedRecords.map(i => i.TABLE_NAME);
+            let tableStructure = '<ul>';
+            selectedRecords.forEach(i => {
+                tableStructure += `<li><b>${i}</b></li>`;
+            });
+            tableStructure = tableStructure += '</ul>';
+
             this.confirmationService.confirm({
-                message: `Do you want to ${message}?`,
+                message: `
+                  <b>Do you want to ${message}?</b>
+                  <br>
+                  <div class="ml-4 mt-1">Following tables are selected:</div>
+                  ${tableStructure}
+                `,
                 header: 'Confirmation',
                 icon: 'pi pi-info-circle',
                 accept: () => {
-                    if (functionName === 'changeETLStatus') {
+                    if (functionName == 'changeETLStatus') {
                         this.changeETLStatus(action);
-                    } else if (functionName === 'resetExecutionStatus') {
+                    } else if (functionName == 'resetExecutionStatus') {
                         this.resetExecutionStatus(action);
-                    } else if (functionName === 'changeStatus') {
+                    } else if (functionName == 'changeStatus') {
                         this.changeStatus();
                     }
                 },
@@ -704,6 +719,7 @@ export class LoadControlComponent implements OnInit {
 
                 this.loadControlService.setSchedulerInterval(body).subscribe(
                     (data: any) => {
+                        this.selectedRecords = [];
                         this.loadAllRecords();
                         this.schedulerDisplay = false;
                         this.showToast('success', 'Scheduler interval saved');

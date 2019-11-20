@@ -20,6 +20,8 @@
         <p-dropdown appendTo="body" class="ml-2 col-4" [options]="uniqueTables" [(ngModel)]="selectedTableName"
           optionLabel="TABLE_NAME" [filter]="true" filterBy="value.TABLE_NAME" (onChange)="changeTable()">
         </p-dropdown>
+        <button *ngIf="!versions || !versions.length" appPermission expectedPermission="editColumnMetadataModule" class="ml-2 btn btn-sm btn-info"
+                  (click)="generateNewVersion('firstVersion')">Generate First Version</button>
 
         <img *ngIf="loader.save" class="float-right ml-2" width="40" src="assets/images/green_loader.gif"
           alt="Loader Image">
@@ -87,7 +89,7 @@
           <span class="ml-3 mr-3">|</span> Status - {{selectedVersion.STATUS}}
           <button appPermission expectedPermission="addColumnMetadataModule" [routerLink]="[ './add-column']"
             class="mb-2 ml-2 btn btn-sm btn-secondary float-right"
-            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW'">Add
+            *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && versions.length">Add
             Column</button>
           <button appPermission expectedPermission="addColumnMetadataModule"
             *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'flat'"
@@ -96,10 +98,10 @@
             *ngIf="!loader.columns && selectedVersion.STATUS === 'NEW' && tableLoadStrategy &&tableLoadStrategy.toLowerCase() === 'flat'"
             class="mb-2 btn btn-sm btn-warning float-right" (click)="showFactColumns()">Fact Column</button>
         </h6>
-        <div class="table-responsive">
+        <div class="table-responsive" *ngIf="versionData && versionData.length">
           <p-table #dt2 [responsive]="true" [value]="versionData" [tableStyle]="{'table-layout':'auto'}"
             [columns]="selectedColumns" dataKey="selectedVersionColumnsDataKey" styleClass="scroll-table-cmv"
-            [reorderableColumns]="true" [(selection)]="selectedRecords" stateStorage="local"
+            [reorderableColumns]="true" stateStorage="local"
             stateKey="selectedVersionColumnsOrder">
             <ng-template pTemplate="caption">
               <div style="text-align: left">

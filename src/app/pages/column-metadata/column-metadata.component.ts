@@ -105,21 +105,30 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   getAllTables() {
-    this.columnMetadataService.getAllTablesInVersions({ queryString: '' }).subscribe((resp: any) => {
-      if (resp.data && resp.data.length) {
-        this.uniqueTables = this.removeDuplicates(resp.data, 'TABLE_NAME');
-        if (!this.state.CMV || !this.state.CMV.selectedTable) {
-          this.selectedTable = this.uniqueTables[0];
-          this.viewData(this.selectedTable);
-          this.getVersions();
-        } else {
-          const selectedTableName = this.uniqueTables.filter(i => i.TABLE_NAME === this.state.CMV.selectedTable.TABLE_NAME);
-          if (selectedTableName && selectedTableName.length) {
-            this.selectedTableName = selectedTableName[0];
-          }
-        }
-      }
-    });
+    this.columnMetadataService
+        .getAllLoadControlTables()
+        .subscribe((resp: any) => {
+            if (resp.data && resp.data.length) {
+                this.uniqueTables = this.removeDuplicates(
+                    resp.data,
+                    'TABLE_NAME'
+                );
+                if (!this.state.CMV || !this.state.CMV.selectedTable) {
+                    this.selectedTable = this.uniqueTables[0];
+                    this.viewData(this.selectedTable);
+                    this.getVersions();
+                } else {
+                    const selectedTableName = this.uniqueTables.filter(
+                        i =>
+                            i.TABLE_NAME ===
+                            this.state.CMV.selectedTable.TABLE_NAME
+                    );
+                    if (selectedTableName && selectedTableName.length) {
+                        this.selectedTableName = selectedTableName[0];
+                    }
+                }
+            }
+        });
   }
 
   removeDuplicates(myArr, prop) {
@@ -158,6 +167,7 @@ export class ColumnMetadataComponent implements OnInit {
   }
 
   changeTable() {
+    this.versionData = [];
     this.errors.hasError = false;
     this.state.CMV = { ...this.state.CMV, selectedTable: this.selectedTableName };
     this.commonService.setState(this.state);
@@ -522,32 +532,56 @@ export class ColumnMetadataComponent implements OnInit {
     });
   }
 
-  generateNewVersion() {
-    this.loader.columns = true;
-    this.loader.versions = true;
-    const allVersions = [];
-    this.versions.forEach(element => {
-      allVersions.push(element.METADATA_VERSION);
-    });
-    const request = {
-      table_name: this.selectedTable.TABLE_NAME,
-      version: Math.max(...allVersions)
-    };
-    this.columnMetadataService.generateNewVersion(request).subscribe((resp: any) => {
-      if (resp && !resp.error) {
-        this.showToast('success', 'Version Created!');
-        localStorage.removeItem('localCopyOfVersion');
-        this.ngOnInit();
-      } else {
-        this.showToast('error', 'Could not create version.');
-      }
-      this.loader.columns = false;
-      this.loader.versions = false;
-    }, error => {
-      this.showToast('error', 'Could not create version.');
-      this.loader.columns = false;
-      this.loader.versions = false;
-    });
+  generateNewVersion(isFirst) {
+    if (isFirst) {
+      const request = {
+          table: this.selectedTable,
+          user: this.state && this.state.loggedInUser && this.state.loggedInUser.USER_NAME ? this.state.loggedInUser.USER_NAME : 'User',
+      };
+      this.columnMetadataService.generateFirstVersion(request).subscribe(
+          (resp: any) => {
+              if (resp && !resp.error) {
+                  this.showToast('success', 'Version Created!');
+                  localStorage.removeItem('localCopyOfVersion');
+                  this.ngOnInit();
+              } else {
+                  this.showToast('error', 'Could not create version.');
+              }
+          },
+          error => {
+              this.showToast('error', 'Could not create version.');
+          }
+      );
+    } else {
+        this.loader.columns = true;
+        this.loader.versions = true;
+        const allVersions = [];
+        this.versions.forEach(element => {
+            allVersions.push(element.METADATA_VERSION);
+        });
+        const request = {
+            table_name: this.selectedTable.TABLE_NAME,
+            version: Math.max(...allVersions),
+        };
+        this.columnMetadataService.generateNewVersion(request).subscribe(
+            (resp: any) => {
+                if (resp && !resp.error) {
+                    this.showToast('success', 'Version Created!');
+                    localStorage.removeItem('localCopyOfVersion');
+                    this.ngOnInit();
+                } else {
+                    this.showToast('error', 'Could not create version.');
+                }
+                this.loader.columns = false;
+                this.loader.versions = false;
+            },
+            error => {
+                this.showToast('error', 'Could not create version.');
+                this.loader.columns = false;
+                this.loader.versions = false;
+            }
+        );
+    }
   }
 
   showMapping(data) {

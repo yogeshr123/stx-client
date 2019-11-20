@@ -257,7 +257,7 @@
                                         <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
+                                <div class="form-group col-6 row" [ngClass]="{'disabled': routeInfo.isEditMode }">
                                     <label class="control-label col-md-5">IS PARTITION COLUMN</label>
                                     <div class="col-md-7">
                                         <input formControlName="IS_PARTITION_COLUMN" class="form-control"

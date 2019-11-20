@@ -314,7 +314,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
         ) {
             if (
                 this.addEditColumnForm.value.SRC_DATA_TYPE === 'string' &&
-                this.addEditColumnForm.value.TARGET_DATA_TYPE !== 'varchar'
+                !this.addEditColumnForm.value.TARGET_DATA_TYPE
             ) {
                 this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({
                     error: true,
@@ -322,7 +322,9 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             }
             if (
                 this.addEditColumnForm.value.SRC_DATA_TYPE === 'decimal' &&
-                this.addEditColumnForm.value.TARGET_DATA_TYPE !== 'decimal'
+                !this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
+                    /decimal|varchar/g
+                )
             ) {
                 this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({
                     error: true,
@@ -330,8 +332,8 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             }
             if (
                 this.addEditColumnForm.value.SRC_DATA_TYPE === 'timestamp' &&
-                this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
-                    /^((?!(timestamp|varchar)).)*$/g
+                !this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
+                    /timestamp|varchar/g
                 )
             ) {
                 this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({
@@ -342,8 +344,8 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 this.addEditColumnForm.value.SRC_DATA_TYPE.match(
                     /integer|long/g
                 ) &&
-                this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
-                    /^((?!(int|bigint|varchar)).)*$/g
+                !this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
+                    /int|bigint|varchar|decimal/g
                 )
             ) {
                 this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({

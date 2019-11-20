@@ -98,7 +98,7 @@ export class AddEditHeaderComponent implements OnInit {
             });
     }
 
-    confirmAction(status) {
+    confirmAction(status?) {
         if (status) {
             this.headerHashService
                 .approveHeader({

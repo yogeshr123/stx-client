@@ -341,11 +341,19 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 });
             }
             if (
-                this.addEditColumnForm.value.SRC_DATA_TYPE.match(
-                    /integer|long/g
-                ) &&
+                this.addEditColumnForm.value.SRC_DATA_TYPE.match(/integer/g) &&
                 !this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
                     /int|bigint|varchar|decimal/g
+                )
+            ) {
+                this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({
+                    error: true,
+                });
+            }
+            if (
+                this.addEditColumnForm.value.SRC_DATA_TYPE.match(/long/g) &&
+                !this.addEditColumnForm.value.TARGET_DATA_TYPE.match(
+                    /bigint|varchar|decimal/g
                 )
             ) {
                 this.addEditColumnForm.controls.TARGET_DATA_TYPE.setErrors({

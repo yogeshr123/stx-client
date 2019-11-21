@@ -470,7 +470,7 @@ export class LoadControlComponent implements OnInit {
     globalQueryEmpty() {
         if (
             undefined === this.globalQuery ||
-            null == this.globalQuery ||
+            null === this.globalQuery ||
             this.globalQuery === ''
         ) {
             this.loadAllRecords();
@@ -496,11 +496,11 @@ export class LoadControlComponent implements OnInit {
                 header: 'Confirmation',
                 icon: 'pi pi-info-circle',
                 accept: () => {
-                    if (functionName == 'changeETLStatus') {
+                    if (functionName === 'changeETLStatus') {
                         this.changeETLStatus(action);
-                    } else if (functionName == 'resetExecutionStatus') {
+                    } else if (functionName === 'resetExecutionStatus') {
                         this.resetExecutionStatus(action);
-                    } else if (functionName == 'changeStatus') {
+                    } else if (functionName === 'changeStatus') {
                         this.changeStatus();
                     }
                 },
@@ -703,11 +703,11 @@ export class LoadControlComponent implements OnInit {
         if (this.selectedRecords && this.selectedRecords.length > 0) {
             if (isValidCronExpression) {
                 const records = [];
-                for (let _i = 0; _i < this.selectedRecords.length; _i++) {
+                for (let i = 0; i < this.selectedRecords.length; i++) {
                     records.push({
-                        SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-                        TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-                        ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+                        SCHEMA_NAME: this.selectedRecords[i].SCHEMA_NAME,
+                        TABLE_NAME: this.selectedRecords[i].TABLE_NAME,
+                        ENV_NAME: this.selectedRecords[i].ENV_NAME,
                         DAG_SCHEDULE_INTERVAL: cronExpression,
                         UPDATED_BY: this.appState.loggedInUser.USER_NAME,
                         UPDATE_DATE: `${new Date()}`,

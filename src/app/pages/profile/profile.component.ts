@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     formInit() {
         this.editUserForm = this.formBuilder.group({
             USER_NAME: [{ value: this.currentUser.USER_NAME, disabled: true }],
-            EMAIL_ID: [{ value: this.currentUser.EMAIL_ID, disabled: true }],
+            EMAIL_ID: [this.currentUser.EMAIL_ID],
             ROLE: [{ value: this.currentUserRole, disabled: true }],
             FULL_NAME: [this.currentUser.FULL_NAME, Validators.required],
             PROFILE_PIC: [this.currentUser.PROFILE_PIC],
@@ -106,7 +106,6 @@ export class ProfileComponent implements OnInit {
 
         this.showToast('info', 'File Uploaded');
     }
-
     preview(files) {
         if (files.length === 0) {
             return;

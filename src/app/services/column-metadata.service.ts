@@ -118,6 +118,13 @@ export class ColumnMetadataService {
             .pipe(catchError(this.commonService.handleError));
     }
 
+    generateFirstVersion(tableData) {
+        const url = `${environment.baseUrl}column-metadata/generateFirstVersion`;
+        return this.http
+            .post(url, tableData)
+            .pipe(catchError(this.commonService.handleError));
+    }
+
     updateColumn(columnData) {
         const url = `${environment.baseUrl}column-metadata/updateColumn`;
         return this.http

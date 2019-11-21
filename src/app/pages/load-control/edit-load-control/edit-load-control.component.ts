@@ -828,44 +828,43 @@ export class EditLoadControlComponent implements OnInit, OnDestroy {
             const RAW_FACTORY_PATH = this.editLoadControlForm.get(
                 'RAW_FACTORY_PATH'
             );
-            let TABLE_NAMEString = TABLE_NAME.value.trim();
+            let tableNameString = TABLE_NAME.value.trim();
             if (
-                undefined !== TABLE_NAMEString &&
-                null !== TABLE_NAMEString &&
-                TABLE_NAMEString !== ''
+                undefined !== tableNameString &&
+                null !== tableNameString &&
+                tableNameString !== ''
             ) {
-                if (TABLE_NAMEString.lastIndexOf('_FACT') > 0) {
-                    TABLE_NAMEString = TABLE_NAMEString.substring(
-                        0,
-                        TABLE_NAMEString.lastIndexOf('_FACT')
-                    ).toLowerCase();
+                if (tableNameString.lastIndexOf('_FACT') > 0) {
+                    tableNameString = tableNameString
+                        .substring(0, tableNameString.lastIndexOf('_FACT'))
+                        .toLowerCase();
                 } else {
-                    TABLE_NAMEString = TABLE_NAMEString.toLowerCase();
+                    tableNameString = tableNameString.toLowerCase();
                 }
                 const url = `s3://${
                     environment.RAW_FACTORY_PATH_DEFAULT_SETTING
-                }/${TABLE_NAMEString.toUpperCase()}/t0/`;
+                }/${tableNameString.toUpperCase()}/t0/`;
                 RAW_FACTORY_PATH.setValue(url);
             } else {
                 this.showToast('error', 'Please provide TABLE_NAME');
             }
         } else if (type === 'T1_PATH') {
-            //<T1_PATH_DEFAULT_SETTING>/lowercase(<schema>.db_<table_name>)/
+            // <T1_PATH_DEFAULT_SETTING>/lowercase(<schema>.db_<table_name>)/
             const TABLE_NAME = this.editLoadControlForm.get('TABLE_NAME');
-            const TABLE_NAMEString = TABLE_NAME.value.trim();
+            const tableNameString = TABLE_NAME.value.trim();
             const SCHEMA_NAME = this.editLoadControlForm.get('SCHEMA_NAME');
-            const SCHEMA_NAMEString = SCHEMA_NAME.value.trim();
+            const schemaNameString = SCHEMA_NAME.value.trim();
             const T1_PATH = this.editLoadControlForm.get('T1_PATH');
 
             if (
-                undefined !== TABLE_NAMEString &&
-                null !== TABLE_NAMEString &&
-                TABLE_NAMEString !== '' &&
-                undefined !== SCHEMA_NAMEString &&
-                null !== SCHEMA_NAMEString &&
-                SCHEMA_NAMEString !== ''
+                undefined !== tableNameString &&
+                null !== tableNameString &&
+                tableNameString !== '' &&
+                undefined !== schemaNameString &&
+                null !== schemaNameString &&
+                schemaNameString !== ''
             ) {
-                const urlString = `${SCHEMA_NAMEString}.db_${TABLE_NAMEString}`.toLowerCase();
+                const urlString = `${schemaNameString}.db_${tableNameString}`.toLowerCase();
                 const url = `s3://${environment.T1_PATH_DEFAULT_SETTING}/${urlString}/`;
                 T1_PATH.setValue(url);
             } else {

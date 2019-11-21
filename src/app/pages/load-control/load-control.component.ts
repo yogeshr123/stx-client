@@ -373,11 +373,11 @@ export class LoadControlComponent implements OnInit {
     changeStatus() {
         if (this.selectedRecords.length > 0) {
             const records = [];
-            for (let _i = 0; _i < this.selectedRecords.length; _i++) {
+            for (const iterator of this.selectedRecords) {
                 records.push({
-                    SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-                    TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-                    ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+                    SCHEMA_NAME: iterator.SCHEMA_NAME,
+                    TABLE_NAME: iterator.TABLE_NAME,
+                    ENV_NAME: iterator.ENV_NAME,
                     UPDATED_BY: this.appState.loggedInUser.USER_NAME,
                     UPDATE_DATE: `${new Date()}`,
                 });
@@ -411,11 +411,11 @@ export class LoadControlComponent implements OnInit {
     resetExecutionStatus(status: string) {
         if (this.selectedRecords.length > 0) {
             const records = [];
-            for (let _i = 0; _i < this.selectedRecords.length; _i++) {
+            for (const iterator of this.selectedRecords) {
                 records.push({
-                    SCHEMA_NAME: this.selectedRecords[_i].SCHEMA_NAME,
-                    TABLE_NAME: this.selectedRecords[_i].TABLE_NAME,
-                    ENV_NAME: this.selectedRecords[_i].ENV_NAME,
+                    SCHEMA_NAME: iterator.SCHEMA_NAME,
+                    TABLE_NAME: iterator.TABLE_NAME,
+                    ENV_NAME: iterator.ENV_NAME,
                     UPDATED_BY: this.appState.loggedInUser.USER_NAME,
                     UPDATE_DATE: `${new Date()}`,
                 });
@@ -703,11 +703,11 @@ export class LoadControlComponent implements OnInit {
         if (this.selectedRecords && this.selectedRecords.length > 0) {
             if (isValidCronExpression) {
                 const records = [];
-                for (let i = 0; i < this.selectedRecords.length; i++) {
+                for (const iterator of this.selectedRecords) {
                     records.push({
-                        SCHEMA_NAME: this.selectedRecords[i].SCHEMA_NAME,
-                        TABLE_NAME: this.selectedRecords[i].TABLE_NAME,
-                        ENV_NAME: this.selectedRecords[i].ENV_NAME,
+                        SCHEMA_NAME: iterator.SCHEMA_NAME,
+                        TABLE_NAME: iterator.TABLE_NAME,
+                        ENV_NAME: iterator.ENV_NAME,
                         DAG_SCHEDULE_INTERVAL: cronExpression,
                         UPDATED_BY: this.appState.loggedInUser.USER_NAME,
                         UPDATE_DATE: `${new Date()}`,

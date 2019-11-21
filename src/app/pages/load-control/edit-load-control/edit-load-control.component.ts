@@ -542,28 +542,32 @@ export class EditLoadControlComponent implements OnInit, OnDestroy {
                     this.recordMeta = data.data;
                     const formControls = this.editLoadControlForm.controls;
                     for (const key in formControls) {
-                        const element = formControls[key];
-                        const index = Object.keys(this.recordMeta).find(
-                            k => this.recordMeta[k].COLUMN_NAME === key
-                        );
-                        const dataType = this.recordMeta[index].DATA_TYPE;
-                        if (this.record[key]) {
-                            if (dataType === 'timestamp') {
-                                element.patchValue(new Date(this.record[key]));
-                            } else if (dataType === 'bit') {
-                                if (
-                                    (this.record[key] &&
-                                        this.record[key].data &&
-                                        this.record[key].data[0]) ||
-                                    this.record[key] === 1 ||
-                                    this.record[key] === true
-                                ) {
-                                    element.patchValue('1');
+                        if (formControls.hasOwnProperty(key)) {
+                            const element = formControls[key];
+                            const index = Object.keys(this.recordMeta).find(
+                                k => this.recordMeta[k].COLUMN_NAME === key
+                            );
+                            const dataType = this.recordMeta[index].DATA_TYPE;
+                            if (this.record[key]) {
+                                if (dataType === 'timestamp') {
+                                    element.patchValue(
+                                        new Date(this.record[key])
+                                    );
+                                } else if (dataType === 'bit') {
+                                    if (
+                                        (this.record[key] &&
+                                            this.record[key].data &&
+                                            this.record[key].data[0]) ||
+                                        this.record[key] === 1 ||
+                                        this.record[key] === true
+                                    ) {
+                                        element.patchValue('1');
+                                    } else {
+                                        element.patchValue('0');
+                                    }
                                 } else {
-                                    element.patchValue('0');
+                                    element.patchValue(this.record[key]);
                                 }
-                            } else {
-                                element.patchValue(this.record[key]);
                             }
                         }
                     }

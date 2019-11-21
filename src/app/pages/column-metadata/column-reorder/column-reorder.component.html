@@ -1,0 +1,34 @@
+<p-table
+    [responsive]="true"
+    [tableStyle]="{ 'table-layout': 'auto' }"
+    [columns]="cols"
+    styleClass="scroll-table-reorder"
+    [value]="columnsInfo"
+    [reorderableColumns]="true"
+    (onRowReorder)="reorder($event)"
+>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width:2.5em">Sr. No.</th>
+            <th *ngFor="let col of columns" pReorderableColumn>
+                {{ col.header }}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template
+        pTemplate="body"
+        let-rowData
+        let-columns="columns"
+        let-index="rowIndex"
+    >
+        <tr [pReorderableRow]="index">
+            <td>
+                <i class="fa fa-bars" pReorderableRowHandle></i>
+                <span class="ml-2">{{ index + 1 }}</span>
+            </td>
+            <td *ngFor="let col of columns">
+                {{ rowData[col.header] }}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

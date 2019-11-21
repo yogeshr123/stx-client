@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ColumnMetadataService } from 'src/app/services/column-metadata.service';
 import { MessageService } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-add-edit-column',
@@ -132,7 +133,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             IS_NEW: [0],
             HEADER_HASH: [0],
             UPDATED_BY: ['User'],
-            UPDATE_DATE: [new Date()],
+            UPDATE_DATE: [moment(new Date()).format('YYYY-MM-DD HH:mm:ss')],
         });
     }
 
@@ -230,7 +231,9 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                     formControls.SRC_LEFT_PRECISION.patchValue(items[0]);
                     formControls.SRC_RIGHT_PRECISION.patchValue(items[1]);
                 }
-                formControls.UPDATE_DATE.patchValue(new Date());
+                formControls.UPDATE_DATE.patchValue(
+                    moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+                );
             }
         }
         this.loader.formData = false;
@@ -420,6 +423,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 error: 'Could not update column.',
             };
         }
+
         const formValues = Object.assign({}, this.addEditColumnForm.value);
         this.addPrecisionValues(formValues);
         this.checkFormValues(functionToCall, formValues);

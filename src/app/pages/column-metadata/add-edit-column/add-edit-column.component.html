@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'MAPPED' || addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED'"
-                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || routeInfo.isEditMode }">
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || (routeInfo.isEditMode && !addEditColumnForm.controls.IS_NEW.value) }">
                                     <label class="control-label col-md-5">INTERNAL COLUMN</label>
                                     <div class="col-md-7">
                                         <input formControlName="INTERNAL_COLUMN" class="form-control" type="checkbox" />
@@ -210,7 +210,7 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'"
-                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP'}">
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || addEditColumnForm.controls.INTERNAL_COLUMN.value === true}">
                                     <label class="control-label col-md-5">IS UPDATE DATE COLUMN <span
                                             class="required">*</span></label>
                                     <div class="col-md-7">
@@ -257,7 +257,7 @@
                                         <input formControlName="IS_PKEY_COLUMN" class="form-control" type="checkbox" />
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row" [ngClass]="{'disabled': routeInfo.isEditMode }">
+                                <div class="form-group col-6 row" [ngClass]="{'disabled': routeInfo.isEditMode && !addEditColumnForm.controls.IS_NEW.value }">
                                     <label class="control-label col-md-5">IS PARTITION COLUMN</label>
                                     <div class="col-md-7">
                                         <input formControlName="IS_PARTITION_COLUMN" class="form-control"

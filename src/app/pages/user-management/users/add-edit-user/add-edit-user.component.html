@@ -19,6 +19,11 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="control-label">Enter FULL NAME</label>
+      <input class="form-control" type="text" formControlName="FULL_NAME"
+        [ngClass]="{ 'is-invalid': submitted && f.FULL_NAME.errors }" />
+    </div>
+    <div class="form-group">
       <label class="control-label">Select Role</label>
       <select class="form-control" formControlName="ROLE"
         [ngClass]="{ 'is-invalid': submitted && f.ROLE.errors }">

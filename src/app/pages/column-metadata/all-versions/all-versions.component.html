@@ -115,6 +115,7 @@
                                     View Details
                                 </button>
                                 <button
+                                    *ngIf="version.LOAD_STRATEGY === 'SAMPLED'"
                                     (click)="
                                         viewDetails(version, 'header-hash')
                                     "

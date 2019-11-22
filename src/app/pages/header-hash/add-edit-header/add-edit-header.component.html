@@ -1,4 +1,45 @@
 <p-toast></p-toast>
+<p-dialog [(visible)]="showConfirmation" [style]="{ width: '300px' }">
+    <p-header>
+        Confirmation
+    </p-header>
+    <div class="ml-2">
+        Does this have Dimension Column?
+        <div class="animated-radio-button mt-2">
+            <label>
+                <input
+                    type="radio"
+                    value="true"
+                    [(ngModel)]="hasDimColumns"
+                /><span class="label-text">Yes </span>
+            </label>
+            <label class="ml-3">
+                <input
+                    type="radio"
+                    value="false"
+                    [(ngModel)]="hasDimColumns"
+                /><span class="label-text">No </span>
+            </label>
+        </div>
+    </div>
+    <p-footer>
+        <div class="">
+            <button
+                class="btn btn-sm btn-success"
+                (click)="confirmAction(true)"
+            >
+                Approve
+            </button>
+            <button
+                class="btn btn-sm btn-success ml-1"
+                (click)="confirmAction()"
+            >
+                Cancel
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>
+
 <div class="app-title mb-3 p-3">
     <div>
         <h5>

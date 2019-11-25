@@ -68,44 +68,7 @@ export class LoadControlComponent implements OnInit {
                 localStorage.getItem('selectedColumns')
             );
         }
-
-        setTimeout(() => {
-            $(document).ready(() => {
-                var button = document.getElementById('slide');
-                button.onclick = function() {
-                    console.log('onclick ');
-                    var container = document.getElementsByClassName(
-                        'ui-table-wrapper'
-                    )[0];
-                    sideScroll(container, 'right', 0, 200, 100);
-                };
-
-                var back = document.getElementById('slideBack');
-                back.onclick = function() {
-                    console.log('onclick ');
-                    var container = document.getElementsByClassName(
-                        'ui-table-wrapper'
-                    )[0];
-                    sideScroll(container, 'left', 0, 200, 100);
-                };
-
-                function sideScroll(element, direction, speed, distance, step) {
-                    var scrollAmount = 0;
-                    var slideTimer = setInterval(function() {
-                        if (direction == 'left') {
-                            element.scrollLeft -= step;
-                        } else {
-                            element.scrollLeft += step;
-                        }
-                        scrollAmount += step;
-                        if (scrollAmount >= distance) {
-                            window.clearInterval(slideTimer);
-                        }
-                    }, speed);
-                }
-            });
-        }, 1000);
-
+        this.checkSideArrows();
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
         if (localTableState && localTableState.loadControl) {
             this.globalQuery = localTableState.loadControl;
@@ -136,6 +99,46 @@ export class LoadControlComponent implements OnInit {
     }
 
     checkSideArrows() {
+        setTimeout(() => {
+            $(document).ready(() => {
+                var button = document.getElementById('slide');
+                if (button) {
+                    button.onclick = function() {
+                        console.log('onclick ');
+                        var container = document.getElementsByClassName(
+                            'ui-table-wrapper'
+                        )[0];
+                        sideScroll(container, 'right', 0, 200, 100);
+                    };
+                }
+
+                var back = document.getElementById('slideBack');
+                if (back) {
+                    back.onclick = function() {
+                        console.log('onclick ');
+                        var container = document.getElementsByClassName(
+                            'ui-table-wrapper'
+                        )[0];
+                        sideScroll(container, 'left', 0, 200, 100);
+                    };
+                }
+
+                function sideScroll(element, direction, speed, distance, step) {
+                    var scrollAmount = 0;
+                    var slideTimer = setInterval(function() {
+                        if (direction == 'left') {
+                            element.scrollLeft -= step;
+                        } else {
+                            element.scrollLeft += step;
+                        }
+                        scrollAmount += step;
+                        if (scrollAmount >= distance) {
+                            window.clearInterval(slideTimer);
+                        }
+                    }, speed);
+                }
+            });
+        }, 1000);
         setTimeout(() => {
             const tableHeight = $('.scroll-table').height();
             const windowHeight = $(window).height();
@@ -182,6 +185,9 @@ export class LoadControlComponent implements OnInit {
                 }
                 this.loader = false;
                 this.checkSideArrows();
+                if (this.globalQuery) {
+                    this.search();
+                }
             },
             error => {
                 this.loader = false;

@@ -69,40 +69,42 @@ export class LoadControlComponent implements OnInit {
             );
         }
 
-        $(document).ready(() => {
-            var button = document.getElementById('slide');
-            button.onclick = function() {
-                console.log('onclick ');
-                var container = document.getElementsByClassName(
-                    'ui-table-wrapper'
-                )[0];
-                sideScroll(container, 'right', 0, 200, 100);
-            };
+        setTimeout(() => {
+            $(document).ready(() => {
+                var button = document.getElementById('slide');
+                button.onclick = function() {
+                    console.log('onclick ');
+                    var container = document.getElementsByClassName(
+                        'ui-table-wrapper'
+                    )[0];
+                    sideScroll(container, 'right', 0, 200, 100);
+                };
 
-            var back = document.getElementById('slideBack');
-            back.onclick = function() {
-                console.log('onclick ');
-                var container = document.getElementsByClassName(
-                    'ui-table-wrapper'
-                )[0];
-                sideScroll(container, 'left', 0, 200, 100);
-            };
+                var back = document.getElementById('slideBack');
+                back.onclick = function() {
+                    console.log('onclick ');
+                    var container = document.getElementsByClassName(
+                        'ui-table-wrapper'
+                    )[0];
+                    sideScroll(container, 'left', 0, 200, 100);
+                };
 
-            function sideScroll(element, direction, speed, distance, step) {
-                var scrollAmount = 0;
-                var slideTimer = setInterval(function() {
-                    if (direction == 'left') {
-                        element.scrollLeft -= step;
-                    } else {
-                        element.scrollLeft += step;
-                    }
-                    scrollAmount += step;
-                    if (scrollAmount >= distance) {
-                        window.clearInterval(slideTimer);
-                    }
-                }, speed);
-            }
-        });
+                function sideScroll(element, direction, speed, distance, step) {
+                    var scrollAmount = 0;
+                    var slideTimer = setInterval(function() {
+                        if (direction == 'left') {
+                            element.scrollLeft -= step;
+                        } else {
+                            element.scrollLeft += step;
+                        }
+                        scrollAmount += step;
+                        if (scrollAmount >= distance) {
+                            window.clearInterval(slideTimer);
+                        }
+                    }, speed);
+                }
+            });
+        }, 1000);
 
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
         if (localTableState && localTableState.loadControl) {

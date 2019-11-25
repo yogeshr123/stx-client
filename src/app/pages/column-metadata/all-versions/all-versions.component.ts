@@ -34,6 +34,32 @@ export class AllVersionsComponent implements OnInit {
     ngOnInit() {
         this.state = this.commonService.getState();
         this.getAllTables();
+
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.allVersions) {
+            this.globalQuery = localTableState.allVersions;
+            setTimeout(() => {
+                this.getAllTables();
+            }, 100);
+        }
+    }
+
+    globalQueryEmpty() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (!localTableState) {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({ allVersions: this.globalQuery })
+            );
+        } else {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({
+                    ...localTableState,
+                    allVersions: this.globalQuery,
+                })
+            );
+        }
     }
 
     getAllTables() {

@@ -13,6 +13,11 @@ declare var $: any;
 export class SidebarComponent implements OnInit {
     appState: any;
     currentUser: any;
+    userPermissions: any;
+    checkMenu = {
+        loadControl: false,
+        columnMetadata: false,
+    };
 
     constructor(
         private usersService: UsersService,
@@ -81,6 +86,25 @@ export class SidebarComponent implements OnInit {
         this.appState = this.commonService.getState();
         if (!isNullOrUndefined(this.appState.loggedInUser)) {
             this.currentUser = this.appState.loggedInUser;
+        }
+        if (!isNullOrUndefined(this.appState.loggedInUserPermissions)) {
+            this.userPermissions = this.appState.loggedInUserPermissions;
+            const permission = this.userPermissions.join();
+            if (
+                permission.match(
+                    /accessHeaderHashModule|accessColumnMetadataModule/g
+                )
+            ) {
+                this.checkMenu.columnMetadata = true;
+            }
+            if (
+                permission.match(
+                    // tslint:disable-next-line:max-line-length
+                    /accessLoadControlModule|accessLoadStatusModule|accessDBEndponitsModule|accessClustersModule|accessSparkConfigModule|accessEmailConfigModule/g
+                )
+            ) {
+                this.checkMenu.loadControl = true;
+            }
         }
     }
 }

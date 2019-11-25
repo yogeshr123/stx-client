@@ -64,6 +64,16 @@ export class ColumnMetadataComponent implements OnInit {
         this.getSelectedColumns();
     }
 
+    checkGlobalQuery() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.columns) {
+            this.globalQuery = localTableState.columns;
+            setTimeout(() => {
+                this.viewData(this.selectedTable, this.globalQuery);
+            }, 100);
+        }
+    }
+
     getSelectedColumns() {
         if (!localStorage.getItem('selectedVersionColumns')) {
             this.initColumnState();
@@ -95,6 +105,16 @@ export class ColumnMetadataComponent implements OnInit {
     resetTable() {
         localStorage.removeItem('stateSelectedVersionColumns');
         this.initColumnState();
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.columns) {
+            delete localTableState.columns;
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify(localTableState)
+            );
+            this.globalQuery = '';
+            this.viewData(this.selectedTable, this.globalQuery);
+        }
     }
 
     initColumnState() {
@@ -110,6 +130,7 @@ export class ColumnMetadataComponent implements OnInit {
             );
             if (selectedVersion && selectedVersion.length) {
                 this.viewData(selectedVersion[0]);
+                this.checkGlobalQuery();
             }
         }
     }
@@ -199,9 +220,28 @@ export class ColumnMetadataComponent implements OnInit {
         });
     }
 
+    globalQueryEmpty() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (!localTableState) {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({ columns: this.globalQuery })
+            );
+        } else {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({
+                    ...localTableState,
+                    columns: this.globalQuery,
+                })
+            );
+        }
+    }
+
     search(globalQuery) {
         // Search CM With Query
         this.viewData(this.selectedTable, globalQuery);
+        this.checkGlobalQuery();
     }
 
     viewData(version, globalQuery?) {

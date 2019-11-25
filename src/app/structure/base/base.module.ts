@@ -10,6 +10,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { BaseComponent } from './base.component';
 import { BaseRoutingModule } from './base-routing.module';
 import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.component';
+import { PermissionModule } from 'src/app/directives/permission/permission.module';
 
 @NgModule({
     declarations: [
@@ -18,12 +19,8 @@ import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.c
         SidebarComponent,
         UnauthorizedComponent,
     ],
-    exports: [
-        HeaderComponent,
-        SidebarComponent
-    ],
-    providers: [
-    ],
+    exports: [HeaderComponent, SidebarComponent],
+    providers: [],
     imports: [
         CommonModule,
         RouterModule,
@@ -31,8 +28,8 @@ import { UnauthorizedComponent } from 'src/app/pages/unauthorized/unauthorized.c
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        PermissionModule,
         // BrowserAnimationsModule,
-    ]
+    ],
 })
-export class BaseModule {
-}
+export class BaseModule {}

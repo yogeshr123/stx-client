@@ -43,6 +43,13 @@ export class DashboardComponent implements OnInit {
                 localStorage.getItem('dashboardSelectedColumns')
             );
         }
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.dashboard) {
+            this.globalQuery = localTableState.dashboard;
+            setTimeout(() => {
+                this.getSearchQueryResult();
+            }, 100);
+        }
     }
 
     saveColumnState() {
@@ -60,6 +67,16 @@ export class DashboardComponent implements OnInit {
         localStorage.removeItem('dashboardSelectedColumns');
         localStorage.removeItem('dashboardSelectedColumnsOrder');
         this.initColumnState();
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.dashboard) {
+            delete localTableState.dashboard;
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify(localTableState)
+            );
+            this.globalQuery = '';
+            this.loadAllRecords();
+        }
     }
 
     getColumnDataType() {
@@ -149,6 +166,24 @@ export class DashboardComponent implements OnInit {
             }
         }
         this.dataLoader = false;
+    }
+
+    globalQueryEmpty() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (!localTableState) {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({ dashboard: this.globalQuery })
+            );
+        } else {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({
+                    ...localTableState,
+                    dashboard: this.globalQuery,
+                })
+            );
+        }
     }
 
     checkIfURL(key) {

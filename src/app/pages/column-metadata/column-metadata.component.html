@@ -230,10 +230,7 @@
                         Fact Column
                     </button>
                 </h6>
-                <div
-                    class="table-responsive"
-                    *ngIf="versionData && versionData.length"
-                >
+                <div class="table-responsive">
                     <p-table
                         #dt2
                         [responsive]="true"
@@ -270,6 +267,7 @@
                             <div class="globalSearch">
                                 <input
                                     type="text"
+                                    (keyup)="globalQueryEmpty()"
                                     placeholder="Global Query Filter"
                                     [(ngModel)]="globalQuery"
                                     (keyup.enter)="search(globalQuery)"

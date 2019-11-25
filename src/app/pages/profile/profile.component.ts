@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     formInit() {
         this.editUserForm = this.formBuilder.group({
             USER_NAME: [{ value: this.currentUser.USER_NAME, disabled: true }],
-            EMAIL_ID: [this.currentUser.EMAIL_ID],
+            EMAIL_ID: [this.currentUser.EMAIL_ID, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')],
             ROLE: [{ value: this.currentUserRole, disabled: true }],
             FULL_NAME: [this.currentUser.FULL_NAME, Validators.required],
             PROFILE_PIC: [this.currentUser.PROFILE_PIC],

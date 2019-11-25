@@ -69,38 +69,50 @@ export class LoadControlComponent implements OnInit {
             );
         }
 
-        $(document).ready(() => {
-            const button = document.getElementById('slide');
-            button.onclick = () => {
-                const container = document.getElementsByClassName(
-                    'ui-table-wrapper'
-                )[0];
-                sideScroll(container, 'right', 0, 200, 100);
-            };
+        setTimeout(() => {
+            $(document).ready(() => {
+                const button = document.getElementById('slide');
+                button.onclick = () => {
+                    console.log('onclick ');
+                    const container = document.getElementsByClassName(
+                        'ui-table-wrapper'
+                    )[0];
+                    sideScroll(container, 'right', 0, 200, 100);
+                };
 
-            const back = document.getElementById('slideBack');
-            back.onclick = () => {
-                const container = document.getElementsByClassName(
-                    'ui-table-wrapper'
-                )[0];
-                sideScroll(container, 'left', 0, 200, 100);
-            };
+                const back = document.getElementById('slideBack');
+                back.onclick = () => {
+                    console.log('onclick ');
+                    const container = document.getElementsByClassName(
+                        'ui-table-wrapper'
+                    )[0];
+                    sideScroll(container, 'left', 0, 200, 100);
+                };
 
-            function sideScroll(element, direction, speed, distance, step) {
-                let scrollAmount = 0;
-                const slideTimer = setInterval(() => {
-                    if (direction === 'left') {
-                        element.scrollLeft -= step;
-                    } else {
-                        element.scrollLeft += step;
-                    }
-                    scrollAmount += step;
-                    if (scrollAmount >= distance) {
-                        window.clearInterval(slideTimer);
-                    }
-                }, speed);
-            }
-        });
+                function sideScroll(element, direction, speed, distance, step) {
+                    let scrollAmount = 0;
+                    const slideTimer = setInterval(() => {
+                        if (direction === 'left') {
+                            element.scrollLeft -= step;
+                        } else {
+                            element.scrollLeft += step;
+                        }
+                        scrollAmount += step;
+                        if (scrollAmount >= distance) {
+                            window.clearInterval(slideTimer);
+                        }
+                    }, speed);
+                }
+            });
+        }, 1000);
+
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.loadControl) {
+            this.globalQuery = localTableState.loadControl;
+            setTimeout(() => {
+                this.search();
+            }, 100);
+        }
     }
 
     formInit() {
@@ -281,6 +293,16 @@ export class LoadControlComponent implements OnInit {
             this.initColumnState();
         }
         this.tableComponent.reset();
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.loadControl) {
+            delete localTableState.loadControl;
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify(localTableState)
+            );
+            this.globalQuery = '';
+            this.loadAllRecords();
+        }
     }
 
     resetFilters() {
@@ -468,6 +490,21 @@ export class LoadControlComponent implements OnInit {
     }
 
     globalQueryEmpty() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (!localTableState) {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({ loadControl: this.globalQuery })
+            );
+        } else {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({
+                    ...localTableState,
+                    loadControl: this.globalQuery,
+                })
+            );
+        }
         if (
             undefined === this.globalQuery ||
             null === this.globalQuery ||

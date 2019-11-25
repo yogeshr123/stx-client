@@ -105,6 +105,11 @@ export class AddEditRoleComponent implements OnInit, OnDestroy {
             const rootPermission = new Permission();
             rootPermission.clear();
             rootPermission.isSelected = hasUserPermission;
+            if (element.NAME) {
+                if (element.NAME.indexOf('Dashboard') > -1) {
+                    rootPermission.isSelected = true;
+                }
+            }
             rootPermission.children = [];
             rootPermission.ID = element.ID;
             rootPermission.level = element.level;
@@ -124,6 +129,11 @@ export class AddEditRoleComponent implements OnInit, OnDestroy {
                 const childPermission = new Permission();
                 childPermission.clear();
                 childPermission.isSelected = hasUserChildPermission;
+                if (child.NAME) {
+                    if (child.NAME.indexOf('Dashboard') > -1) {
+                        childPermission.isSelected = true;
+                    }
+                }
                 childPermission.children = [];
                 childPermission.ID = child.ID;
                 childPermission.level = child.level;

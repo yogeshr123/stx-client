@@ -42,7 +42,13 @@ export class AddEditUserComponent implements OnInit {
     formInit() {
         this.addEditForm = this.formBuilder.group({
             USER_NAME: [this.selectedUser.USER_NAME, Validators.required],
-            EMAIL_ID: [this.selectedUser.EMAIL_ID],
+            FULL_NAME: [this.selectedUser.FULL_NAME],
+            EMAIL_ID: [
+                this.selectedUser.EMAIL_ID,
+                Validators.pattern(
+                    '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
+                ),
+            ],
             ROLE: [this.selectedUser.ROLE, Validators.required],
         });
     }

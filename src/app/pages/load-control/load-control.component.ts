@@ -72,6 +72,7 @@ export class LoadControlComponent implements OnInit {
         $(document).ready(() => {
             var button = document.getElementById('slide');
             button.onclick = function() {
+                console.log('onclick ');
                 var container = document.getElementsByClassName(
                     'ui-table-wrapper'
                 )[0];
@@ -80,6 +81,7 @@ export class LoadControlComponent implements OnInit {
 
             var back = document.getElementById('slideBack');
             back.onclick = function() {
+                console.log('onclick ');
                 var container = document.getElementsByClassName(
                     'ui-table-wrapper'
                 )[0];
@@ -101,6 +103,14 @@ export class LoadControlComponent implements OnInit {
                 }, speed);
             }
         });
+
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.loadControl) {
+            this.globalQuery = localTableState.loadControl;
+            setTimeout(() => {
+                this.search();
+            }, 100);
+        }
     }
 
     formInit() {
@@ -278,6 +288,16 @@ export class LoadControlComponent implements OnInit {
             this.initColumnState();
         }
         this.tableComponent.reset();
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (localTableState && localTableState.loadControl) {
+            delete localTableState.loadControl;
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify(localTableState)
+            );
+            this.globalQuery = '';
+            this.loadAllRecords();
+        }
     }
 
     resetFilters() {
@@ -466,6 +486,21 @@ export class LoadControlComponent implements OnInit {
     }
 
     globalQueryEmpty() {
+        const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
+        if (!localTableState) {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({ loadControl: this.globalQuery })
+            );
+        } else {
+            localStorage.setItem(
+                'GlobalQuery',
+                JSON.stringify({
+                    ...localTableState,
+                    loadControl: this.globalQuery,
+                })
+            );
+        }
         if (
             undefined == this.globalQuery ||
             null == this.globalQuery ||

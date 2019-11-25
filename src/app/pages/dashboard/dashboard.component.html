@@ -1,142 +1,150 @@
 <p-toast></p-toast>
 <div class="app-title">
-  <h1>
-    <i class="app-title-icon fa fa-hourglass"></i>
-    <span>EMR Table Status</span>
-  </h1>
+    <h1>
+        <i class="app-title-icon fa fa-hourglass"></i>
+        <span>EMR Table Status</span>
+    </h1>
 </div>
 <div class="row">
-  <div class="col-md-12">
-    <div class="tile">
-      <ngx-loading
-        [show]="dataLoader"
-        [config]="{ backdropBorderRadius: '3px' }"
-      >
-      </ngx-loading>
-      <p-table
-        *ngIf="!dataLoader"
-        #dt1
-        [columns]="selectedColumns"
-        [value]="recordsArray"
-        [responsive]="true"
-        dataKey="TABLE_NAME"
-        [reorderableColumns]="true"
-        [(selection)]="selectedRecords"
-        stateStorage="local"
-        stateKey="dashboardSelectedColumnsOrder"
-        [tableStyle]="{ 'table-layout': 'auto' }"
-      >
-        <ng-template pTemplate="caption">
-          <div style="text-align: left">
-            <p-multiSelect
-              scrollHeight="60vh"
-              [options]="totalCols"
-              [(ngModel)]="selectedColumns"
-              optionLabel="field"
-              selectedItemsLabel="{0} columns selected"
-              defaultLabel="Choose Columns"
-              (onChange)="saveColumnState()"
+    <div class="col-md-12">
+        <div class="tile">
+            <ngx-loading
+                [show]="dataLoader"
+                [config]="{ backdropBorderRadius: '3px' }"
             >
-            </p-multiSelect>
-            <div class="dateNow">
-              <span>
-                Data As Of -
-                {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}
-              </span>
+            </ngx-loading>
+            <p-table
+                *ngIf="!dataLoader"
+                #dt1
+                [columns]="selectedColumns"
+                [value]="recordsArray"
+                [responsive]="true"
+                dataKey="TABLE_NAME"
+                [reorderableColumns]="true"
+                [(selection)]="selectedRecords"
+                stateStorage="local"
+                stateKey="dashboardSelectedColumnsOrder"
+                [tableStyle]="{ 'table-layout': 'auto' }"
+            >
+                <ng-template pTemplate="caption">
+                    <div style="text-align: left">
+                        <p-multiSelect
+                            scrollHeight="60vh"
+                            [options]="totalCols"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="field"
+                            selectedItemsLabel="{0} columns selected"
+                            defaultLabel="Choose Columns"
+                            (onChange)="saveColumnState()"
+                        >
+                        </p-multiSelect>
+                        <div class="dateNow">
+                            <span>
+                                Data As Of -
+                                {{ currentDate | date: 'yyyy-MM-dd HH:mm:ss' }}
+                            </span>
+                        </div>
+                        <button
+                            class="btn btn-secondary btn-sm float-right"
+                            (click)="resetTable()"
+                        >
+                            Reset Table
+                        </button>
+                    </div>
+                    <div class="globalSearch">
+                        <input
+                            type="text"
+                            (keyup)="globalQueryEmpty()"
+                            placeholder="Global Query Filter"
+                            [(ngModel)]="globalQuery"
+                            (keyup.enter)="getSearchQueryResult()"
+                        />
+                        <button
+                            class="btn btn-sm btn-primary"
+                            type="button"
+                            (click)="getSearchQueryResult()"
+                        >
+                            <i class="fa fa-lg fa-fw fa-search"></i>
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th
+                            *ngFor="let col of columns"
+                            [pSortableColumn]="col.field"
+                            pReorderableColumn
+                        >
+                            {{ col.field }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th
+                            *ngFor="let col of columns"
+                            [ngSwitch]="col.type"
+                            class="ui-flclassuid"
+                        >
+                            <p-multiSelect
+                                appendTo="body"
+                                *ngSwitchCase="'ENV_NAME'"
+                                [options]="ENV_NAME"
+                                defaultLabel="ENV_NAME"
+                                [panelStyle]="{ width: '200px' }"
+                                (onChange)="
+                                    dt1.filter($event.value, col.field, 'in')
+                                "
+                            >
+                            </p-multiSelect>
+                            <!-- <span *ngSwitchCase="'date'"></span> -->
+                            <input
+                                pInputText
+                                *ngSwitchDefault
+                                type="text"
+                                (input)="
+                                    dt1.filter(
+                                        $event.target.value,
+                                        col.field,
+                                        col.filterMatchMode
+                                    )
+                                "
+                                [value]="dt1.filters[col.field]?.value"
+                            />
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns" [ngSwitch]="col.type">
+                            <ng-container *ngSwitchCase="'link'">
+                                <a [href]="rowData[col.field]" target="_blank">
+                                    {{ rowData[col.field] }}
+                                </a>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'date'">
+                                <span>
+                                    {{
+                                        rowData[col.field]
+                                            | date: 'yyyy-MM-dd HH:mm:ss'
+                                    }}
+                                </span>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                <span>
+                                    {{ rowData[col.field] || 'NULL' }}
+                                </span>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div
+                colspan="10"
+                class="text-center p-2 border"
+                *ngIf="!recordsArray || !recordsArray.length"
+            >
+                <h6>No Data Available!</h6>
             </div>
-            <button
-              class="btn btn-secondary btn-sm float-right"
-              (click)="resetTable()"
-            >
-              Reset Table
-            </button>
-          </div>
-          <div class="globalSearch">
-            <input
-              type="text"
-              placeholder="Global Query Filter"
-              [(ngModel)]="globalQuery"
-              (keyup.enter)="getSearchQueryResult()"
-            />
-            <button
-              class="btn btn-sm btn-primary"
-              type="button"
-              (click)="getSearchQueryResult()"
-            >
-              <i class="fa fa-lg fa-fw fa-search"></i>
-            </button>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th
-              *ngFor="let col of columns"
-              [pSortableColumn]="col.field"
-              pReorderableColumn
-            >
-              {{ col.field }}
-              <p-sortIcon [field]="col.field"></p-sortIcon>
-            </th>
-          </tr>
-          <tr>
-            <th
-              *ngFor="let col of columns"
-              [ngSwitch]="col.type"
-              class="ui-flclassuid"
-            >
-              <p-multiSelect
-                appendTo="body"
-                *ngSwitchCase="'ENV_NAME'"
-                [options]="ENV_NAME"
-                defaultLabel="ENV_NAME"
-                [panelStyle]="{ width: '200px' }"
-                (onChange)="dt1.filter($event.value, col.field, 'in')"
-              >
-              </p-multiSelect>
-              <!-- <span *ngSwitchCase="'date'"></span> -->
-              <input
-                pInputText
-                *ngSwitchDefault
-                type="text"
-                (input)="
-                  dt1.filter(
-                    $event.target.value,
-                    col.field,
-                    col.filterMatchMode
-                  )
-                "
-                [value]="dt1.filters[col.field]?.value"
-              />
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" [ngSwitch]="col.type">
-              <ng-container *ngSwitchCase="'link'">
-                <a [href]="rowData[col.field]" target="_blank">
-                  {{ rowData[col.field] }}
-                </a>
-              </ng-container>
-              <ng-container *ngSwitchCase="'date'">
-                <span>
-                  {{ rowData[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }}
-                </span>
-              </ng-container>
-              <ng-container *ngSwitchDefault>
-                <span> {{ rowData[col.field] || 'NULL' }} </span>
-              </ng-container>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <div
-        colspan="10"
-        class="text-center p-2 border"
-        *ngIf="!recordsArray || !recordsArray.length"
-      >
-        <h6>No Data Available!</h6>
-      </div>
+        </div>
     </div>
-  </div>
 </div>

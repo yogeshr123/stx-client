@@ -1,139 +1,247 @@
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-  <div class="app-sidebar__user">
-    <img class="app-sidebar__user-avatar" width="48px" height="48px" style="object-fit: contain; background-color:#000"
-      [src]="currentUser.PROFILE_PIC? currentUser.PROFILE_PIC: 'assets/images/profile-pic.jpeg'">
-    <div class="user-detail">
-      <p class="app-sidebar__user-name">
-        {{currentUser.FULL_NAME?currentUser.FULL_NAME:currentUser.USER_NAME}}
-      </p>
-      <p class="app-sidebar__user-designation"></p>
+    <div class="app-sidebar__user">
+        <img
+            class="app-sidebar__user-avatar"
+            width="48px"
+            height="48px"
+            style="object-fit: contain; background-color:#000"
+            [src]="
+                currentUser.PROFILE_PIC
+                    ? currentUser.PROFILE_PIC
+                    : 'assets/images/profile-pic.jpeg'
+            "
+        />
+        <div class="user-detail">
+            <p class="app-sidebar__user-name">
+                {{
+                    currentUser.FULL_NAME
+                        ? currentUser.FULL_NAME
+                        : currentUser.USER_NAME
+                }}
+            </p>
+            <p class="app-sidebar__user-designation"></p>
+        </div>
     </div>
-  </div>
-  <ul class="app-menu">
-    <li class="treeview">
-      <a class="app-menu__item" data-toggle="treeview">
-        <i class="app-menu__icon fa fa-dashboard"></i>
-        <span class="app-menu__label">Dashboard</span>
-        <i class="treeview-indicator fa fa-angle-right"></i>
-      </a>
-      <ul class="treeview-menu">
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/dashboard/emr">
-            <i class="app-menu__icon fa fa-hourglass"></i>
-            <span class="app-menu__label_child">EMR Table Status</span></a>
+    <ul class="app-menu">
+        <li class="treeview">
+            <a class="app-menu__item" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-dashboard"></i>
+                <span class="app-menu__label">Dashboard</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/dashboard/emr"
+                    >
+                        <i class="app-menu__icon fa fa-hourglass"></i>
+                        <span class="app-menu__label_child"
+                            >EMR Table Status</span
+                        ></a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/dashboard/data-latency-summary"
+                    >
+                        <i class="app-menu__icon fa fa-hourglass-o"></i>
+                        <span class="app-menu__label_child"
+                            >Data Latency Summary</span
+                        ></a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/dashboard/loading-status-summary"
+                    >
+                        <i class="app-menu__icon fa fa-hourglass-start"></i>
+                        <span class="app-menu__label_child"
+                            >Loading Status Summary</span
+                        ></a
+                    >
+                </li>
+            </ul>
         </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/dashboard/data-latency-summary">
-            <i class="app-menu__icon fa fa-hourglass-o"></i>
-            <span class="app-menu__label_child">Data Latency Summary</span></a>
+        <li class="treeview" *ngIf="checkMenu.loadControl">
+            <a class="app-menu__item" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-table"></i>
+                <span class="app-menu__label">Load Control</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li appPermission expectedPermission="accessLoadControlModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/loadcontrol"
+                    >
+                        <i class="app-menu__icon fa fa-cogs"></i>
+                        <span class="app-menu__label_child">Table Manager</span>
+                    </a>
+                </li>
+                <li appPermission expectedPermission="accessLoadStatusModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/load-status"
+                    >
+                        <i class="app-menu__icon fa fa-hourglass-half"></i>
+                        <span class="app-menu__label_child">Load Status</span>
+                    </a>
+                </li>
+                <li appPermission expectedPermission="accessDBEndponitsModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/db-endpoints"
+                    >
+                        <i class="app-menu__icon fa fa-bullseye"></i>
+                        <span class="app-menu__label_child"
+                            >DB Endpoints</span
+                        ></a
+                    >
+                </li>
+                <li appPermission expectedPermission="accessClustersModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/clusters"
+                    >
+                        <i class="app-menu__icon fa fa-server"></i>
+                        <span class="app-menu__label_child">Clusters</span></a
+                    >
+                </li>
+                <li appPermission expectedPermission="accessSparkConfigModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/spark-config"
+                    >
+                        <i class="app-menu__icon fa fa-cog"></i>
+                        <span class="app-menu__label_child"
+                            >Spark Config</span
+                        ></a
+                    >
+                </li>
+                <li appPermission expectedPermission="accessEmailConfigModule">
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/email-config"
+                    >
+                        <i
+                            class="app-menu__icon fa fa-envelope"
+                            aria-hidden="true"
+                        ></i>
+                        <span class="app-menu__label_child"
+                            >Email Config</span
+                        ></a
+                    >
+                </li>
+            </ul>
         </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/dashboard/loading-status-summary">
-            <i class="app-menu__icon fa fa-hourglass-start"></i>
-            <span class="app-menu__label_child">Loading Status
-              Summary</span></a>
+        <li class="treeview" *ngIf="checkMenu.columnMetadata">
+            <a class="app-menu__item" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-columns"></i>
+                <span class="app-menu__label">Metadata Version</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li
+                    appPermission
+                    expectedPermission="accessColumnMetadataModule"
+                >
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/CMV/all-versions"
+                    >
+                        <i class="app-menu__icon fa fa-cubes"></i>
+                        <span class="app-menu__label_child"
+                            >All Table Versions</span
+                        ></a
+                    >
+                </li>
+                <li
+                    appPermission
+                    expectedPermission="accessColumnMetadataModule"
+                >
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/CMV"
+                    >
+                        <i class="app-menu__icon fa fa-id-card-o"></i>
+                        <span class="app-menu__label_child">Table Details</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/header-hash"
+                        appPermission
+                        expectedPermission="accessHeaderHashModule"
+                    >
+                        <i class="app-menu__icon fa fa-hashtag"></i>
+                        <span class="app-menu__label_child"
+                            >File Header Hash</span
+                        >
+                    </a>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
-    <li class="treeview">
-      <a class="app-menu__item" data-toggle="treeview">
-        <i class="app-menu__icon fa fa-table"></i>
-        <span class="app-menu__label">Load Control</span>
-        <i class="treeview-indicator fa fa-angle-right"></i>
-      </a>
-      <ul class="treeview-menu">
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/loadcontrol">
-            <i class="app-menu__icon fa fa-cogs"></i>
-            <span class="app-menu__label_child">Table Manager</span>
-          </a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/load-status">
-            <i class="app-menu__icon fa fa-hourglass-half"></i>
-            <span class="app-menu__label_child">Load Status</span>
-          </a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/db-endpoints">
-            <i class="app-menu__icon fa fa-bullseye"></i>
-            <span class="app-menu__label_child">DB Endpoints</span></a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/clusters">
-            <i class="app-menu__icon fa fa-server"></i>
-            <span class="app-menu__label_child">Clusters</span></a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/spark-config">
-            <i class="app-menu__icon fa fa-cog"></i>
-            <span class="app-menu__label_child">Spark Config</span></a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/email-config">
-            <i class="app-menu__icon fa fa-envelope" aria-hidden="true"></i>
-            <span class="app-menu__label_child">Email Config</span></a>
-        </li>
-      </ul>
-    </li>
-    <li class="treeview">
-      <a class="app-menu__item" data-toggle="treeview">
-        <i class="app-menu__icon fa fa-columns"></i>
-        <span class="app-menu__label">Metadata Version</span>
-        <i class="treeview-indicator fa fa-angle-right"></i>
-      </a>
-      <ul class="treeview-menu">
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/CMV/all-versions">
-            <i class="app-menu__icon fa fa-cubes"></i>
-            <span class="app-menu__label_child">All Table Versions</span></a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/CMV">
-            <i class="app-menu__icon fa fa-id-card-o"></i>
-            <span class="app-menu__label_child">Table Details</span>
-          </a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/header-hash">
-            <i class="app-menu__icon fa fa-hashtag"></i>
-            <span class="app-menu__label_child">File Header Hash</span>
-          </a>
-        </li>
-      </ul>
-    </li>
 
-    <li class="treeview">
-      <a class="app-menu__item" data-toggle="treeview">
-        <i class="app-menu__icon fa fa-key"></i>
-        <span class="app-menu__label">Security</span>
-        <i class="treeview-indicator fa fa-angle-right"></i>
-      </a>
-      <ul class="treeview-menu">
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/user-management/users">
-            <i class="app-menu__icon fa fa-user"></i>
-            <span class="app-menu__label_child">Users
-            </span>
-          </a>
+        <li
+            class="treeview"
+            appPermission
+            expectedPermission="accessUserManagementModule"
+        >
+            <a class="app-menu__item" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-key"></i>
+                <span class="app-menu__label">Security</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/user-management/users"
+                    >
+                        <i class="app-menu__icon fa fa-user"></i>
+                        <span class="app-menu__label_child">Users </span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/user-management/roles"
+                    >
+                        <i class="app-menu__icon fa fa-users"></i>
+                        <span class="app-menu__label_child">Roles </span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="treeview-item"
+                        routerLinkActive="active"
+                        routerLink="/user-management/permissions"
+                    >
+                        <i class="app-menu__icon fa fa-shield"></i>
+                        <span class="app-menu__label_child">Permissions </span>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/user-management/roles">
-            <i class="app-menu__icon fa fa-users"></i>
-            <span class="app-menu__label_child">Roles
-            </span>
-          </a>
-        </li>
-        <li>
-          <a class="treeview-item" routerLinkActive="active" routerLink="/user-management/permissions">
-            <i class="app-menu__icon fa fa-shield"></i>
-            <span class="app-menu__label_child">Permissions
-            </span>
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+    </ul>
 </aside>

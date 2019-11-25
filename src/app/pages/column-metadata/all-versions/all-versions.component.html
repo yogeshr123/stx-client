@@ -28,6 +28,7 @@
                     <ng-template pTemplate="caption">
                         <div class="globalSearch">
                             <input
+                                (keyup)="globalQueryEmpty()"
                                 type="text"
                                 placeholder="Global Query Filter"
                                 [(ngModel)]="globalQuery"

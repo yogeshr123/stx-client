@@ -2,79 +2,152 @@
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
 </p-confirmDialog>
 <div class="app-title">
-  <h1>
-    <i class="app-title-icon fa fa-users"></i>
-    <span
-      *ngIf="routeInfo">{{routeInfo.isEditMode ? 'Edit': routeInfo.isViewOnly ? 'View' : 'Add'}}
-      Role</span>
-  </h1>
+    <h1>
+        <i class="app-title-icon fa fa-users"></i>
+        <span *ngIf="routeInfo"
+            >{{
+                routeInfo.isEditMode
+                    ? 'Edit'
+                    : routeInfo.isViewOnly
+                    ? 'View'
+                    : 'Add'
+            }}
+            Role</span
+        >
+    </h1>
 </div>
 <div class="row">
-  <div class="col-md-12">
-    <div class="tile">
-      <ngx-loading [show]="loader.formData"
-        [config]="{ backdropBorderRadius: '3px' }">
-      </ngx-loading>
-      <div class="tile-body form-overlay-parent">
-        <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
+    <div class="col-md-12">
+        <div class="tile">
+            <ngx-loading
+                [show]="loader.formData"
+                [config]="{ backdropBorderRadius: '3px' }"
+            >
+            </ngx-loading>
+            <div class="tile-body form-overlay-parent">
+                <div *ngIf="routeInfo.isViewOnly" class="form-overlay"></div>
 
-        <form class="row p-0" (ngSubmit)="f.form.valid && submit()" #f="ngForm">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="control-label">Enter Title (Eg. Editor)</label>
-              <input type="text" class="form-control" name="TITLE"
-                [(ngModel)]="selectedRole.TITLE" #TITLE="ngModel"
-                [ngClass]="{ 'is-invalid': f.submitted && TITLE.invalid }"
-                required />
-              <div *ngIf="f.submitted && TITLE.invalid"
-                class="invalid-feedback">
-                <div *ngIf="TITLE.errors.required">Role Title is
-                  required</div>
-              </div>
+                <form
+                    class="row p-0"
+                    (ngSubmit)="f.form.valid && submit()"
+                    #f="ngForm"
+                >
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label"
+                                >Enter Title (Eg. Editor)</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="TITLE"
+                                [(ngModel)]="selectedRole.TITLE"
+                                #TITLE="ngModel"
+                                [ngClass]="{
+                                    'is-invalid': f.submitted && TITLE.invalid
+                                }"
+                                required
+                            />
+                            <div
+                                *ngIf="f.submitted && TITLE.invalid"
+                                class="invalid-feedback"
+                            >
+                                <div *ngIf="TITLE.errors.required">
+                                    Role Title is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator"></div>
+                        <h6>
+                            Permissions:
+                        </h6>
+                        <div class="form-group">
+                            <div
+                                class="mb-2 animated-checkbox"
+                                *ngFor="let rootRole of rolePermissions"
+                            >
+                                <label
+                                    [ngClass]="{
+                                        disabled:
+                                            rootRole.NAME ===
+                                            'accessDashboardModule'
+                                    }"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        [name]="rootRole.NAME"
+                                        [(ngModel)]="rootRole.isSelected"
+                                        (change)="
+                                            isSelectedChanged($event, rootRole)
+                                        "
+                                        [disabled]="selectedRole.isCoreRole"
+                                    /><span class="label-text">{{
+                                        rootRole.NAME
+                                    }}</span>
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="ml-4"
+                                        *ngFor="
+                                            let childRole of rootRole.children
+                                        "
+                                    >
+                                        <label
+                                            [ngClass]="{
+                                                disabled:
+                                                    childRole.NAME.indexOf(
+                                                        'Dashboard'
+                                                    ) > -1
+                                            }"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                [name]="childRole.NAME"
+                                                [(ngModel)]="
+                                                    childRole.isSelected
+                                                "
+                                                (change)="
+                                                    isSelectedChanged(
+                                                        $event,
+                                                        childRole
+                                                    )
+                                                "
+                                                [disabled]="
+                                                    selectedRole.isCoreRole
+                                                "
+                                            /><span class="label-text">{{
+                                                childRole.NAME
+                                            }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="separator"></div>
-            <h6>
-              Permissions:
-            </h6>
-            <div class="form-group">
-              <div class="mb-2 animated-checkbox"
-                *ngFor="let rootRole of rolePermissions">
-                <label>
-                  <input type="checkbox" [name]="rootRole.NAME"
-                    [(ngModel)]="rootRole.isSelected"
-                    (change)="isSelectedChanged($event, rootRole)"
-                    [disabled]="selectedRole.isCoreRole"><span
-                    class="label-text">{{ rootRole.NAME }}</span>
-                </label>
-                <div class="d-flex align-items-center">
-                  <div class="ml-4" *ngFor="let childRole of rootRole.children">
-                    <label>
-                      <input type="checkbox" [name]="childRole.NAME"
-                        [(ngModel)]="childRole.isSelected"
-                        (change)="isSelectedChanged($event, childRole)"
-                        [disabled]="selectedRole.isCoreRole" /><span
-                        class="label-text">{{ childRole.NAME }}</span>
-                    </label>
-                  </div>
+            <div class="tile-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button
+                            *ngIf="!routeInfo.isReadMode"
+                            class="btn btn-sm btn-primary"
+                            (click)="submit()"
+                        >
+                            <i class="fa fa-fw fa-lg fa-check-circle"></i
+                            >Save</button
+                        >&nbsp;&nbsp;&nbsp;
+                        <a
+                            class="btn btn-sm btn-secondary"
+                            routerLinkActive="active"
+                            routerLink="/user-management/roles"
+                        >
+                            <i class="fa fa-fw fa-lg fa-times-circle"></i
+                            >Cancel</a
+                        >
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="tile-footer">
-        <div class="row">
-          <div class="col-md-12 text-right">
-            <button *ngIf="!routeInfo.isReadMode" class="btn btn-sm btn-primary"
-              (click)="submit()">
-              <i
-                class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-sm btn-secondary" routerLinkActive="active"
-              routerLink="/user-management/roles">
-              <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

@@ -270,8 +270,18 @@ export class LoadControlComponent implements OnInit {
         );
         this.resetFilters();
         if (this.globalQuery) {
-            this.loadAllRecords();
-            this.globalQuery = '';
+            const localTableState = JSON.parse(
+                localStorage.getItem('GlobalQuery')
+            );
+            if (localTableState && localTableState.loadControl) {
+                delete localTableState.loadControl;
+                localStorage.setItem(
+                    'GlobalQuery',
+                    JSON.stringify(localTableState)
+                );
+                this.globalQuery = '';
+                this.loadAllRecords();
+            }
         }
     }
 

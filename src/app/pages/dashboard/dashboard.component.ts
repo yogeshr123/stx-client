@@ -57,6 +57,31 @@ export class DashboardComponent implements OnInit {
             'dashboardSelectedColumns',
             JSON.stringify(this.selectedColumns)
         );
+        this.resetFilters();
+        if (this.globalQuery) {
+            const localTableState = JSON.parse(
+                localStorage.getItem('GlobalQuery')
+            );
+            if (localTableState && localTableState.dashboard) {
+                delete localTableState.dashboard;
+                localStorage.setItem(
+                    'GlobalQuery',
+                    JSON.stringify(localTableState)
+                );
+                this.globalQuery = '';
+                this.loadAllRecords();
+            }
+        }
+    }
+
+    resetFilters() {
+        const statefilter = JSON.parse(
+            localStorage.getItem('dashboardSelectedColumnsOrder')
+        );
+        if (statefilter) {
+            localStorage.removeItem('dashboardSelectedColumnsOrder');
+        }
+        this.tableComponent.reset();
     }
 
     initColumnState() {

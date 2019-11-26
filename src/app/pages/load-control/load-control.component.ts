@@ -269,6 +269,10 @@ export class LoadControlComponent implements OnInit {
             JSON.stringify(this.selectedColumns)
         );
         this.resetFilters();
+        if (this.globalQuery) {
+            this.loadAllRecords();
+            this.globalQuery = '';
+        }
     }
 
     initColumnState() {

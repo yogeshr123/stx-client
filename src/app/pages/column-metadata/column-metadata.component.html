@@ -208,7 +208,8 @@
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
-                            tableLoadStrategy.toLowerCase() === 'flat'
+                            tableLoadStrategy.toLowerCase() === 'flat' &&
+                            versions.length
                         "
                         class="mb-2 btn btn-sm btn-info float-right ml-2"
                         (click)="dimLookUp()"
@@ -222,7 +223,8 @@
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
-                            tableLoadStrategy.toLowerCase() === 'flat'
+                            tableLoadStrategy.toLowerCase() === 'flat' &&
+                            versions.length
                         "
                         class="mb-2 btn btn-sm btn-warning float-right"
                         (click)="showFactColumns()"

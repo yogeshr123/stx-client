@@ -192,6 +192,7 @@
                                     <div class="col-md-7">
                                         <select (change)="targetDataTypeValidation()" formControlName="TARGET_DATA_TYPE"
                                             class="form-control"
+                                            [ngClass]="{'disabled': addEditColumnForm.value['SRC_COLUMN_TYPE'] === 'PREDEFINED' && addEditColumnForm.value['PREDEFINED_VALUE'] === 'INPUT_FILENAME' }"
                                             [ngClass]="{ 'is-invalid': submitted && f.TARGET_DATA_TYPE.errors }">
                                             <option value="varchar">varchar</option>
                                             <option value="int">int</option>
@@ -237,13 +238,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 row">
+                                <!-- <div class="form-group col-6 row">
                                     <label class="control-label col-md-5">TARGET DEFAULT VALUE</label>
                                     <div class="col-md-7">
                                         <input formControlName="TARGET_DEFAULT_VALUE" class="form-control"
                                             type="text" />
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </p-accordionTab>
                         <!-- Other Info  -->

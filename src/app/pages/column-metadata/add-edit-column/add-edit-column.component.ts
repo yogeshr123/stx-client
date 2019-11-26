@@ -86,6 +86,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             this.getHeaderHashData();
         }
         this.getUserInfo();
+        this.valueChangeLogic();
     }
 
     formInit() {
@@ -125,7 +126,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             TARGET_RIGHT_PRECISION: [0],
             IS_UPDATE_DATE_COLUMN: [''],
             TARGET_COLUMN_ID: [''],
-            TARGET_DEFAULT_VALUE: [''],
+            // TARGET_DEFAULT_VALUE: [''],
             IS_PKEY_COLUMN: [0],
             IS_PARTITION_COLUMN: [0],
             IS_DATATYPE_CHANGED: [0],
@@ -139,6 +140,57 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
 
     get f() {
         return this.addEditColumnForm.controls;
+    }
+
+    valueChangeLogic() {
+        const isPartition = this.addEditColumnForm.get('IS_PARTITION_COLUMN');
+        const isPrimary = this.addEditColumnForm.get('IS_PKEY_COLUMN');
+        const columnType = this.addEditColumnForm.get('SRC_COLUMN_TYPE');
+        const internalColumn = this.addEditColumnForm.get('INTERNAL_COLUMN');
+        const targetDataType = this.addEditColumnForm.get('TARGET_DATA_TYPE');
+        const predefinedValue = this.addEditColumnForm.get('PREDEFINED_VALUE');
+        const targetPrecision = this.addEditColumnForm.get(
+            'TARGET_LEFT_PRECISION'
+        );
+        const updateDateColumn = this.addEditColumnForm.get(
+            'IS_UPDATE_DATE_COLUMN'
+        );
+
+        isPartition.valueChanges.subscribe(value => {
+            isPrimary.enable();
+            if (value) {
+                isPrimary.patchValue(1);
+                isPrimary.disable();
+            } else {
+                isPrimary.patchValue(
+                    this.columnData ? this.columnData.IS_PKEY_COLUMN.data[0] : 0
+                );
+            }
+        });
+        columnType.valueChanges.subscribe(value => {
+            internalColumn.enable();
+            updateDateColumn.enable();
+            targetDataType.enable();
+
+            if (value === 'PREDEFINED') {
+                internalColumn.patchValue(0);
+                internalColumn.disable();
+                updateDateColumn.patchValue(0);
+                updateDateColumn.disable();
+            }
+        });
+        predefinedValue.valueChanges.subscribe(value => {
+            targetDataType.enable();
+            if (value === 'LOAD_TIMESTAMP') {
+                targetDataType.patchValue('timestamp');
+                targetDataType.disable();
+            } else if (value === 'INPUT_FILENAME') {
+                targetDataType.patchValue('varchar');
+                // targetDataType.disable();
+                targetPrecision.patchValue('1000');
+                targetPrecision.disable();
+            }
+        });
     }
 
     getUserInfo() {
@@ -424,7 +476,10 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             };
         }
 
-        const formValues = Object.assign({}, this.addEditColumnForm.value);
+        const formValues = Object.assign(
+            {},
+            this.addEditColumnForm.getRawValue()
+        );
         this.addPrecisionValues(formValues);
         this.checkFormValues(functionToCall, formValues);
         if (this.addEditColumnForm.invalid) {

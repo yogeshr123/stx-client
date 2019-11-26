@@ -143,7 +143,9 @@
                                     expectedPermission="editColumnMetadataModule"
                                     *ngIf="
                                         version.STATUS.toLowerCase() ===
-                                            'new' && i === isFirstNewVersion
+                                            'new' &&
+                                        version.METADATA_VERSION - 1 ===
+                                            isFirstNewVersion
                                     "
                                     (click)="saveChanges(true, version)"
                                     class="ml-2 btn btn-sm btn-warning"

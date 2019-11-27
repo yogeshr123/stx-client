@@ -518,27 +518,6 @@ export class ColumnMetadataComponent implements OnInit {
             this.errors.hasError = true;
             this.errors.isPartitionColumnDataType = isPartitionColumn2;
         }
-        // Check IS_UPDATE_DATE_COLUMN should be only 1
-        let isUpdateDateColumn = colums.map(i => {
-            if (
-                i.IS_UPDATE_DATE_COLUMN === 1 ||
-                i.IS_UPDATE_DATE_COLUMN === true ||
-                (i.IS_UPDATE_DATE_COLUMN &&
-                    i.IS_UPDATE_DATE_COLUMN.data &&
-                    i.IS_UPDATE_DATE_COLUMN.data[0])
-            ) {
-                return i.SRC_COLUMN_NAME;
-            }
-        });
-        isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
-        if (
-            isUpdateDateColumn &&
-            isUpdateDateColumn.length &&
-            isUpdateDateColumn.length > 1
-        ) {
-            this.errors.hasError = true;
-            this.errors.isUpdateDateColumn = isUpdateDateColumn;
-        }
         // At least 1 Primary Key Other than Partition Key
         let isPKeyColumn = colums.map(i => {
             if (
@@ -679,7 +658,7 @@ export class ColumnMetadataComponent implements OnInit {
                 if (!hasPartition.length) {
                     this.errors.hasError = true;
                     this.errors.loadStrategyErrorMsg =
-                        '- For Load Strategy INSERT table: there must be atleast 1 IS_PARTITION_COLUMN.';
+                        '- For Load Strategy INSERT table: there must be at least 1 IS_PARTITION_COLUMN.';
                 }
                 break;
             case 'refresh':

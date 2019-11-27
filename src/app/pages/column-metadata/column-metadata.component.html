@@ -198,7 +198,9 @@
                         *ngIf="
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
-                            versions.length
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                     >
                         Add Column
@@ -211,7 +213,9 @@
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
                             tableLoadStrategy.toLowerCase() === 'flat' &&
-                            versions.length
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                         class="mb-2 btn btn-sm btn-info float-right ml-2"
                         (click)="dimLookUp()"
@@ -226,7 +230,9 @@
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
                             tableLoadStrategy.toLowerCase() === 'flat' &&
-                            versions.length
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                         class="mb-2 btn btn-sm btn-warning float-right"
                         (click)="showFactColumns()"
@@ -448,7 +454,10 @@
                                             *ngIf="
                                                 selectedVersion.STATUS ===
                                                     'NEW' &&
-                                                version?.action !== 'deleted'
+                                                version?.action !== 'deleted' &&
+                                                selectedVersion.METADATA_VERSION -
+                                                    1 ===
+                                                    isFirstNewVersion
                                             "
                                             class="btn btn-sm btn-primary ml-1"
                                         >

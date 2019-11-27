@@ -48,7 +48,7 @@
                         <p-accordionTab header="Source Info" [selected]="true">
                             <div class="row mt-2">
                                 <div class="form-group col-6 row"
-                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || routeInfo.fromHeaderHash}">
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || routeInfo.fromHeaderHash || (routeInfo.isEditMode && !addEditColumnForm.controls.IS_NEW.value)}">
                                     <label class="control-label col-md-5">SRC COLUMN TYPE <span
                                             class="required">*</span></label>
                                     <div class="col-md-7">
@@ -56,7 +56,7 @@
                                             formControlName="SRC_COLUMN_TYPE" class="form-control"
                                             (change)="updateValidation()"
                                             [ngClass]="{ 'is-invalid': submitted && f.SRC_COLUMN_TYPE.errors }">
-                                            <option value="MAPPED" [selected]="true">MAPPED</option>
+                                            <option value="MAPPED">MAPPED</option>
                                             <option value="DERIVED">DERIVED</option>
                                             <option value="PREDEFINED">PREDEFINED</option>
                                             <option

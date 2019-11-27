@@ -228,19 +228,22 @@ export class FactColumnComponent implements OnInit {
             columnsToAdd: selectedColumns,
             columnsToRemove: this.removedColumns,
         };
-        // this.columnMetadataService.saveFactColumns(request).subscribe((resp: any) => {
-        //   if (!resp.error) {
-        //     this.showToast('success', 'Successfully saved columns.');
-        //     localStorage.removeItem('localCopyOfVersion');
-        //     this.closePopUp(true);
-        //   } else {
-        //     this.showToast('error', 'Could not save columns');
-        //   }
-        this.saveLoader = false;
-        // }, error => {
-        //   this.saveLoader = false;
-        //   this.showToast('error', 'Could not save columns');
-        // });
+        this.columnMetadataService.saveFactColumns(request).subscribe(
+            (resp: any) => {
+                if (!resp.error) {
+                    this.showToast('success', 'Successfully saved columns.');
+                    localStorage.removeItem('localCopyOfVersion');
+                    this.closePopUp(true);
+                } else {
+                    this.showToast('error', 'Could not save columns');
+                }
+                this.saveLoader = false;
+            },
+            error => {
+                this.saveLoader = false;
+                this.showToast('error', 'Could not save columns');
+            }
+        );
     }
 
     closePopUp(status) {

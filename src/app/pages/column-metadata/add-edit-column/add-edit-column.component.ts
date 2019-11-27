@@ -59,6 +59,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.formInit();
+        this.valueChangeLogic();
         this.appState = JSON.parse(localStorage.getItem('appState'));
         if (
             this.appState &&
@@ -86,7 +87,6 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             this.getHeaderHashData();
         }
         this.getUserInfo();
-        this.valueChangeLogic();
     }
 
     formInit() {
@@ -156,6 +156,14 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             'IS_UPDATE_DATE_COLUMN'
         );
 
+        internalColumn.valueChanges.subscribe(value => {
+            if (value) {
+                isPrimary.patchValue(0);
+                updateDateColumn.patchValue(0);
+                isPartition.patchValue(0);
+            }
+        });
+
         isPartition.valueChanges.subscribe(value => {
             isPrimary.enable();
             if (value) {
@@ -163,7 +171,11 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 isPrimary.disable();
             } else {
                 isPrimary.patchValue(
-                    this.columnData ? this.columnData.IS_PKEY_COLUMN.data[0] : 0
+                    this.columnData &&
+                        this.columnData.IS_PKEY_COLUMN &&
+                        this.columnData.IS_PKEY_COLUMN.data
+                        ? this.columnData.IS_PKEY_COLUMN.data[0]
+                        : 0
                 );
             }
         });
@@ -348,16 +360,6 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             formValues.action =
                 this.routeInfo.id === 'new' ? 'newColumn' : 'updatedColumn';
         }
-        // if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
-        //   formValues.IS_RENAMED = 1;
-        // } else {
-        //   formValues.IS_RENAMED = 0;
-        // }
-        // if (formValues.SRC_DATA_TYPE !== formValues.TARGET_DATA_TYPE) {
-        //   formValues.IS_DATATYPE_CHANGED = 1;
-        // } else {
-        //   formValues.IS_DATATYPE_CHANGED = 0;
-        // }
         this.targetDataTypeValidation();
     }
 
@@ -520,15 +522,12 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 ] = localCopyOfVersion[
                     `${formValues.METADATA_VERSION}_${this.TABLE_NAME}`
                 ].map(i => {
-                    if (
-                        i.TARGET_COLUMN_NAME === formValues.TARGET_COLUMN_NAME
-                    ) {
+                    if (i.TARGET_COLUMN_ID === formValues.TARGET_COLUMN_ID) {
                         i = formValues;
                     }
                     return i;
                 });
             }
-
             this.columnMetadataService.setLocalCopyOfVersion(
                 localCopyOfVersion
             );

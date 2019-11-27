@@ -211,7 +211,7 @@
                                 </div>
                                 <div class="form-group col-6 row"
                                     *ngIf="addEditColumnForm.value['TARGET_DATA_TYPE'] === 'timestamp'"
-                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || addEditColumnForm.controls.INTERNAL_COLUMN.value === true}">
+                                    [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || addEditColumnForm.controls.INTERNAL_COLUMN.value === true || addEditColumnForm.controls.INTERNAL_COLUMN.value}">
                                     <label class="control-label col-md-5">IS UPDATE DATE COLUMN <span
                                             class="required">*</span></label>
                                     <div class="col-md-7">
@@ -250,7 +250,7 @@
                         <!-- Other Info  -->
                         <p-accordionTab header="Other Info" class="col-12" [selected]="true">
                             <div class="row mt-2"
-                                [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || addEditColumnForm.controls.INTERNAL_COLUMN.value === true }">
+                                [ngClass]="{'disabled': addEditColumnForm.controls.SRC_COLUMN_TYPE.value === 'DIMLOOKUP' || addEditColumnForm.controls.INTERNAL_COLUMN.value === true || addEditColumnForm.controls.INTERNAL_COLUMN.value }">
 
                                 <div class="form-group col-6 row">
                                     <label class="control-label col-md-5">IS PRIMARY KEY COLUMN</label>

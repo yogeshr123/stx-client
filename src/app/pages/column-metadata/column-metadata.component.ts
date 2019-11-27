@@ -104,6 +104,10 @@ export class ColumnMetadataComponent implements OnInit {
 
     resetTable() {
         localStorage.removeItem('stateSelectedVersionColumns');
+        if (this.enableSaveChanges) {
+            localStorage.removeItem('localCopyOfVersion');
+            this.viewData(this.selectedTable, this.globalQuery);
+        }
         this.initColumnState();
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
         if (localTableState && localTableState.columns) {

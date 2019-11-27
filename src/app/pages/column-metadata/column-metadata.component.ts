@@ -189,6 +189,12 @@ export class ColumnMetadataComponent implements OnInit {
                             this.isFirstNewVersion = index;
                         }
                     }
+                    if (
+                        this.versions.length &&
+                        index === this.versions.length - 1
+                    ) {
+                        this.viewData(element, this.globalQuery);
+                    }
                 });
             },
             error => {
@@ -197,13 +203,15 @@ export class ColumnMetadataComponent implements OnInit {
             }
         );
 
-        this.columnMetadataService
-            .getTableInfoFromLoadControl({ table: this.selectedTable })
-            .subscribe((resp: any) => {
-                if (!resp.error && resp.data && resp.data.length) {
-                    this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
-                }
-            });
+        if (this.selectedTable) {
+            this.columnMetadataService
+                .getTableInfoFromLoadControl({ table: this.selectedTable })
+                .subscribe((resp: any) => {
+                    if (!resp.error && resp.data && resp.data.length) {
+                        this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
+                    }
+                });
+        }
     }
 
     changeTable() {

@@ -44,6 +44,7 @@ export class ColumnMetadataComponent implements OnInit {
     enableSaveChanges = false;
     tableLoadStrategy: any;
     globalQuery: any;
+    firstPage = 0;
 
     constructor(
         private router: Router,
@@ -199,6 +200,9 @@ export class ColumnMetadataComponent implements OnInit {
                         this.viewData(element, this.globalQuery);
                     }
                 });
+                if (this.versions.length > 5) {
+                    this.firstPage = this.versions.length - 1;
+                }
             },
             error => {
                 this.showToast('error', 'Could not get table versions.');

@@ -87,6 +87,7 @@
                     #dt
                     [paginator]="versions.length >= 5 ? true : false"
                     [rows]="5"
+                    [(first)]="firstPage"
                     [value]="versions"
                     [columns]="versionTableColumns"
                     [tableStyle]="{ 'table-layout': 'auto' }"

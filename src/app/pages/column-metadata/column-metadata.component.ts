@@ -107,6 +107,7 @@ export class ColumnMetadataComponent implements OnInit {
         if (this.enableSaveChanges) {
             localStorage.removeItem('localCopyOfVersion');
             this.viewData(this.selectedTable, this.globalQuery);
+            this.enableSaveChanges = false;
         }
         this.initColumnState();
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
@@ -698,11 +699,7 @@ export class ColumnMetadataComponent implements OnInit {
         }
 
         if (!this.errors.hasError) {
-            if (isValidate) {
-                this.validate(version);
-            } else {
-                this.saveMasterData(localCopyOfVersion);
-            }
+            this.saveMasterData(localCopyOfVersion, isValidate, version);
         } else {
             this.showMapping(this.errors);
         }
@@ -746,7 +743,7 @@ export class ColumnMetadataComponent implements OnInit {
         }
     }
 
-    saveMasterData(localCopyOfVersion) {
+    saveMasterData(localCopyOfVersion, isValidate?, version?) {
         this.loader.save = true;
         const colums =
             localCopyOfVersion[
@@ -769,6 +766,9 @@ export class ColumnMetadataComponent implements OnInit {
                             'success',
                             'All operations are successful.'
                         );
+                        if (isValidate) {
+                            this.validate(version);
+                        }
                     } else {
                         this.errors.saveError = true;
                         this.errors.errorMsg = resp.message;

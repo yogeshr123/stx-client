@@ -188,9 +188,11 @@ export class ColumnMetadataComponent implements OnInit {
                         this.showGenerateVersion = false;
                         if (!this.isFirstNewVersion) {
                             this.isFirstNewVersion = index;
+                            this.viewData(element, this.globalQuery);
                         }
                     }
                     if (
+                        this.showGenerateVersion &&
                         this.versions.length &&
                         index === this.versions.length - 1
                     ) {

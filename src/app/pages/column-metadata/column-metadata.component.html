@@ -150,7 +150,9 @@
                                     (click)="saveChanges(true, version)"
                                     class="ml-2 btn btn-sm btn-warning"
                                 >
-                                    Validate
+                                    <span *ngIf="enableSaveChanges"
+                                        >Save & </span
+                                    >Validate
                                 </button>
                                 <button
                                     appPermission

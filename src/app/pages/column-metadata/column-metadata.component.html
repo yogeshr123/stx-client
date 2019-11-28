@@ -159,7 +159,8 @@
                                     expectedPermission="editColumnMetadataModule"
                                     *ngIf="
                                         showGenerateVersion &&
-                                        i === versions.length - 1
+                                        version.METADATA_VERSION ===
+                                            versions.length
                                     "
                                     class="ml-2 btn btn-sm btn-info"
                                     (click)="generateNewVersion()"

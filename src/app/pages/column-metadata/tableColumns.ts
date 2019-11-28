@@ -17,6 +17,11 @@ const versionTableColumns = [
         type: 'date',
     },
     {
+        header: 'END_DATE',
+        field: 'END_DATE',
+        type: 'date',
+    },
+    {
         header: 'UPDATE_DATE',
         field: 'UPDATE_DATE',
         type: 'date',

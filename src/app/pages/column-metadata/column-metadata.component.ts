@@ -201,7 +201,11 @@ export class ColumnMetadataComponent implements OnInit {
                     }
                 });
                 if (this.versions.length > 5) {
-                    this.firstPage = this.versions.length - 1;
+                    this.firstPage =
+                        this.versions.length -
+                        (this.versions.length % 5 === 0
+                            ? 5
+                            : this.versions.length % 5);
                 }
             },
             error => {

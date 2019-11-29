@@ -28,6 +28,7 @@ export class AddComponent implements OnInit {
     };
     saveLookUpLoader = false;
     LOOKUP_COLUMNS = [];
+    LOOKUP_COLUMNS_BACKUP = [];
     oldVersionColumns = [];
     oldVersionColumnsBackUp = [];
     displayExistingColumns = false;
@@ -193,6 +194,9 @@ export class AddComponent implements OnInit {
                     dimColumnArray = dimColumnArray.filter(i => i.IS_NEW === 1);
                     // remove from right side list previous version
                     this.LOOKUP_COLUMNS = dimColumnArray;
+                    this.LOOKUP_COLUMNS_BACKUP = JSON.parse(
+                        JSON.stringify(dimColumnArray)
+                    );
                     // remove from left side list previous version
                     this.dimensionTableColumns = this.dimensionTableColumns.filter(
                         i => {
@@ -319,7 +323,9 @@ export class AddComponent implements OnInit {
         delete lookUpObject.LOOKUP_COLUMNS;
 
         let columnsToAdd = JSON.parse(JSON.stringify(this.addForm.value));
-        columnsToAdd.LOOKUP_COLUMNS = this.LOOKUP_COLUMNS;
+        columnsToAdd.LOOKUP_COLUMNS = JSON.parse(
+            JSON.stringify(this.LOOKUP_COLUMNS)
+        );
         columnsToAdd = columnsToAdd.LOOKUP_COLUMNS.map(i => {
             i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
             i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
@@ -349,16 +355,41 @@ export class AddComponent implements OnInit {
                 0
             ) {
                 i.TARGET_COLUMN_NAME = `${columnsToAdd.COLUMN_NAME_PREFIX}_${i.TARGET_COLUMN_NAME}`;
+            } else {
+                i.TARGET_COLUMN_NAME = i.TARGET_COLUMN_NAME;
             }
             i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
             i.UPDATE_DATE = `${new Date()}`;
             return i;
         });
+        let columnsToRemove = [];
+        if (this.LOOKUP_COLUMNS_BACKUP && this.LOOKUP_COLUMNS_BACKUP.length) {
+            const allAddedColumns = this.LOOKUP_COLUMNS_BACKUP.map(
+                i => i.SRC_COLUMN_NAME
+            );
+            columnsToAdd = columnsToAdd.filter(
+                i => allAddedColumns.indexOf(i.SRC_COLUMN_NAME) === -1
+            );
+            const allRemovedColumns = this.LOOKUP_COLUMNS.map(
+                i => i.SRC_COLUMN_NAME
+            );
+            columnsToRemove = this.LOOKUP_COLUMNS_BACKUP.filter(
+                i => allRemovedColumns.indexOf(i.SRC_COLUMN_NAME) === -1
+            );
+            columnsToRemove = columnsToRemove.map(i => {
+                i.TABLE_NAME = this.selectedTable.TABLE_NAME;
+                i.SCHEMA_NAME = this.selectedTable.SCHEMA_NAME;
+                i.LOOKUP_TABLE_ALIAS = lookUpObject.LOOKUP_TABLE_ALIAS;
+                i.METADATA_VERSION = this.selectedTable.METADATA_VERSION;
+                return i;
+            });
+        }
         this.columnMetadataService
             .addLookUp({
                 data: lookUpObject,
                 isEdit: this.action === 'edit',
                 columnsToAdd,
+                columnsToRemove,
             })
             .subscribe(
                 (resp: any) => {

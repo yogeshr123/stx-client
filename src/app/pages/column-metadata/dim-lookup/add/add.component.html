@@ -58,7 +58,7 @@
         </div>
 
         <div class="form-group col-6 row">
-            <!-- <div class="form-overlay"></div> -->
+            <div class="form-overlay" *ngIf="action === 'view'"></div>
             <label class="pr-0 col-5"
                 >{{ selectedTable.TABLE_NAME }} Join Key
                 <span class="required">*</span></label
@@ -78,7 +78,7 @@
         </div>
 
         <div class="form-group col-6 row">
-            <!-- <div class="form-overlay"></div> -->
+            <div class="form-overlay" *ngIf="action === 'view'"></div>
             <label class="pr-0 col-5"
                 >Dimension Join Key <span class="required">*</span></label
             >

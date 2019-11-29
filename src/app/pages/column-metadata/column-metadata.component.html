@@ -244,7 +244,10 @@
                         Fact Column
                     </button>
                 </h6>
-                <div class="table-responsive">
+                <div
+                    class="table-responsive"
+                    *ngIf="selectedColumns && selectedColumns.length"
+                >
                     <p-table
                         #dt2
                         [responsive]="true"
@@ -323,7 +326,11 @@
                                         }}</span>
                                     </span>
                                     <p-sortIcon
-                                        *ngIf="col.type !== 'boolean'"
+                                        *ngIf="
+                                            col &&
+                                            col.type &&
+                                            col.type !== 'boolean'
+                                        "
                                         [field]="col.field"
                                         ariaLabel="Activate to sort"
                                         ariaLabelDesc="Activate to sort in descending order"

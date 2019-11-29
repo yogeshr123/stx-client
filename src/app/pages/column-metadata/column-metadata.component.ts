@@ -57,12 +57,12 @@ export class ColumnMetadataComponent implements OnInit {
 
     ngOnInit() {
         this.getAllTables();
+        this.getSelectedColumns();
         this.state = this.commonService.getState();
         if (this.state.CMV && this.state.CMV.selectedTable) {
             this.selectedTable = this.state.CMV.selectedTable;
             this.getVersions();
         }
-        this.getSelectedColumns();
     }
 
     checkGlobalQuery() {
@@ -216,6 +216,13 @@ export class ColumnMetadataComponent implements OnInit {
                 .subscribe((resp: any) => {
                     if (!resp.error && resp.data && resp.data.length) {
                         this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
+                        const tableVersion = this.selectedTable;
+                        tableVersion.LOAD_STRATEGY = this.tableLoadStrategy;
+                        this.state.CMV = {
+                            ...this.state.CMV,
+                            selectedTable: tableVersion,
+                        };
+                        this.commonService.setState(this.state);
                     }
                 });
         }
@@ -265,6 +272,7 @@ export class ColumnMetadataComponent implements OnInit {
 
     viewData(version, globalQuery?) {
         this.versionData = [];
+        version.LOAD_STRATEGY = this.tableLoadStrategy;
         this.state.CMV = { ...this.state.CMV, selectedTable: version };
         this.commonService.setState(this.state);
         this.selectedVersion = version;

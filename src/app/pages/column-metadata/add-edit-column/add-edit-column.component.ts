@@ -30,6 +30,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
     TABLE_NAME: any;
     appState: any;
     submitted = false;
+    loadStrategy: any;
 
     constructor(
         private commonService: CommonService,
@@ -76,6 +77,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             this.addEditColumnForm.controls.METADATA_VERSION.patchValue(
                 this.appState.CMV.selectedTable.METADATA_VERSION
             );
+            this.loadStrategy = this.appState.CMV.selectedTable.LOAD_STRATEGY;
         }
         if (
             this.routeInfo.versionId &&
@@ -175,6 +177,10 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                         this.columnData.IS_PKEY_COLUMN &&
                         this.columnData.IS_PKEY_COLUMN.data
                         ? this.columnData.IS_PKEY_COLUMN.data[0]
+                        : 0 ||
+                          this.columnData.IS_PKEY_COLUMN === true ||
+                          this.columnData.IS_PKEY_COLUMN === 1
+                        ? 1
                         : 0
                 );
             }
@@ -261,6 +267,9 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                             element.patchValue(this.columnData[key].data[0]);
                         } else {
                             element.patchValue(this.columnData[key]);
+                            if (this.columnData[key] === true) {
+                                element.patchValue(1);
+                            }
                         }
                     }
                 }

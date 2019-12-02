@@ -30,9 +30,14 @@
                             <input
                                 (keyup)="globalQueryEmpty()"
                                 type="text"
-                                placeholder="Global Query Filter"
+                                placeholder="Global Filter"
                                 [(ngModel)]="globalQuery"
-                                (keyup.enter)="getAllTables()"
+                                (input)="
+                                    dt.filterGlobal(
+                                        $event.target.value,
+                                        'contains'
+                                    )
+                                "
                             />
                             <button
                                 class="btn btn-sm btn-primary"
@@ -107,6 +112,7 @@
                             <td>{{ version.TABLE_NAME }}</td>
                             <td>{{ version.STATUS }}</td>
                             <td>{{ version.START_DATE | dateConvert }}</td>
+                            <td>{{ version.END_DATE | dateConvert }}</td>
                             <td>{{ version.UPDATE_DATE | dateConvert }}</td>
                             <td>
                                 <button

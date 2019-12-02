@@ -44,6 +44,7 @@ export class ColumnMetadataComponent implements OnInit {
     enableSaveChanges = false;
     tableLoadStrategy: any;
     globalQuery: any;
+    firstPage = 0;
 
     constructor(
         private router: Router,
@@ -56,12 +57,12 @@ export class ColumnMetadataComponent implements OnInit {
 
     ngOnInit() {
         this.getAllTables();
+        this.getSelectedColumns();
         this.state = this.commonService.getState();
         if (this.state.CMV && this.state.CMV.selectedTable) {
             this.selectedTable = this.state.CMV.selectedTable;
             this.getVersions();
         }
-        this.getSelectedColumns();
     }
 
     checkGlobalQuery() {
@@ -104,6 +105,11 @@ export class ColumnMetadataComponent implements OnInit {
 
     resetTable() {
         localStorage.removeItem('stateSelectedVersionColumns');
+        if (this.enableSaveChanges) {
+            localStorage.removeItem('localCopyOfVersion');
+            this.viewData(this.selectedTable, this.globalQuery);
+            this.enableSaveChanges = false;
+        }
         this.initColumnState();
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
         if (localTableState && localTableState.columns) {
@@ -183,9 +189,24 @@ export class ColumnMetadataComponent implements OnInit {
                         this.showGenerateVersion = false;
                         if (!this.isFirstNewVersion) {
                             this.isFirstNewVersion = index;
+                            this.viewData(element, this.globalQuery);
                         }
                     }
+                    if (
+                        this.showGenerateVersion &&
+                        this.versions.length &&
+                        index === this.versions.length - 1
+                    ) {
+                        this.viewData(element, this.globalQuery);
+                    }
                 });
+                if (this.versions.length > 5) {
+                    this.firstPage =
+                        this.versions.length -
+                        (this.versions.length % 5 === 0
+                            ? 5
+                            : this.versions.length % 5);
+                }
             },
             error => {
                 this.showToast('error', 'Could not get table versions.');
@@ -193,13 +214,22 @@ export class ColumnMetadataComponent implements OnInit {
             }
         );
 
-        this.columnMetadataService
-            .getTableInfoFromLoadControl({ table: this.selectedTable })
-            .subscribe((resp: any) => {
-                if (!resp.error && resp.data && resp.data.length) {
-                    this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
-                }
-            });
+        if (this.selectedTable) {
+            this.columnMetadataService
+                .getTableInfoFromLoadControl({ table: this.selectedTable })
+                .subscribe((resp: any) => {
+                    if (!resp.error && resp.data && resp.data.length) {
+                        this.tableLoadStrategy = resp.data[0].LOAD_STRATEGY;
+                        const tableVersion = this.selectedTable;
+                        tableVersion.LOAD_STRATEGY = this.tableLoadStrategy;
+                        this.state.CMV = {
+                            ...this.state.CMV,
+                            selectedTable: tableVersion,
+                        };
+                        this.commonService.setState(this.state);
+                    }
+                });
+        }
     }
 
     changeTable() {
@@ -246,6 +276,7 @@ export class ColumnMetadataComponent implements OnInit {
 
     viewData(version, globalQuery?) {
         this.versionData = [];
+        version.LOAD_STRATEGY = this.tableLoadStrategy;
         this.state.CMV = { ...this.state.CMV, selectedTable: version };
         this.commonService.setState(this.state);
         this.selectedVersion = version;
@@ -518,126 +549,175 @@ export class ColumnMetadataComponent implements OnInit {
             this.errors.hasError = true;
             this.errors.isPartitionColumnDataType = isPartitionColumn2;
         }
-        // Check IS_UPDATE_DATE_COLUMN should be only 1
-        let isUpdateDateColumn = colums.map(i => {
+        // At least 1 Primary Key Other than Partition Key
+        let isPKeyColumn = colums.map(i => {
             if (
-                i.IS_UPDATE_DATE_COLUMN === 1 ||
-                i.IS_UPDATE_DATE_COLUMN === true ||
-                (i.IS_UPDATE_DATE_COLUMN &&
-                    i.IS_UPDATE_DATE_COLUMN.data &&
-                    i.IS_UPDATE_DATE_COLUMN.data[0])
+                i.IS_PKEY_COLUMN === 1 ||
+                i.IS_PKEY_COLUMN === true ||
+                (i.IS_PKEY_COLUMN &&
+                    i.IS_PKEY_COLUMN.data &&
+                    i.IS_PKEY_COLUMN.data[0])
             ) {
-                return i.SRC_COLUMN_NAME;
+                if (
+                    (i.IS_PARTITION_COLUMN &&
+                        i.IS_PARTITION_COLUMN.data &&
+                        i.IS_PARTITION_COLUMN.data[0] === 0) ||
+                    !i.IS_PARTITION_COLUMN ||
+                    i.IS_PARTITION_COLUMN === false
+                ) {
+                    return i.SRC_COLUMN_NAME;
+                }
             }
         });
-        isUpdateDateColumn = isUpdateDateColumn.filter(i => i !== undefined);
-        if (
-            isUpdateDateColumn &&
-            isUpdateDateColumn.length &&
-            isUpdateDateColumn.length > 1
-        ) {
-            this.errors.hasError = true;
-            this.errors.isUpdateDateColumn = isUpdateDateColumn;
-        }
+        isPKeyColumn = isPKeyColumn.filter(i => i !== undefined);
         // Check Load Strategy Validations
         const hasPartition = [];
         const hadUpdateDate = [];
         const hasPrimaryKey = [];
-        if (
-            this.tableLoadStrategy &&
-            this.tableLoadStrategy.toLowerCase() === 'sampled'
-        ) {
-            colums.map(i => {
-                if (
-                    i.IS_UPDATE_DATE_COLUMN === 1 ||
-                    i.IS_UPDATE_DATE_COLUMN === true ||
-                    (i.IS_UPDATE_DATE_COLUMN &&
-                        i.IS_UPDATE_DATE_COLUMN.data &&
-                        i.IS_UPDATE_DATE_COLUMN.data[0])
-                ) {
-                    hadUpdateDate.push(i);
+        const loadStrategy = this.tableLoadStrategy
+            ? this.tableLoadStrategy.toLowerCase()
+            : '';
+        switch (loadStrategy) {
+            case 'sampled':
+                if (!isPKeyColumn || !isPKeyColumn.length) {
+                    this.errors.hasError = true;
+                    this.errors.isPKeyColumn = isPKeyColumn;
                 }
+                colums.map(i => {
+                    if (
+                        i.IS_UPDATE_DATE_COLUMN === 1 ||
+                        i.IS_UPDATE_DATE_COLUMN === true ||
+                        (i.IS_UPDATE_DATE_COLUMN &&
+                            i.IS_UPDATE_DATE_COLUMN.data &&
+                            i.IS_UPDATE_DATE_COLUMN.data[0])
+                    ) {
+                        hadUpdateDate.push(i);
+                    }
+                    if (
+                        i.IS_PARTITION_COLUMN === 1 ||
+                        i.IS_PARTITION_COLUMN === true ||
+                        (i.IS_PARTITION_COLUMN &&
+                            i.IS_PARTITION_COLUMN.data &&
+                            i.IS_PARTITION_COLUMN.data[0])
+                    ) {
+                        hasPartition.push(i);
+                    }
+                    if (
+                        i.IS_PKEY_COLUMN === 1 ||
+                        i.IS_PKEY_COLUMN === true ||
+                        (i.IS_PKEY_COLUMN &&
+                            i.IS_PKEY_COLUMN.data &&
+                            i.IS_PKEY_COLUMN.data[0])
+                    ) {
+                        hasPrimaryKey.push(i);
+                    }
+                    return i;
+                });
                 if (
-                    i.IS_PARTITION_COLUMN === 1 ||
-                    i.IS_PARTITION_COLUMN === true ||
-                    (i.IS_PARTITION_COLUMN &&
-                        i.IS_PARTITION_COLUMN.data &&
-                        i.IS_PARTITION_COLUMN.data[0])
+                    !hasPartition.length ||
+                    !hadUpdateDate.length ||
+                    !hasPrimaryKey.length ||
+                    hadUpdateDate.length > 1
                 ) {
-                    hasPartition.push(i);
+                    this.errors.hasError = true;
+                    this.errors.loadStrategyErrorMsg =
+                        // tslint:disable-next-line:max-line-length
+                        '- For Load Strategy SAMPLED table: there must be at least 1 IS_PARTITION_COLUMN, IS_PKEY_COLUMN & max 1 IS_UPDATE_DATE_COLUMN.';
                 }
-                if (
-                    i.IS_PKEY_COLUMN === 1 ||
-                    i.IS_PKEY_COLUMN === true ||
-                    (i.IS_PKEY_COLUMN &&
-                        i.IS_PKEY_COLUMN.data &&
-                        i.IS_PKEY_COLUMN.data[0])
-                ) {
-                    hasPrimaryKey.push(i);
+                break;
+            case 'update':
+                if (!isPKeyColumn || !isPKeyColumn.length) {
+                    this.errors.hasError = true;
+                    this.errors.isPKeyColumn = isPKeyColumn;
                 }
-                return i;
-            });
-            if (
-                !hasPartition.length ||
-                !hadUpdateDate.length ||
-                !hasPrimaryKey.length
-            ) {
-                this.errors.hasError = true;
-                this.errors.loadStrategyErrorMsg =
-                    '- For Load Strategy SAMPLED table: there must be atleast 1 IS_PARTITION_COLUMN, IS_PKEY_COLUMN & IS_UPDATE_DATE_COLUMN.';
-            }
-        }
-        if (
-            this.tableLoadStrategy &&
-            this.tableLoadStrategy.toLowerCase() === 'insert'
-        ) {
-            colums.map(i => {
-                if (
-                    i.IS_PARTITION_COLUMN === 1 ||
-                    i.IS_PARTITION_COLUMN === true ||
-                    (i.IS_PARTITION_COLUMN &&
-                        i.IS_PARTITION_COLUMN.data &&
-                        i.IS_PARTITION_COLUMN.data[0])
-                ) {
-                    hasPartition.push(i);
+                colums.map(i => {
+                    if (
+                        i.IS_UPDATE_DATE_COLUMN === 1 ||
+                        i.IS_UPDATE_DATE_COLUMN === true ||
+                        (i.IS_UPDATE_DATE_COLUMN &&
+                            i.IS_UPDATE_DATE_COLUMN.data &&
+                            i.IS_UPDATE_DATE_COLUMN.data[0])
+                    ) {
+                        hadUpdateDate.push(i);
+                    }
+                    return i;
+                });
+                if (!hadUpdateDate.length || hadUpdateDate.length > 1) {
+                    this.errors.hasError = true;
+                    this.errors.loadStrategyErrorMsg =
+                        // tslint:disable-next-line:max-line-length
+                        '- For Load Strategy UPDATE table: there must be max 1 IS_UPDATE_DATE_COLUMN.';
                 }
-                return i;
-            });
-            if (!hasPartition.length) {
-                this.errors.hasError = true;
-                this.errors.loadStrategyErrorMsg =
-                    '- For Load Strategy INSERT table: there must be atleast 1 IS_PARTITION_COLUMN.';
-            }
-        }
-        if (
-            this.tableLoadStrategy &&
-            this.tableLoadStrategy.toLowerCase() === 'refresh'
-        ) {
-            colums.map(i => {
-                if (
-                    i.IS_PARTITION_COLUMN === 1 ||
-                    i.IS_PARTITION_COLUMN === true ||
-                    (i.IS_PARTITION_COLUMN &&
-                        i.IS_PARTITION_COLUMN.data &&
-                        i.IS_PARTITION_COLUMN.data[0])
-                ) {
-                    hasPartition.push(i);
+                break;
+            case 'flat':
+                if (!isPKeyColumn || !isPKeyColumn.length) {
+                    this.errors.hasError = true;
+                    this.errors.isPKeyColumn = isPKeyColumn;
                 }
-                return i;
-            });
-            if (hasPartition.length) {
-                this.errors.hasError = true;
-                this.errors.loadStrategyErrorMsg =
-                    '- For Load Strategy REFRESH table: there should not be IS_PARTITION_COLUMN.';
-            }
+                colums.map(i => {
+                    if (
+                        i.IS_UPDATE_DATE_COLUMN === 1 ||
+                        i.IS_UPDATE_DATE_COLUMN === true ||
+                        (i.IS_UPDATE_DATE_COLUMN &&
+                            i.IS_UPDATE_DATE_COLUMN.data &&
+                            i.IS_UPDATE_DATE_COLUMN.data[0])
+                    ) {
+                        hadUpdateDate.push(i);
+                    }
+                    return i;
+                });
+                if (!hadUpdateDate.length || hadUpdateDate.length > 1) {
+                    this.errors.hasError = true;
+                    this.errors.loadStrategyErrorMsg =
+                        // tslint:disable-next-line:max-line-length
+                        '- For Load Strategy FLAT table: there must be max 1 IS_UPDATE_DATE_COLUMN.';
+                }
+                break;
+            case 'insert':
+                colums.map(i => {
+                    if (
+                        i.IS_PARTITION_COLUMN === 1 ||
+                        i.IS_PARTITION_COLUMN === true ||
+                        (i.IS_PARTITION_COLUMN &&
+                            i.IS_PARTITION_COLUMN.data &&
+                            i.IS_PARTITION_COLUMN.data[0])
+                    ) {
+                        hasPartition.push(i);
+                    }
+                    return i;
+                });
+                if (!hasPartition.length) {
+                    this.errors.hasError = true;
+                    this.errors.loadStrategyErrorMsg =
+                        '- For Load Strategy INSERT table: there must be at least 1 IS_PARTITION_COLUMN.';
+                }
+                break;
+            case 'refresh':
+                colums.map(i => {
+                    if (
+                        i.IS_PARTITION_COLUMN === 1 ||
+                        i.IS_PARTITION_COLUMN === true ||
+                        (i.IS_PARTITION_COLUMN &&
+                            i.IS_PARTITION_COLUMN.data &&
+                            i.IS_PARTITION_COLUMN.data[0])
+                    ) {
+                        hasPartition.push(i);
+                    }
+                    return i;
+                });
+                if (hasPartition.length) {
+                    this.errors.hasError = true;
+                    this.errors.loadStrategyErrorMsg =
+                        '- For Load Strategy REFRESH table: there should not be IS_PARTITION_COLUMN.';
+                }
+                break;
+
+            default:
+                break;
         }
 
         if (!this.errors.hasError) {
-            if (isValidate) {
-                this.validate(version);
-            } else {
-                this.saveMasterData(localCopyOfVersion);
-            }
+            this.saveMasterData(localCopyOfVersion, isValidate, version);
         } else {
             this.showMapping(this.errors);
         }
@@ -681,7 +761,7 @@ export class ColumnMetadataComponent implements OnInit {
         }
     }
 
-    saveMasterData(localCopyOfVersion) {
+    saveMasterData(localCopyOfVersion, isValidate?, version?) {
         this.loader.save = true;
         const colums =
             localCopyOfVersion[
@@ -704,6 +784,9 @@ export class ColumnMetadataComponent implements OnInit {
                             'success',
                             'All operations are successful.'
                         );
+                        if (isValidate) {
+                            this.validate(version);
+                        }
                     } else {
                         this.errors.saveError = true;
                         this.errors.errorMsg = resp.message;

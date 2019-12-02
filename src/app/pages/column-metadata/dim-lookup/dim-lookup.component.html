@@ -1,94 +1,213 @@
 <p-toast></p-toast>
 <p-confirmDialog #cd header="LookUp Delete" icon="pi pi-exclamation-triangle">
-  <p-footer>
-    <button [ngClass]="{'disabled': loader.delete }" class="btn-danger" type="button" pButton icon="pi pi-check"
-      label="Yes" (click)="cd.accept()"></button>
-    <img *ngIf="loader.delete" class="ml-2" width="40" src="assets/images/green_loader.gif" alt="Loader Image">
-  </p-footer>
+    <p-footer>
+        <button
+            [ngClass]="{ disabled: loader.delete }"
+            class="btn-danger"
+            type="button"
+            pButton
+            icon="pi pi-check"
+            label="Yes"
+            (click)="cd.accept()"
+        ></button>
+        <img
+            *ngIf="loader.delete"
+            class="ml-2"
+            width="40"
+            src="assets/images/green_loader.gif"
+            alt="Loader Image"
+        />
+    </p-footer>
 </p-confirmDialog>
 
 <div class="app-title">
-  <h1>
-    <i class="fa fa-compress"></i> CM - DIM Look Up
-  </h1>
-  <button class="btn btn-link float-right go-back" (click)="goBack()">Go back</button>
+    <h1><i class="fa fa-compress"></i> CM - DIM Look Up</h1>
+    <button class="btn btn-link float-right go-back" (click)="goBack()">
+        Go back
+    </button>
 </div>
 
 <div class="row">
-  <div class="col-12">
-    <div class="tile">
+    <div class="col-12">
+        <div class="tile">
+            <div *ngIf="uniqueTables?.length" class="clearfix">
+                Table Name:
+                {{ selectedTableName.TABLE_NAME }}
+                <button
+                    *ngIf="
+                        selectedTable?.STATUS?.toLowerCase() === 'new' &&
+                        selectedMetadataVersion ==
+                            selectedTable.METADATA_VERSION
+                    "
+                    (click)="addNew('new')"
+                    class="float-right btn btn-primary btn-sm"
+                >
+                    Add New
+                </button>
+                <span class="ml-3">Choose Metadata Version: </span>
+                <select
+                    class="form-control col-1 d-inline"
+                    [(ngModel)]="selectedMetadataVersion"
+                    (change)="updateDIMList()"
+                >
+                    <option *ngFor="let item of metadataVersionsList">{{
+                        item
+                    }}</option>
+                </select>
+            </div>
+            <div
+                *ngIf="deleteError"
+                class="alert alert-danger mt-1"
+                role="alert"
+            >
+                {{ deleteError }}
+            </div>
 
-      <div *ngIf="uniqueTables?.length" class="clearfix">
-        Table Name:
-        {{ selectedTableName.TABLE_NAME }}
-        <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew('new')"
-          class="float-right btn btn-primary btn-sm">
-          Add New
-        </button>
-      </div>
-      <div *ngIf="deleteError" class="alert alert-danger mt-1" role="alert">
-        {{deleteError}}
-      </div>
-
-      <div class="mt-3 table-responsive" *ngIf="lookUps">
-        <ngx-loading [show]="loader.lookUps" [config]="{ backdropBorderRadius: '3px' }">
-        </ngx-loading>
-        <p-table #dt [responsive]="true" [value]="lookUps" [columns]="tableColumns"
-          [tableStyle]="{'table-layout':'auto'}" styleClass="scroll-table-fhh-dim">
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                {{col.header}}
-                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                  ariaLabelDesc="Activate to sort in descending order"
-                  ariaLabelAsc="Activate to sort in ascending order">
-                </p-sortIcon>
-              </th>
-              <th class="fixedcol rightfixedcol">Action</th>
-            </tr>
-            <tr>
-              <th *ngFor="let col of columns" [ngSwitch]="col.field" class="ui-flclassuid">
-                <span *ngSwitchCase="'UPDATE_DATE'"></span>
-                <input #statusFilter id="statusFilter" pInputText *ngSwitchCase="'STATUS'" type="text"
-                  (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                  [value]="dt.filters[col.field]?.value" [(ngModel)]="statusDefaultFilter">
-                <input pInputText *ngSwitchDefault type="text"
-                  (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-                  [value]="dt.filters[col.field]?.value">
-              </th>
-              <th class="fixedcol rightfixedcol"></th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-lookUp let-columns="columns" let-i="rowIndex">
-            <tr [pSelectableRow]="lookUp">
-              <td *ngFor="let col of columns">
-                <ng-container *ngIf="col.type === 'date'; else elseTemplate">
-                  <span> {{ lookUp[col.field] | dateConvert }} </span>
-                </ng-container>
-                <ng-template #elseTemplate>
-                  <span> {{ lookUp[col.field] }} </span>
-                </ng-template>
-              </td>
-              <td class="fixedcol rightfixedcol" style='white-space: nowrap'>
-                <button (click)="addNew('view', lookUp)" title="view" class="btn btn-sm btn-info">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
-                <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="addNew('edit', lookUp)"
-                  title="Edit" class="btn btn-sm btn-primary ml-1">
-                  <i class="fa fa-pencil"></i>
-                </button>
-                <button *ngIf="selectedTable?.STATUS?.toLowerCase() === 'new'" (click)="deleteDIMLookUp(lookUp)"
-                  title="Delete" class="btn btn-danger btn-sm ml-1">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-        <div colspan="10" class="text-center p-2 border" *ngIf="!lookUps || !lookUps.length">
-          <h6>No Data Available!</h6>
+            <div class="mt-3 table-responsive" *ngIf="lookUps">
+                <ngx-loading
+                    [show]="loader.lookUps"
+                    [config]="{ backdropBorderRadius: '3px' }"
+                >
+                </ngx-loading>
+                <p-table
+                    #dt
+                    [responsive]="true"
+                    [value]="lookUps"
+                    [columns]="tableColumns"
+                    [tableStyle]="{ 'table-layout': 'auto' }"
+                    styleClass="scroll-table-fhh-dim"
+                >
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th
+                                *ngFor="let col of columns"
+                                [pSortableColumn]="col.field"
+                            >
+                                {{ col.header }}
+                                <p-sortIcon
+                                    [field]="col.field"
+                                    ariaLabel="Activate to sort"
+                                    ariaLabelDesc="Activate to sort in descending order"
+                                    ariaLabelAsc="Activate to sort in ascending order"
+                                >
+                                </p-sortIcon>
+                            </th>
+                            <th class="fixedcol rightfixedcol">Action</th>
+                        </tr>
+                        <tr>
+                            <th
+                                *ngFor="let col of columns"
+                                [ngSwitch]="col.field"
+                                class="ui-flclassuid"
+                            >
+                                <span *ngSwitchCase="'UPDATE_DATE'"></span>
+                                <input
+                                    #statusFilter
+                                    id="statusFilter"
+                                    pInputText
+                                    *ngSwitchCase="'STATUS'"
+                                    type="text"
+                                    (input)="
+                                        dt.filter(
+                                            $event.target.value,
+                                            col.field,
+                                            col.filterMatchMode
+                                        )
+                                    "
+                                    [value]="dt.filters[col.field]?.value"
+                                    [(ngModel)]="statusDefaultFilter"
+                                />
+                                <input
+                                    pInputText
+                                    *ngSwitchDefault
+                                    type="text"
+                                    (input)="
+                                        dt.filter(
+                                            $event.target.value,
+                                            col.field,
+                                            col.filterMatchMode
+                                        )
+                                    "
+                                    [value]="dt.filters[col.field]?.value"
+                                />
+                            </th>
+                            <th class="fixedcol rightfixedcol"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template
+                        pTemplate="body"
+                        let-lookUp
+                        let-columns="columns"
+                        let-i="rowIndex"
+                    >
+                        <tr [pSelectableRow]="lookUp">
+                            <td *ngFor="let col of columns">
+                                <ng-container
+                                    *ngIf="
+                                        col.type === 'date';
+                                        else elseTemplate
+                                    "
+                                >
+                                    <span>
+                                        {{ lookUp[col.field] | dateConvert }}
+                                    </span>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <span> {{ lookUp[col.field] }} </span>
+                                </ng-template>
+                            </td>
+                            <td
+                                class="fixedcol rightfixedcol"
+                                style="white-space: nowrap"
+                            >
+                                <button
+                                    (click)="addNew('view', lookUp)"
+                                    title="view"
+                                    class="btn btn-sm btn-info"
+                                >
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
+                                <button
+                                    *ngIf="
+                                        selectedTable?.STATUS?.toLowerCase() ===
+                                            'new' &&
+                                        selectedMetadataVersion ==
+                                            selectedTable.METADATA_VERSION
+                                    "
+                                    (click)="addNew('edit', lookUp)"
+                                    title="Edit"
+                                    class="btn btn-sm btn-primary ml-1"
+                                >
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button
+                                    *ngIf="
+                                        selectedTable?.STATUS?.toLowerCase() ===
+                                            'new' &&
+                                        selectedMetadataVersion ==
+                                            selectedTable.METADATA_VERSION
+                                    "
+                                    (click)="deleteDIMLookUp(lookUp)"
+                                    title="Delete"
+                                    class="btn btn-danger btn-sm ml-1"
+                                >
+                                    <i
+                                        class="fa fa-trash"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <div
+                    colspan="10"
+                    class="text-center p-2 border"
+                    *ngIf="!lookUps || !lookUps.length"
+                >
+                    <h6>No Data Available!</h6>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

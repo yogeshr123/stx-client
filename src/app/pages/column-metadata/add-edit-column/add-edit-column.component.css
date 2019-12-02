@@ -1,59 +1,66 @@
 .btn i.fa {
-  vertical-align: baseline;
+    vertical-align: baseline;
 }
 
-input[type="checkbox"].form-control {
-  width: 20px;
-  float: left;
-  /* margin-left: 25px; */
+input[type='checkbox'].form-control {
+    width: 20px;
+    float: left;
+    /* margin-left: 25px; */
 }
 
 .required {
-  color: red;
+    color: red;
 }
 
 .ng-invalid.ng-touched {
-  border-color: red;
+    border-color: red;
 }
 
 .tile-body {
-  position: relative;
+    position: relative;
 }
 
 .form-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
 }
 
 .targetCustomError {
-  font-size: 80%;
-  color: #dc3545;
+    font-size: 80%;
+    color: #dc3545;
 }
 
 div.disabled {
-  pointer-events: none;
+    pointer-events: none;
 
-  /* for "disabled" effect */
-  opacity: 0.7;
+    /* for "disabled" effect */
+    opacity: 0.7;
+}
+
+input.disabled,
+select.disabled {
+    pointer-events: none;
+    background-color: #e9ecef;
+    opacity: 1;
 }
 
 .goBack {
-  text-decoration: underline !important;
+    text-decoration: underline !important;
 }
 
 .goBack:hover {
-  text-decoration: none !important;
+    text-decoration: none !important;
 }
 
 .goBack {
-  text-decoration: underline !important;
+    text-decoration: underline !important;
 }
 
 .goBack:hover {
-  text-decoration: none !important;
+    text-decoration: none !important;
 }

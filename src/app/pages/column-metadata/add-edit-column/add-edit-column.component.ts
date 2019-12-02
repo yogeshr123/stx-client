@@ -30,6 +30,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
     TABLE_NAME: any;
     appState: any;
     submitted = false;
+    loadStrategy: any;
 
     constructor(
         private commonService: CommonService,
@@ -59,6 +60,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.formInit();
+        this.valueChangeLogic();
         this.appState = JSON.parse(localStorage.getItem('appState'));
         if (
             this.appState &&
@@ -75,6 +77,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             this.addEditColumnForm.controls.METADATA_VERSION.patchValue(
                 this.appState.CMV.selectedTable.METADATA_VERSION
             );
+            this.loadStrategy = this.appState.CMV.selectedTable.LOAD_STRATEGY;
         }
         if (
             this.routeInfo.versionId &&
@@ -125,7 +128,7 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             TARGET_RIGHT_PRECISION: [0],
             IS_UPDATE_DATE_COLUMN: [''],
             TARGET_COLUMN_ID: [''],
-            TARGET_DEFAULT_VALUE: [''],
+            // TARGET_DEFAULT_VALUE: [''],
             IS_PKEY_COLUMN: [0],
             IS_PARTITION_COLUMN: [0],
             IS_DATATYPE_CHANGED: [0],
@@ -139,6 +142,73 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
 
     get f() {
         return this.addEditColumnForm.controls;
+    }
+
+    valueChangeLogic() {
+        const isPartition = this.addEditColumnForm.get('IS_PARTITION_COLUMN');
+        const isPrimary = this.addEditColumnForm.get('IS_PKEY_COLUMN');
+        const columnType = this.addEditColumnForm.get('SRC_COLUMN_TYPE');
+        const internalColumn = this.addEditColumnForm.get('INTERNAL_COLUMN');
+        const targetDataType = this.addEditColumnForm.get('TARGET_DATA_TYPE');
+        const predefinedValue = this.addEditColumnForm.get('PREDEFINED_VALUE');
+        const targetPrecision = this.addEditColumnForm.get(
+            'TARGET_LEFT_PRECISION'
+        );
+        const updateDateColumn = this.addEditColumnForm.get(
+            'IS_UPDATE_DATE_COLUMN'
+        );
+
+        internalColumn.valueChanges.subscribe(value => {
+            if (value) {
+                isPrimary.patchValue(0);
+                updateDateColumn.patchValue(0);
+                isPartition.patchValue(0);
+            }
+        });
+
+        isPartition.valueChanges.subscribe(value => {
+            isPrimary.enable();
+            if (value) {
+                isPrimary.patchValue(1);
+                isPrimary.disable();
+            } else {
+                isPrimary.patchValue(
+                    this.columnData &&
+                        this.columnData.IS_PKEY_COLUMN &&
+                        this.columnData.IS_PKEY_COLUMN.data
+                        ? this.columnData.IS_PKEY_COLUMN.data[0]
+                        : 0 ||
+                          this.columnData.IS_PKEY_COLUMN === true ||
+                          this.columnData.IS_PKEY_COLUMN === 1
+                        ? 1
+                        : 0
+                );
+            }
+        });
+        columnType.valueChanges.subscribe(value => {
+            internalColumn.enable();
+            updateDateColumn.enable();
+            targetDataType.enable();
+
+            if (value === 'PREDEFINED') {
+                internalColumn.patchValue(0);
+                internalColumn.disable();
+                updateDateColumn.patchValue(0);
+                updateDateColumn.disable();
+            }
+        });
+        predefinedValue.valueChanges.subscribe(value => {
+            targetDataType.enable();
+            if (value === 'LOAD_TIMESTAMP') {
+                targetDataType.patchValue('timestamp');
+                targetDataType.disable();
+            } else if (value === 'INPUT_FILENAME') {
+                targetDataType.patchValue('varchar');
+                // targetDataType.disable();
+                targetPrecision.patchValue('1000');
+                targetPrecision.disable();
+            }
+        });
     }
 
     getUserInfo() {
@@ -197,6 +267,9 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                             element.patchValue(this.columnData[key].data[0]);
                         } else {
                             element.patchValue(this.columnData[key]);
+                            if (this.columnData[key] === true) {
+                                element.patchValue(1);
+                            }
                         }
                     }
                 }
@@ -296,16 +369,6 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             formValues.action =
                 this.routeInfo.id === 'new' ? 'newColumn' : 'updatedColumn';
         }
-        // if (formValues.SRC_COLUMN_NAME !== formValues.TARGET_COLUMN_NAME) {
-        //   formValues.IS_RENAMED = 1;
-        // } else {
-        //   formValues.IS_RENAMED = 0;
-        // }
-        // if (formValues.SRC_DATA_TYPE !== formValues.TARGET_DATA_TYPE) {
-        //   formValues.IS_DATATYPE_CHANGED = 1;
-        // } else {
-        //   formValues.IS_DATATYPE_CHANGED = 0;
-        // }
         this.targetDataTypeValidation();
     }
 
@@ -424,7 +487,10 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
             };
         }
 
-        const formValues = Object.assign({}, this.addEditColumnForm.value);
+        const formValues = Object.assign(
+            {},
+            this.addEditColumnForm.getRawValue()
+        );
         this.addPrecisionValues(formValues);
         this.checkFormValues(functionToCall, formValues);
         if (this.addEditColumnForm.invalid) {
@@ -465,15 +531,12 @@ export class AddEditColumnComponent implements OnInit, OnDestroy {
                 ] = localCopyOfVersion[
                     `${formValues.METADATA_VERSION}_${this.TABLE_NAME}`
                 ].map(i => {
-                    if (
-                        i.TARGET_COLUMN_NAME === formValues.TARGET_COLUMN_NAME
-                    ) {
+                    if (i.TARGET_COLUMN_ID === formValues.TARGET_COLUMN_ID) {
                         i = formValues;
                     }
                     return i;
                 });
             }
-
             this.columnMetadataService.setLocalCopyOfVersion(
                 localCopyOfVersion
             );

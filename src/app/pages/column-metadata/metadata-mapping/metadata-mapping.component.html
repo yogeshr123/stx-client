@@ -20,16 +20,25 @@
                 Please fix following Erros:
             </h6>
             <div class="ml-4" *ngIf="errors.duplicatetTargetNames">
-                <span class="mb-2"><b>Duplicate Target Column Names</b> are not allowed:</span>
+                <span class="mb-2"
+                    ><b>Duplicate Target Column Names</b> are not allowed:</span
+                >
                 <ul>
-                    <li *ngFor="let item of errors.duplicatetTargetNames"> {{ item }} </li>
+                    <li *ngFor="let item of errors.duplicatetTargetNames">
+                        {{ item }}
+                    </li>
                 </ul>
             </div>
             <div class="ml-4 mt-3" *ngIf="errors.checkSrcAndTableAlias">
-                <b>Duplicate Source Column Name & Lookup Table Alias Combination</b> are not allowed:
+                <b
+                    >Duplicate Source Column Name & Lookup Table Alias
+                    Combination</b
+                >
+                are not allowed:
                 <ul *ngFor="let item of errors.checkSrcAndTableAlias">
                     <li>
-                        Source Column Name: {{ item.split('+')[0] }} And Lookup Table Alias:
+                        Source Column Name: {{ item.split('+')[0] }} And Lookup
+                        Table Alias:
                         {{ item.split('+')[1] }}
                     </li>
                 </ul>
@@ -37,23 +46,28 @@
             <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumn">
                 There can <b>only be 1 IS_PARTITION_COLUMN</b>:
                 <ul *ngFor="let item of errors.isPartitionColumn">
-                    <li> Source Column Name: {{ item }} </li>
+                    <li>Source Column Name: {{ item }}</li>
                 </ul>
             </div>
+            <div class="ml-4 mt-3" *ngIf="errors.isPKeyColumn">
+                There should be at least
+                <b> 1 IS_PRIMARY_KEY_COLUMN other than IS_PARTITION_COLUMN</b>
+            </div>
             <div class="ml-4 mt-3" *ngIf="errors.isPartitionColumnDataType">
-                <b>IS_PARTITION_COLUMN</b> should have <b>TARGET_DATA_TYPE int or varchar</b>:
+                <b>IS_PARTITION_COLUMN</b> should have
+                <b>TARGET_DATA_TYPE int or varchar</b>:
                 <ul *ngFor="let item of errors.isPartitionColumnDataType">
-                    <li> Source Column Name: {{ item }} </li>
+                    <li>Source Column Name: {{ item }}</li>
                 </ul>
             </div>
             <div class="ml-4 mt-3" *ngIf="errors.isUpdateDateColumn">
                 There can <b>only be 1 IS_UPDATE_DATE_COLUMN</b>:
                 <ul *ngFor="let item of errors.isUpdateDateColumn">
-                    <li> Source Column Name: {{ item }} </li>
+                    <li>Source Column Name: {{ item }}</li>
                 </ul>
             </div>
             <div class="ml-4 mt-3" *ngIf="errors.loadStrategyErrorMsg">
-                <b>{{errors.loadStrategyErrorMsg}}</b>
+                <b>{{ errors.loadStrategyErrorMsg }}</b>
             </div>
         </div>
     </div>

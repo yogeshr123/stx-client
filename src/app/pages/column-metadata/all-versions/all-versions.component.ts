@@ -38,9 +38,6 @@ export class AllVersionsComponent implements OnInit {
         const localTableState = JSON.parse(localStorage.getItem('GlobalQuery'));
         if (localTableState && localTableState.allVersions) {
             this.globalQuery = localTableState.allVersions;
-            setTimeout(() => {
-                this.getAllTables();
-            }, 100);
         }
     }
 

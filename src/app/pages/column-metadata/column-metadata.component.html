@@ -87,6 +87,7 @@
                     #dt
                     [paginator]="versions.length >= 5 ? true : false"
                     [rows]="5"
+                    [(first)]="firstPage"
                     [value]="versions"
                     [columns]="versionTableColumns"
                     [tableStyle]="{ 'table-layout': 'auto' }"
@@ -143,19 +144,24 @@
                                     expectedPermission="editColumnMetadataModule"
                                     *ngIf="
                                         version.STATUS.toLowerCase() ===
-                                            'new' && i === isFirstNewVersion
+                                            'new' &&
+                                        version.METADATA_VERSION - 1 ===
+                                            isFirstNewVersion
                                     "
                                     (click)="saveChanges(true, version)"
                                     class="ml-2 btn btn-sm btn-warning"
                                 >
-                                    Validate
+                                    <span *ngIf="enableSaveChanges"
+                                        >Save & </span
+                                    >Validate
                                 </button>
                                 <button
                                     appPermission
                                     expectedPermission="editColumnMetadataModule"
                                     *ngIf="
                                         showGenerateVersion &&
-                                        i === versions.length - 1
+                                        version.METADATA_VERSION ===
+                                            versions.length
                                     "
                                     class="ml-2 btn btn-sm btn-info"
                                     (click)="generateNewVersion()"
@@ -196,7 +202,9 @@
                         *ngIf="
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
-                            versions.length
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                     >
                         Add Column
@@ -208,7 +216,10 @@
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
-                            tableLoadStrategy.toLowerCase() === 'flat'
+                            tableLoadStrategy.toLowerCase() === 'flat' &&
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                         class="mb-2 btn btn-sm btn-info float-right ml-2"
                         (click)="dimLookUp()"
@@ -222,7 +233,10 @@
                             !loader.columns &&
                             selectedVersion.STATUS === 'NEW' &&
                             tableLoadStrategy &&
-                            tableLoadStrategy.toLowerCase() === 'flat'
+                            tableLoadStrategy.toLowerCase() === 'flat' &&
+                            versions.length &&
+                            selectedVersion.METADATA_VERSION - 1 ===
+                                isFirstNewVersion
                         "
                         class="mb-2 btn btn-sm btn-warning float-right"
                         (click)="showFactColumns()"
@@ -230,7 +244,10 @@
                         Fact Column
                     </button>
                 </h6>
-                <div class="table-responsive">
+                <div
+                    class="table-responsive"
+                    *ngIf="selectedColumns && selectedColumns.length"
+                >
                     <p-table
                         #dt2
                         [responsive]="true"
@@ -309,7 +326,11 @@
                                         }}</span>
                                     </span>
                                     <p-sortIcon
-                                        *ngIf="col.type !== 'boolean'"
+                                        *ngIf="
+                                            col &&
+                                            col.type &&
+                                            col.type !== 'boolean'
+                                        "
                                         [field]="col.field"
                                         ariaLabel="Activate to sort"
                                         ariaLabelDesc="Activate to sort in descending order"
@@ -444,7 +465,10 @@
                                             *ngIf="
                                                 selectedVersion.STATUS ===
                                                     'NEW' &&
-                                                version?.action !== 'deleted'
+                                                version?.action !== 'deleted' &&
+                                                selectedVersion.METADATA_VERSION -
+                                                    1 ===
+                                                    isFirstNewVersion
                                             "
                                             class="btn btn-sm btn-primary ml-1"
                                         >

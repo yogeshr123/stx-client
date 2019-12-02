@@ -31,7 +31,7 @@ export class AddEditHeaderComponent implements OnInit {
     dataLoader = false;
     showConfirmation = false;
     headerMismatchesTableCols = headerMismatchesTableCols;
-    hasDimColumns = 'false';
+    hasDimColumns = 'true';
 
     constructor(
         private confirmationService: ConfirmationService,
@@ -125,7 +125,7 @@ export class AddEditHeaderComponent implements OnInit {
     }
 
     approveHeader() {
-        this.hasDimColumns = 'false';
+        this.hasDimColumns = 'true';
         this.showConfirmation = true;
     }
 

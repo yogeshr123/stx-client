@@ -26,7 +26,7 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment-timezone": "^0.5.26",
     "ngx-loading": "^3.0.1",
     "ngx-spinner": "^1.1.0",

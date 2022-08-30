@@ -27,7 +27,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.35",
     "ngx-loading": "^3.0.1",
     "ngx-spinner": "^1.1.0",
     "passport-saml": "^1.2.0",
